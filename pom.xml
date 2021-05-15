@@ -21,7 +21,6 @@
     </properties>
 
     <modules>
-
         <module>marketplace-client</module>
         <module>marketplace-server</module>
     </modules>
