@@ -5,3 +5,6 @@ deploy:
   app: marketplace-applicat
 before_install:
   - chmod +x mvnw
+notifications:
+slack:
+    if: branch = develop
