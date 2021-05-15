@@ -6,5 +6,4 @@ deploy:
 before_install:
   - chmod +x mvnw
 notifications:
-slack:
-    if: branch = develop
+  slack: nc-aof7593:WkeDRLH5jZfuLgskTGoTeAtW
