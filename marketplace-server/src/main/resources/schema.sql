@@ -6,6 +6,11 @@ CREATE TABLE role
   role VARCHAR(50)
 );
 
+INSERT INTO role (role )
+VALUES
+		('ROLE_USER'),
+		('ROLE_ADMIN');
+
 ALTER TABLE role
   OWNER TO ivan;
 
@@ -23,7 +28,7 @@ CREATE TABLE credentials
   email            VARCHAR(50) NOT NULL,
   password         VARCHAR(100),
   is_enabled       BOOLEAN,
-  failed_auth      INTEGER,
+  failed_auth      INTEGER DEFAULT 0,
   last_failed_auth TIMESTAMP
 );
 

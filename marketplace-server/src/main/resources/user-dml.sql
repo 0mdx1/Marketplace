@@ -5,7 +5,7 @@ RETURNING id;
 
 -- Create credentials record
 INSERT INTO person(credentials_id, name, surname, phone)
-VALUES (:credentialsId, :name, :surname, :phone)
+VALUES (:credentials_id, :name, :surname, :phone)
 RETURNING id;
 
 -- Create courier record
