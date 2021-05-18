@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http.csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers("/register", "/login", "/swagger/**", "/confirm-account").permitAll()
+                .antMatchers("/register", "/login","/confirm-account").permitAll()
                 .antMatchers("/reset-password").permitAll()
                 .anyRequest().authenticated()
                 .and()
