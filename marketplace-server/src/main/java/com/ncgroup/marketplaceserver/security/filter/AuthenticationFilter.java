@@ -29,7 +29,6 @@ public class AuthenticationFilter extends Http403ForbiddenEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) 
     		throws IOException {
-    	//log.info(exception.toString());
         HttpResponse httpResponse = new HttpResponse(FORBIDDEN.value(), 
         		FORBIDDEN, FORBIDDEN.getReasonPhrase().toUpperCase(), "You need to login to access this page");
         response.setContentType(APPLICATION_JSON_VALUE);

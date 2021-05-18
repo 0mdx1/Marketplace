@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.repository.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +29,9 @@ public class UserRepositoryImpl implements UserRepository {
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
+	@Value("${user.find-all}")
+	private String findAllQuery;
+	
 	@Value("${user.find-by-email}")
 	private String findByEmailQuery;
 	
@@ -47,6 +49,19 @@ public class UserRepositoryImpl implements UserRepository {
 	
 	@Value("${user.update-last-failed-auth}")
 	private String updateLastFailedAuthQuery;
+	
+	@Value("${user.enable}")
+	private String enableUserQuery;
+	
+	@Value("${user.find-by-auth-link}")
+	private String findByAuthLinkQuery;
+	
+	@Value("${user.update-auth-link}")
+	private String updateAuthLinkQuery;
+	
+	@Value("${user.update-password}")
+	private String updatePasswordQuery;
+	
 	
 	@Autowired
 	public UserRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -73,7 +88,8 @@ public class UserRepositoryImpl implements UserRepository {
 				.addValue("password", user.getPassword())
 				.addValue("is_enabled", user.isEnabled())
 				.addValue("failed_auth", credentialsHolder)
-				.addValue("last_failed_auth", user.getLastFailedAuth());
+				.addValue("last_failed_auth", user.getLastFailedAuth())
+				.addValue("auth_link", user.getAuthLink());
 		namedParameterJdbcTemplate.update(insertCredentialsQuery, credentialsParameters, credentialsHolder);
 		
 		KeyHolder userHolder = new GeneratedKeyHolder();
@@ -87,11 +103,22 @@ public class UserRepositoryImpl implements UserRepository {
 		user.setId(userHolder.getKey().longValue());
 		return user;
 	}
+	
+	@Override
+	public void updateAuthLink(String email, String link) {
+		Object[] params = {link, email};
+		jdbcTemplate.update(updateAuthLinkQuery, params);
+	}
+	
+	@Override
+	public void updatePassword(String email, String password) {
+		Object[] params = {password, email};
+		jdbcTemplate.update(updatePasswordQuery, params);
+	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcTemplate.query(findAllQuery, new UserRowMapper());
 	}
 
 	@Override
@@ -101,13 +128,15 @@ public class UserRepositoryImpl implements UserRepository {
 		log.info("FIND USER BY ID");
 		return users.isEmpty() ? null : users.get(0);
 	}
-
-	//@Override
-	/*public void updateLastFailedAuth(long id, int lastFailedAuth) {
-		Object[] params = {lastFailedAuth, email};
-		jdbcTemplate.update(updateLastFailedAuthQuery, params);
-	}*/
-
+	
+	@Override
+	public User findByAuthLink(String link) {
+		Object[] params = {link};
+		List<User> users = jdbcTemplate.query(findByAuthLinkQuery, new UserRowMapper(), params);
+		log.info("FIND USER BY LINK");
+		return users.isEmpty() ? null : users.get(0);
+	}
+	
 	@Override
 	public void updateLastFailedAuth(String email, int lastFailedAuth) {
 		Object[] params = {lastFailedAuth, email};
@@ -122,6 +151,11 @@ public class UserRepositoryImpl implements UserRepository {
 	
 	private int getRoleId(Role role) { 
 		return jdbcTemplate.queryForObject(findRoleQuery, Integer.class, new Object[] {role.name()});
+	}
+
+	@Override
+	public void enableUser(String link) {
+		jdbcTemplate.update(enableUserQuery, new Object[] {link});
 	}
 
 	

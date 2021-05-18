@@ -19,7 +19,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.ncgroup.marketplaceserver.exception.ExceptionConstants;
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.security.constants.JwtConstants;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 
@@ -88,7 +88,7 @@ public class JwtProvider {
             verifier = JWT.require(algorithm).build();
         }catch (JWTVerificationException exception) {
         	log.debug("Token cannot be verified");
-            throw new JWTVerificationException(ExceptionConstants.TOKEN_NOT_VERIFIED);
+            throw new JWTVerificationException(ExceptionMessage.TOKEN_NOT_VERIFIED);
         }
         return verifier;
     }

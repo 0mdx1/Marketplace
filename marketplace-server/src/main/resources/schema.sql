@@ -29,7 +29,9 @@ CREATE TABLE credentials
   password         VARCHAR(100),
   is_enabled       BOOLEAN,
   failed_auth      INTEGER DEFAULT 0,
-  last_failed_auth TIMESTAMP
+  last_failed_auth TIMESTAMP,
+  auth_link		   VARCHAR(100),
+  auth_link_date   TIMESTAMP
 );
 
 ALTER TABLE credentials

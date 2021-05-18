@@ -24,6 +24,8 @@ public class UserRowMapper implements RowMapper<User>{
 				.lastFailedAuth(rs.getObject("last_failed_auth", LocalDateTime.class))
 				.password(rs.getString("password"))
 				.role(Role.valueOf(rs.getString("role")))
+				.authLink(rs.getString("auth_link"))
+				.authLinkDate(rs.getObject("auth_link_date", LocalDateTime.class))
 				.build();
 		return user;
 	}

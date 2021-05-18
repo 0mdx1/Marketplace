@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ncgroup.marketplaceserver.model.User;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class UserPrincipal implements UserDetails {	
 	private User user;
 	
@@ -21,11 +19,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		log.info(user.toString());
 		return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
-		/*return StreamSupport.stream(person.getAuthorities().spliterator(), false)
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());*/
 	}
 
 	@Override
@@ -50,7 +44,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return false;
+		return true;
 	}
 
 	@Override

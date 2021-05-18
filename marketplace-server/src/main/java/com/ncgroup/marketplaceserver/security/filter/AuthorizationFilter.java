@@ -40,12 +40,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         	//log.info("1");
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader == null || !authorizationHeader.startsWith(JwtConstants.TOKEN_PREFIX)) {
-            	//log.info("2");
             	//There are no appropriate tokens
                 filterChain.doFilter(request, response);
                 return;
             }
-            //log.info("3");
             //Remove prefix to get the actual token value
             String token = authorizationHeader.substring(JwtConstants.TOKEN_PREFIX.length());
             String username = jwtProvider.getSubject(token);

@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
-import com.ncgroup.marketplaceserver.exception.domain.EmailNotFoundException;
-import com.ncgroup.marketplaceserver.exception.domain.UserNotFoundException;
-import com.ncgroup.marketplaceserver.exception.domain.UsernameExistException;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.LoginUserDto;
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.security.constants.JwtConstants;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
@@ -28,9 +27,10 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
-@RequestMapping(path = { "/", "/user"})
 public class UserController  {
     private AuthenticationManager authenticationManager;
     private UserService userService;
@@ -44,39 +44,42 @@ public class UserController  {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
-    	try {
-    	log.info("Before authentication");
-        authenticate(user.getEmail(), user.getPassword());
-        log.info("After authentication");
-    	} catch(Throwable e) {
-    		e.printStackTrace();
-    	}
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user) {
+    	authenticate(user.getEmail(), user.getPassword());
         User loginUser = userService.findUserByEmail(user.getEmail());
-        log.info("Login user was found");
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-        return new ResponseEntity<>(loginUser, jwtHeader, OK);
+        return new ResponseEntity<>(UserDto.convertToDto(loginUser), jwtHeader, OK);
      
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) 
-    		throws UserNotFoundException, UsernameExistException, EmailExistException {
-        User newUser = userService.register(user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto user) {
+        UserDto newUser = userService.register(
+        		user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhone());
+        return new ResponseEntity<>(newUser, OK);
+    }
+    
+    @GetMapping("/activate")
+    public ResponseEntity<UserDto> activate(@RequestParam String link) {
+        UserDto newUser = userService.enableUser(link);
         return new ResponseEntity<>(newUser, OK);
     }
     
     @PostMapping("/resetpassword")
-    public ResponseEntity<Void> resetPassword(@RequestBody User user) 
-    		throws EmailExistException, EmailNotFoundException {
-        userService.resetPassword(user.getEmail(), user.getPassword());
+    public ResponseEntity<Void> resetPassword(@RequestBody String email) {
+        userService.resetPassword(email);
         return ResponseEntity.noContent().build();
     }
     
-    @PostMapping("/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) 
-    		throws UserNotFoundException, UsernameExistException, EmailExistException {
+    @PostMapping("/setnewpassword/{link}")
+    public ResponseEntity<UserDto> setNewPassword(@RequestBody String password, @PathVariable String link) {
+        userService.setNewPassword(link, password);
+        return ResponseEntity.noContent().build();
+    }
+    
+    /*@PostMapping("/add")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         User newUser = userService.addUser(user.getName(),user.getSurname(), user.getEmail(), user.getRole(), user.getPassword());
         return new ResponseEntity<>(newUser, OK);
     }
@@ -88,18 +91,17 @@ public class UserController  {
     }
     
     @GetMapping("/list")
-    public ResponseEntity<List<User>> findAllUsers() {
-    	List<User> users = userService.getUsers();
+    public ResponseEntity<List<UserDto>> findAllUsers() {
+    	List<UserDto> users = userService.getUsers();
         return new ResponseEntity<>(users, OK);
     }
     
     @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user) 
-    		throws UserNotFoundException, UsernameExistException, EmailExistException {
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         User updateUser = userService.updateUser(
         		user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.isEnabled())
 ;        return new ResponseEntity<>(updateUser, OK);
-    }
+    }*/
 
     private HttpHeaders getJwtHeader(UserPrincipal user) {
         HttpHeaders headers = new HttpHeaders();
