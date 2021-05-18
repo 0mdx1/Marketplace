@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.LoginUserDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
@@ -60,15 +61,15 @@ public class UserController  {
         return new ResponseEntity<>(newUser, OK);
     }
     
-    @GetMapping("/activate")
-    public ResponseEntity<UserDto> activate(@RequestParam String link) {
+    @GetMapping("/confirm-account")
+    public ResponseEntity<UserDto> activate(@RequestParam(name = "token") String link) {
         UserDto newUser = userService.enableUser(link);
         return new ResponseEntity<>(newUser, OK);
     }
     
-    @PostMapping("/resetpassword")
-    public ResponseEntity<Void> resetPassword(@RequestBody String email) {
-        userService.resetPassword(email);
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@RequestBody TextNode email) {
+        userService.resetPassword(email.asText());
         return ResponseEntity.noContent().build();
     }
     

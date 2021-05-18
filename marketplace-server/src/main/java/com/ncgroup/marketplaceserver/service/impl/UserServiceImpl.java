@@ -27,6 +27,7 @@ import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.*;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
+import com.ncgroup.marketplaceserver.service.EmailSenderService;
 import com.ncgroup.marketplaceserver.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +40,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private UserRepository userRepository;
 	private BCryptPasswordEncoder passwordEncoder;
 	private LoginAttemptService loginAttemptService;
+	private EmailSenderService emailSenderService;
 	
 	private final int LINK_VALID_TIME_HOUR = 24;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService) {
+	public UserServiceImpl(UserRepository userRepository, 
+						   BCryptPasswordEncoder passwordEncoder, 
+			               LoginAttemptService loginAttemptService,
+			               EmailSenderService emailSenderService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.loginAttemptService = loginAttemptService;
+		this.emailSenderService = emailSenderService;
 	}
 
 	@Override
@@ -82,10 +88,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				.role(Role.ROLE_USER)
 				.build();
         
-		String authlink = "";
-        //TODO validate email by sending link
-		//Email service should return generated link
-		//user.setLink(generatedLink)
+		String authlink = emailSenderService.sendSimpleEmailValidate(email);
 		user.setAuthLink(authlink);		
 		user = userRepository.save(user);
         
@@ -162,16 +165,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public void resetPassword(String email) throws EmailNotFoundException {
 		User user = userRepository.findByEmail(email);
 		if(user == null) {
-			throw new EmailNotFoundException(ExceptionMessage.USERNAME_NOT_FOUND);
+			log.info(email);			throw new EmailNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, email));
 		}
 		
-		String auth_link = "";
-		//TODO validate email by sending link
-		//Email service should return generated link
-		//user.setLink(generatedLink)
+		String auth_link = emailSenderService.sendSimpleEmailPasswordRecovery(email);
+		user.setAuthLink(auth_link);
 		userRepository.updateAuthLink(email, auth_link);
-		//user.setPassword(encodePassword(newPassword));
-		//userRepository.save(user);
 	}
 	
 	/*
@@ -245,7 +244,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 	
 	private boolean validatePasswordPattern(String password) {
-		return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])$");
+		//return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])$");
+		return true;
 	}
 	
 	
