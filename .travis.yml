@@ -4,7 +4,8 @@ deploy:
   provider: heroku
   api-key: $HEROKU_API_KEY
   app: marketplace-applicat
-
+before_install:
+  - chmod +x mvnw
 notifications:
   slack: nc-aof7593:WkeDRLH5jZfuLgskTGoTeAtW
 branches:
