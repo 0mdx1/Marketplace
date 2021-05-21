@@ -19,7 +19,8 @@ export class CourierListComponent implements OnInit {
   }
 
   getCouriers(): void {
-    this.couriers = this.courierService.getCouriers();
+    this.courierService.getCouriers()
+      .subscribe(couriers => this.couriers = couriers);
   }
 
 }
