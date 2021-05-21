@@ -16,5 +16,5 @@ public interface UserService {
     User updateUser(long id, String newName, String newSurname, String newEmail, String newPhone, boolean isEnabled);
     void deleteUser(long id);
     void resetPassword(String email);
-    void setNewPassword(String link, String newPassword);
+    void setNewPassword(long id, String newPassword);
 }

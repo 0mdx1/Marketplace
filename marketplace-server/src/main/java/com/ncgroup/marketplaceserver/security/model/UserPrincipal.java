@@ -9,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ncgroup.marketplaceserver.model.User;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class UserPrincipal implements UserDetails {	
 	private User user;
 	

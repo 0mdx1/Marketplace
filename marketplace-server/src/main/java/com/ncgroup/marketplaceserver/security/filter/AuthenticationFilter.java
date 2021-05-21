@@ -5,8 +5,6 @@ package com.ncgroup.marketplaceserver.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ncgroup.marketplaceserver.domain.HttpResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
@@ -23,7 +21,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Need this filter to react on failed authentication process
  */
 @Component
-@Slf4j
 public class AuthenticationFilter extends Http403ForbiddenEntryPoint {
 
     @Override

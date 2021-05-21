@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.model.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

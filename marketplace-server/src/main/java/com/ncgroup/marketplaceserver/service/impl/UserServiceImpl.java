@@ -17,14 +17,12 @@ import org.springframework.stereotype.Service;
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
 import com.ncgroup.marketplaceserver.exception.domain.EmailNotFoundException;
-import com.ncgroup.marketplaceserver.exception.domain.LinkExpiredException;
-import com.ncgroup.marketplaceserver.exception.domain.LinkNotValidException;
 import com.ncgroup.marketplaceserver.exception.domain.PasswordNotValidException;
 import com.ncgroup.marketplaceserver.exception.domain.UserNotFoundException;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
-import com.ncgroup.marketplaceserver.repository.*;
+import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
@@ -101,17 +99,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public UserDto enableUser(String link) {
 		User user = validateAuthLink(link);
 		userRepository.enableUser(link);
-		return UserDto.convertToDto(user);
+		return user != null ? UserDto.convertToDto(user) : null;
 	}
 	
 	@Override
-	public void setNewPassword(String link, String newPassword) {
-		User user = validateAuthLink(link);
+	public void setNewPassword(long id, String newPassword) {
+		//User user = validateAuthLink(link);
+		User user = findUserById(id);
 		validatePasswordPattern(newPassword);
 		if(user.getPassword().equals(newPassword)) {
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
-		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));;
+		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
 	}
 	
 	@Override
@@ -165,7 +164,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public void resetPassword(String email) throws EmailNotFoundException {
 		User user = userRepository.findByEmail(email);
 		if(user == null) {
-			log.info(email);			throw new EmailNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, email));
+			log.info(email);			
+			throw new EmailNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, email));
 		}
 		
 		String auth_link = emailSenderService.sendSimpleEmailPasswordRecovery(email);
@@ -214,22 +214,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	
 	
 	private void validateLoginAttempt(User user) {
-		if(loginAttemptService.hasExceededMaxAttempts(user.getId())) {
+		/*if(loginAttemptService.hasExceededMaxAttempts(user.getId())) {
 
 			//TODO captcha
 		} else {
 			loginAttemptService.successfullLogin(user.getEmail());
-		}
+		}*/
+		loginAttemptService.successfullLogin(user.getEmail());
 	}
 	
 	//Checks wheather link exists and non-expired
 	private User validateAuthLink(String link) {
 		User user = userRepository.findByAuthLink(link);
 		if(user == null) {
-			throw new LinkNotValidException(ExceptionMessage.LINK_NOT_VALID);
+			return null;
 		}
 		if(user.getAuthLinkDate().isBefore(LocalDateTime.now().minusHours(LINK_VALID_TIME_HOUR))) {
-			throw new LinkExpiredException(ExceptionMessage.LINK_EXPIRED);
+			return null;
 		}
 		return user;
 	}
@@ -239,13 +240,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	
-	private boolean validateEmailPattern(String email) {
-		return true;
-	}
-	
 	private boolean validatePasswordPattern(String password) {
-		//return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])$");
-		return true;
+		int count = 0;
+
+		   if( 6 <= password.length() && password.length() <= 32  )
+		   {
+		      if(password.matches(".*[a-z].*")) {
+		         count ++;
+		      }
+		      if( password.matches(".*[A-Z].*") ) {
+		         count ++;
+		      }
+		      if( password.matches(".*[0-9].*") ) {
+		         count ++;
+		      }
+		   }
+
+		   return count >= 3;
 	}
 	
 	

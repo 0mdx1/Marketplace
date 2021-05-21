@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.ncgroup.marketplaceserver.model.User;
 

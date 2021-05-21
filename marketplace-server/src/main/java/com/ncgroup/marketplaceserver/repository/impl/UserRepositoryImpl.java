@@ -62,6 +62,17 @@ public class UserRepositoryImpl implements UserRepository {
 	@Value("${user.update-password}")
 	private String updatePasswordQuery;
 	
+	@Value("${user.delete-auth-link}")
+	private String deleteAuthLinkQuery;
+	
+	@Value("${user.delete-by-id}")
+	private String deleteByIdQuery;
+	
+	@Value("${user.delete-credentials-by-email}")
+	private String deleteCredByEmailQuery;
+	
+	
+	
 	
 	@Autowired
 	public UserRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -74,7 +85,6 @@ public class UserRepositoryImpl implements UserRepository {
 	public User findByEmail(String email) {
 		Object[] params = {email};
 		List<User> users = jdbcTemplate.query(findByEmailQuery, new UserRowMapper(), params);
-		log.info("FIND USER BY EMAIL");
 		return users.isEmpty() ? null : users.get(0);
 	}
 
@@ -145,7 +155,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public void deleteById(long id) {
-		// TODO Auto-generated method stub
+		User user = findById(id);
+		if(user != null) {
+			jdbcTemplate.update(deleteCredByEmailQuery, new Object[] {user.getEmail()});
+			jdbcTemplate.update(deleteByIdQuery, new Object[] {id});
+		}
 		
 	}
 	
@@ -156,6 +170,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public void enableUser(String link) {
 		jdbcTemplate.update(enableUserQuery, new Object[] {link});
+		jdbcTemplate.update(deleteAuthLinkQuery, new Object[] {link});
 	}
 
 	

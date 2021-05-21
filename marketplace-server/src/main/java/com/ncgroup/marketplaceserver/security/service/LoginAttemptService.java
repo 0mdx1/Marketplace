@@ -29,6 +29,9 @@ public class LoginAttemptService {
 	
 	public void failedLogin(String username) {
 		User user = userRepository.findByEmail(username);
+		if(user == null) {
+			return;
+		}
 		if(user.getLastFailedAuth() != null &&
 				user.getLastFailedAuth().isBefore(LocalDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
 			// The amount of time after which user can login again has passed

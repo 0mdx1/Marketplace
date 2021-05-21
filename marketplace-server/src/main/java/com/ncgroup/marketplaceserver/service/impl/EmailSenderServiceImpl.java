@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.service.impl;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -10,13 +11,18 @@ import org.springframework.stereotype.Service;
 import com.ncgroup.marketplaceserver.constants.MailConstants;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
 
+
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
+	@Value("${url.confirm-account}")
+	private String confirmAccountUrl;
+	
+	@Value("${url.reset-password}")
+	private String resetPasswordUrl;
 	
 	@Autowired
     private JavaMailSender mailSender;
-	
-	
+
 	
 	@Override
 	public String sendSimpleEmailValidate(String toEmail) {
@@ -25,7 +31,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         message.setFrom(MailConstants.SENDER_EMAIL);
         message.setTo(toEmail);
         String generatedToken = generateToken();
-        message.setText(String.format(MailConstants.REGISTRATION_MESSAGE + MailConstants.REGISTRATION_LINK, generatedToken));
+        message.setText(String.format(MailConstants.REGISTRATION_MESSAGE + confirmAccountUrl, generatedToken));
         message.setSubject(MailConstants.ACTIVATE_ACCOUNT_SUBJECT);
 
         mailSender.send(message);
@@ -41,7 +47,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         message.setFrom(MailConstants.SENDER_EMAIL);
         message.setTo(toEmail);
         String generatedToken = generateToken();
-        message.setText(String.format(MailConstants.PASSWORD_RECOVERY_MESSAGE + MailConstants.PASSWORD_RECOVERY_LINK, generatedToken));
+        message.setText(String.format(MailConstants.PASSWORD_RECOVERY_MESSAGE + resetPasswordUrl, generatedToken));
         message.setSubject(MailConstants.PASSWORD_RECOVERY_SUBJECT);
 
         mailSender.send(message);

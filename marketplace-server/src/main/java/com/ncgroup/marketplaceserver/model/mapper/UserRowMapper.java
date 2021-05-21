@@ -9,6 +9,9 @@ import org.springframework.jdbc.core.RowMapper;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UserRowMapper implements RowMapper<User>{
 
 	@Override
@@ -27,6 +30,7 @@ public class UserRowMapper implements RowMapper<User>{
 				.authLink(rs.getString("auth_link"))
 				.authLinkDate(rs.getObject("auth_link_date", LocalDateTime.class))
 				.build();
+		log.info(""+user.isEnabled());
 		return user;
 	}
 

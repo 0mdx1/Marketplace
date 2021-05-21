@@ -73,6 +73,7 @@ public class JwtProvider {
     }
 	
 	private boolean isTokenExpired(JWTVerifier verifier, String token) {
+		
 		return verifier.verify(token).getExpiresAt().before(new Date());
 	}
 
