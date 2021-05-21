@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { SystemAccountsModule } from './system-accounts/system-accounts.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
 import {AuthInterceptor} from './_auth/auth.interceptor';
@@ -17,7 +18,8 @@ import {RoleGuardService} from './_auth/auth.guard.role.service';
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SystemAccountsModule
   ],
   declarations: [
     AppComponent,
