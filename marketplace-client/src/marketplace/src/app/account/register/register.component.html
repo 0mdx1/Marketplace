@@ -1,16 +1,16 @@
 <div class="card m-3">
-    <h3 class="card-header">Register</h3>
-    <div class="card-body">
+    <h1 class="text-center card-header">Register</h1>
+    <div *ngIf="!registered" class="card-body">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-row">
-          <div class="form-group col-12">
+          <div class="form-group col-6">
             <label>First Name*</label>
             <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
             <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
               <div *ngIf="getForm.name.errors.required">First Name is required</div>
             </div>
           </div>
-          <div class="form-group col-12">
+          <div class="form-group col-6">
             <label>Last Name*</label>
             <input type="text" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
             <div *ngIf="submitted && getForm.surname.errors" class="invalid-feedback">
@@ -18,36 +18,80 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-row">
+        <div class="form-group col-12">
           <label>Email*</label>
           <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
           <div *ngIf="submitted && getForm.email.errors" class="invalid-feedback">
             <div *ngIf="getForm.email.errors.required">Email is required</div>
             <div *ngIf="getForm.email.errors.email">Email must be a valid email address</div>
+            <div *ngIf="getForm.email.hasError('EmailAlreadyExists')">This email is already registered</div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-6">
           <label>Phone</label>
           <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
           <div *ngIf="submitted && getForm.phone.errors" class="invalid-feedback">
-            <div *ngIf="getForm.phone.errors.required">Phone is required</div>
+            <div *ngIf="getForm.phone.errors">Phone must be in format +380</div>
           </div>
         </div>
+        <div class="form-group col-6">
+          <label>Date of birth</label>
+          <input type="date" formControlName="birthday" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }">
+          <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
+            <div *ngIf="getForm.birthday.hasError('InvalidDate')">Invalid date</div>
+          </div>
+        </div>
+        </div>
         <div class="form-row">
-          <div class="form-group col">
+          <div class="form-group col-6">
             <label>Password*</label>
-            <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }" />
-            <div *ngIf="submitted && getForm.password.errors" class="invalid-feedback">
-              <div *ngIf="getForm.password.errors.required">Password is required</div>
-              <div *ngIf="getForm.password.errors.minlength">Password must be at least 6 characters</div>
+            <div class="input-group">
+              <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                     class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }" />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-eye-slash': !showPassword,
+                      'fa-eye': showPassword
+                    }"
+                    (click)="showHidePassword()"
+                  ></i>
+                </span>
+              </div>
+              <div *ngIf="submitted && getForm.password.errors" class="invalid-feedback">
+                <div *ngIf="getForm.password.errors.required">Password is required</div>
+                <div *ngIf="getForm.password.errors.minlength">Password must be at least 6 characters</div>
+                <div *ngIf="getForm.password.errors.maxlength">Password must be less than 32 characters</div>
+                <div *ngIf="getForm.password.hasError('NoDigit')">Passwords must have a digit</div>
+                <div *ngIf="getForm.password.hasError('NoUppercase')">Passwords must have an uppercase letter</div>
+                <div *ngIf="getForm.password.hasError('NoLowercase')">Passwords must have a lowercase letter</div>
+              </div>
             </div>
           </div>
-          <div class="form-group col">
+          <div class="form-group col-6">
             <label>Confirm Password*</label>
-            <input type="password" formControlName="confirmPassword" class="form-control" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.confirmPassword.errors }" />
-            <div *ngIf="submitted && getForm.confirmPassword.errors" class="invalid-feedback">
-              <div *ngIf="getForm.confirmPassword.errors.required">Confirm Password is required</div>
-              <div *ngIf="getForm.confirmPassword.errors.mustMatch">Passwords must match</div>
+            <div class="input-group">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                     class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.confirmPassword.errors }" />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-eye-slash': !showConfirmPassword,
+                      'fa-eye': showConfirmPassword
+                    }"
+                    (click)="showHideConfirmPassword()"
+                  ></i>
+                </span>
+              </div>
+              <div *ngIf="submitted && getForm.confirmPassword.errors" class="invalid-feedback">
+                <div *ngIf="getForm.confirmPassword.errors.required">Confirm Password is required</div>
+                <div *ngIf="getForm.confirmPassword.hasError('NoPasswordMatch')">Passwords must match</div>
+              </div>
             </div>
           </div>
         </div>
@@ -57,12 +101,21 @@
           <div *ngIf="submitted && getForm.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary">
+          <button [disabled]="loading" type="submit" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Register
           </button>
           <a routerLink="../login" href="" class="btn btn-link">Cancel</a>
         </div>
       </form>
     </div>
+  <div *ngIf="registered" class="card-body">
+    <h3 class="text-center">
+      Check your e-mail to confirm a created account.
+    </h3>
+    <div class="form-group col text-right">
+      <a routerLink="../login" class="btn btn-link">Back to login page</a>
+    </div>
+  </div>
 </div>
 

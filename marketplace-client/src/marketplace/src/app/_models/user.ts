@@ -5,7 +5,7 @@ export class User {
   surname?: string;
   password?: string;
   email?: string;
+  dateOfBirth?: string;
   phone?: string;
   role?: Role;
-  jwtToken?: string;
 }

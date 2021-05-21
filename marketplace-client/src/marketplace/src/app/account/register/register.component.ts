@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../_services/account.services';
+import {AccountService} from '../../_services/account.service';
 import {first} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {validateBirthday, validateConfirmPassword, validatePassword} from '../../_helpers/validators.service';
 
 @Component({
-  selector: 'app-root',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -15,24 +15,28 @@ export class RegisterComponent {
   form: FormGroup;
   submitted = false;
 
+  // icons
+  loading = false;
+  showPassword = false;
+  showConfirmPassword = false;
+  registered = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
-    // private route: ActivatedRoute,
-    private router: Router,
-    // private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
-      // title: ['', Validators.required],
       name: ['', Validators.required],
       surname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
+      birthday: [''],
+      password: ['', [Validators.required, Validators.minLength(6),
+        Validators.maxLength(32)]],
       confirmPassword: ['', Validators.required],
       acceptTerms: [false, Validators.requiredTrue]
     }, {
-      // validator: MustMatch('password', 'confirmPassword')
+      validator: [validateConfirmPassword, validatePassword, validateBirthday]
     });
   }
 
@@ -40,27 +44,32 @@ export class RegisterComponent {
 
   onSubmit(): void {
     this.submitted = true;
-
-    // stop here if form is invalid
     if (this.form.invalid) {
       return;
     }
-
-    // this.loading = true;
+    this.loading = true;
     this.accountService.register(this.form.value)
       .pipe(first())
       .subscribe({
         next: () => {
-          console.log('Registered');
-          // this.router.navigate(['../login'], { relativeTo: this.route });
-          this.router.navigate(['../login']);
+          this.loading = false;
+          this.registered = true;
         },
         error: error => {
-          console.log(error);
-          // this.alertService.error(error);
-          // this.loading = false;
+          if (error.error.message === 'Email  already exists'){
+            this.getForm.email.setErrors({EmailAlreadyExists : true});
+          }
+          this.loading = false;
         }
       });
+  }
+
+  showHidePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  showHideConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
 }

@@ -1,15 +1,4 @@
-<div class="app-container" [ngClass]="{ 'bg-light': user }">
-  <!-- main nav -->
-  <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
-    <div class="navbar-nav">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item nav-link">Home</a>
-      <a routerLink="/profile" routerLinkActive="active" class="nav-item nav-link">Profile</a>
-    </div>
-  </nav>
-
-  <!-- subnav router outlet -->
-  <router-outlet name="subnav"></router-outlet>
-
+<div class="app-container">
   <!-- main router outlet -->
   <router-outlet></router-outlet>
 </div>

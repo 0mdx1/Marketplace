@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { first, finalize } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
-import { AccountService} from '../../_services/account.services';
+import { AccountService} from '../../_services/account.service';
 
-@Component({ templateUrl: 'forgot-password.component.html' })
+@Component({
+  templateUrl: 'forgot-password.component.html' ,
+  styleUrls: ['forgot-password.component.css']
+})
 export class ForgotPasswordComponent{
   form: FormGroup;
   loading = false;
   submitted = false;
+  sent = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,12 +39,19 @@ export class ForgotPasswordComponent{
 
     this.loading = true;
     // this.alertService.clear();
-    this.accountService.resetPassword(this.getForm.email.value)
+    this.accountService.resetPassword(this.form.value)
       .pipe(first())
-      .pipe(finalize(() => this.loading = false));
-    // .subscribe({
-    // next: () => this.alertService.success('Please check your email for password reset instructions'),
-    // error: error => this.alertService.error(error)
-    // });
+      .subscribe({
+        next: () => {
+          // this.router.navigate(['../registration-greeting', {relativeTo: this.route}]);
+          this.loading = false;
+          this.sent = true;
+        },
+        error: error => {
+          console.log(error);
+          // this.alertService.error(error);
+          this.loading = false;
+        }
+      });
   }
 }
