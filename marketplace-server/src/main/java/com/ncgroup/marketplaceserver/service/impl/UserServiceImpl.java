@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * Or in case of updating info about existing user, method returns user associated with given email
 	 * If currentEmail is Empty then this method is called from register() or addUser() method
 	 * */
-	private User validateNewEmail(String currentEmail, String newEmail) {
+	public User validateNewEmail(String currentEmail, String newEmail) {
         //Check that email matches RegExpr
 		/*if(!validateEmailPattern(newEmail)) {
 			throw new PasswordNotValidException(ExceptionMessage.EMAIL_NOT_VALID);
@@ -235,12 +235,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user;
 	}
 
-	private String encodePassword(String password) {
+	public String encodePassword(String password) {
 		return passwordEncoder.encode(password);
 	}
 
 	
-	private boolean validatePasswordPattern(String password) {
+	public boolean validatePasswordPattern(String password) {
 		int count = 0;
 
 		   if( 6 <= password.length() && password.length() <= 32  )
