@@ -1,6 +1,7 @@
 import {Role} from './role';
 
 export class Courier {
+  id?: number;
   name?: string;
   surname?: string;
   password?: string;

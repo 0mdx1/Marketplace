@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Courier } from 'src/app/_models/courier';
 import { CourierService } from 'src/app/_services/courier.service';
+import { CourierFilterComponent } from '../courier-filter/courier-filter.component';
 
 @Component({
   selector: 'app-courier-list',
@@ -22,5 +23,7 @@ export class CourierListComponent implements OnInit {
     this.courierService.getCouriers()
       .subscribe(couriers => this.couriers = couriers);
   }
+
+
 
 }

@@ -1,0 +1,32 @@
+<p>courier-filter works!</p>
+
+
+<div class="form-group">
+  <label for="isActive">Filter by:</label>
+  <div>
+    <input id="all"
+              type="radio"
+              value="all"
+              name="isActive"
+              (change)="filterStatus($event)">
+    <label for="all"> All</label>
+ </div>
+
+ <div>
+  <input id="active"
+            type="radio"
+            value="active"
+            name="isActive"
+            (change)="filterStatus($event)">
+    <label for="active"> Active</label>
+  </div>
+  <div>
+    <input id="inactive"
+              type="radio"
+              value="inactive"
+              name="isActive"
+              (change)="filterStatus($event)">
+    <label for="inactive"> Inactive</label>
+  </div>
+
+</div>

@@ -1,4 +1,14 @@
-<p>courier-list works!</p>
-<ul>
-
+<h2>Couriers</h2>
+<ul >
+  <li *ngFor="let courier of couriers">
+    <span >{{courier.name}} </span>
+    <span >{{courier.surname}} </span>
+    <span >{{courier.phone}} </span>
+    <span >{{courier.email}} </span>
+    <span >{{courier.active}} </span>
+  </li>
 </ul>
+
+<app-courier-filter></app-courier-filter>
+
+
