@@ -31,48 +31,8 @@ public class CourierRepositoryImpl implements CourierRepository {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Value("${user.find-all}")
-    private String findAllQuery;
-
-    @Value("${user.find-by-email}")
-    private String findByEmailQuery;
-
-    @Value("${user.find-by-id}")
-    private String findByIdQuery;
-
-    @Value("${role.find}")
-    private String findRoleQuery;
-
-    @Value("${user.insert-credentials}")
-    private String insertCredentialsQuery;
-
-    @Value("${user.insert}")
-    private String insertUserQuery;
-
-    @Value("${user.update-last-failed-auth}")
-    private String updateLastFailedAuthQuery;
-
-    @Value("${user.enable}")
-    private String enableUserQuery;
-
-    @Value("${user.find-by-auth-link}")
-    private String findByAuthLinkQuery;
-
-    @Value("${user.update-auth-link}")
-    private String updateAuthLinkQuery;
-
-    @Value("${user.update-password}")
-    private String updatePasswordQuery;
-
-    @Value("${user.delete-auth-link}")
-    private String deleteAuthLinkQuery;
-
-    @Value("${user.delete-by-id}")
-    private String deleteByIdQuery;
-
-    @Value("${user.delete-credentials-by-email}")
-    private String deleteCredByEmailQuery;
-
+    @Value("${courier.insert}")
+    private String insertCourierQuery;
 
 
 
@@ -89,7 +49,7 @@ public class CourierRepositoryImpl implements CourierRepository {
                 .addValue("id", courier.getUser().getId())
                 .addValue("status", courier.getStatus());
 
-        namedParameterJdbcTemplate.update(insertUserQuery, userParameters);
+        namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
         return courier;
     }
 
