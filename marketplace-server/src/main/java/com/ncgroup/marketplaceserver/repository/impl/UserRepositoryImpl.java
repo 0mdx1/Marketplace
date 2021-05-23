@@ -93,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
 	public User save(User user) {
 		KeyHolder credentialsHolder = new GeneratedKeyHolder();
 		SqlParameterSource credentialsParameters = new MapSqlParameterSource()
-				.addValue("role_id", getRoleId(Role.ROLE_USER))
+				.addValue("role_id", getRoleId(user.getRole()))
 				.addValue("email", user.getEmail())
 				.addValue("password", user.getPassword())
 				.addValue("is_enabled", user.isEnabled())

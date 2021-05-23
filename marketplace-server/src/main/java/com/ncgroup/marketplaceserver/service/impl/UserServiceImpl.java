@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,6 +66,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return userPrincipal;
 
 	}
+
+    public User getCurrentUser() {
+	    String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.findUserByEmail(email);
+    }
 
 	
 

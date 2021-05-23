@@ -1,4 +1,4 @@
-CREATE TABLE role
+CREATE TABLE IF NOT EXISTS role
 (
   id   SERIAL NOT NULL
     CONSTRAINT pk_role_id
@@ -6,18 +6,10 @@ CREATE TABLE role
   role VARCHAR(50)
 );
 
-INSERT INTO role (role )
-VALUES
-		('ROLE_USER'),
-		('ROLE_ADMIN');
-
-ALTER TABLE role
-  OWNER TO ivan;
-
-CREATE UNIQUE INDEX ux_role_role
+CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
   ON role (role);
 
-CREATE TABLE credentials
+CREATE TABLE IF NOT EXISTS credentials
 (
   id               SERIAL      NOT NULL
     CONSTRAINT pk_credentials_id
@@ -34,13 +26,11 @@ CREATE TABLE credentials
   auth_link_date   TIMESTAMP
 );
 
-ALTER TABLE credentials
-  OWNER TO ivan;
 
-CREATE UNIQUE INDEX ux_credentials_email
+CREATE UNIQUE INDEX IF NOT EXISTS ux_credentials_email
   ON credentials (email);
 
-CREATE TABLE person
+CREATE TABLE IF NOT EXISTS person
 (
   id             SERIAL NOT NULL
     CONSTRAINT person_pk
@@ -53,10 +43,7 @@ CREATE TABLE person
   phone          VARCHAR(50)
 );
 
-ALTER TABLE person
-  OWNER TO ivan;
-
-CREATE TABLE courier
+CREATE TABLE IF NOT EXISTS courier
 (
   id        SERIAL NOT NULL
     CONSTRAINT courier_pk
@@ -67,5 +54,13 @@ CREATE TABLE courier
   is_active BOOLEAN
 );
 
-ALTER TABLE courier
-  OWNER TO ivan;
+CREATE TABLE IF NOT EXISTS shopping_cart_item
+(
+    id          SERIAL NOT NULL
+        CONSTRAINT shopping_cart_item_pk
+        PRIMARY KEY,
+    user_id     INTEGER   NOT NULL,
+    goods_id    INTEGER   NOT NULL,
+    quantity    INTEGER   NOT NULL,
+    adding_time TIMESTAMP NOT NULL
+);
