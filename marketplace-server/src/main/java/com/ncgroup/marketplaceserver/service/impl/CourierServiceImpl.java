@@ -91,5 +91,15 @@ public class CourierServiceImpl implements CourierService {
         return UserDto.convertToDto(courier.getUser());
     }
 
+    @Override
+    public Courier getById(int id) {
+        return courierRepository.getByid(id);
+    }
+
+    @Override
+    public List<Courier> getAll() {
+        return courierRepository.getAll();
+    }
+
 
 }
