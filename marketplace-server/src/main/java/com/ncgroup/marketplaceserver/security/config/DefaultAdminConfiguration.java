@@ -10,22 +10,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Configuration
-public class DefaultUserConfiguration extends UserConfiguration{
+public class DefaultAdminConfiguration extends UserConfiguration{
 
-    @Value("default-user.name")
+    @Value("default-admin.name")
     private String name;
 
-    @Value("default-user.surname")
+    @Value("default-admin.surname")
     private String surname;
 
-    @Value("default-user.email")
+    @Value("default-admin.email")
     private String email;
 
-    @Value("default-user.password")
+    @Value("default-admin.password")
     private String password;
 
     @Autowired
-    public DefaultUserConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public DefaultAdminConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
         super(passwordEncoder, userRepository);
     }
 
@@ -36,7 +36,7 @@ public class DefaultUserConfiguration extends UserConfiguration{
                 .surname(surname)
                 .email(email)
                 .password(password)
-                .role(Role.ROLE_USER)
+                .role(Role.ROLE_ADMIN)
                 .isEnabled(true)
                 .build();
     }
