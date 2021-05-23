@@ -17,4 +17,5 @@ public interface UserService {
     void deleteUser(long id);
     void resetPassword(String email);
     void setNewPassword(long id, String newPassword);
+    User getCurrentUser();
 }
