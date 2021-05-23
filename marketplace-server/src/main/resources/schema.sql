@@ -54,13 +54,13 @@ CREATE TABLE IF NOT EXISTS courier
   is_active BOOLEAN
 );
 
-create table shopping_cart_item
+CREATE TABLE IF NOT EXISTS shopping_cart_item
 (
-    id serial not null
-        constraint shopping_cart_item_pk
-            primary key,
-    user_id integer not null,
-    goods_id integer not null,
-    quantity integer not null,
-    adding_time timestamp not null
+    id          SERIAL NOT NULL
+        CONSTRAINT shopping_cart_item_pk
+        PRIMARY KEY,
+    user_id     INTEGER   NOT NULL,
+    goods_id    INTEGER   NOT NULL,
+    quantity    INTEGER   NOT NULL,
+    adding_time TIMESTAMP NOT NULL
 );
