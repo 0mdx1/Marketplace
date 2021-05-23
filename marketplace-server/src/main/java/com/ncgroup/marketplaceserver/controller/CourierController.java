@@ -18,12 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ncgroup.marketplaceserver.model.User;
@@ -35,7 +30,7 @@ import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 
-@RequestMapping("/api")
+@RequestMapping("/api/courier")
 @RestController
 public class CourierController  {
     private AuthenticationManager authenticationManager;
@@ -57,11 +52,23 @@ public class CourierController  {
         this.jwtProvider = jwtProvider;
     }
 
-    @PostMapping("/courier")
+    @PostMapping()
     public ResponseEntity<UserDto> create (@Valid @RequestBody UserDto courier){
         UserDto newCourier = courierService.create(
                 courier.getName(), courier.getSurname(), courier.getEmail(), courier.getPassword(), courier.getPhone());
         return new ResponseEntity<>(newCourier, OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Courier> findById(@PathVariable int id) {
+        Courier courier = courierService.getById(id);
+        return new ResponseEntity<>(courier, OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Courier>> findAll() {
+        List<Courier> couriers = courierService.getAll();
+        return new ResponseEntity<>(couriers, OK);
     }
 
 
