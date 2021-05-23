@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/api/register", "/api/login","/api/confirm-account").permitAll()
-                .antMatchers("/api/reset-password", "/api/confirm-passreset/**").permitAll()
+                .antMatchers("/api/reset-password", "/api/confirm-passreset/**", "/api/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)

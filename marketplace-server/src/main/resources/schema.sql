@@ -9,7 +9,9 @@ CREATE TABLE role
 INSERT INTO role (role )
 VALUES
 		('ROLE_USER'),
-		('ROLE_ADMIN');
+		('ROLE_ADMIN'),
+		('ROLE_COURIER'),
+		('ROLE_PRODUCT_MANAGER');
 
 ALTER TABLE role
   OWNER TO ivan;

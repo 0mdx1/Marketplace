@@ -31,8 +31,8 @@ public class CourierRepositoryImpl implements CourierRepository {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Value("${courier.insert}")
-    private String insertCourierQuery;
+/*    @Value("${courier.insert}")
+    private String insertCourierQuery;*/
 
 
 
@@ -49,7 +49,7 @@ public class CourierRepositoryImpl implements CourierRepository {
                 .addValue("id", courier.getUser().getId())
                 .addValue("status", courier.getStatus());
 
-        namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
+        //namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
         return courier;
     }
 

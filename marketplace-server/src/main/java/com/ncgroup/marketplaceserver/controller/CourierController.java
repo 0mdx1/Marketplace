@@ -50,7 +50,7 @@ public class CourierController  {
 
 
     @Autowired
-    public CourierController(AuthenticationManager authenticationManager, UserService userService,
+    public CourierController(AuthenticationManager authenticationManager,
                              CourierService courierService, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
         this.courierService = courierService;

@@ -86,9 +86,8 @@ public class CourierServiceImpl implements CourierService {
         courier.getUser().setAuthLink(authlink);
         User user = userRepository.save(courier.getUser());
         courier.getUser().setId(user.getId());
-        courier = courierRepository.save(courier);
-
-        log.info("New courier registered");
+        //courier = courierRepository.save(courier);
+        //log.info("New courier registered");
         return UserDto.convertToDto(courier.getUser());
     }
 

@@ -75,6 +75,13 @@ public class UserController  {
         		user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhone());
         return new ResponseEntity<>(newUser, OK);
     }
+
+    @PostMapping("/manager")
+    public ResponseEntity<UserDto> manager(@Valid @RequestBody UserDto user) {
+        UserDto newUser = userService.createManager(
+                user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhone());
+        return new ResponseEntity<>(newUser, OK);
+    }
     
     @GetMapping("/confirm-account")
     public void activate(@RequestParam(name = "token") String link, HttpServletResponse response) throws IOException {
