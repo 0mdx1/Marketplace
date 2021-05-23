@@ -1,14 +1,27 @@
 <h2>Couriers</h2>
-<ul >
-  <li *ngFor="let courier of couriers">
+<app-courier-filter
+  (results)="couriers = $event"
+>
+</app-courier-filter>
+
+<div *ngIf="!couriers || couriers.length === 0">
+  <p>Nothing was found</p>
+</div>
+<ul *ngIf="couriers.length > 0">
+  <a *ngFor="let courier of couriers"
+  routerLink="/couriers/{{courier.id}}">
+  <div>
+    <span >{{courier.id}} </span>
     <span >{{courier.name}} </span>
     <span >{{courier.surname}} </span>
     <span >{{courier.phone}} </span>
     <span >{{courier.email}} </span>
     <span >{{courier.active}} </span>
-  </li>
+  </div>
+  </a>
 </ul>
 
-<app-courier-filter></app-courier-filter>
+
+
 
 

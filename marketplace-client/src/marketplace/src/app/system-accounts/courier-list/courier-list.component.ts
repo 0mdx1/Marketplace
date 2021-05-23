@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Courier } from 'src/app/_models/courier';
 import { CourierService } from 'src/app/_services/courier.service';
 import { CourierFilterComponent } from '../courier-filter/courier-filter.component';
@@ -10,13 +10,13 @@ import { CourierFilterComponent } from '../courier-filter/courier-filter.compone
 })
 export class CourierListComponent implements OnInit {
 
-  couriers: Courier[] = [];
+  @Input() couriers: Courier[] = [];
 
   constructor(private courierService: CourierService) { }
 
   ngOnInit(): void {
     console.log('Courier list component');
-    this.getCouriers();
+    //this.getCouriers();
   }
 
   getCouriers(): void {

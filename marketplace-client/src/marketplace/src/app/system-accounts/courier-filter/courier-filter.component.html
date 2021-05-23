@@ -1,32 +1,15 @@
-<p>courier-filter works!</p>
+<input type="text"  placeholder="Search couriers" autofocus>
 
-
-<div class="form-group">
+<div>
   <label for="isActive">Filter by:</label>
-  <div>
-    <input id="all"
+
+  <div *ngFor="let status of status_list">
+    <input id={{status}}
               type="radio"
-              value="all"
+              value={{status}}
               name="isActive"
+              [checked]="activeRadioButton == status"
               (change)="filterStatus($event)">
-    <label for="all"> All</label>
+    <label for={{status}}>{{status}}</label>
  </div>
-
- <div>
-  <input id="active"
-            type="radio"
-            value="active"
-            name="isActive"
-            (change)="filterStatus($event)">
-    <label for="active"> Active</label>
-  </div>
-  <div>
-    <input id="inactive"
-              type="radio"
-              value="inactive"
-              name="isActive"
-              (change)="filterStatus($event)">
-    <label for="inactive"> Inactive</label>
-  </div>
-
 </div>
