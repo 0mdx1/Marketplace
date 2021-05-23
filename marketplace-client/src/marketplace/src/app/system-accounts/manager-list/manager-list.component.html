@@ -1,0 +1,24 @@
+<h2>Product Managers</h2>
+
+<app-search
+  (results)="managers = $event" [userType]="'manager'">
+</app-search>
+
+<app-pagination (managers)="managers = $event" [userType]="'manager'"></app-pagination>
+
+<div *ngIf="!managers || managers.length === 0">
+  <p>Nothing was found</p>
+</div>
+<ul *ngIf="managers.length > 0">
+  <a *ngFor="let manager of managers"
+  routerLink="/managers/{{manager.id}}">
+  <div>
+    <span >{{manager.id}} </span>
+    <span >{{manager.name}} </span>
+    <span >{{manager.surname}} </span>
+    <span >{{manager.phone}} </span>
+    <span >{{manager.email}} </span>
+  </div>
+  </a>
+</ul>
+

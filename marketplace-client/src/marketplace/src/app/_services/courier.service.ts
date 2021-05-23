@@ -1,73 +1,96 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { COURIERS, ACTIVE_COURIERS, INACTIVE_COURIERS, SEARCH_COURIERS, PAGE_NUM, PAGE_SIZE } from '../_helpers/mock-couriers';
+import {
+  COURIERS,
+  SEARCH_COURIERS,
+  PAGE_NUM,
+  PAGE_SIZE,
+} from '../_helpers/mock-couriers';
 import { Courier } from '../_models/courier';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourierService {
-  filterBy: string = "";
-  readonly ALL = "all";
-  readonly ACTIVE = "active";
-  readonly INACTIVE = "inactive";
+  filter: string = '';
+  search: string = '';
+  page: number = 1;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private router: Router) {
-  }
+  readonly ALL = 'all';
+  readonly ACTIVE = 'active';
+  readonly INACTIVE = 'inactive';
+
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
   getCouriers(): Observable<Courier[]> {
-    return of(COURIERS);
+    console.log('get Couriers search ' + this.search);
+
+    if (!CourierService.isBlank(this.search)) {
+      this.router.navigate(['/sysaccounts/couriers'], {
+        queryParams: {
+          filter: this.filter,
+          page: this.page,
+          search: this.search,
+        },
+      });
+    } else {
+      this.router.navigate(['/sysaccounts/couriers'], {
+        queryParams: { filter: this.filter, page: this.page },
+      });
+    }
+
+    if (this.filter == 'all') {
+      if (!CourierService.isBlank(this.search)) {
+        return of(SEARCH_COURIERS);
+      }
+      return of(
+        COURIERS.slice(PAGE_SIZE * (this.page - 1), PAGE_SIZE * this.page)
+      );
+    }
+    if (this.filter == 'active') {
+      if (!CourierService.isBlank(this.search)) {
+        return of(SEARCH_COURIERS);
+      }
+      return of(COURIERS.filter((c) => c.active === true));
+    } else {
+      if (!CourierService.isBlank(this.search)) {
+        return of(SEARCH_COURIERS);
+      }
+      return of(COURIERS.filter((c) => c.active === false));
+    }
   }
 
-  filterCouriers(filter: string, search: string, page: number): Observable<Courier[]> {
-    console.log('search' + search);
-    if(!this.isBlank(search)) {
-      this.router.navigate(['/couriers'], { queryParams:{'filter': filter, 'page': page, 'search': search} });
-    } else {
-      this.router.navigate(['/couriers'], { queryParams:{'filter': filter, 'page': page} });
+  filterCouriers(filter: string): Observable<Courier[]> {
+    if (
+      filter != this.ALL &&
+      filter != this.ACTIVE &&
+      filter != this.INACTIVE
+    ) {
+      filter = this.ALL;
     }
+    this.filter = filter;
+    return this.getCouriers();
+  }
 
+  searchCouriers(search: string): Observable<Courier[]> {
+    this.search = search;
+    return this.getCouriers();
+  }
 
-    if(filter == 'all') {
-      if(!this.isBlank(search)) {
-        return of(SEARCH_COURIERS);
-      }
-      return of(COURIERS.slice(PAGE_SIZE*(page-1), PAGE_SIZE*page));
-    } if(filter == 'active') {
-      if(!this.isBlank(search)) {
-        return of(SEARCH_COURIERS);
-      }
-      return of(COURIERS.filter(c => c.active===true));
-
-    } else {
-      if(!this.isBlank(search)) {
-        return of(SEARCH_COURIERS);
-      }
-      return of(COURIERS.filter(c => c.active===false));
-    }
+  pageCouriers(page: number): Observable<Courier[]> {
+    this.page = page;
+    return this.getCouriers();
   }
 
   getFilters(): string {
     return this.activatedRoute.snapshot.queryParamMap.get('filter') || this.ALL;
-    /*return this.activatedRoute.queryParamMap.pipe(
-      map((params: ParamMap) => {
-      if(params.get('filter') == null) {
-        return "all";
-      } else {
-        return params.get('filter');
-      }
-    }),
-    );*/
   }
 
   getPage(): number {
-    return Number(this.activatedRoute.snapshot.queryParamMap.get('page') || "1");
-    /*return this.activatedRoute.queryParamMap.pipe(
-      map((params: ParamMap) => Number(params.get('page'))),
-    );*/
+    return Number(
+      this.activatedRoute.snapshot.queryParamMap.get('page') || '1'
+    );
   }
 
   getPageNum(): Observable<number> {
@@ -75,11 +98,13 @@ export class CourierService {
   }
 
   getSearch(): string {
-    return this.activatedRoute.snapshot.queryParamMap.get('search') || "";
+    this.search =
+      this.activatedRoute.snapshot.queryParamMap.get('search') || '';
+    return this.search;
   }
 
   //checks whether string blank,null or undefined
-  isBlank(str: string): boolean {
-    return (!str || /^\s*$/.test(str));
+  static isBlank(str: string): boolean {
+    return !str || /^\s*$/.test(str);
   }
 }

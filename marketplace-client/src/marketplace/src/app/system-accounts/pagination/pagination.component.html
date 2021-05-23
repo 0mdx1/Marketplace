@@ -1,0 +1,5 @@
+<div *ngIf="pageNum > 0">
+  <button type="button" [disabled]="currentPage == 1" (click)="prevPage()">Prev page?</button>
+  <span>page: {{currentPage}}</span>
+  <button type="button" [disabled]="currentPage == pageNum" (click)="nextPage()">Next page?</button>
+</div>

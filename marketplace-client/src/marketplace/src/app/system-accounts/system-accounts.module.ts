@@ -2,25 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourierListComponent } from './courier-list/courier-list.component';
 import { SystemAccountsRoutingModule } from './system-accounts-routing-module';
-import { ProdmanagersComponent } from './prodmanagers/prodmanagers.component';
 import { CourierFilterComponent } from './courier-filter/courier-filter.component';
 import { SystemAccountComponent } from './system-account/system-account.component';
-
-
+import { ManagerListComponent } from './manager-list/manager-list.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
     CourierListComponent,
-    ProdmanagersComponent,
     CourierFilterComponent,
-    SystemAccountComponent
+    SystemAccountComponent,
+    ManagerListComponent,
+    PaginationComponent,
+    SearchComponent,
   ],
-  imports: [
-    CommonModule,
-    SystemAccountsRoutingModule
-  ],
-  exports: [
-    CourierListComponent
-  ]
+  imports: [CommonModule, SystemAccountsRoutingModule],
+  exports: [CourierListComponent],
 })
-export class SystemAccountsModule { }
+export class SystemAccountsModule {}

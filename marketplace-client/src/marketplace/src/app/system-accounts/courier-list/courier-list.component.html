@@ -4,6 +4,10 @@
 >
 </app-courier-filter>
 
+<app-search
+  (couriers)="couriers = $event" [userType]="'courier'"
+> </app-search>
+
 <div *ngIf="!couriers || couriers.length === 0">
   <p>Nothing was found</p>
 </div>
@@ -20,6 +24,7 @@
   </div>
   </a>
 </ul>
+<app-pagination (results)="couriers = $event" [userType]="'courier'"></app-pagination>
 
 
 
