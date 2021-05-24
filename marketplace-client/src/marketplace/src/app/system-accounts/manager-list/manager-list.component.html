@@ -4,6 +4,9 @@
   (results)="managers = $event" [userType]="'manager'">
 </app-search>
 
+<app-manager-filter (managers)="managers = $event">
+</app-manager-filter>
+
 <app-pagination (managers)="managers = $event" [userType]="'manager'"></app-pagination>
 
 <div *ngIf="!managers || managers.length === 0">

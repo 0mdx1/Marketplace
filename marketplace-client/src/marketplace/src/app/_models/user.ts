@@ -1,4 +1,4 @@
-import {Role} from './role';
+import { Role } from './role';
 
 export class User {
   id?: number;
@@ -9,4 +9,5 @@ export class User {
   dateOfBirth?: string;
   phone?: string;
   role?: Role;
+  enabled?: boolean;
 }

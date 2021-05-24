@@ -9,8 +9,13 @@ import { CourierService } from './courier.service';
   providedIn: 'root',
 })
 export class ManagerService {
+  filter = '';
   search: string = '';
   page: number = 1;
+
+  readonly ALL = 'all';
+  readonly ENABLED = 'enabled';
+  readonly DISABLED = 'disabled';
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
@@ -19,11 +24,15 @@ export class ManagerService {
 
     if (!CourierService.isBlank(this.search)) {
       this.router.navigate(['/sysaccounts/managers'], {
-        queryParams: { page: this.page, search: this.search },
+        queryParams: {
+          filter: this.filter,
+          page: this.page,
+          search: this.search,
+        },
       });
     } else {
       this.router.navigate(['/sysaccounts/managers'], {
-        queryParams: { page: this.page },
+        queryParams: { filter: this.filter, page: this.page },
       });
     }
 
@@ -33,6 +42,18 @@ export class ManagerService {
     return of(
       MANAGERS.slice(PAGE_SIZE * (this.page - 1), PAGE_SIZE * this.page)
     );
+  }
+
+  filterManagers(filter: string): Observable<User[]> {
+    if (
+      filter != this.ALL &&
+      filter != this.ENABLED &&
+      filter != this.DISABLED
+    ) {
+      filter = this.ALL;
+    }
+    this.filter = filter;
+    return this.getManagers();
   }
 
   searchManagers(search: string): Observable<User[]> {
@@ -60,5 +81,9 @@ export class ManagerService {
     this.search =
       this.activatedRoute.snapshot.queryParamMap.get('search') || '';
     return this.search;
+  }
+
+  getFilters(): string {
+    return this.activatedRoute.snapshot.queryParamMap.get('filter') || this.ALL;
   }
 }

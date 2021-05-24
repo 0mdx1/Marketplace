@@ -1,4 +1,4 @@
-import {Role} from './role';
+import { Role } from './role';
 
 export class Courier {
   id?: number;
@@ -10,4 +10,5 @@ export class Courier {
   phone?: string;
   role?: Role;
   active?: boolean;
+  enabled?: boolean;
 }

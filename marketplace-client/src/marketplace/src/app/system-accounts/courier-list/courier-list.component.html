@@ -20,7 +20,9 @@
     <span >{{courier.surname}} </span>
     <span >{{courier.phone}} </span>
     <span >{{courier.email}} </span>
-    <span >{{courier.active}} </span>
+    <span *ngIf="!courier.enabled"> TERMINATED </span>
+    <span *ngIf="courier.enabled && courier.active"> ACTIVE </span>
+    <span *ngIf="courier.enabled && !courier.active"> INACTIVE </span>
   </div>
   </a>
 </ul>

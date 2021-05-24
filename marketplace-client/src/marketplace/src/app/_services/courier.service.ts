@@ -20,6 +20,7 @@ export class CourierService {
   readonly ALL = 'all';
   readonly ACTIVE = 'active';
   readonly INACTIVE = 'inactive';
+  readonly TERMINATED = 'disabled';
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
@@ -40,7 +41,7 @@ export class CourierService {
       });
     }
 
-    if (this.filter == 'all') {
+    if (this.filter == this.ALL) {
       if (!CourierService.isBlank(this.search)) {
         return of(SEARCH_COURIERS);
       }
@@ -52,12 +53,22 @@ export class CourierService {
       if (!CourierService.isBlank(this.search)) {
         return of(SEARCH_COURIERS);
       }
-      return of(COURIERS.filter((c) => c.active === true));
+      return of(
+        COURIERS.filter((c) => c.active === true).slice(
+          PAGE_SIZE * (this.page - 1),
+          PAGE_SIZE * this.page
+        )
+      );
     } else {
       if (!CourierService.isBlank(this.search)) {
         return of(SEARCH_COURIERS);
       }
-      return of(COURIERS.filter((c) => c.active === false));
+      return of(
+        COURIERS.filter((c) => c.active === false).slice(
+          PAGE_SIZE * (this.page - 1),
+          PAGE_SIZE * this.page
+        )
+      );
     }
   }
 
@@ -65,7 +76,8 @@ export class CourierService {
     if (
       filter != this.ALL &&
       filter != this.ACTIVE &&
-      filter != this.INACTIVE
+      filter != this.INACTIVE &&
+      filter != this.TERMINATED
     ) {
       filter = this.ALL;
     }
@@ -94,6 +106,7 @@ export class CourierService {
   }
 
   getPageNum(): Observable<number> {
+    console.log('get page num');
     return of(PAGE_NUM);
   }
 

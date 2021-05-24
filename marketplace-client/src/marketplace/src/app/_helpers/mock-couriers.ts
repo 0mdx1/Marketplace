@@ -15,6 +15,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: false,
   },
   {
     id: 1,
@@ -25,6 +26,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 2,
@@ -35,6 +37,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 3,
@@ -45,6 +48,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 4,
@@ -55,6 +59,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 5,
@@ -65,6 +70,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 6,
@@ -75,6 +81,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 7,
@@ -85,6 +92,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 8,
@@ -95,6 +103,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 9,
@@ -105,6 +114,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 10,
@@ -115,6 +125,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 11,
@@ -125,6 +136,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 12,
@@ -135,6 +147,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 13,
@@ -145,6 +158,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 14,
@@ -155,6 +169,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 15,
@@ -165,6 +180,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 16,
@@ -175,6 +191,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     id: 17,
@@ -185,6 +202,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 18,
@@ -195,6 +213,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 19,
@@ -205,6 +224,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     id: 20,
@@ -215,6 +235,7 @@ export const COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
 ];
 
@@ -227,6 +248,7 @@ export const SEARCH_COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     name: 'SEARCH',
@@ -236,6 +258,7 @@ export const SEARCH_COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     name: 'SEARCH',
@@ -245,6 +268,7 @@ export const SEARCH_COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
   {
     name: 'SEARCH',
@@ -254,6 +278,7 @@ export const SEARCH_COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: false,
+    enabled: true,
   },
   {
     name: 'SEARCH',
@@ -263,6 +288,7 @@ export const SEARCH_COURIERS: Courier[] = [
     phone: '123456789',
     role: Role.Courier,
     active: true,
+    enabled: true,
   },
 ];
 
@@ -274,7 +300,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: false,
   },
   {
     id: 1,
@@ -283,7 +310,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 2,
@@ -292,7 +320,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 3,
@@ -301,7 +330,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 4,
@@ -310,7 +340,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 5,
@@ -319,7 +350,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 6,
@@ -328,7 +360,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 7,
@@ -337,7 +370,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 8,
@@ -346,7 +380,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 9,
@@ -355,7 +390,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 10,
@@ -364,7 +400,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 11,
@@ -373,7 +410,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 12,
@@ -382,7 +420,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 13,
@@ -391,7 +430,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 14,
@@ -400,7 +440,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 15,
@@ -410,6 +451,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.Courier,
+    enabled: true,
   },
   {
     id: 16,
@@ -418,7 +460,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 17,
@@ -427,7 +470,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 18,
@@ -436,7 +480,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 19,
@@ -445,7 +490,8 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
   {
     id: 20,
@@ -454,6 +500,7 @@ export const MANAGERS: User[] = [
     email: 'email',
     dateOfBirth: '12.05.2000',
     phone: '123456789',
-    role: Role.Courier,
+    role: Role.ProductManager,
+    enabled: true,
   },
 ];

@@ -1,0 +1,11 @@
+<p>manager-filter works!</p>
+
+<div>
+  <label for="isEnabled">Filter by:</label>
+
+  <div *ngFor="let status of status_list">
+    <input id={{status}} type="radio" value={{status}} name="isEnabled" [checked]="activeRadioButton == status"
+      (change)="filterStatus($event)">
+    <label for={{status}}>{{status}}</label>
+  </div>
+</div>

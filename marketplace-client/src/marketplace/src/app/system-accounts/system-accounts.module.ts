@@ -7,6 +7,7 @@ import { SystemAccountComponent } from './system-account/system-account.componen
 import { ManagerListComponent } from './manager-list/manager-list.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SearchComponent } from './search/search.component';
+import { ManagerFilterComponent } from './manager-filter/manager-filter.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SearchComponent } from './search/search.component';
     ManagerListComponent,
     PaginationComponent,
     SearchComponent,
+    ManagerFilterComponent,
   ],
   imports: [CommonModule, SystemAccountsRoutingModule],
   exports: [CourierListComponent],
