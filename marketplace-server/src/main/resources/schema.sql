@@ -52,7 +52,8 @@ CREATE TABLE person
     REFERENCES credentials (id),
   name           VARCHAR(50),
   surname        VARCHAR(50),
-  phone          VARCHAR(50)
+  phone          VARCHAR(50),
+  birthday       DATE
 );
 
 ALTER TABLE person

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.repository.CourierRepository;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +51,8 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday) {
+    public CourierDto save(String name, String surname, String email, String phone,
+                        LocalDate birthday, boolean status) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
         Courier courier = Courier.builder()
                 .user(User.builder()
@@ -63,7 +65,7 @@ public class CourierServiceImpl implements CourierService {
                         .role(Role.ROLE_COURIER)
                         .build()
                 )
-                .status(false)
+                .status(status)
                 .build();
         String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
         courier.getUser().setAuthLink(authlink);
@@ -72,7 +74,7 @@ public class CourierServiceImpl implements CourierService {
         System.out.println(courier);
         courier = courierRepository.save(courier);
         log.info("New courier registered");
-        return UserDto.convertToDto(courier.getUser());
+        return CourierDto.convertToDto(courier);
     }
 
     @Override

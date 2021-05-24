@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,10 +38,10 @@ public class CourierController  {
     }
 
     @PostMapping()
-    public ResponseEntity<UserDto> create (@Valid @RequestBody UserDto courier){
-        UserDto newCourier = courierService.save(
+    public ResponseEntity<CourierDto> create (@Valid @RequestBody CourierDto courier){
+        CourierDto newCourier = courierService.save(
                 courier.getName(), courier.getSurname(), courier.getEmail(),
-                courier.getPhone(), courier.getBirthday());
+                courier.getPhone(), courier.getBirthday(), courier.isStatus());
         return new ResponseEntity<>(newCourier, OK);
     }
 
