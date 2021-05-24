@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.repository.CourierRepository;
@@ -20,6 +22,7 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
 import com.ncgroup.marketplaceserver.service.UserService;
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,9 +54,25 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public CourierDto save(String name, String surname, String email, String phone,
-                        LocalDate birthday, boolean status) {
+    public UserDto save(String name, String surname, String email, String phone,
+                        LocalDate birthday, String status) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
+        boolean isEnabled;
+        boolean isActive;
+        if(status.equals(StatusConstants.TERMINATED)){
+            isEnabled = false;
+            isActive = false;
+        }
+        else{
+            isEnabled = true;
+            if(status.equals(StatusConstants.ACTIVE)){
+                isActive = true;
+            }
+            else if (status.equals(StatusConstants.INACTIVE)){
+                isActive = false;
+            }
+            else throw new EmailExistException(ExceptionMessage.INVALID_COURIER_STATUS);
+        }
         Courier courier = Courier.builder()
                 .user(User.builder()
                         .name(name)
@@ -63,9 +82,10 @@ public class CourierServiceImpl implements CourierService {
                         .birthday(birthday)
                         .lastFailedAuth(LocalDateTime.now())
                         .role(Role.ROLE_COURIER)
+                        .isEnabled(isEnabled)
                         .build()
                 )
-                .status(status)
+                .status(isActive)
                 .build();
         String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
         courier.getUser().setAuthLink(authlink);
@@ -74,7 +94,7 @@ public class CourierServiceImpl implements CourierService {
         System.out.println(courier);
         courier = courierRepository.save(courier);
         log.info("New courier registered");
-        return CourierDto.convertToDto(courier);
+        return UserDto.convertToDto(courier.getUser());
     }
 
     @Override

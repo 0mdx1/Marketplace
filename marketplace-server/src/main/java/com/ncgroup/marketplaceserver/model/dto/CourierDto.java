@@ -32,13 +32,13 @@ public class CourierDto {
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
     private String email;
-    private boolean status;
+    private String status;
 
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     private Role role;
 
-    public static CourierDto convertToDto(Courier courier) {
+/*    public static CourierDto convertToDto(Courier courier) {
         return CourierDto.builder()
                 .id(courier.getUser().getId())
                 .name(courier.getUser().getName())
@@ -49,5 +49,5 @@ public class CourierDto {
                 .email(courier.getUser().getEmail())
                 .status(courier.isStatus())
                 .build();
-    }
+    }*/
 }

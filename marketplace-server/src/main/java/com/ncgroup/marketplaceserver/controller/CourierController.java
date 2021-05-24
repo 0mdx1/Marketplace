@@ -38,10 +38,10 @@ public class CourierController  {
     }
 
     @PostMapping()
-    public ResponseEntity<CourierDto> create (@Valid @RequestBody CourierDto courier){
-        CourierDto newCourier = courierService.save(
+    public ResponseEntity<UserDto> create (@Valid @RequestBody CourierDto courier){
+        UserDto newCourier = courierService.save(
                 courier.getName(), courier.getSurname(), courier.getEmail(),
-                courier.getPhone(), courier.getBirthday(), courier.isStatus());
+                courier.getPhone(), courier.getBirthday(), courier.getStatus());
         return new ResponseEntity<>(newCourier, OK);
     }
 
