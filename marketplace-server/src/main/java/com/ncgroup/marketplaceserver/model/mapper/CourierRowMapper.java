@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.Status;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.ncgroup.marketplaceserver.model.Role;
@@ -32,7 +31,7 @@ public class CourierRowMapper implements RowMapper<Courier>{
                     .authLink(rs.getString("auth_link"))
                     .authLinkDate(rs.getObject("auth_link_date", LocalDateTime.class))
                     .build())
-                .status(Status.valueOf(rs.getString("status")))
+                .status(rs.getBoolean("is_active"))
                 .build();
 
         log.info(""+courier);
