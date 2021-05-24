@@ -4,24 +4,25 @@ import {AccountService} from "../../_services/account.service";
 import {validateBirthday} from "../../_helpers/validators.service";
 import {first} from "rxjs/operators";
 import {Role} from "../../_models/role";
+import {StaffMember} from "../../_models/staff-member";
 
 @Component({
-  selector: 'app-courier',
+  selector: 'app-register-stuff',
   templateUrl: './register-stuff.component.html',
   styleUrls: ['./register-stuff.component.css']
 })
-export class RegisterStuffComponent implements OnInit {
-
+export class RegisterStuffComponent{
 
   form: FormGroup;
+
   submitted = false;
 
   roles: Role[] = [Role.Courier, Role.ProductManager]
 
-  courierStatuses: string[] = ['Active','Inactive','Terminated']
-  pmStatuses: string[] = ['Active','Terminated']
+  courierStatuses: string[] = ['active','inactive','terminated']
 
-  // icons
+  pmStatuses: string[] = ['active','terminated']
+
   loading = false;
   showPassword = false;
   showConfirmPassword = false;
@@ -56,6 +57,18 @@ export class RegisterStuffComponent implements OnInit {
     return this.form.value.role==Role.ProductManager;
   }
 
+  private mapToStaffMember(o: any): StaffMember {
+    return {
+      name: o.name,
+      surname: o.surname,
+      email: o.email,
+      dateOfBirth: o.dateOfBirth,
+      phone: o.phone,
+      role: o.role,
+      status: o.status
+    }
+  }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
@@ -66,9 +79,9 @@ export class RegisterStuffComponent implements OnInit {
 
     let observable = null;
     if(this.courierRoleSelected()){
-      observable = this.accountService.registerCourier(this.form.value);
+      observable = this.accountService.registerCourier(this.mapToStaffMember(this.form.value));
     }else if (this.pmRoleSelected()){
-      observable= this.accountService.registerProductManager(this.form.value);
+      observable= this.accountService.registerProductManager(this.mapToStaffMember(this.form.value));
     }else {
       return;
     }
@@ -87,8 +100,4 @@ export class RegisterStuffComponent implements OnInit {
         }
       });
   }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -46,11 +46,11 @@ export class AccountService {
     return this.http.post(`${baseUrl}/register`, account);
   }
 
-  registerCourier(account: StaffMember): Observable<StaffMember> {
+  registerCourier(account: StaffMember): Observable<any> {
     return this.http.post(`${baseUrl}/courier`, account);
   }
 
-  registerProductManager(account: StaffMember): Observable<StaffMember> {
+  registerProductManager(account: StaffMember): Observable<any> {
     return this.http.post(`${baseUrl}/manager`, account);
   }
 
