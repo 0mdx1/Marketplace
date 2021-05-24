@@ -1,14 +1,13 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -22,6 +21,13 @@ public class ManagerController {
     @Autowired
     ManagerController(ManagerService managerService) {
         this.managerService = managerService;
+    }
+
+    @PostMapping()
+    public ResponseEntity<UserDto> manager(@Valid @RequestBody UserDto user) {
+        UserDto newUser = managerService.save(
+                user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getBirthday());
+        return new ResponseEntity<>(newUser, OK);
     }
 
     @GetMapping("/{id}")

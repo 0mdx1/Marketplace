@@ -3,7 +3,6 @@ package com.ncgroup.marketplaceserver.repository.impl;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.model.mapper.CourierRowMapper;
 import com.ncgroup.marketplaceserver.repository.CourierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +12,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.mapper.UserRowMapper;
-import com.ncgroup.marketplaceserver.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,8 +26,9 @@ public class CourierRepositoryImpl implements CourierRepository {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-/*    @Value("${courier.insert}")
-    private String insertCourierQuery;*/
+    @Value("${courier.insert}")
+    private String insertCourierQuery;
+
     @Value("${courier.find-by-id}")
     private String selectById;
 
@@ -53,10 +47,9 @@ public class CourierRepositoryImpl implements CourierRepository {
     @Transactional
     public Courier save(Courier courier) {
         SqlParameterSource userParameters = new MapSqlParameterSource()
-                .addValue("id", courier.getUser().getId())
-                .addValue("status", courier.isStatus());
-
-        //namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
+                .addValue("person_id", courier.getUser().getId())
+                .addValue("is_active", courier.isStatus());
+        namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
         return courier;
     }
 

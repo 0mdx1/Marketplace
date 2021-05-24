@@ -1,34 +1,18 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import static org.springframework.http.HttpStatus.OK;
-
-import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.LoginUserDto;
-import com.ncgroup.marketplaceserver.model.dto.ResetPasswordDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
-import com.ncgroup.marketplaceserver.security.constants.JwtConstants;
-import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
-import com.ncgroup.marketplaceserver.service.UserService;
 
 @RequestMapping("/api/courier")
 @RestController
@@ -54,8 +38,9 @@ public class CourierController  {
 
     @PostMapping()
     public ResponseEntity<UserDto> create (@Valid @RequestBody UserDto courier){
-        UserDto newCourier = courierService.create(
-                courier.getName(), courier.getSurname(), courier.getEmail(), courier.getPassword(), courier.getPhone());
+        UserDto newCourier = courierService.save(
+                courier.getName(), courier.getSurname(), courier.getEmail(),
+                courier.getPhone(), courier.getBirthday());
         return new ResponseEntity<>(newCourier, OK);
     }
 

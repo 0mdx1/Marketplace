@@ -7,7 +7,7 @@ import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 public interface CourierRepository {
-    Courier save(Courier user);
+    Courier save(Courier courier);
     Courier getByid(int id);
     List<Courier> getAll();
 }

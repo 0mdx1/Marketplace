@@ -1,14 +1,13 @@
 package com.ncgroup.marketplaceserver.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 public interface CourierService {
-    UserDto create(String name, String surname, String email, String password, String phone);
+    UserDto save(String name, String surname, String email, String phone, LocalDate birthday);
     Courier getById(int id);
     List<Courier> getAll();
 }

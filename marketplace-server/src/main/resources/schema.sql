@@ -60,13 +60,12 @@ ALTER TABLE person
 
 CREATE TABLE courier
 (
-  id        SERIAL NOT NULL
+    person_id INTEGER NOT NULL
     CONSTRAINT courier_pk
-    PRIMARY KEY,
-  person_id INTEGER
+    PRIMARY KEY
     CONSTRAINT fk_courier_person
     REFERENCES person,
-  is_active BOOLEAN
+    is_active BOOLEAN
 );
 
 ALTER TABLE courier

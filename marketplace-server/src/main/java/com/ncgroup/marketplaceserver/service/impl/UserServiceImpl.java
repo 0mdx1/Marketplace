@@ -93,32 +93,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("New user registered");
         return UserDto.convertToDto(user);
 	}
-
-	@Override
-	public UserDto createManager(String name, String surname, String email, String password, String phone) {
-		validateNewEmail(StringUtils.EMPTY, email);
-		//validate password
-		if(!validatePasswordPattern(password)) {
-			throw new PasswordNotValidException(ExceptionMessage.PASSWORD_NOT_VALID);
-		}
-
-		User user = User.builder()
-				.name(name)
-				.surname(surname)
-				.phone(phone)
-				.email(email)
-				.password(encodePassword(password))
-				.lastFailedAuth(LocalDateTime.now())
-				.role(Role.ROLE_PRODUCT_MANAGER)
-				.build();
-
-		String authlink = emailSenderService.sendSimpleEmailValidate(email);
-		user.setAuthLink(authlink);
-		user = userRepository.save(user);
-
-		log.info("New user registered");
-		return UserDto.convertToDto(user);
-	}
 	
 	//Set user.enabled true after user has clicked the correct link sent by email
 	@Override

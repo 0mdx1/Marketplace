@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
-import com.ncgroup.marketplaceserver.exception.domain.PasswordNotValidException;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
@@ -52,32 +50,28 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
-    public UserDto create(String name, String surname, String email, String password, String phone) {
+    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
-        //validate password
-        if(!userService.validatePasswordPattern(password)) {
-            throw new PasswordNotValidException(ExceptionMessage.PASSWORD_NOT_VALID);
-        }
         Courier courier = Courier.builder()
                 .user(User.builder()
                         .name(name)
                         .surname(surname)
                         .phone(phone)
                         .email(email)
-                        .password(userService.encodePassword(password))
+                        .birthday(birthday)
                         .lastFailedAuth(LocalDateTime.now())
                         .role(Role.ROLE_COURIER)
                         .build()
                 )
                 .status(false)
                 .build();
-
-        String authlink = emailSenderService.sendSimpleEmailValidate(email);
+        String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
         courier.getUser().setAuthLink(authlink);
         User user = userRepository.save(courier.getUser());
         courier.getUser().setId(user.getId());
-        //courier = courierRepository.save(courier);
-        //log.info("New courier registered");
+        System.out.println(courier);
+        courier = courierRepository.save(courier);
+        log.info("New courier registered");
         return UserDto.convertToDto(courier.getUser());
     }
 
