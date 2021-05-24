@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class Courier {
 
     private User user;
-    private Status status;
+    private boolean status;
 
 }

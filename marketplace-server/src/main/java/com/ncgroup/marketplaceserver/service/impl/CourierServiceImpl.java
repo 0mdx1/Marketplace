@@ -1,9 +1,7 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.repository.CourierRepository;
@@ -11,23 +9,15 @@ import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
-import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
-import com.ncgroup.marketplaceserver.exception.domain.EmailNotFoundException;
 import com.ncgroup.marketplaceserver.exception.domain.PasswordNotValidException;
-import com.ncgroup.marketplaceserver.exception.domain.UserNotFoundException;
 import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.Status;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
-import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
 import com.ncgroup.marketplaceserver.service.UserService;
@@ -79,7 +69,7 @@ public class CourierServiceImpl implements CourierService {
                         .role(Role.ROLE_COURIER)
                         .build()
                 )
-                .status(Status.STATUS_TERMINATED)
+                .status(false)
                 .build();
 
         String authlink = emailSenderService.sendSimpleEmailValidate(email);

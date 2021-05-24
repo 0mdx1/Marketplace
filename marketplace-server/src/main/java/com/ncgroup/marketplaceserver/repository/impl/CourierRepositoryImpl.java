@@ -54,7 +54,7 @@ public class CourierRepositoryImpl implements CourierRepository {
     public Courier save(Courier courier) {
         SqlParameterSource userParameters = new MapSqlParameterSource()
                 .addValue("id", courier.getUser().getId())
-                .addValue("status", courier.getStatus());
+                .addValue("status", courier.isStatus());
 
         //namedParameterJdbcTemplate.update(insertCourierQuery, userParameters);
         return courier;
