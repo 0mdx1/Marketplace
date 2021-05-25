@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS person
     REFERENCES credentials (id),
   name           VARCHAR(50),
   surname        VARCHAR(50),
-  phone          VARCHAR(50)
+  phone          VARCHAR(50),
+  birthday       DATE
 );
 
 CREATE TABLE IF NOT EXISTS courier
