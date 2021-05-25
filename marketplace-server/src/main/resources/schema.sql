@@ -64,3 +64,59 @@ CREATE TABLE IF NOT EXISTS shopping_cart_item
     quantity    INTEGER   NOT NULL,
     adding_time TIMESTAMP NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS firm
+(
+    id SERIAL NOT NULL
+        CONSTRAINT firm_pk PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TYPE unit_type AS ENUM ('KILOGRAM', 'LITRE', 'ITEM');
+
+CREATE TABLE IF NOT EXISTS unit
+(
+    id SERIAL NOT NULL
+        CONSTRAINT unit_pk PRIMARY KEY,
+    name unit_type
+);
+
+CREATE TABLE IF NOT EXISTS category
+(
+    id SERIAL NOT NULL
+        CONSTRAINT category_pk PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS product
+(
+    id SERIAL NOT NULL
+        CONSTRAINT product_pk PRIMARY KEY,
+    name VARCHAR(50),
+    category_id INTEGER
+        CONSTRAINT fk_category
+        REFERENCES category(id)
+);
+
+CREATE TABLE IF NOT EXISTS goods
+(
+    id SERIAL NOT NULL
+        CONSTRAINT goods_pk PRIMARY KEY,
+    prod_id INTEGER
+        CONSTRAINT fk_product
+        REFERENCES product(id),
+    firm_id INTEGER
+        CONSTRAINT fk_firm
+        REFERENCES firm(id),
+    quantity INTEGER DEFAULT 0,
+    price DECIMAL(12,2),
+    unit_id INTEGER
+        CONSTRAINT fk_unit
+        REFERENCES unit(id),
+    discount DECIMAL(12,2),
+    shipping_date TIMESTAMP,
+    in_stock BOOLEAN,
+    status varchar(50),
+    image varchar(100),
+    description text
+);
