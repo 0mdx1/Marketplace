@@ -1,4 +1,4 @@
-CREATE TABLE role
+CREATE TABLE IF NOT EXISTS role
 (
   id   SERIAL NOT NULL
     CONSTRAINT pk_role_id
@@ -6,20 +6,10 @@ CREATE TABLE role
   role VARCHAR(50)
 );
 
-INSERT INTO role (role )
-VALUES
-		('ROLE_USER'),
-		('ROLE_ADMIN'),
-		('ROLE_COURIER'),
-		('ROLE_PRODUCT_MANAGER');
-
-ALTER TABLE role
-  OWNER TO ivan;
-
-CREATE UNIQUE INDEX ux_role_role
+CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
   ON role (role);
 
-CREATE TABLE credentials
+CREATE TABLE IF NOT EXISTS credentials
 (
   id               SERIAL      NOT NULL
     CONSTRAINT pk_credentials_id
@@ -36,13 +26,11 @@ CREATE TABLE credentials
   auth_link_date   TIMESTAMP
 );
 
-ALTER TABLE credentials
-  OWNER TO ivan;
 
-CREATE UNIQUE INDEX ux_credentials_email
+CREATE UNIQUE INDEX IF NOT EXISTS ux_credentials_email
   ON credentials (email);
 
-CREATE TABLE person
+CREATE TABLE IF NOT EXISTS person
 (
   id             SERIAL NOT NULL
     CONSTRAINT person_pk
@@ -52,22 +40,83 @@ CREATE TABLE person
     REFERENCES credentials (id),
   name           VARCHAR(50),
   surname        VARCHAR(50),
-  phone          VARCHAR(50),
-  birthday       DATE
+  phone          VARCHAR(50)
 );
 
-ALTER TABLE person
-  OWNER TO ivan;
-
-CREATE TABLE courier
+CREATE TABLE IF NOT EXISTS courier
 (
-    person_id INTEGER NOT NULL
+  id        SERIAL NOT NULL
     CONSTRAINT courier_pk
-    PRIMARY KEY
+    PRIMARY KEY,
+  person_id INTEGER
     CONSTRAINT fk_courier_person
     REFERENCES person,
-    is_active BOOLEAN
+  is_active BOOLEAN
 );
 
-ALTER TABLE courier
-  OWNER TO ivan;
+CREATE TABLE IF NOT EXISTS shopping_cart_item
+(
+    id          SERIAL NOT NULL
+        CONSTRAINT shopping_cart_item_pk
+        PRIMARY KEY,
+    user_id     INTEGER   NOT NULL,
+    goods_id    INTEGER   NOT NULL,
+    quantity    INTEGER   NOT NULL,
+    adding_time TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS firm
+(
+    id SERIAL NOT NULL
+        CONSTRAINT firm_pk PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TYPE unit_type AS ENUM ('KILOGRAM', 'LITRE', 'ITEM');
+
+CREATE TABLE IF NOT EXISTS unit
+(
+    id SERIAL NOT NULL
+        CONSTRAINT unit_pk PRIMARY KEY,
+    name unit_type
+);
+
+CREATE TABLE IF NOT EXISTS category
+(
+    id SERIAL NOT NULL
+        CONSTRAINT category_pk PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS product
+(
+    id SERIAL NOT NULL
+        CONSTRAINT product_pk PRIMARY KEY,
+    name VARCHAR(50),
+    category_id INTEGER
+        CONSTRAINT fk_category
+        REFERENCES category(id)
+);
+
+CREATE TABLE IF NOT EXISTS goods
+(
+    id SERIAL NOT NULL
+        CONSTRAINT goods_pk PRIMARY KEY,
+    prod_id INTEGER
+        CONSTRAINT fk_product
+        REFERENCES product(id),
+    firm_id INTEGER
+        CONSTRAINT fk_firm
+        REFERENCES firm(id),
+    quantity INTEGER DEFAULT 0,
+    price DECIMAL(12,2),
+    unit_id INTEGER
+        CONSTRAINT fk_unit
+        REFERENCES unit(id),
+    discount DECIMAL(12,2),
+    shipping_date TIMESTAMP,
+    in_stock BOOLEAN,
+    status varchar(50),
+    image varchar(100),
+    description text
+);

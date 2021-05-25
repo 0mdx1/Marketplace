@@ -9,9 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ncgroup.marketplaceserver.model.User;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class UserPrincipal implements UserDetails {	
 	private User user;
 	
@@ -19,7 +16,11 @@ public class UserPrincipal implements UserDetails {
 		this.user = user;
 	}
 
-	@Override
+    public User getUser() {
+        return user;
+    }
+
+    @Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 	}
