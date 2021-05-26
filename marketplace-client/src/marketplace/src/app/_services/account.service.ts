@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {catchError, shareReplay, tap} from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
 import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
+import {StaffMember} from "../_models/staff-member";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -43,6 +44,14 @@ export class AccountService {
 
   register(account: User): Observable<User> {
     return this.http.post(`${baseUrl}/register`, account);
+  }
+
+  registerCourier(account: StaffMember): Observable<any> {
+    return this.http.post(`${baseUrl}/courier`, account);
+  }
+
+  registerProductManager(account: StaffMember): Observable<any> {
+    return this.http.post(`${baseUrl}/manager`, account);
   }
 
   resetPassword(email: string): Observable<any> {

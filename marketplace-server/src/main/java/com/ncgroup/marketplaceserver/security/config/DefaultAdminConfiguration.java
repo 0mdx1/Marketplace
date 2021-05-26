@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class DefaultAdminConfiguration extends UserConfiguration{
 
-    @Value("default-admin.name")
+    @Value("${default-admin.name}")
     private String name;
 
-    @Value("default-admin.surname")
+    @Value("${default-admin.surname}")
     private String surname;
 
-    @Value("default-admin.email")
+    @Value("${default-admin.email}")
     private String email;
 
-    @Value("default-admin.password")
+    @Value("${default-admin.password}")
     private String password;
 
     @Autowired
