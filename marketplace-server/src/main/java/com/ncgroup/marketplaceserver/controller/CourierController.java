@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
+import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,10 +52,19 @@ public class CourierController  {
         return new ResponseEntity<>(courier, OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<Courier>> findAll() {
         List<Courier> couriers = courierService.getAll();
         return new ResponseEntity<>(couriers, OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Courier> updateCourier(
+            @Valid @RequestBody CourierUpdateDto courier,
+            @PathVariable("id") int id
+    ) {
+        System.out.println(courier);
+        return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
 

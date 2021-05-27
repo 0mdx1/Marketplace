@@ -8,6 +8,7 @@ import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
+import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.repository.CourierRepository;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
@@ -105,6 +106,13 @@ public class CourierServiceImpl implements CourierService {
     @Override
     public List<Courier> getAll() {
         return courierRepository.getAll();
+    }
+
+    @Override
+    public Courier updateCourier(int id, CourierUpdateDto courier) {
+        Courier currentCourier = this.getById(id);
+        courier.toDto(currentCourier);
+        return courierRepository.update(currentCourier, id);
     }
 
 
