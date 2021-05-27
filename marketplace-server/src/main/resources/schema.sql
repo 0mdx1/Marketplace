@@ -1,8 +1,8 @@
-DROP TABLE courier;
-DROP TABLE person;
-DROP TABLE credentials;
-DROP TABLE role;
-DROP TABLE shopping_cart_item;
+--DROP TABLE courier;
+--DROP TABLE person;
+--DROP TABLE credentials;
+--DROP TABLE role;
+--DROP TABLE shopping_cart_item;
 
 CREATE TABLE IF NOT EXISTS role
 (
