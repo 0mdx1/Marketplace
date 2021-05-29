@@ -5,6 +5,7 @@ import com.ncgroup.marketplaceserver.model.User;
 import java.util.List;
 
 public interface ManagerRepository {
-    User getById(int id);
+    User getById(long id);
     List<User> getAll();
+    User update(User manager, long id);
 }

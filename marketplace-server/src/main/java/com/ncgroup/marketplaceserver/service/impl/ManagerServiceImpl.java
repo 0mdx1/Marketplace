@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.ManagerUpdateDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
@@ -56,12 +57,19 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(long id) {
         return managerRepository.getById(id);
     }
 
     @Override
     public List<User> getAll() {
         return managerRepository.getAll();
+    }
+
+    @Override
+    public User updateManager(long id, ManagerUpdateDto manager) {
+        User currentManager = this.getById(id);
+        manager.toDto(currentManager);
+        return managerRepository.update(currentManager, id);
     }
 }
