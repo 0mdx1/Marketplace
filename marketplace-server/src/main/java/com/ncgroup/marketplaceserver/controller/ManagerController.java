@@ -36,7 +36,7 @@ public class ManagerController {
         return new ResponseEntity<>(manager, OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<User>> findAll() {
         List<User> managers = managerService.getAll();
         return new ResponseEntity<>(managers, OK);
