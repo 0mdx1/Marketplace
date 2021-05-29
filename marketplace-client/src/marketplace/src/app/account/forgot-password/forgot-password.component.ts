@@ -49,7 +49,9 @@ export class ForgotPasswordComponent{
         },
         error: error => {
           console.log(error);
-          // this.alertService.error(error);
+          if (error.error.status === 401){
+            this.getForm.email.setErrors({EmailDoesNotExist : true});
+          }
           this.loading = false;
         }
       });

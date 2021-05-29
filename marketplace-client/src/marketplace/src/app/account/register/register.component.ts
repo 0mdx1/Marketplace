@@ -44,6 +44,7 @@ export class RegisterComponent {
 
   onSubmit(): void {
     this.submitted = true;
+    this.form.disable();
     if (this.form.invalid) {
       return;
     }
@@ -53,6 +54,7 @@ export class RegisterComponent {
       .subscribe({
         next: () => {
           this.loading = false;
+          this.form.enable();
           this.registered = true;
         },
         error: error => {
@@ -60,6 +62,7 @@ export class RegisterComponent {
             this.getForm.email.setErrors({EmailAlreadyExists : true});
           }
           this.loading = false;
+          this.form.enable();
         }
       });
   }

@@ -46,7 +46,7 @@ export class ResetPasswordComponent {
     this.route.queryParamMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.accountService.setToken(this.route);
+        this.accountService.setToken(id);
         this.accountService.setNewPassword(id, this.form.get('password')?.value)
           .pipe(first())
           .subscribe({

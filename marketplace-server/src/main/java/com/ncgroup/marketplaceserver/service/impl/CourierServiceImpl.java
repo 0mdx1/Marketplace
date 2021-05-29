@@ -26,6 +26,7 @@ import com.ncgroup.marketplaceserver.service.UserService;
 import com.ncgroup.marketplaceserver.constants.StatusConstants;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -55,6 +56,7 @@ public class CourierServiceImpl implements CourierService {
     }
 
     @Override
+    @Transactional
     public UserDto save(String name, String surname, String email, String phone,
                         LocalDate birthday, String status) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
