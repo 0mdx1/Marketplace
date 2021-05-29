@@ -6,17 +6,18 @@ import { SystemAccountComponent } from './system-account/system-account.componen
 
 const routes: Routes = [
   {
-    path: '', component: SystemAccountComponent,
+    path: '',
+    component: SystemAccountComponent,
     children: [
       { path: 'couriers', component: CourierListComponent },
-      { path: 'managers', component: ManagerListComponent},
+      { path: 'managers', component: ManagerListComponent },
       //{ path: 'couriers/:id', component: CouriersDetails },
-    ]
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class SystemAccountsRoutingModule { }
+export class SystemAccountsRoutingModule {}

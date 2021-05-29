@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Courier } from 'src/app/_models/courier';
 import { User } from 'src/app/_models/user';
-import { CourierService } from 'src/app/_services/courier.service';
-import { ManagerService } from 'src/app/_services/manager.service';
+import { UserDto } from 'src/app/_models/UserDto';
+import { SystemAccountService } from 'src/app/_services/system-account.service';
 
 @Component({
   selector: 'app-pagination',
@@ -12,31 +11,31 @@ import { ManagerService } from 'src/app/_services/manager.service';
 export class PaginationComponent implements OnInit {
   currentPage: number = 1;
   pageNum: number = 1; //total number of pages
+  users: User[] = [];
 
-  readonly MANAGER: string = 'manager';
-  readonly COURIER: string = 'courier';
+  //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
+  @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() userType = '';
-  @Output() results: EventEmitter<Courier[]> = new EventEmitter<Courier[]>();
-  @Output() managers: EventEmitter<User[]> = new EventEmitter<User[]>();
-
-  constructor(
-    private courierService: CourierService,
-    private managerService: ManagerService
-  ) {}
+  constructor(private service: SystemAccountService) {}
 
   ngOnInit(): void {
-    if (this.userType == this.COURIER) {
-      this.courierService.getPageNum().subscribe((pageNum) => {
-        this.pageNum = pageNum;
+    this.service.pageNumSource.subscribe((pageNum) => {
+      this.pageNum = pageNum;
+    });
+    this.service.pageSource.subscribe((page) => {
+      this.currentPage = page;
+    });
+    this.currentPage = this.service.getCurrentPage();
+
+    this.service
+      .getPagedUsers(this.currentPage)
+      .subscribe((results: UserDto) => {
+        //this.results.emit(results.users);
+        this.users = results.users;
+        this.results.emit();
+        this.pageNum = results.pageNum;
+        this.currentPage = results.currentPage;
       });
-      this.currentPage = this.courierService.getPage();
-    } else {
-      this.managerService.getPageNum().subscribe((pageNum) => {
-        this.pageNum = pageNum;
-      });
-      this.currentPage = this.managerService.getPage();
-    }
 
     if (Number.isNaN(this.currentPage) || this.currentPage < 1) {
       this.currentPage = 1;
@@ -44,46 +43,31 @@ export class PaginationComponent implements OnInit {
     if (this.currentPage > this.pageNum) {
       this.currentPage = this.pageNum;
     }
-
-    if (this.userType == this.COURIER) {
-      this.courierService
-        .pageCouriers(this.currentPage)
-        .subscribe((results: Courier[]) => {
-          this.results.emit(results);
-        });
-    } else {
-      this.managerService
-        .pageManagers(this.currentPage)
-        .subscribe((managers: User[]) => {
-          this.managers.emit(managers);
-        });
-    }
   }
 
   nextPage(): void {
     this.currentPage = this.currentPage + 1;
-    this.getPage(this.userType);
+    this.getPage();
   }
 
   prevPage(): void {
     this.currentPage = this.currentPage - 1;
-    this.getPage(this.userType);
+    this.getPage();
   }
 
-  getPage(userType: string): void {
-    console.log(userType);
-    if (userType == this.COURIER) {
-      this.courierService
-        .pageCouriers(this.currentPage)
-        .subscribe((results: Courier[]) => {
-          this.results.emit(results);
-        });
-    } else if (userType == this.MANAGER) {
-      this.managerService
-        .pageManagers(this.currentPage)
-        .subscribe((managers: User[]) => {
-          this.managers.emit(managers);
-        });
-    }
+  getPage(): void {
+    this.service
+      .getPagedUsers(this.currentPage)
+      .subscribe((results: UserDto) => {
+        //this.results.emit(results.users);
+        this.users = results.users;
+        this.results.emit();
+        this.pageNum = results.pageNum;
+        this.currentPage = results.currentPage;
+      });
+  }
+
+  getUsers(): User[] {
+    return this.users;
   }
 }

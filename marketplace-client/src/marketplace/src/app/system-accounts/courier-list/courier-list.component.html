@@ -1,11 +1,15 @@
 <h2>Couriers</h2>
-<app-courier-filter
-  (results)="couriers = $event"
+
+<app-filter
+  (results)="couriers = filter.getUsers()"
+  [status_list]="status_list"
+  #filter
 >
-</app-courier-filter>
+</app-filter>
 
 <app-search
-  (couriers)="couriers = $event" [userType]="'courier'"
+  (results)="couriers = filter.getUsers()"
+  #filter
 > </app-search>
 
 <div *ngIf="!couriers || couriers.length === 0">
@@ -26,7 +30,7 @@
   </div>
   </a>
 </ul>
-<app-pagination (results)="couriers = $event" [userType]="'courier'"></app-pagination>
+<app-pagination (results)="couriers = filter.getUsers()" #filter></app-pagination>
 
 
 

@@ -4,14 +4,12 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  Input,
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, switchAll } from 'rxjs/operators';
-import { Courier } from 'src/app/_models/courier';
 import { User } from 'src/app/_models/user';
-import { CourierService } from 'src/app/_services/courier.service';
-import { ManagerService } from 'src/app/_services/manager.service';
+import { UserDto } from 'src/app/_models/UserDto';
+import { SystemAccountService } from 'src/app/_services/system-account.service';
 
 @Component({
   selector: 'app-search',
@@ -19,49 +17,40 @@ import { ManagerService } from 'src/app/_services/manager.service';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
-  @Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
-  @Output() couriers: EventEmitter<Courier[]> = new EventEmitter<Courier[]>();
-  @Input() userType = '';
-
-  readonly COURIER: string = 'courier';
-  readonly MANAGER: string = 'manager';
-
+  //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
+  @Output() results: EventEmitter<any> = new EventEmitter<any>();
+  users: User[] = [];
   search: string = '';
+  init: boolean = true;
 
-  constructor(
-    private managerService: ManagerService,
-    private courierService: CourierService,
-    private el: ElementRef
-  ) {}
+  constructor(private service: SystemAccountService, private el: ElementRef) {}
 
   ngOnInit(): void {
-    console.log('manager search component');
-    const obs = fromEvent(this.el.nativeElement, 'keyup').pipe(
-      map((e: any) => e.target.value),
-      //filter((text:string) => text.length>0),
-      debounceTime(250),
-      map((query: string) => {
-        console.log(query);
-        if (this.userType == this.MANAGER) {
-          return this.managerService.searchManagers(query);
-        } else {
-          return this.courierService.searchCouriers(query);
-        }
-      }),
-      switchAll()
-    );
-    if (this.userType == this.MANAGER) {
-      obs.subscribe((results: User[]) => {
+    this.search = this.service.getSearch();
+
+    fromEvent(this.el.nativeElement, 'keyup')
+      .pipe(
+        map((e: any) => e.target.value),
+        //filter((text:string) => text.length>0),
+        debounceTime(250),
+        map((query: string) => {
+          const obs = this.service.getSearchedUsers(query, this.init);
+          this.init = false;
+          return obs;
+        }),
+        switchAll()
+      )
+      .subscribe((results: UserDto) => {
         console.log('emit search');
-        this.results.emit(results);
+        //this.results.emit(results.users);
+        this.users = results.users;
+        this.results.emit();
+        this.service.pageNumSource.next(results.pageNum);
+        this.service.pageSource.next(results.currentPage);
       });
-      this.search = this.managerService.getSearch();
-    } else {
-      obs.subscribe((couriers: Courier[]) => {
-        console.log('emit search');
-        this.couriers.emit(couriers);
-      });
-      this.search = this.courierService.getSearch();
-    }
+  }
+
+  getUsers(): User[] {
+    return this.users;
   }
 }

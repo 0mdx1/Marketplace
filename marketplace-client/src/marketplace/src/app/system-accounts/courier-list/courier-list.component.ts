@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  OnInit,
 } from '@angular/core';
 import { Courier } from 'src/app/_models/courier';
 
@@ -12,12 +11,11 @@ import { Courier } from 'src/app/_models/courier';
   templateUrl: './courier-list.component.html',
   styleUrls: ['./courier-list.component.css'],
 })
-export class CourierListComponent implements OnInit, AfterViewInit {
+export class CourierListComponent implements AfterViewInit {
   @Input() couriers: Courier[] = [];
 
+  readonly status_list = ['all', 'active', 'inactive', 'terminated'];
   constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
