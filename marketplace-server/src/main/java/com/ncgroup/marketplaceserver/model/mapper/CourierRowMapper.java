@@ -20,6 +20,7 @@ public class CourierRowMapper implements RowMapper<Courier>{
     public Courier mapRow(ResultSet rs, int rowNum) throws SQLException {
         Courier courier = Courier.builder()
                 .user(User.builder()
+                    .id(rs.getLong("id"))
                     .name(rs.getString("name"))
                     .surname(rs.getString("surname"))
                     .phone(rs.getString("phone"))
