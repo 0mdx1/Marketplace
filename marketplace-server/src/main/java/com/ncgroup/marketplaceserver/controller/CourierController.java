@@ -66,7 +66,14 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
-
+    @GetMapping(params = {"filter", "search", "page"})
+    public String findAllByFilter(
+            @RequestParam("filter") final String filter,
+            @RequestParam("search") final String search,
+            @RequestParam("page") final int page
+    ) {
+        return filter + search + page;
+    }
 
 
 }
