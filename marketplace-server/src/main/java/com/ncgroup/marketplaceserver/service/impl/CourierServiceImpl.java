@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
+import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
@@ -74,7 +75,7 @@ public class CourierServiceImpl implements CourierService {
             else if (status.equals(StatusConstants.INACTIVE)){
                 isActive = false;
             }
-            else throw new EmailExistException(ExceptionMessage.INVALID_COURIER_STATUS);
+            else throw new InvalidStatusException(ExceptionMessage.INVALID_COURIER_STATUS);
         }
         Courier courier = Courier.builder()
                 .user(User.builder()
