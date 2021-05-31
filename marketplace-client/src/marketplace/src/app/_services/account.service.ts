@@ -29,7 +29,6 @@ export class AccountService {
   }
 
   login(email: string, password: string): Observable<HttpResponse<User>> {
-    console.log('Email' + email + ' Password' + password);
     return this.http.post<User>(`${baseUrl}/login`, {email, password},
       {observe: 'response'}).pipe(
         tap(res => this.setToken(res)),

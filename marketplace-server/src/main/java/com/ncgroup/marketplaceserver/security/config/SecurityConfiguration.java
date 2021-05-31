@@ -54,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
             .authorizeRequests()
                 .antMatchers("/api/shopping-cart/**")
                     .hasRole("USER")
-                .antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password", "/api/confirm-passreset/**")
+                .antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password", "/api/confirm-passreset/**", "/api/confirm-passcreate/**")
                     .permitAll()
                 .and()
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)

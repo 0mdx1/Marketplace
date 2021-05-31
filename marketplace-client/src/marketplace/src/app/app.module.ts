@@ -11,20 +11,21 @@ import {AuthService} from './_auth/auth.service';
 import {AuthGuardService} from './_auth/auth.guard.service';
 import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
 import {RoleGuardService} from './_auth/auth.guard.role.service';
+import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
 
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
     HomeComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService, AuthGuardService, RoleGuardService, AuthService
   ],
