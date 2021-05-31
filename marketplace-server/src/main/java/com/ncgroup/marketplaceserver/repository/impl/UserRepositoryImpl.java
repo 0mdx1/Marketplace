@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.repository.impl;
 
 import java.util.List;
 
+import com.ncgroup.marketplaceserver.model.mapper.CourierManagerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -70,7 +71,9 @@ public class UserRepositoryImpl implements UserRepository {
 	
 	@Value("${user.delete-credentials-by-email}")
 	private String deleteCredByEmailQuery;
-	
+
+	@Value("${couriers-managers.all}")
+	private String couriersManagersQuery;
 	
 	
 	
@@ -125,6 +128,11 @@ public class UserRepositoryImpl implements UserRepository {
 	public void updatePassword(String email, String password) {
 		Object[] params = {password, email};
 		jdbcTemplate.update(updatePasswordQuery, params);
+	}
+
+	@Override
+	public List<User> allCouriersManagers() {
+		return jdbcTemplate.query(couriersManagersQuery, new CourierManagerRowMapper());
 	}
 
 	@Override
