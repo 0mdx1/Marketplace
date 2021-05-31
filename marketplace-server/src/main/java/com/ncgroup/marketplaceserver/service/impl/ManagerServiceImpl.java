@@ -1,8 +1,8 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.ManagerUpdateDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
@@ -46,6 +46,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .phone(phone)
                 .email(email)
                 .birthday(birthday)
+                .isEnabled(true)
                 .lastFailedAuth(LocalDateTime.now())
                 .role(Role.ROLE_PRODUCT_MANAGER)
                 .build();
@@ -58,16 +59,30 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public User getById(long id) {
-        return managerRepository.getById(id);
+        User manager = managerRepository.getById(id);
+        if(manager.isEnabled()) {
+            manager.setStatus(StatusConstants.ACTIVE);
+        }else {
+            manager.setStatus(StatusConstants.TERMINATED);
+        }
+        return manager;
     }
 
     @Override
     public List<User> getAll() {
-        return managerRepository.getAll();
+        List<User> managers = managerRepository.getAll();
+        for(User manager : managers) {
+            if(manager.isEnabled()) {
+                manager.setStatus(StatusConstants.ACTIVE);
+            }else {
+                manager.setStatus(StatusConstants.TERMINATED);
+            }
+        }
+        return managers;
     }
 
     @Override
-    public User updateManager(long id, ManagerUpdateDto manager) {
+    public User updateManager(long id, User manager) {
         User currentManager = this.getById(id);
         manager.toDto(currentManager);
         return managerRepository.update(currentManager, id);

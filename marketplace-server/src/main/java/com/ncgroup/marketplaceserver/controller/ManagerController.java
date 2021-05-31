@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.ManagerUpdateDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class ManagerController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateManager(
-            @Valid @RequestBody ManagerUpdateDto manager,
+            @Valid @RequestBody User manager,
             @PathVariable("id") long id
     ) {
         return new ResponseEntity<>(managerService.updateManager(id, manager), OK);
