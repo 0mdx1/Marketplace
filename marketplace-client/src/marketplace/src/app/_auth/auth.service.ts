@@ -9,25 +9,24 @@ import decode from 'jwt-decode';
 })
 export class AuthService {
 
-  private readonly token: string | null;
-
-  constructor(public jwtHelper: JwtHelperService) {
-     this.token = localStorage.getItem('token');
-  }
+  constructor(public jwtHelper: JwtHelperService) {}
 
   public isAuthenticated(): boolean {
-    if (!this.token){
+    const token: string  | null = localStorage.getItem('token');
+    if (!token){
       return false;
     }
-    return !this.isExpired(this.token);
+    return !this.isExpired(token);
   }
 
   public isExpectedRole(expectedRole: Role): boolean {
-    if (!this.token){
+    const token: string  | null = localStorage.getItem('token');
+    if (!token){
       return false;
     }
-    const decodedToken = decode<Token>(this.token);
-    return decodedToken.role ===  expectedRole;
+    const decodedToken = decode<Token>(token);
+    console.log(decodedToken.authorities[0]+ " " + expectedRole);
+    return decodedToken.authorities[0] ==  expectedRole;
   }
 
   public isExpired(token: string): boolean {

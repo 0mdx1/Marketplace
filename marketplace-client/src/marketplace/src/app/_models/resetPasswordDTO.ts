@@ -1,9 +1,9 @@
 export class ResetPasswordDTO {
-  id?: string;
+  link?: string;
   password?: string;
 
-  constructor(id: string, password: string) {
-    this.id = id;
+  constructor(link: string, password: string) {
+    this.link = link;
     this.password = password;
   }
 }

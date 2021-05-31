@@ -36,7 +36,7 @@ export class ForgotPasswordComponent{
     if (this.form.invalid) {
       return;
     }
-
+    this.form.disable();
     this.loading = true;
     // this.alertService.clear();
     this.accountService.resetPassword(this.form.value)
@@ -53,6 +53,7 @@ export class ForgotPasswordComponent{
             this.getForm.email.setErrors({EmailDoesNotExist : true});
           }
           this.loading = false;
+          this.form.enable();
         }
       });
   }

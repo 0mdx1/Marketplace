@@ -36,17 +36,20 @@ export class LoginFormComponent {
       return;
     }
     this.loading = true;
+    this.form.disable();
     this.accountService.login(this.getForm.email.value, this.getForm.password.value)
       .subscribe({
         next: () => {
           this.router.navigateByUrl('/home');
           this.submitted = false;
           this.loading = false;
+          this.form.enable();
         },
           error: error => {
           console.log('Error: ' + error);
           this.loading = false;
           const passwordField = this.form.get('password');
+          this.form.enable();
           if (passwordField) { passwordField.setErrors({IncorrectPassword: true}); }
         }
       });
