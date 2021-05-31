@@ -1,11 +1,10 @@
-import { Courier } from '../_models/courier';
 import { Role } from '../_models/role';
 import { User } from '../_models/user';
 
 export const PAGE_NUM: number = 3;
 export const PAGE_SIZE: number = 6;
 
-export const COURIERS: Courier[] = [
+/*export const COURIERS: Courier[] = [
   {
     id: 0,
     name: 'Name1',
@@ -290,7 +289,7 @@ export const SEARCH_COURIERS: Courier[] = [
     active: true,
     enabled: true,
   },
-];
+];*/
 
 export const MANAGERS: User[] = [
   {
@@ -301,7 +300,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: false,
   },
   {
     id: 1,
@@ -311,7 +309,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 2,
@@ -321,7 +318,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 3,
@@ -331,7 +327,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 4,
@@ -341,7 +336,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 5,
@@ -351,7 +345,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 6,
@@ -361,7 +354,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 7,
@@ -371,7 +363,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 8,
@@ -381,7 +372,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 9,
@@ -391,7 +381,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 10,
@@ -401,7 +390,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 11,
@@ -411,7 +399,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 12,
@@ -421,7 +408,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 13,
@@ -431,7 +417,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 14,
@@ -441,7 +426,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 15,
@@ -451,7 +435,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.Courier,
-    enabled: true,
   },
   {
     id: 16,
@@ -461,7 +444,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 17,
@@ -471,7 +453,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 18,
@@ -481,7 +462,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 19,
@@ -491,7 +471,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
   {
     id: 20,
@@ -501,6 +480,5 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
-    enabled: true,
   },
 ];

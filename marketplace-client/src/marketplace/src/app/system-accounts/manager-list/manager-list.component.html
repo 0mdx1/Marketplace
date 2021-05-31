@@ -1,15 +1,17 @@
 <h2>Product Managers</h2>
 
 <app-search
-  (results)="managers = $event" >
+  (results)="managers = search.getUsers()"
+  #search >
 </app-search>
 
 <app-filter
-(results)="managers = $event"
-[status_list]="status_list">
+(results)="managers = filter.getUsers()"
+[status_list]="status_list"
+#filter>
 </app-filter>
 
-<app-pagination (results)="managers = $event"></app-pagination>
+<app-pagination (results)="managers = page.getUsers()" #page></app-pagination>
 
 <div *ngIf="!managers || managers.length === 0">
   <p>Nothing was found</p>

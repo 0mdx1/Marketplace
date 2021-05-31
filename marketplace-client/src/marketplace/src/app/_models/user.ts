@@ -9,5 +9,5 @@ export class User {
   dateOfBirth?: string;
   phone?: string;
   role?: Role;
-  enabled?: boolean;
+  status?: string;
 }

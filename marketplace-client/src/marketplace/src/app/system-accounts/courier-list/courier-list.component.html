@@ -8,8 +8,8 @@
 </app-filter>
 
 <app-search
-  (results)="couriers = filter.getUsers()"
-  #filter
+  (results)="couriers = search.getUsers()"
+  #search
 > </app-search>
 
 <div *ngIf="!couriers || couriers.length === 0">
@@ -24,13 +24,10 @@
     <span >{{courier.surname}} </span>
     <span >{{courier.phone}} </span>
     <span >{{courier.email}} </span>
-    <span *ngIf="!courier.enabled"> TERMINATED </span>
-    <span *ngIf="courier.enabled && courier.active"> ACTIVE </span>
-    <span *ngIf="courier.enabled && !courier.active"> INACTIVE </span>
   </div>
   </a>
 </ul>
-<app-pagination (results)="couriers = filter.getUsers()" #filter></app-pagination>
+<app-pagination (results)="couriers = page.getUsers()" #page></app-pagination>
 
 
 
