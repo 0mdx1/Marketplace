@@ -63,7 +63,6 @@ public class CourierController  {
             @Valid @RequestBody CourierUpdateDto courier,
             @PathVariable("id") int id
     ) {
-        System.out.println(courier);
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 

@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.ManagerUpdateDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
@@ -13,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 
 import java.time.LocalDate;
 
@@ -37,8 +41,18 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday) {
+    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday, String status) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
+        boolean isEnabled;
+        if(status.equals(StatusConstants.TERMINATED)){
+            isEnabled = false;
+        }
+        else if (status.equals(StatusConstants.ACTIVE)){
+            isEnabled = true;
+        }
+        else {
+            throw new InvalidStatusException(ExceptionMessage.INVALID_MANAGER_STATUS);
+        }
         User user = User.builder()
                 .name(name)
                 .surname(surname)
@@ -47,6 +61,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .birthday(birthday)
                 .lastFailedAuth(LocalDateTime.now())
                 .role(Role.ROLE_PRODUCT_MANAGER)
+                .isEnabled(isEnabled)
                 .build();
         String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
         user.setAuthLink(authlink);
@@ -56,12 +71,19 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public User getById(int id) {
+    public User getById(long id) {
         return managerRepository.getById(id);
     }
 
     @Override
     public List<User> getAll() {
         return managerRepository.getAll();
+    }
+
+    @Override
+    public User updateManager(long id, ManagerUpdateDto manager) {
+        User currentManager = this.getById(id);
+        manager.toDto(currentManager);
+        return managerRepository.update(currentManager, id);
     }
 }

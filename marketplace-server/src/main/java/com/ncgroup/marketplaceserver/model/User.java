@@ -29,6 +29,7 @@ public class User {
     private int failedAuth;
     private LocalDateTime lastFailedAuth;
     private Role role;
+    private String status;
     private String authLink;
     private LocalDateTime authLinkDate;
     //private List<String> authorities;

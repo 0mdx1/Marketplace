@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourierDto {
-    private long id;
     @NotBlank(message = "Name is mandatory")
     private String name;
     @NotBlank(message = "Surname is mandatory")
@@ -36,7 +35,6 @@ public class CourierDto {
 
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
-    private Role role;
 
 /*    public static CourierDto convertToDto(Courier courier) {
         return CourierDto.builder()
