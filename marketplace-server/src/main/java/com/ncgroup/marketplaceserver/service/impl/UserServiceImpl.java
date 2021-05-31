@@ -109,14 +109,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 	
 	@Override
-	public void setNewPassword(long id, String newPassword) {
-		//User user = validateAuthLink(link);
-		User user = findUserById(id);
+	public User setNewPassword(String link, String newPassword) {
+		User user = validateAuthLink(link);
 		validatePasswordPattern(newPassword);
-		if(user.getPassword().equals(newPassword)) {
+		if(user == null || newPassword == null) return null;
+		if(user.getPassword() != null && user.getPassword().equals(newPassword)) {
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
 		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
+		return user;
 	}
 	
 	@Override
@@ -133,6 +134,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User findUserById(long id) {
 		return userRepository.findById(id);
+	}
+
+	@Override
+	public User getUserByLink(String link){
+		return validateAuthLink(link);
 	}
 	
 	@Override

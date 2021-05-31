@@ -17,6 +17,8 @@ public interface UserService {
 
     User findUserById(long id);
 
+    User getUserByLink(String link);
+
     User addUser(String name, String surname, String email, Role role, String phone);
 
     User updateUser(long id, String newName, String newSurname, String newEmail, String newPhone, boolean isEnabled);
@@ -25,7 +27,7 @@ public interface UserService {
 
     void resetPassword(String email);
 
-    void setNewPassword(long id, String newPassword);
+    User setNewPassword(String link, String newPassword);
 
     //validation
     User validateNewEmail(String currentEmail, String newEmail);
