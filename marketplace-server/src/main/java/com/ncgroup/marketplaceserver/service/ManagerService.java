@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ManagerService {
-    UserDto save(String name, String surname, String email, String phone, LocalDate birthday);
+    UserDto save(String name, String surname, String email, String phone, LocalDate birthda, String status);
 
     User getById(long id);
 
