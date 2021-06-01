@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.model.dto;
 
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.User;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -14,16 +15,12 @@ public class CourierUpdateDto {
     private String surname;
     private String phone;
     private LocalDate birthday;
-    private boolean userStatus;
-    private boolean courierStatus;
+    private String status;
 
-    public void toDto(Courier courier) {
-        courier.getUser().setName(name);
-        courier.getUser().setSurname(surname);
-        courier.getUser().setPhone(phone);
-        courier.getUser().setBirthday(birthday);
-        courier.getUser().setEnabled(userStatus);
-        courier.setStatus(courierStatus);
-
+    public void toDto(User courier) {
+        courier.setName(name);
+        courier.setSurname(surname);
+        courier.setPhone(phone);
+        courier.setBirthday(birthday);
     }
 }
