@@ -16,5 +16,5 @@ public interface CourierService {
 
     List<User> getAll();
 
-//    Courier updateCourier(long id, CourierUpdateDto courier);
+    CourierUpdateDto updateCourier(long id, CourierUpdateDto courier);
 }

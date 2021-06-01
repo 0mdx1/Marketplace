@@ -76,20 +76,20 @@ public class CourierRepositoryImpl implements CourierRepository {
         return jdbcTemplate.query(selectAll, new CourierRowMapper());
     }
 
-//    @Override
-//    public Courier update(CourierUpdateDto courier, long id) {
-//        SqlParameterSource courierParams = new MapSqlParameterSource()
-//                .addValue("name", courier.getUser().getName())
-//                .addValue("surname", courier.getUser().getSurname())
-//                .addValue("phone", courier.getUser().getBirthday())
-//                .addValue("birthday", courier.getUser().getBirthday())
-//                .addValue("userStatus", courier.getUser().isEnabled())
-//                .addValue("courierStatus", courier.isStatus())
-//                .addValue("id", id);
-//        namedParameterJdbcTemplate.update(updateCourier, courierParams);
-//
-//        return courier;
-//    }
+    @Override
+    public CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive) {
+        SqlParameterSource courierParams = new MapSqlParameterSource()
+                .addValue("name", courier.getName())
+                .addValue("surname", courier.getSurname())
+                .addValue("phone", courier.getBirthday())
+                .addValue("birthday", courier.getBirthday())
+                .addValue("userStatus", isEnabled)
+                .addValue("courierStatus", isActive)
+                .addValue("id", id);
+        namedParameterJdbcTemplate.update(updateCourier, courierParams);
+
+        return courier;
+    }
 
 
 

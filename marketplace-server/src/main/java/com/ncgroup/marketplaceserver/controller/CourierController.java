@@ -57,13 +57,13 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.getAll(), OK);
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<Courier> updateCourier(
-//            @Valid @RequestBody CourierUpdateDto courier,
-//            @PathVariable("id") int id
-//    ) {
-//        return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<CourierUpdateDto> updateCourier(
+            @Valid @RequestBody CourierUpdateDto courier,
+            @PathVariable("id") int id
+    ) {
+        return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
+    }
 
     @GetMapping(params = {"filter", "search", "page"})
     public String findAllByFilter(

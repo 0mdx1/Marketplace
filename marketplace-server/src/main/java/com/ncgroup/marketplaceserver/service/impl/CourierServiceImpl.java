@@ -135,12 +135,25 @@ public class CourierServiceImpl implements CourierService {
         return status;
     }
 
-//    @Override
-//    public Courier updateCourier(long id, CourierUpdateDto courier) {
-//        User currentCourier = this.getById(id);
-//        courier.toDto(currentCourier);
-//        return courierRepository.update(courier, id);
-//    }
+    @Override
+    public CourierUpdateDto updateCourier(long id, CourierUpdateDto courier) {
+        boolean isActive;
+        boolean isEnabled;
+        User currentCourier = this.getById(id);
+        if(courier.getStatus().equals(StatusConstants.ACTIVE)) {
+            isEnabled = true;
+            isActive = true;
+        }else if (courier.getStatus().equals(StatusConstants.INACTIVE)){
+            isEnabled = true;
+            isActive = false;
+        }else {
+            isActive = false;
+            isEnabled = false;
+        }
+        courier.toDto(currentCourier);
+
+        return courierRepository.update(courier, id, isEnabled, isActive);
+    }
 
 
 }

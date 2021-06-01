@@ -15,7 +15,7 @@ public interface CourierRepository {
 
     List<Courier> getAll();
 
-//    Courier update(CourierUpdateDto courier, long id);
+    CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive);
 
 
 }

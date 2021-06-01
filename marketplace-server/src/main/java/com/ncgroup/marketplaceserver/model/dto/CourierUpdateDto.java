@@ -22,5 +22,6 @@ public class CourierUpdateDto {
         courier.setSurname(surname);
         courier.setPhone(phone);
         courier.setBirthday(birthday);
+        courier.setStatus(status);
     }
 }
