@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.model.mapper.CourierRowMapper;
@@ -64,7 +65,7 @@ public class CourierRepositoryImpl implements CourierRepository {
     }
 
     @Override
-    public Courier getByid(int id) {
+    public Courier getByid(long id) {
         Object[] params = {id};
         List<Courier> couriers = jdbcTemplate.query(selectById, new CourierRowMapper(), params);
         return couriers.isEmpty() ? null : couriers.get(0);
@@ -76,14 +77,14 @@ public class CourierRepositoryImpl implements CourierRepository {
     }
 
     @Override
-    public Courier update(Courier courier, int id) {
+    public CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive) {
         SqlParameterSource courierParams = new MapSqlParameterSource()
-                .addValue("name", courier.getUser().getName())
-                .addValue("surname", courier.getUser().getSurname())
-                .addValue("phone", courier.getUser().getBirthday())
-                .addValue("birthday", courier.getUser().getBirthday())
-                .addValue("userStatus", courier.getUser().isEnabled())
-                .addValue("courierStatus", courier.isStatus())
+                .addValue("name", courier.getName())
+                .addValue("surname", courier.getSurname())
+                .addValue("phone", courier.getBirthday())
+                .addValue("birthday", courier.getBirthday())
+                .addValue("userStatus", isEnabled)
+                .addValue("courierStatus", isActive)
                 .addValue("id", id);
         namedParameterJdbcTemplate.update(updateCourier, courierParams);
 

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
@@ -47,26 +48,31 @@ public class CourierController  {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Courier> findById(@PathVariable int id) {
-        Courier courier = courierService.getById(id);
-        return new ResponseEntity<>(courier, OK);
+    public ResponseEntity<User> findById(@PathVariable int id) {
+        return new ResponseEntity<>(courierService.getById(id), OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Courier>> findAll() {
-        List<Courier> couriers = courierService.getAll();
-        return new ResponseEntity<>(couriers, OK);
+    public ResponseEntity<List<User>> findAll() {
+        return new ResponseEntity<>(courierService.getAll(), OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Courier> updateCourier(
+    public ResponseEntity<CourierUpdateDto> updateCourier(
             @Valid @RequestBody CourierUpdateDto courier,
             @PathVariable("id") int id
     ) {
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
-
+    @GetMapping(params = {"filter", "search", "page"})
+    public String findAllByFilter(
+            @RequestParam("filter") final String filter,
+            @RequestParam("search") final String search,
+            @RequestParam("page") final int page
+    ) {
+        return filter + search + page;
+    }
 
 
 }

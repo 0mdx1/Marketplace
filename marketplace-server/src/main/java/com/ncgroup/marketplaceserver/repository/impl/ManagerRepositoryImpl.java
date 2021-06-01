@@ -52,7 +52,7 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         SqlParameterSource managerParams = new MapSqlParameterSource()
                 .addValue("name", manager.getName())
                 .addValue("surname", manager.getSurname())
-                .addValue("phone", manager.getBirthday())
+                .addValue("phone", manager.getPhone())
                 .addValue("birthday", manager.getBirthday())
                 .addValue("userStatus", manager.isEnabled());
         namedParameterJdbcTemplate.update(updateManager, managerParams);

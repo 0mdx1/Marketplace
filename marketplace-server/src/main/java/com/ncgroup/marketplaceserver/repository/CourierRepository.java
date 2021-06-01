@@ -11,11 +11,11 @@ import com.ncgroup.marketplaceserver.model.dto.UserDto;
 public interface CourierRepository {
     Courier save(Courier courier);
 
-    Courier getByid(int id);
+    Courier getByid(long id);
 
     List<Courier> getAll();
 
-    Courier update(Courier courier, int id);
+    CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive);
 
 
 }
