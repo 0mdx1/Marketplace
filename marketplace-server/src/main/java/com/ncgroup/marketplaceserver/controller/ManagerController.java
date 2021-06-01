@@ -26,7 +26,7 @@ public class ManagerController {
     @PostMapping()
     public ResponseEntity<UserDto> manager(@Valid @RequestBody UserDto user) {
         UserDto newUser = managerService.save(
-                user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getBirthday());
+                user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getBirthday(), user.getStatus());
         return new ResponseEntity<>(newUser, OK);
     }
 

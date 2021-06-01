@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 
 import java.time.LocalDate;
 
@@ -38,8 +41,18 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday) {
+    public UserDto save(String name, String surname, String email, String phone, LocalDate birthday, String status) {
         userService.validateNewEmail(StringUtils.EMPTY, email);
+        boolean isEnabled;
+        if(status.equals(StatusConstants.TERMINATED)){
+            isEnabled = false;
+        }
+        else if (status.equals(StatusConstants.ACTIVE)){
+            isEnabled = true;
+        }
+        else {
+            throw new InvalidStatusException(ExceptionMessage.INVALID_MANAGER_STATUS);
+        }
         User user = User.builder()
                 .name(name)
                 .surname(surname)
@@ -49,6 +62,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .isEnabled(true)
                 .lastFailedAuth(LocalDateTime.now())
                 .role(Role.ROLE_PRODUCT_MANAGER)
+                .isEnabled(isEnabled)
                 .build();
         String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
         user.setAuthLink(authlink);

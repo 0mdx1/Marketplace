@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component(
   {
-    templateUrl: 'reset-password.component.html'}
+    templateUrl: 'create-password.component.html'}
 )
-export class ResetPasswordComponent{
+export class CreatePasswordComponent{
 
   reseted = false;
 
