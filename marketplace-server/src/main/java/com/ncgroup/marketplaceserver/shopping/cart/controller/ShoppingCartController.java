@@ -1,11 +1,9 @@
 package com.ncgroup.marketplaceserver.shopping.cart.controller;
 
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.AccessDeniedException;
 import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpdateDto;
-import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.shopping.cart.service.ShoppingCartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,32 +27,32 @@ public class ShoppingCartController {
         this.service = service;
     }
 
-    @PostMapping("/item")
-    public ResponseEntity<ShoppingCartItem> createCartItem(
+    @PutMapping ("/item")
+    public ResponseEntity<ShoppingCartItem> putCartItem(
         @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
     ){
-        return new ResponseEntity<>(service.create(shoppingCartItemCreateDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.put(shoppingCartItemCreateDto), HttpStatus.OK);
     }
 
     @GetMapping("/item/{id}/")
-    public ResponseEntity<ShoppingCartItem> readCartItem(
+    public ResponseEntity<ShoppingCartItem> getCartItem(
         @PathVariable("id") long id
-    ) throws AccessDeniedException, NotFoundException {
-        return new ResponseEntity<>(service.read(id), HttpStatus.OK);
+    ) throws NotFoundException {
+        return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
 
     @PatchMapping("/item/{id}/")
     public ResponseEntity<ShoppingCartItem> updateCartItem(
         @Valid @RequestBody ShoppingCartItemUpdateDto shoppingCartItemUpdateDto,
         @PathVariable("id") long id
-    ) throws AccessDeniedException, NotFoundException {
+    ) throws NotFoundException {
         return new ResponseEntity<>(service.update(id,shoppingCartItemUpdateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/item/{id}/")
     public ResponseEntity<?> deleteCartItem(
         @PathVariable("id") long id
-    ) throws AccessDeniedException, NotFoundException {
+    ) throws NotFoundException {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -62,7 +60,7 @@ public class ShoppingCartController {
     @GetMapping("/")
     public ResponseEntity<Collection<ShoppingCartItem>> getShoppingCart(){
         return new ResponseEntity<>(
-            service.readAll(),
+            service.getAll(),
             HttpStatus.OK
         );
     }
@@ -72,6 +70,4 @@ public class ShoppingCartController {
         service.deleteAll();
         return ResponseEntity.noContent().build();
     }
-
-
 }
