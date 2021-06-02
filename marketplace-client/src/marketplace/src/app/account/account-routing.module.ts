@@ -7,14 +7,18 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {ConfirmedComponent} from './confirmed/confirmed.component';
 import {AuthGuardService} from '../_auth/auth.guard.service';
+import {RegisterStuffComponent} from './register-stuff/register-stuff.component';
+import {CreatePasswordComponent} from './create-password/create-password.component';
 
 const routes: Routes = [
   {
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'register-stuff', component: RegisterStuffComponent},
       { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: 'reset-password', component: ResetPasswordComponent},
+      { path: 'create-password', component: CreatePasswordComponent},
       { path: 'confirmed', component: ConfirmedComponent}
     ],
     path: '', component: LayoutComponent

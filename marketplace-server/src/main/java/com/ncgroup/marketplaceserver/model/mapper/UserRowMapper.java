@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.model.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -22,6 +23,7 @@ public class UserRowMapper implements RowMapper<User>{
 				.surname(rs.getString("surname"))
 				.phone(rs.getString("phone"))
 				.email(rs.getString("email"))
+				.birthday(rs.getObject("birthday", LocalDate.class))
 				.isEnabled(rs.getBoolean("is_enabled"))
 				.failedAuth(rs.getInt("failed_auth"))
 				.lastFailedAuth(rs.getObject("last_failed_auth", LocalDateTime.class))

@@ -10,6 +10,15 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {ResetPasswordComponent} from './reset-password/reset-password.component';
 import {ConfirmedComponent} from './confirmed/confirmed.component';
 import {LoginFormComponent} from './_components/login.form.component';
+import {RegisterStuffComponent} from "./register-stuff/register-stuff.component";
+import {CreatePasswordComponent} from "./create-password/create-password.component";
+import {PasswordFormComponent} from "./_components/password.form.component";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HttpConfigInterceptor} from "../_interceptor/httpconfig.interceptor";
+import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
+import {AuthGuardService} from "../_auth/auth.guard.service";
+import {RoleGuardService} from "../_auth/auth.guard.role.service";
+import {AuthService} from "../_auth/auth.service";
 
 @NgModule({
   imports: [
@@ -24,7 +33,13 @@ import {LoginFormComponent} from './_components/login.form.component';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     ConfirmedComponent,
-    LoginFormComponent
-  ]
+    LoginFormComponent,
+    RegisterStuffComponent,
+    CreatePasswordComponent,
+    PasswordFormComponent
+  ],
+  providers: [
+    PasswordFormComponent
+  ],
 })
 export class AccountModule { }

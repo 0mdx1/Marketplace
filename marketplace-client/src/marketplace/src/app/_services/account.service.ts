@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {shareReplay, tap} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {catchError, shareReplay, tap} from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
 import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
+import {StaffMember} from "../_models/staff-member";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -28,7 +29,6 @@ export class AccountService {
   }
 
   login(email: string, password: string): Observable<HttpResponse<User>> {
-    console.log('Email' + email + ' Password' + password);
     return this.http.post<User>(`${baseUrl}/login`, {email, password},
       {observe: 'response'}).pipe(
         tap(res => this.setToken(res)),
@@ -45,19 +45,26 @@ export class AccountService {
     return this.http.post(`${baseUrl}/register`, account);
   }
 
+  registerCourier(account: StaffMember): Observable<any> {
+    return this.http.post(`${baseUrl}/courier`, account);
+  }
+
+  registerProductManager(account: StaffMember): Observable<any> {
+    return this.http.post(`${baseUrl}/manager`, account);
+  }
+
   resetPassword(email: string): Observable<any> {
     return this.http.post(`${baseUrl}/reset-password`, email);
   }
 
-  setNewPassword(id: string, password: string): Observable<any> {
-    const body = new ResetPasswordDTO(id, password);
-    console.log(body);
+  setNewPassword(link: string, password: string): Observable<any> {
+    const body = new ResetPasswordDTO(link, password);
     return this.http.post(`${baseUrl}/setnewpassword`, body);
   }
 
   setToken(authResult: any): void {
-    console.log(authResult);
     const token = authResult.headers.get('Authorization');
     if (token) { localStorage.setItem('token', token); }
   }
+
 }

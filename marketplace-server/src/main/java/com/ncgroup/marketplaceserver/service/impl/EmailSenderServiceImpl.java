@@ -14,19 +14,22 @@ import com.ncgroup.marketplaceserver.service.EmailSenderService;
 
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
-	@Value("${url.confirm-account}")
-	private String confirmAccountUrl;
-	
-	@Value("${url.reset-password}")
-	private String resetPasswordUrl;
-	
-	@Autowired
+    @Value("${url.confirm-account}")
+    private String confirmAccountUrl;
+
+    @Value("${url.reset-password}")
+    private String resetPasswordUrl;
+
+    @Value("${url.create-password}")
+    private String createPasswordUrl;
+
+    @Autowired
     private JavaMailSender mailSender;
 
-	
-	@Override
-	public String sendSimpleEmailValidate(String toEmail) {
-		SimpleMailMessage message = new SimpleMailMessage();
+
+    @Override
+    public String sendSimpleEmailValidate(String toEmail) {
+        SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(MailConstants.SENDER_EMAIL);
         message.setTo(toEmail);
@@ -37,12 +40,12 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         mailSender.send(message);
         System.out.println("Mail Send...");
         return generatedToken;
-		
-	}
 
-	@Override
-	public String sendSimpleEmailPasswordRecovery(String toEmail) {
-		SimpleMailMessage message = new SimpleMailMessage();
+    }
+
+    @Override
+    public String sendSimpleEmailPasswordRecovery(String toEmail) {
+        SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(MailConstants.SENDER_EMAIL);
         message.setTo(toEmail);
@@ -53,11 +56,25 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         mailSender.send(message);
         System.out.println("Mail Send...");
         return generatedToken;
-		
-	}
-	
-	private String generateToken() {
-		return UUID.randomUUID().toString();
-	}
+
+    }
+
+    @Override
+    public String sendSimpleEmailPasswordCreation(String toEmail){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(MailConstants.SENDER_EMAIL);
+        message.setTo(toEmail);
+        String generatedToken = generateToken();
+        message.setText(String.format(MailConstants.PASSWORD_CREATION_MESSAGE + createPasswordUrl, generatedToken));
+        message.setSubject(MailConstants.PASSWORD_CREATION_SUBJECT);
+        mailSender.send(message);
+        System.out.println("Mail Send...");
+        return generatedToken;
+
+    }
+
+    private String generateToken() {
+        return UUID.randomUUID().toString();
+    }
 
 }

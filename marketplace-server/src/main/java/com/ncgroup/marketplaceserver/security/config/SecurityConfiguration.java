@@ -1,8 +1,10 @@
 package com.ncgroup.marketplaceserver.security.config;
 
+import com.ncgroup.marketplaceserver.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,13 +48,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().and()
+        http
+            .csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests()
-                .antMatchers("/api/register", "/api/login","/api/confirm-account").permitAll()
-                .antMatchers("/api/reset-password", "/api/confirm-passreset/**").permitAll()
-                .anyRequest().authenticated()
+            .and()
+            .authorizeRequests()
+                .antMatchers("/api/shopping-cart/**")
+                    .hasRole("USER")
+                .antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password", "/api/confirm-passreset/**",
+                        "/api/confirm-passcreate/**", "/api/setnewpassword/**")
+                    .permitAll()
+                .antMatchers(HttpMethod.PATCH, "/api/courier/**", "api/manager/**")
+                    .hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/manager")
+                    .hasRole("MANAGER")
+                .antMatchers(HttpMethod.GET, "/api/courier")
+                    .hasRole("COURIER")
                 .and()
+
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
                 //.authenticationEntryPoint(authenticationFilter)
                 //.and()

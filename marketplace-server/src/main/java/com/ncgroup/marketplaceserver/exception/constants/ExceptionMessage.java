@@ -10,4 +10,6 @@ public class ExceptionMessage {
 	public static final String LINK_NOT_VALID = "Link is not valid";
 	public static final String LINK_EXPIRED = "Link has already expired";
 	public static final String SAME_PASSWORD = "New password cannot be the same as an old one";
+	public static final String INVALID_COURIER_STATUS = "Status must be active, inactive or terminated";
+	public static final String INVALID_MANAGER_STATUS = "Status must be active or terminated";
 }

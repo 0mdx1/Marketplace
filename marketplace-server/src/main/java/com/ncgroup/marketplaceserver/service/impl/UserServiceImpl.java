@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,6 +67,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	}
 
+    public User getCurrentUser() {
+	    String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.findUserByEmail(email);
+    }
+
 	
 
 	@Override
@@ -103,14 +109,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 	
 	@Override
-	public void setNewPassword(long id, String newPassword) {
-		//User user = validateAuthLink(link);
-		User user = findUserById(id);
+	public User setNewPassword(String link, String newPassword) {
+		User user = validateAuthLink(link);
 		validatePasswordPattern(newPassword);
-		if(user.getPassword().equals(newPassword)) {
+		if(user == null || newPassword == null) return null;
+		if(user.getPassword() != null && user.getPassword().equals(newPassword)) {
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
 		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
+		return user;
 	}
 	
 	@Override
@@ -127,6 +134,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User findUserById(long id) {
 		return userRepository.findById(id);
+	}
+
+	@Override
+	public User getUserByLink(String link){
+		return validateAuthLink(link);
 	}
 	
 	@Override
@@ -178,7 +190,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	 * Or in case of updating info about existing user, method returns user associated with given email
 	 * If currentEmail is Empty then this method is called from register() or addUser() method
 	 * */
-	private User validateNewEmail(String currentEmail, String newEmail) {
+	public User validateNewEmail(String currentEmail, String newEmail) {
         //Check that email matches RegExpr
 		/*if(!validateEmailPattern(newEmail)) {
 			throw new PasswordNotValidException(ExceptionMessage.EMAIL_NOT_VALID);
@@ -235,12 +247,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user;
 	}
 
-	private String encodePassword(String password) {
+	public String encodePassword(String password) {
 		return passwordEncoder.encode(password);
 	}
 
 	
-	private boolean validatePasswordPattern(String password) {
+	public boolean validatePasswordPattern(String password) {
 		int count = 0;
 
 		   if( 6 <= password.length() && password.length() <= 32  )

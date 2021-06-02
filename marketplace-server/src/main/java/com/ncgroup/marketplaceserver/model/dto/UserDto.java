@@ -1,5 +1,4 @@
 package com.ncgroup.marketplaceserver.model.dto;
-
 import java.time.LocalDate;
 
 import javax.validation.constraints.Email;
@@ -34,6 +33,7 @@ public class UserDto {
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     private Role role;
+    private String status;
     
     public static UserDto convertToDto(User user) {
     	return UserDto.builder()
@@ -44,6 +44,7 @@ public class UserDto {
     			.birthday(user.getBirthday())
     			.role(user.getRole())
     			.email(user.getEmail())
+                .status(user.getStatus())
     			.build();
     }
 }
