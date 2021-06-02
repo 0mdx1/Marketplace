@@ -45,7 +45,8 @@ export class CartService {
     this.cartTotal$.next(this.cartDataServer.total);
     this.cartDataObs$.next(this.cartDataServer);
 
-    let info: CartModelPublic= JSON.parse(localStorage.getItem('cart'));
+    let info: CartModelPublic= null as any;
+    //= JSON.parse(localStorage.getItem('cart'));
     // not working localStorage
 
     if (info !== null && info !== undefined && info.prodData[0].incart !== 0) {

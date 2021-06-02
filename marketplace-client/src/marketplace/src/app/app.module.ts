@@ -13,13 +13,23 @@ import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
 import {RoleGuardService} from './_auth/auth.guard.role.service';
 import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
 import {CartComponent} from "./cart/cart.component";
-
+import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {FormsModule} from "@angular/forms";
+import {ToastrModule} from 'ngx-toastr';
+import {NgxSpinnerModule} from "ngx-spinner";
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    NgxSpinnerModule,
+    FormsModule,
+    ToastrModule.forRoot()
+
   ],
   declarations: [
     AppComponent,
