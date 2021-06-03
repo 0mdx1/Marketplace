@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from 'src/app/_models/user';
+import { StaffMember } from 'src/app/_models/staff-member';
 import { UserDto } from 'src/app/_models/UserDto';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
 
@@ -10,7 +10,7 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 })
 export class FilterComponent implements OnInit {
   activeRadioButton = '';
-  users: User[] = [];
+  users: StaffMember[] = [];
   @Input() status_list: string[] = [];
 
   //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
@@ -46,7 +46,7 @@ export class FilterComponent implements OnInit {
     return filter;
   }
 
-  getUsers(): User[] {
+  getUsers(): StaffMember[] {
     return this.users;
   }
 }

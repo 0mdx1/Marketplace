@@ -1,7 +1,6 @@
-import { Role } from './role';
+import {Role} from './role';
 
 export class User {
-  id?: number;
   name?: string;
   surname?: string;
   password?: string;
@@ -9,5 +8,4 @@ export class User {
   dateOfBirth?: string;
   phone?: string;
   role?: Role;
-  status?: string;
 }

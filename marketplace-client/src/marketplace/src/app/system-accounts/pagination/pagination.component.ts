@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from 'src/app/_models/user';
+import { StaffMember } from 'src/app/_models/staff-member';
 import { UserDto } from 'src/app/_models/UserDto';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
 
@@ -11,7 +11,7 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 export class PaginationComponent implements OnInit {
   currentPage: number = 1;
   pageNum: number = 1; //total number of pages
-  users: User[] = [];
+  users: StaffMember[] = [];
 
   //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
@@ -67,7 +67,7 @@ export class PaginationComponent implements OnInit {
       });
   }
 
-  getUsers(): User[] {
+  getUsers(): StaffMember[] {
     return this.users;
   }
 }

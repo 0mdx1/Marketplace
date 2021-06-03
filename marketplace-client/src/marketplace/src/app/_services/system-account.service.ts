@@ -1,17 +1,16 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
-import { MANAGERS, PAGE_NUM } from '../_helpers/mock-couriers';
+import { environment } from '../../environments/environment';
 import { UserDto } from '../_models/UserDto';
+
+const baseUrl = `${environment.apiUrl}`;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SystemAccountService {
-  /*filter: string = '';
-  search: string = '';
-  page: number = 1;*/
-
   pageNumSource: Subject<number> = new Subject();
   pageSource: Subject<number> = new Subject();
 
@@ -20,17 +19,38 @@ export class SystemAccountService {
   readonly INACTIVE = 'inactive';
   readonly TERMINATED = 'disabled';
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
   getUsers(filter: string, search: string, page: number): Observable<UserDto> {
-    console.log(this.addQueryParams(filter, search, page));
-
+    //console.log(this.addQueryParams(filter, search, page));
     //get method to backend api
-    let userDto = new UserDto();
-    userDto.currentPage = page;
-    userDto.pageNum = PAGE_NUM;
-    userDto.users = MANAGERS;
-    return of(userDto);
+    let url = baseUrl;
+    if (this.router.url.includes('managers')) {
+      url = url + '/manager';
+    } else {
+      url = url + '/courier';
+    }
+    return this.http.get<UserDto>(url, {
+      params: this.buildQueryParams(filter, search, page),
+    });
+  }
+
+  buildQueryParams(filter: string, search: string, page: number): HttpParams {
+    if (!this.isBlank(search)) {
+      //add search param only if it is not empty
+      return new HttpParams()
+        .set('filter', filter)
+        .set('search', search)
+        .set('page', page.toString());
+    } else {
+      return new HttpParams()
+        .set('filter', filter)
+        .set('page', page.toString());
+    }
   }
 
   addQueryParams(filter: string, search: string, page: number): string {
@@ -92,6 +112,16 @@ export class SystemAccountService {
 
   getSearch() {
     return this.activatedRoute.snapshot.queryParamMap.get('search') || '';
+  }
+
+  navigateToRegisterStaff() {
+    let currentUrl = this.router.url;
+    let subpath = this.router.url.split('/');
+    currentUrl = currentUrl.replace(
+      subpath[subpath.length - 1],
+      'register-stuff'
+    );
+    this.router.navigate([currentUrl]);
   }
 
   //checks whether string blank,null or undefined

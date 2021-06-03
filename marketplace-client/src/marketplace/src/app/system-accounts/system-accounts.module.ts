@@ -7,6 +7,9 @@ import { ManagerListComponent } from './manager-list/manager-list.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { SearchComponent } from './search/search.component';
 import { FilterComponent } from './filter/filter.component';
+import { RegisterStuffComponent } from './register-stuff/register-stuff.component';
+import { ReactiveFormsModule } from '@angular/forms';
+//import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,8 +19,14 @@ import { FilterComponent } from './filter/filter.component';
     PaginationComponent,
     SearchComponent,
     FilterComponent,
+    RegisterStuffComponent,
   ],
-  imports: [CommonModule, SystemAccountsRoutingModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SystemAccountsRoutingModule,
+    //NgbCollapseModule,
+  ],
   exports: [CourierListComponent],
 })
 export class SystemAccountsModule {}

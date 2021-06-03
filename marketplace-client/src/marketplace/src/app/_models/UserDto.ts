@@ -1,7 +1,7 @@
-import { User } from './user';
+import { StaffMember } from './staff-member';
 
 export class UserDto {
-  users: User[] = [];
+  users: StaffMember[] = [];
   pageNum: number = 1;
   currentPage: number = 1;
 }

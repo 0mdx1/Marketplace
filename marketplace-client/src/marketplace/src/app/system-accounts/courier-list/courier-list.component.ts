@@ -4,7 +4,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { User } from 'src/app/_models/user';
+import { StaffMember } from 'src/app/_models/staff-member';
 
 @Component({
   selector: 'app-courier-list',
@@ -12,7 +12,7 @@ import { User } from 'src/app/_models/user';
   styleUrls: ['./courier-list.component.css'],
 })
 export class CourierListComponent implements AfterViewInit {
-  @Input() couriers: User[] = [];
+  @Input() couriers: StaffMember[] = [];
 
   readonly status_list = ['all', 'active', 'inactive', 'terminated'];
   constructor(private cdr: ChangeDetectorRef) {}

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from 'src/app/_models/user';
+import { StaffMember } from 'src/app/_models/staff-member';
 
 @Component({
   selector: 'app-manager-list',
@@ -7,6 +7,6 @@ import { User } from 'src/app/_models/user';
   styleUrls: ['./manager-list.component.css'],
 })
 export class ManagerListComponent {
-  @Input() managers: User[] = [];
-  readonly status_list: string[] = ['all', 'active', 'inactive'];
+  @Input() managers: StaffMember[] = [];
+  readonly status_list: string[] = ['all', 'active', 'terminated'];
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, switchAll } from 'rxjs/operators';
-import { User } from 'src/app/_models/user';
+import { StaffMember } from 'src/app/_models/staff-member';
 import { UserDto } from 'src/app/_models/UserDto';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
 
@@ -19,7 +19,7 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 export class SearchComponent implements OnInit {
   //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
-  users: User[] = [];
+  users: StaffMember[] = [];
   search: string = '';
   init: boolean = true;
 
@@ -50,7 +50,11 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  getUsers(): User[] {
+  getUsers(): StaffMember[] {
     return this.users;
+  }
+
+  createUser() {
+    this.service.navigateToRegisterStaff();
   }
 }

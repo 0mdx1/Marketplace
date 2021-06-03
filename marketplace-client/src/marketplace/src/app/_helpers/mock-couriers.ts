@@ -1,4 +1,5 @@
 import { Role } from '../_models/role';
+import { StaffMember } from '../_models/staff-member';
 import { User } from '../_models/user';
 
 export const PAGE_NUM: number = 3;
@@ -291,7 +292,7 @@ export const SEARCH_COURIERS: Courier[] = [
   },
 ];*/
 
-export const MANAGERS: User[] = [
+export const MANAGERS: StaffMember[] = [
   {
     id: 0,
     name: 'Name1',
@@ -300,6 +301,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 1,
@@ -309,6 +311,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 2,
@@ -318,6 +321,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 3,
@@ -327,6 +331,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 4,
@@ -336,6 +341,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 5,
@@ -345,6 +351,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 6,
@@ -354,6 +361,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 7,
@@ -363,6 +371,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 8,
@@ -372,6 +381,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 9,
@@ -381,6 +391,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 10,
@@ -390,6 +401,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 11,
@@ -399,6 +411,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 12,
@@ -408,6 +421,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 13,
@@ -417,6 +431,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 14,
@@ -426,6 +441,7 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.ProductManager,
+    status: 'active',
   },
   {
     id: 15,
@@ -435,50 +451,6 @@ export const MANAGERS: User[] = [
     dateOfBirth: '12.05.2000',
     phone: '123456789',
     role: Role.Courier,
-  },
-  {
-    id: 16,
-    name: 'Name',
-    surname: 'Surname',
-    email: 'email',
-    dateOfBirth: '12.05.2000',
-    phone: '123456789',
-    role: Role.ProductManager,
-  },
-  {
-    id: 17,
-    name: 'Name',
-    surname: 'Surname',
-    email: 'email',
-    dateOfBirth: '12.05.2000',
-    phone: '123456789',
-    role: Role.ProductManager,
-  },
-  {
-    id: 18,
-    name: 'Name',
-    surname: 'Surname',
-    email: 'email',
-    dateOfBirth: '12.05.2000',
-    phone: '123456789',
-    role: Role.ProductManager,
-  },
-  {
-    id: 19,
-    name: 'Name',
-    surname: 'Surname',
-    email: 'email',
-    dateOfBirth: '12.05.2000',
-    phone: '123456789',
-    role: Role.ProductManager,
-  },
-  {
-    id: 20,
-    name: 'Name',
-    surname: 'Surname',
-    email: 'email',
-    dateOfBirth: '12.05.2000',
-    phone: '123456789',
-    role: Role.ProductManager,
+    status: 'active',
   },
 ];
