@@ -12,20 +12,17 @@ import {CartLocalService} from "./cart-local.service";
 })
 export class CartBrowserSyncService implements CartService, OnDestroy{
 
-  private continuePolling: boolean = true;
-
-  private subscription: Subscription = null as any;
-
   constructor(@Inject(CartLocalService)private cartService: CartService) {
-    // this.subscription = interval(5000)
-    //   .subscribe(()=>{
-    //     console.log("polling...")
-    //     this.cartService.setCartItems(this.loadCartItems())
-    //   });
+    window.addEventListener('storage',this.storageUpdateListener.bind(this));
+  }
+
+  private storageUpdateListener(): void{
+    console.log("updating");
+    this.cartService.setCartItems(this.loadCartItems());
   }
 
   ngOnDestroy(): void {
-    //this.subscription.unsubscribe();
+    window.removeEventListener('storage',this.storageUpdateListener.bind(this));
   }
 
   addProduct(product: Product): void {

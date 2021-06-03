@@ -14,7 +14,6 @@ import {CartBrowserSyncService} from "../_services/cart/cart-browser-sync.servic
 })
 export class CartComponent implements OnInit {
   cart: CartItem[] = [];
-  cartTotal: number = 0;
   constructor(@Inject(CartBrowserSyncService) public cartService: CartService){}
 
   ngOnInit() {
@@ -64,40 +63,31 @@ export class CartComponent implements OnInit {
     }
     this.cartService.setCartItems(cartItems);
     this.cart = this.cartService.getCartItems();
-    this.recalculateTotalPrice();
   }
 
   increaseQuantityByOne(cartItem: CartItem): void {
     this.cartService.addProduct(cartItem.product);
-    this.recalculateTotalPrice();
   }
 
   decreaseQuantityByOne(cartItem: CartItem): void {
     this.cartService.removeProduct(cartItem.product);
-    this.recalculateTotalPrice();
   }
 
   setQuantity(cartItem: CartItem, quantity: number): void {
     this.cartService.setProductQuantity(cartItem.product, quantity);
-    this.recalculateTotalPrice();
   }
 
   delete(cartItem: CartItem): void {
     this.cartService.deleteProduct(cartItem.product);
-    this.recalculateTotalPrice();
-  }
-
-  recalculateTotalPrice() {
-    this.cartTotal = this.getTotalPrice();
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
     return cartItem.quantity*cartItem.product.price
   }
 
-  getTotalPrice(): number {
+  getTotalPrice(cartItems: CartItem[]): number {
     let totalPrice: number = 0;
-    this.cart.forEach( cartItem => {
+    cartItems.forEach( cartItem => {
       totalPrice+=this.getSubtotalPrice(cartItem);
     })
     return totalPrice;
