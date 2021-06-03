@@ -21,6 +21,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ProductCatalogModule } from './product-catalog/product-catalog.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -28,6 +29,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     HttpClientModule,
     AppRoutingModule,
     SystemAccountsModule,
+    ProductCatalogModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -37,7 +39,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ToastrModule.forRoot(),
   ],
   declarations: [AppComponent, HomeComponent, CartComponent],
-  declarations: [AppComponent, HomeComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
