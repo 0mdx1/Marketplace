@@ -1,6 +1,7 @@
-import {Role} from './role';
+import { Role } from './role';
 
 export interface StaffMember {
+  id: number;
   name: string;
   surname: string;
   email: string;
