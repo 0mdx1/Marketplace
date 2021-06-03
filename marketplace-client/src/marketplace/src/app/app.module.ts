@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
-<<<<<<< HEAD
 import { SystemAccountsModule } from './system-accounts/system-accounts.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -14,46 +13,30 @@ import { AuthGuardService } from './_auth/auth.guard.service';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { HttpConfigInterceptor } from './_interceptor/httpconfig.interceptor';
-
-=======
-import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
-import {AuthInterceptor} from './_auth/auth.interceptor';
-import {AuthService} from './_auth/auth.service';
-import {AuthGuardService} from './_auth/auth.guard.service';
-import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
-import {RoleGuardService} from './_auth/auth.guard.role.service';
-import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
-import {CartComponent} from "./cart/cart.component";
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {FormsModule} from "@angular/forms";
-import {ToastrModule} from 'ngx-toastr';
-import {NgxSpinnerModule} from "ngx-spinner";
->>>>>>> cart
+import { CartComponent } from './cart/cart.component';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-<<<<<<< HEAD
     SystemAccountsModule,
-=======
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     NoopAnimationsModule,
     NgxSpinnerModule,
     FormsModule,
-    ToastrModule.forRoot()
-
+    ToastrModule.forRoot(),
   ],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CartComponent,
->>>>>>> cart
-  ],
+  declarations: [AppComponent, HomeComponent, CartComponent],
   declarations: [AppComponent, HomeComponent],
   providers: [
     {
