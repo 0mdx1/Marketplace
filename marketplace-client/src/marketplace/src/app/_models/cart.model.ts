@@ -1,9 +1,9 @@
-import {ProductModelServer} from "./product.model";
+import {Product} from "./product.model";
 
 export interface CartModelServer {
   total: number;
   data: [{
-    product: ProductModelServer,
+    product: Product,
     numInCart: number
   }];
 }
