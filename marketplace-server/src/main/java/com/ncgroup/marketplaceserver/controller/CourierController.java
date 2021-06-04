@@ -1,9 +1,13 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import static org.springframework.http.HttpStatus.OK;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
@@ -11,6 +15,8 @@ import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -66,12 +72,13 @@ public class CourierController  {
     }
 
     @GetMapping(params = {"filter", "search", "page"})
-    public String findAllByFilter(
+    public ResponseEntity<Map<String, Object>> findByNameSurname(
             @RequestParam("filter") final String filter,
             @RequestParam("search") final String search,
-            @RequestParam("page") final int page
+            @RequestParam(value = "page", defaultValue = "0") final int page
     ) {
-        return filter + search + page;
+
+        return new ResponseEntity<>(courierService.getByNameSurname(filter, search, page), OK);
     }
 
 

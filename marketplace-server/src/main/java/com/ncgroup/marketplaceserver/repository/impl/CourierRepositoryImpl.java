@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
@@ -46,6 +47,9 @@ public class CourierRepositoryImpl implements CourierRepository {
 
     @Value("${courier.update}")
     private String updateCourier;
+
+    @Value("${courier.find-by-name-surname}")
+    private String filterNameQuery;
 
 
     @Autowired
@@ -91,6 +95,13 @@ public class CourierRepositoryImpl implements CourierRepository {
         return courier;
     }
 
+    @Override
+    public List<Courier> getByNameSurname(String search) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search);
+
+        return namedParameterJdbcTemplate.query(filterNameQuery, params, new CourierRowMapper());
+    }
 
 
 }

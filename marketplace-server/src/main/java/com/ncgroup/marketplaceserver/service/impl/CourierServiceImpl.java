@@ -2,8 +2,10 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
@@ -16,6 +18,9 @@ import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -154,6 +159,32 @@ public class CourierServiceImpl implements CourierService {
         courier.toDto(currentCourier);
 
         return courierRepository.update(courier, id, isEnabled, isActive);
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<Courier> couriers = courierRepository.getByNameSurname(search);
+        List<User> couriersUsers = new LinkedList<>();
+        int countPage = 0;
+
+        for(int i = 0; i < couriers.size(); i++) {
+            User userTemp = couriers.get(i).getUser();
+            userTemp.setStatus(calculateStatus(userTemp.isEnabled(), couriers.get(i).isStatus()));
+
+            if(userTemp.getStatus().equals(filter)) {
+                couriersUsers.add(userTemp);
+                countPage++;
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        int allPages = countPage % 10 == 0 ? countPage / 10 : countPage / 10 + 1;
+
+        result.put("couriers", couriersUsers.stream().skip(page*10).limit(10));
+        result.put("currentPage", page);
+        result.put("allPages", allPages);
+
+        return result;
     }
 
 

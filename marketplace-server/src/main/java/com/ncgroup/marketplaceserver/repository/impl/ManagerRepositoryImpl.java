@@ -29,6 +29,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     @Value("${manager.update}")
     private String updateManager;
 
+    @Value("${manager.find-by-name-surname}")
+    private String filterNameQuery;
+
     @Autowired
     ManagerRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -57,6 +60,14 @@ public class ManagerRepositoryImpl implements ManagerRepository {
                 .addValue("userStatus", manager.isEnabled());
         namedParameterJdbcTemplate.update(updateManager, managerParams);
         return manager;
+    }
+
+    @Override
+    public List<User> getByNameSurname(String search) {
+        SqlParameterSource managerParams = new MapSqlParameterSource()
+                .addValue("search", search);
+
+        return null;
     }
 
 

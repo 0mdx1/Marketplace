@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
 import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
@@ -13,12 +14,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,5 +104,36 @@ public class ManagerServiceImpl implements ManagerService {
         User currentManager = this.getById(id);
         manager.toDto(currentManager);
         return managerRepository.update(currentManager, id);
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<User> managers = managerRepository.getByNameSurname(search);
+        List<User> managersFiltred = new LinkedList<>();
+        int countPage = 0;
+
+        for(int i = 0; i < managers.size(); i++) {
+            User userTemp = managers.get(i);
+
+            if (userTemp.isEnabled()) {
+                userTemp.setStatus("active");
+            } else {
+                userTemp.setStatus("terminated");
+            }
+
+            if(userTemp.getStatus().equals(filter)) {
+                managersFiltred.add(userTemp);
+                countPage++;
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        int allPages = countPage % 10 == 0 ? countPage / 10 : countPage / 10 + 1;
+
+        result.put("couriers", managersFiltred.stream().skip(page*10).limit(10));
+        result.put("currentPage", page);
+        result.put("allPages", allPages);
+
+        return result;
     }
 }
