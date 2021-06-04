@@ -9,7 +9,7 @@ import { SearchComponent } from './search/search.component';
 import { FilterComponent } from './filter/filter.component';
 import { RegisterStuffComponent } from './register-stuff/register-stuff.component';
 import { ReactiveFormsModule } from '@angular/forms';
-//import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     SystemAccountsRoutingModule,
-    //NgbCollapseModule,
+    NgbCollapseModule,
   ],
   exports: [CourierListComponent],
 })
