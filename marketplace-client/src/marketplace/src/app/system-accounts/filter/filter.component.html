@@ -1,0 +1,23 @@
+<!--<div>
+  <label for="isActive">Filter by:</label>
+
+  <div *ngFor="let status of status_list">
+    <input id={{status}} type="radio" value={{status}} name="isActive" [checked]="activeRadioButton == status"
+      (change)="onChange($event)">
+    <label for={{status}}>{{status}}</label>
+  </div>
+</div> -->
+
+
+      <div class="">
+        <label>Status:</label>
+
+        <div *ngFor="let status of status_list" class="px-2">
+          <div class="custom-control custom-radio">
+            <input type="radio" class="custom-control-input" value={{status}} name="isActive" id={{status}}
+              [checked]="activeRadioButton == status" (change)="onChange($event)">
+            <label class="custom-control-label" for={{status}}>{{status}}</label>
+          </div>
+        </div>
+      </div>
+

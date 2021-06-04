@@ -1,0 +1,99 @@
+<div class="container h-100">
+  <div class="row h-100">
+    <div class="my-auto col-sm-10 offset-sm-1 col-m-8 offset-m-2 col-lg-6 offset-lg-3 mt-5">
+      <div class="card m-3">
+        <h1 class="text-center card-header">Register stuff member</h1>
+        <div *ngIf="!registered" class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>First Name*</label>
+                <input type="text" formControlName="name" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
+                <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.name.errors.required">First Name is required</div>
+                </div>
+              </div>
+              <div class="form-group col-6">
+                <label>Last Name*</label>
+                <input type="text" formControlName="surname" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
+                <div *ngIf="submitted && getForm.surname.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-12">
+                <label>Email*</label>
+                <input type="text" formControlName="email" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
+                <div *ngIf="submitted && getForm.email.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.email.errors.required">Email is required</div>
+                  <div *ngIf="getForm.email.errors.email">Email must be a valid email address</div>
+                  <div *ngIf="getForm.email.hasError('EmailAlreadyExists')">This email is already registered</div>
+                </div>
+              </div>
+              <div class="form-group col-6">
+                <label>Phone</label>
+                <input type="text" formControlName="phone" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
+                <div *ngIf="submitted && getForm.phone.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.phone.errors">Phone must be in format +380</div>
+                </div>
+              </div>
+              <div class="form-group col-6">
+                <label>Date of birth</label>
+                <input type="date" formControlName="birthday" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }" />
+                <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.birthday.hasError('InvalidDate')">Invalid date</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Role</label>
+                <select class="form-control" formControlName="role">
+                  <option *ngFor="let role of roles" [ngValue]="role">
+                    {{role}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-6">
+                <label>Status</label>
+                <select class="form-control" formControlName="status">
+                  <ng-container *ngIf="courierRoleSelected()">
+                    <option *ngFor="let status of courierStatuses" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                  <ng-container *ngIf="pmRoleSelected()">
+                    <option *ngFor="let status of pmStatuses" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <button [disabled]="loading" type="submit" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Register
+              </button>
+              <a routerLink="/" href="" class="btn btn-link">Cancel</a>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="registered" class="card-body">
+          <h3 class="text-center">
+            Account was created successfully
+          </h3>
+          <div class="form-group col text-right">
+            <a routerLink="/" class="btn btn-link">Back to staff table</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
