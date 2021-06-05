@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -48,6 +49,16 @@ public class ManagerController {
             @PathVariable("id") long id
     ) {
         return new ResponseEntity<>(managerService.updateManager(id, manager), OK);
+    }
+
+    @GetMapping(params = {"filter", "search", "page"})
+    public ResponseEntity<Map<String, Object>> findByNameSurname(
+            @RequestParam(value = "filter", defaultValue = "active") final String filter,
+            @RequestParam("search") final String search,
+            @RequestParam(value = "page", defaultValue = "0") final int page
+    ) {
+
+        return new ResponseEntity<>(managerService.getByNameSurname(filter, search, page), OK);
     }
 
 }

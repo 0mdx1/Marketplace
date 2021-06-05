@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.repository;
 
 import java.util.List;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
@@ -16,6 +17,8 @@ public interface CourierRepository {
     List<Courier> getAll();
 
     CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive);
+
+    List<Courier> getByNameSurname(String search);
 
 
 }
