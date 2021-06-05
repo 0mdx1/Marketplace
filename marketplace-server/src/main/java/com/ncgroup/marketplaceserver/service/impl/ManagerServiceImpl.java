@@ -23,6 +23,7 @@ import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -109,28 +110,25 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Map<String, Object> getByNameSurname(String filter, String search, int page) {
         List<User> managers = managerRepository.getByNameSurname(search);
-        List<User> managersFiltred = new LinkedList<>();
-        int countPage = 0;
 
-        for(int i = 0; i < managers.size(); i++) {
-            User userTemp = managers.get(i);
-
-            if (userTemp.isEnabled()) {
-                userTemp.setStatus("active");
-            } else {
-                userTemp.setStatus("terminated");
-            }
-
-            if(userTemp.getStatus().equals(filter)) {
-                managersFiltred.add(userTemp);
-                countPage++;
-            }
+        if(filter.equals("active")) {
+            managers = managers.stream()
+                    .filter(user -> user.isEnabled())
+                    .collect(Collectors.toList());
+        }else if(filter.equals("inactive")) {
+            managers = managers.stream()
+                    .filter(user -> !user.isEnabled())
+                    .collect(Collectors.toList());
+        }else {
+            log.info("Incorrect filter");
         }
+        int pageNum = managers.size();
+
+        int allPages = pageNum % 10 == 0 ? pageNum / 10 : pageNum / 10 + 1;
 
         Map<String, Object> result = new HashMap<>();
-        int allPages = countPage % 10 == 0 ? countPage / 10 : countPage / 10 + 1;
 
-        result.put("couriers", managersFiltred.stream().skip(page*10).limit(10));
+        result.put("managers", managers.stream().skip(page * 10).limit(10));
         result.put("currentPage", page);
         result.put("allPages", allPages);
 

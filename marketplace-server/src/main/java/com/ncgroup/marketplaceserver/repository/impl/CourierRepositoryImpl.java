@@ -99,7 +99,6 @@ public class CourierRepositoryImpl implements CourierRepository {
     public List<Courier> getByNameSurname(String search) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search);
-
         return namedParameterJdbcTemplate.query(filterNameQuery, params, new CourierRowMapper());
     }
 

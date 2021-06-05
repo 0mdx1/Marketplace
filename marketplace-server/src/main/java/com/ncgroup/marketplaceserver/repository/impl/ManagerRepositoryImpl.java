@@ -64,10 +64,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
 
     @Override
     public List<User> getByNameSurname(String search) {
-        SqlParameterSource managerParams = new MapSqlParameterSource()
+        SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search);
-
-        return null;
+        return namedParameterJdbcTemplate.query(filterNameQuery, params, new UserRowMapper());
     }
 
 

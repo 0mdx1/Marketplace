@@ -73,7 +73,7 @@ public class CourierController  {
 
     @GetMapping(params = {"filter", "search", "page"})
     public ResponseEntity<Map<String, Object>> findByNameSurname(
-            @RequestParam("filter") final String filter,
+            @RequestParam(value = "filter", defaultValue = "active") final String filter,
             @RequestParam("search") final String search,
             @RequestParam(value = "page", defaultValue = "0") final int page
     ) {
