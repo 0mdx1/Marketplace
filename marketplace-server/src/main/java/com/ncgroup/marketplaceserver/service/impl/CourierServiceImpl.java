@@ -161,33 +161,52 @@ public class CourierServiceImpl implements CourierService {
         return courierRepository.update(courier, id, isEnabled, isActive);
     }
 
-    @Override
-    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
-        List<Courier> couriers = courierRepository.getByNameSurname(search);
-        List<User> filtredCouriers = new LinkedList<>();
-
-        int countPage = 0;
-
+    private List<User> calculateStatusForCollection(List<Courier> couriers) {
+        List<User> userList = new LinkedList<>();
         for(int i = 0; i < couriers.size(); i++) {
             User userTemp = couriers.get(i).getUser();
             userTemp.setStatus(calculateStatus(userTemp.isEnabled(), couriers.get(i).isStatus()));
-            if(!"all".equals(filter)) {
-                if(userTemp.getStatus().equals(filter)) {
-                    filtredCouriers.add(userTemp);
-                    countPage++;
-                }
-            }else {
-                filtredCouriers.add(userTemp);
-                countPage++;
-            }
+            userList.add(userTemp);
+        }
+        return userList;
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<User> couriers = null;
+        int allPages = 0;
+
+        switch(filter) {
+            case "active":
+                List<Courier> couriersActive = courierRepository.getByNameSurname(search, true, true, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersActive);
+                allPages = courierRepository.getNumberOfRows(search, true, true);
+                break;
+            case "inactive":
+                List<Courier> couriersInactive= courierRepository.getByNameSurname(search, true, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersInactive);
+                allPages = courierRepository.getNumberOfRows(search, true, false);
+                break;
+            case "terminated":
+                List<Courier> couriersTerminated = courierRepository.getByNameSurname(search, false, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersTerminated);
+                allPages = courierRepository.getNumberOfRows(search, false, false);
+                break;
+            case "all":
+                List<Courier> couriersAll = courierRepository.getByNameSurnameAll(search, page);
+                couriers = calculateStatusForCollection(couriersAll);
+                allPages = courierRepository.getNumberOfRowsAll(search);
+                break;
+            default:
+                //TODO create exception for this error
+                log.info("Incorrect filer. Must be active, inactive, terminated or all");
         }
 
         Map<String, Object> result = new HashMap<>();
-        int allPages = countPage % 10 == 0 ? countPage / 10 : countPage / 10 + 1;
 
-        result.put("couriers", filtredCouriers.stream().skip((page-1)*10).limit(10));
+        result.put("users", couriers);
         result.put("currentPage", page);
-        result.put("allPages", allPages);
+        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
 
         return result;
     }
