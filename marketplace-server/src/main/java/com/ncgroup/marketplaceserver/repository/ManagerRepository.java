@@ -7,8 +7,6 @@ import java.util.List;
 public interface ManagerRepository {
     User getById(long id);
 
-    List<User> getAll();
-
     User update(User manager, long id);
 
     List<User> getByNameSurname(String search, boolean status, int page);

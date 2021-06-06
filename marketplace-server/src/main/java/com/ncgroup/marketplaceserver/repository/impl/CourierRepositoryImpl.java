@@ -42,10 +42,6 @@ public class CourierRepositoryImpl implements CourierRepository {
     @Value("${courier.find-by-id}")
     private String selectById;
 
-    @Value("${courier.find-all}")
-    private String selectAll;
-
-
     @Value("${courier.update}")
     private String updateCourier;
 
@@ -83,11 +79,6 @@ public class CourierRepositoryImpl implements CourierRepository {
         Object[] params = {id};
         List<Courier> couriers = jdbcTemplate.query(selectById, new CourierRowMapper(), params);
         return couriers.isEmpty() ? null : couriers.get(0);
-    }
-
-    @Override
-    public List<Courier> getAll() {
-        return jdbcTemplate.query(selectAll, new CourierRowMapper());
     }
 
     @Override

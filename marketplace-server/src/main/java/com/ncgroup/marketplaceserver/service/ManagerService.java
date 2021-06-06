@@ -12,8 +12,6 @@ public interface ManagerService {
 
     User getById(long id);
 
-    List<User> getAll();
-
     User updateManager(long id, User manger);
 
     Map<String, Object> getByNameSurname(String filter, String search, int page);

@@ -23,9 +23,6 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     @Value("${manager.find-by-id}")
     private String selectById;
 
-    @Value("${manager.find-all}")
-    private String selectAll;
-
     @Value("${manager.update}")
     private String updateManager;
 
@@ -52,11 +49,6 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         Object[] params = {id};
         List<User> managers = jdbcTemplate.query(selectById, new UserRowMapper(), params);
         return managers.isEmpty() ? null : managers.get(0);
-    }
-
-    @Override
-    public List<User> getAll() {
-        return jdbcTemplate.query(selectAll, new UserRowMapper());
     }
 
     @Override

@@ -16,8 +16,6 @@ public interface CourierService {
 
     User getById(long id);
 
-    List<User> getAll();
-
     CourierUpdateDto updateCourier(long id, CourierUpdateDto courier);
 
     Map<String, Object> getByNameSurname(String filter, String search, int page);
