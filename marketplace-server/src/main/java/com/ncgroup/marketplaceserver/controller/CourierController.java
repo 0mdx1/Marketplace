@@ -58,10 +58,6 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.getById(id), OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> findAll() {
-        return new ResponseEntity<>(courierService.getAll(), OK);
-    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<CourierUpdateDto> updateCourier(
@@ -71,11 +67,11 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
-    @GetMapping(params = {"filter", "search", "page"})
+    @GetMapping()
     public ResponseEntity<Map<String, Object>> findByNameSurname(
-            @RequestParam(value = "filter", defaultValue = "active") final String filter,
-            @RequestParam("search") final String search,
-            @RequestParam(value = "page", defaultValue = "0") final int page
+            @RequestParam(value = "filter", required = false, defaultValue = "all") final String filter,
+            @RequestParam(value = "search", required = false) final String search,
+            @RequestParam(value = "page", required = false, defaultValue = "1") final int page
     ) {
 
         return new ResponseEntity<>(courierService.getByNameSurname(filter, search, page), OK);

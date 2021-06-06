@@ -128,7 +128,7 @@ public class ManagerServiceImpl implements ManagerService {
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("managers", managers.stream().skip(page * 10).limit(10));
+        result.put("managers", managers.stream().skip((page-1) * 10).limit(10));
         result.put("currentPage", page);
         result.put("allPages", allPages);
 
