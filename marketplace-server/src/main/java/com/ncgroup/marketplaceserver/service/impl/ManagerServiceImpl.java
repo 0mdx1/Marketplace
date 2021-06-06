@@ -109,28 +109,32 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public Map<String, Object> getByNameSurname(String filter, String search, int page) {
-        List<User> managers = managerRepository.getByNameSurname(search);
+        List<User> managers = null;
+        int allPages = 0;
 
-        if(filter.equals("active")) {
-            managers = managers.stream()
-                    .filter(user -> user.isEnabled())
-                    .collect(Collectors.toList());
-        }else if(filter.equals("inactive")) {
-            managers = managers.stream()
-                    .filter(user -> !user.isEnabled())
-                    .collect(Collectors.toList());
-        }else {
-            log.info("Incorrect filter");
+        switch(filter) {
+            case "active":
+                managers = managerRepository.getByNameSurname(search, true, (page-1)*10);
+                allPages = managerRepository.getNumberOfRows(search, true);
+                break;
+            case "terminated":
+                managers = managerRepository.getByNameSurname(search, false, (page-1)*10);
+                allPages = managerRepository.getNumberOfRows(search, false);
+                break;
+            case "all":
+                managers = managerRepository.getByNameSurnameAll(search, (page-1)*10);
+                allPages = managerRepository.getNumberOfRowsAll(search);
+                break;
+            default:
+                //TODO create exception for this error
+                log.info("Incorrect filer. Must be active, terminated or all");
         }
-        int pageNum = managers.size();
-
-        int allPages = pageNum % 10 == 0 ? pageNum / 10 : pageNum / 10 + 1;
 
         Map<String, Object> result = new HashMap<>();
 
-        result.put("managers", managers.stream().skip((page-1) * 10).limit(10));
+        result.put("users", managers);
         result.put("currentPage", page);
-        result.put("allPages", allPages);
+        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
 
         return result;
     }

@@ -32,6 +32,15 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     @Value("${manager.find-by-name-surname}")
     private String filterNameQuery;
 
+    @Value("${manager.number-of-rows}")
+    private String selectNumberOfRows;
+
+    @Value("${manager.number-of-rows-all}")
+    private String selectNumberOfRowsAll;
+
+    @Value("${manager.find-by-name-surname-all}")
+    private String filterNameQueryAll;
+
     @Autowired
     ManagerRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -63,10 +72,35 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     }
 
     @Override
-    public List<User> getByNameSurname(String search) {
+    public List<User> getByNameSurname(String search, boolean status, int page) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("status", status)
+                .addValue("page", page);
+        return namedParameterJdbcTemplate.query(filterNameQuery, params, new UserRowMapper());
+    }
+
+    @Override
+    public int getNumberOfRows(String search, boolean status) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("status", status);
+        return namedParameterJdbcTemplate.queryForObject(selectNumberOfRows, params, Integer.class);
+    }
+
+    @Override
+    public int getNumberOfRowsAll(String search) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search);
-        return namedParameterJdbcTemplate.query(filterNameQuery, params, new UserRowMapper());
+        return namedParameterJdbcTemplate.queryForObject(selectNumberOfRowsAll, params, Integer.class);
+    }
+
+    @Override
+    public List<User> getByNameSurnameAll(String search, int page) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("page", page);
+        return namedParameterJdbcTemplate.query(filterNameQueryAll, params, new UserRowMapper());
     }
 
 
