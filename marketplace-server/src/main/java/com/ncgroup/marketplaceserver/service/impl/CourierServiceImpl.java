@@ -114,19 +114,6 @@ public class CourierServiceImpl implements CourierService {
         return courierUser;
     }
 
-    @Override
-    public List<User> getAll() {
-        List<Courier> couriers = courierRepository.getAll();
-        List<User> couriersUsers = new LinkedList<>();
-        for(Courier courier : couriers) {
-            User userTemp = courier.getUser();
-            userTemp.setStatus(calculateStatus(userTemp.isEnabled(), courier.isStatus()));
-            couriersUsers.add(userTemp);
-        }
-
-        return couriersUsers;
-    }
-
     private String calculateStatus(boolean isEnabled, boolean isStatus) {
         String status = StatusConstants.TERMINATED;
         if(isEnabled) {

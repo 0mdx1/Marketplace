@@ -88,19 +88,6 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public List<User> getAll() {
-        List<User> managers = managerRepository.getAll();
-        for(User manager : managers) {
-            if(manager.isEnabled()) {
-                manager.setStatus(StatusConstants.ACTIVE);
-            }else {
-                manager.setStatus(StatusConstants.TERMINATED);
-            }
-        }
-        return managers;
-    }
-
-    @Override
     public User updateManager(long id, User manager) {
         User currentManager = this.getById(id);
         manager.toDto(currentManager);
