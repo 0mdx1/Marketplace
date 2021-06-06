@@ -25,8 +25,13 @@ export class SystemAccountService {
     private http: HttpClient
   ) {}
 
-  getUsers(filter: string, search: string, page: number): Observable<UserDto> {
+  private getUsers(
+    filter: string,
+    search: string,
+    page: number
+  ): Observable<UserDto> {
     //console.log(this.addQueryParams(filter, search, page));
+    this.addQueryParams(filter, search, page);
     //get method to backend api
     let url = baseUrl;
     if (this.router.url.includes('managers')) {
@@ -39,7 +44,11 @@ export class SystemAccountService {
     });
   }
 
-  buildQueryParams(filter: string, search: string, page: number): HttpParams {
+  private buildQueryParams(
+    filter: string,
+    search: string,
+    page: number
+  ): HttpParams {
     if (!this.isBlank(search)) {
       //add search param only if it is not empty
       return new HttpParams()
@@ -53,7 +62,7 @@ export class SystemAccountService {
     }
   }
 
-  addQueryParams(filter: string, search: string, page: number): string {
+  private addQueryParams(filter: string, search: string, page: number): string {
     //filter = this.validateFilter(filter);
     let currentUrl = this.router.url.split('?')[0];
     if (!this.isBlank(search)) {
@@ -83,19 +92,25 @@ export class SystemAccountService {
   }
 
   getFilteredUsers(filter: string, init: boolean): Observable<UserDto> {
+    let users;
     if (init) {
-      return this.getUsers(filter, this.getSearch(), this.getCurrentPage());
+      users = this.getUsers(filter, this.getSearch(), this.getCurrentPage());
     } else {
-      return this.getUsers(filter, this.getSearch(), 1);
+      users = this.getUsers(filter, this.getSearch(), 1);
     }
+    this.notifyPageComponent(users);
+    return users;
   }
 
   getSearchedUsers(search: string, init: boolean): Observable<UserDto> {
+    let users;
     if (init) {
-      return this.getUsers(this.getFilter(), search, this.getCurrentPage());
+      users = this.getUsers(this.getFilter(), search, this.getCurrentPage());
     } else {
-      return this.getUsers(this.getFilter(), search, 1);
+      users = this.getUsers(this.getFilter(), search, 1);
     }
+    this.notifyPageComponent(users);
+    return users;
   }
 
   getPagedUsers(page: number): Observable<UserDto> {
@@ -124,8 +139,23 @@ export class SystemAccountService {
     this.router.navigate([currentUrl]);
   }
 
+  getStatusList(): string[] {
+    let statusList = [this.ALL, this.ACTIVE, this.TERMINATED];
+    if (this.router.url.includes('couriers')) {
+      statusList.push(this.INACTIVE);
+    }
+    return statusList;
+  }
+
   //checks whether string blank,null or undefined
-  isBlank(str: string): boolean {
+  private isBlank(str: string): boolean {
     return !str || /^\s*$/.test(str);
+  }
+
+  private notifyPageComponent(users: Observable<UserDto>) {
+    users.subscribe((res) => {
+      this.pageNumSource.next(res.pageNum);
+      this.pageSource.next(res.currentPage);
+    });
   }
 }

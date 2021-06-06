@@ -22,8 +22,6 @@ const routes: Routes = [
     canActivate: [RoleGuardService],
     data: { roles: [Role.Admin] },
   },
-  // { path: 'admin', loadChildren: acanActivate: [AuthGuardService], data: { roles: [Role.Admin] } },
-
   // otherwise redirect to home
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];

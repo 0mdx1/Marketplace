@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CourierListComponent } from './courier-list/courier-list.component';
-import { ManagerListComponent } from './manager-list/manager-list.component';
 import { SystemAccountComponent } from './system-account/system-account.component';
 import { RegisterStuffComponent } from './register-stuff/register-stuff.component';
+import { AccountListComponent } from './account-list/account-list.component';
 
 const routes: Routes = [
   {
     path: '',
     component: SystemAccountComponent,
     children: [
-      { path: 'couriers', component: CourierListComponent },
-      { path: 'managers', component: ManagerListComponent },
+      { path: 'couriers', component: AccountListComponent },
+      { path: 'managers', component: AccountListComponent },
       { path: 'register-stuff', component: RegisterStuffComponent },
       /*{
         path: '',
