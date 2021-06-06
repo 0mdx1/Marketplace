@@ -1,8 +1,11 @@
 package com.ncgroup.marketplaceserver.security.config;
 
-import com.ncgroup.marketplaceserver.model.Role;
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.RegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,9 +58,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
             .authorizeRequests()
                 .antMatchers("/api/shopping-cart/**")
                     .hasRole("USER")
-                .antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password", "/api/confirm-passreset/**",
-                        "/api/confirm-passcreate/**", "/api/setnewpassword/**")
-                    .permitAll()
                 .antMatchers(HttpMethod.PATCH, "/api/courier/**", "api/manager/**")
                     .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/manager")
@@ -74,13 +74,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     
     @Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/swagger/swagger-ui/**", "/v3/api-docs/**");
+		web.ignoring()
+			.antMatchers("/swagger/swagger-ui/**", "/v3/api-docs/**")
+			.antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password")
+			.antMatchers("/api/confirm-passreset/**", "/api/confirm-passcreate/**", "/api/setnewpassword/**");
 	}
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+    
+    @Bean
+    public RegistrationBean jwtAuthFilterRegister(AuthorizationFilter filter) {
+        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>(filter);
+        registrationBean.setEnabled(false);
+        return registrationBean;
     }
     
     @Override
