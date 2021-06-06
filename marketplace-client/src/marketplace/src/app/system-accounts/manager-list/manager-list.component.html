@@ -1,0 +1,81 @@
+<!--<h2>Product Managers</h2>
+
+<app-search
+  (results)="managers = search.getUsers()"
+  #search >
+</app-search>
+
+<app-filter
+(results)="managers = filter.getUsers()"
+[status_list]="status_list"
+#filter>
+</app-filter>
+
+<app-pagination (results)="managers = page.getUsers()" #page></app-pagination>
+
+<div *ngIf="!managers || managers.length === 0">
+  <p>Nothing was found</p>
+</div>
+<ul *ngIf="managers.length > 0">
+  <a *ngFor="let manager of managers"
+  routerLink="/managers/{{manager.id}}">
+  <div>
+    <span >{{manager.id}} </span>
+    <span >{{manager.name}} </span>
+    <span >{{manager.surname}} </span>
+    <span >{{manager.phone}} </span>
+    <span >{{manager.email}} </span>
+  </div>
+  </a>
+</ul> -->
+
+<div class="container">
+  <div class="row flex-lg-nowrap">
+    <div class="col">
+      <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <app-search (results)="managers = search.getUsers()" #search> </app-search>
+              <app-filter (results)="managers = filter.getUsers()" [status_list]="status_list" #filter>
+              </app-filter>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div class="e-panel card">
+            <div class="card-body">
+              <div class="e-table">
+                <div class="table-responsive table-lg mt-3">
+
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+
+                        <th class="max-width">Name</th>
+                        <th class="max-width">Surname</th>
+                        <th class="max-width">Phone</th>
+                        <th class="max-width">Email</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let manager of managers" routerLink="[/managers, manager.id]">
+                        <td class="text-nowrap align-middle">{{manager.name}}</td>
+                        <td class="text-nowrap align-middle">{{manager.surname}}</td>
+                        <td class="text-nowrap align-middle">{{manager.phone}}</td>
+                        <td class="text-nowrap align-middle">{{manager.email}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <app-pagination (results)="managers = page.getUsers()" #page></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

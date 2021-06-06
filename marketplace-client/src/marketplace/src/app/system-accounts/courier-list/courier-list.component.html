@@ -1,0 +1,70 @@
+<!--<div *ngIf="!couriers || couriers.length === 0">
+  <p>Nothing was found</p>
+</div>
+<ul *ngIf="couriers.length > 0">
+  <a *ngFor="let courier of couriers"
+  routerLink="/couriers/{{courier.id}}">
+  <div>
+    <span >{{courier.id}} </span>
+    <span >{{courier.name}} </span>
+    <span >{{courier.surname}} </span>
+    <span >{{courier.phone}} </span>
+    <span >{{courier.email}} </span>
+  </div>
+  </a>
+</ul> -->
+
+<div class="container">
+  <div class="row flex-lg-nowrap">
+    <div class="col">
+      <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <app-search (results)="couriers = search.getUsers()" #search> </app-search>
+              <app-filter (results)="couriers = filter.getUsers()" [status_list]="status_list" #filter>
+              </app-filter>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div class="e-panel card">
+            <div class="card-body">
+              <div class="e-table">
+                <div class="table-responsive table-lg mt-3">
+
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+
+                        <th class="max-width">Name</th>
+                        <th class="max-width">Surname</th>
+                        <th class="max-width">Phone</th>
+                        <th class="max-width">Email</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let courier of couriers" routerLink="[/couriers, courier.id]">
+                          <td class="text-nowrap align-middle">{{courier.name}}</td>
+                          <td class="text-nowrap align-middle">{{courier.surname}}</td>
+                          <td class="text-nowrap align-middle">{{courier.phone}}</td>
+                          <td class="text-nowrap align-middle">{{courier.email}}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <app-pagination (results)="couriers = page.getUsers()" #page></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

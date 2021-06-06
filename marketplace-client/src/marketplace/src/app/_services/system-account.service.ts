@@ -30,7 +30,6 @@ export class SystemAccountService {
     search: string,
     page: number
   ): Observable<UserDto> {
-    //console.log(this.addQueryParams(filter, search, page));
     this.addQueryParams(filter, search, page);
     //get method to backend api
     let url = baseUrl;
