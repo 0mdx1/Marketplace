@@ -22,11 +22,7 @@
     "@angular/platform-browser-dynamic": "~11.2.12",
     "@angular/router": "~11.2.12",
     "@auth0/angular-jwt": "latest",
-<<<<<<< HEAD
     "@ng-bootstrap/ng-bootstrap": "^9.1.1",
-=======
-    "@ng-bootstrap/ng-bootstrap": "9.1.2",
->>>>>>> KIEV21DEVS-81-Couriers-List-Frontend
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "ngx-spinner": "^11.0.1",

@@ -1,1 +1,46 @@
-<p>product-list works!</p>
+<div class="container">
+  <div class="row flex-lg-nowrap">
+    <div class="col">
+      <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-3 mb-3">
+          <div class="card">
+            <div class="card-body">
+               <app-search (results)="products = search.getProducts()" #search> </app-search>
+              <app-filter (results)="products = filter.getProducts()"  #filter>
+              </app-filter>
+            </div>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <div class="e-panel card">
+            <div class="card-body">
+              <div class="e-table">
+                <div class="table-responsive table-lg mt-3">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+
+                        <th class="max-width">Name</th>
+                        <th class="max-width">Price</th>
+                        <th class="max-width">Quantity</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let product of products" routerLink="[/product, product.id]" class="pointer">
+                        <td class="text-nowrap align-middle">{{product.goodName}}</td>
+                        <td class="text-nowrap align-middle">{{product.price}}</td>
+                        <td class="text-nowrap align-middle">{{product.quantity}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <app-pagination (results)="products = page.getProducts()" #page></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
