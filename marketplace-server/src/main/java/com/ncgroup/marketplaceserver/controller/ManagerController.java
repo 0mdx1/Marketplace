@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -36,18 +37,22 @@ public class ManagerController {
         return new ResponseEntity<>(manager, OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> findAll() {
-        List<User> managers = managerService.getAll();
-        return new ResponseEntity<>(managers, OK);
-    }
-
     @PatchMapping("/{id}")
     public ResponseEntity<User> updateManager(
             @Valid @RequestBody User manager,
             @PathVariable("id") long id
     ) {
         return new ResponseEntity<>(managerService.updateManager(id, manager), OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Map<String, Object>> findByNameSurname(
+            @RequestParam(value = "filter", required = false, defaultValue = "all") final String filter,
+            @RequestParam(value = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(value = "page", required = false, defaultValue = "1") final int page
+    ) {
+
+        return new ResponseEntity<>(managerService.getByNameSurname(filter, search, page), OK);
     }
 
 }

@@ -2,8 +2,10 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
@@ -16,6 +18,9 @@ import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -109,19 +114,6 @@ public class CourierServiceImpl implements CourierService {
         return courierUser;
     }
 
-    @Override
-    public List<User> getAll() {
-        List<Courier> couriers = courierRepository.getAll();
-        List<User> couriersUsers = new LinkedList<>();
-        for(Courier courier : couriers) {
-            User userTemp = courier.getUser();
-            userTemp.setStatus(calculateStatus(userTemp.isEnabled(), courier.isStatus()));
-            couriersUsers.add(userTemp);
-        }
-
-        return couriersUsers;
-    }
-
     private String calculateStatus(boolean isEnabled, boolean isStatus) {
         String status = StatusConstants.TERMINATED;
         if(isEnabled) {
@@ -154,6 +146,56 @@ public class CourierServiceImpl implements CourierService {
         courier.toDto(currentCourier);
 
         return courierRepository.update(courier, id, isEnabled, isActive);
+    }
+
+    private List<User> calculateStatusForCollection(List<Courier> couriers) {
+        List<User> userList = new LinkedList<>();
+        for(int i = 0; i < couriers.size(); i++) {
+            User userTemp = couriers.get(i).getUser();
+            userTemp.setStatus(calculateStatus(userTemp.isEnabled(), couriers.get(i).isStatus()));
+            userList.add(userTemp);
+        }
+        return userList;
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<User> couriers = null;
+        int allPages = 0;
+
+        switch(filter) {
+            case "active":
+                List<Courier> couriersActive = courierRepository.getByNameSurname(search, true, true, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersActive);
+                allPages = courierRepository.getNumberOfRows(search, true, true);
+                break;
+            case "inactive":
+                List<Courier> couriersInactive= courierRepository.getByNameSurname(search, true, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersInactive);
+                allPages = courierRepository.getNumberOfRows(search, true, false);
+                break;
+            case "terminated":
+                List<Courier> couriersTerminated = courierRepository.getByNameSurname(search, false, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersTerminated);
+                allPages = courierRepository.getNumberOfRows(search, false, false);
+                break;
+            case "all":
+                List<Courier> couriersAll = courierRepository.getByNameSurnameAll(search, page);
+                couriers = calculateStatusForCollection(couriersAll);
+                allPages = courierRepository.getNumberOfRowsAll(search);
+                break;
+            default:
+                //TODO create exception for this error
+                log.info("Incorrect filer. Must be active, inactive, terminated or all");
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("users", couriers);
+        result.put("currentPage", page);
+        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
+
+        return result;
     }
 
 

@@ -2,7 +2,9 @@ package com.ncgroup.marketplaceserver.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
@@ -14,7 +16,7 @@ public interface CourierService {
 
     User getById(long id);
 
-    List<User> getAll();
-
     CourierUpdateDto updateCourier(long id, CourierUpdateDto courier);
+
+    Map<String, Object> getByNameSurname(String filter, String search, int page);
 }

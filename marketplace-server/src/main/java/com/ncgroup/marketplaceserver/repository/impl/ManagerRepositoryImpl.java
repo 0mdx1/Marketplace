@@ -23,11 +23,20 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     @Value("${manager.find-by-id}")
     private String selectById;
 
-    @Value("${manager.find-all}")
-    private String selectAll;
-
     @Value("${manager.update}")
     private String updateManager;
+
+    @Value("${manager.find-by-name-surname}")
+    private String filterNameQuery;
+
+    @Value("${manager.number-of-rows}")
+    private String selectNumberOfRows;
+
+    @Value("${manager.number-of-rows-all}")
+    private String selectNumberOfRowsAll;
+
+    @Value("${manager.find-by-name-surname-all}")
+    private String filterNameQueryAll;
 
     @Autowired
     ManagerRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -43,11 +52,6 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     }
 
     @Override
-    public List<User> getAll() {
-        return jdbcTemplate.query(selectAll, new UserRowMapper());
-    }
-
-    @Override
     public User update(User manager, long id) {
         SqlParameterSource managerParams = new MapSqlParameterSource()
                 .addValue("name", manager.getName())
@@ -57,6 +61,38 @@ public class ManagerRepositoryImpl implements ManagerRepository {
                 .addValue("userStatus", manager.isEnabled());
         namedParameterJdbcTemplate.update(updateManager, managerParams);
         return manager;
+    }
+
+    @Override
+    public List<User> getByNameSurname(String search, boolean status, int page) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("status", status)
+                .addValue("page", page);
+        return namedParameterJdbcTemplate.query(filterNameQuery, params, new UserRowMapper());
+    }
+
+    @Override
+    public int getNumberOfRows(String search, boolean status) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("status", status);
+        return namedParameterJdbcTemplate.queryForObject(selectNumberOfRows, params, Integer.class);
+    }
+
+    @Override
+    public int getNumberOfRowsAll(String search) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search);
+        return namedParameterJdbcTemplate.queryForObject(selectNumberOfRowsAll, params, Integer.class);
+    }
+
+    @Override
+    public List<User> getByNameSurnameAll(String search, int page) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("search", search)
+                .addValue("page", page);
+        return namedParameterJdbcTemplate.query(filterNameQueryAll, params, new UserRowMapper());
     }
 
 
