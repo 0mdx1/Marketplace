@@ -12,8 +12,6 @@ export class PaginationComponent implements OnInit {
   currentPage: number = 1;
   pageNum: number = 1; //total number of pages
   users: StaffMember[] = [];
-
-  //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service: SystemAccountService) {}
@@ -55,7 +53,7 @@ export class PaginationComponent implements OnInit {
     this.getPage();
   }
 
-  getPage(): void {
+  private getPage(): void {
     this.service
       .getPagedUsers(this.currentPage)
       .subscribe((results: UserDto) => {

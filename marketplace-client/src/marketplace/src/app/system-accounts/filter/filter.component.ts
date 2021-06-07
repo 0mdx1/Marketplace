@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StaffMember } from 'src/app/_models/staff-member';
 import { UserDto } from 'src/app/_models/UserDto';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
@@ -8,12 +16,11 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnDestroy {
   activeRadioButton = '';
   users: StaffMember[] = [];
-  @Input() status_list: string[] = [];
-
-  //@Output() results: EventEmitter<User[]> = new EventEmitter<User[]>();
+  subscription!: Subscription;
+  @Input() statusList: string[] = [];
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service: SystemAccountService) {}
@@ -23,14 +30,16 @@ export class FilterComponent implements OnInit {
     this.filterStatus(this.activeRadioButton, true);
   }
 
-  filterStatus(status: string, init: boolean) {
-    this.service
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  private filterStatus(status: string, init: boolean) {
+    this.subscription = this.service
       .getFilteredUsers(status, init)
       .subscribe((results: UserDto) => {
         this.users = results.users;
         this.results.emit();
-        this.service.pageNumSource.next(results.pageNum);
-        this.service.pageSource.next(results.currentPage);
       });
   }
 
@@ -38,10 +47,10 @@ export class FilterComponent implements OnInit {
     this.filterStatus(e.target.value, false);
   }
 
-  getFilter(): string {
+  private getFilter(): string {
     let filter = this.service.getFilter();
-    if (!this.status_list.includes(filter)) {
-      filter = this.status_list[0];
+    if (!this.statusList.includes(filter)) {
+      filter = this.statusList[0];
     }
     return filter;
   }
