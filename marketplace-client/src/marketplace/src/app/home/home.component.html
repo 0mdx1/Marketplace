@@ -5,7 +5,58 @@
     <title>HOME</title>
 </head>
 <body>
-<h2>Hello, everyone!</h2>
-<button (click)="logout()" class="btn btn-link">Logout</button>
+  <div class="top-header">
+    <div class="top-header-content">
+      <a>LOG IN</a>
+      <span>&#183;</span>
+      <a>CREATE ACCOUNT</a>
+    </div>
+  </div>
+  <div class="bot-header">
+    <div class="bot-header-content">
+      <div class="pos-f-t min-menu">
+        <nav class="navbar navbar-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#minMenu">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+        <div class="collapse" id="minMenu">
+            <a>HOME</a>
+            <a>SHOP</a>
+            <a>SALES</a>
+            <a>DELIVERY</a>
+        </div>
+      </div>
+      <div class="max-menu">
+      <a>HOME</a>
+      <a>SHOP</a>
+      <a><img src="assets/logo.svg"></a>
+      <a>SALES</a>
+      <a>DELIVERY</a>
+      </div>
+      <div class="header-right">
+        <div class="compare-icon">
+          <i class="fas fa-balance-scale"></i>
+          <div class="number-circle">15</div>
+        </div>
+        <button class="cart-btn">CART</button>
+      </div>
+    </div>
+  </div>
+  <div class="home-content">
+    <div class="home-image">
+      <img src="assets/happy.svg" display="inline-block" class="col-5">
+      <div class="home-text col-5 text-center">
+        <h2 class="home-text-title">ONLINE SHOPPING</h2>
+        <p display="inline-block">Experience the best online shopping practice with our marketplace</p>
+        <button class="store-btn btn btn-link">STORE</button>
+      </div>
+    </div>
+
+    <i width="100px" class="fas fa-balance-scale-right"></i>
+  </div>
+  <div class="footer">
+    <p>&#169;NetCracker 2021</p>
+  </div>
 </body>
 </html>
