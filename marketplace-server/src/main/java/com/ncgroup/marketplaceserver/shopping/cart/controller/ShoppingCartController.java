@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.shopping.cart.controller;
 import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
+import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemReadDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpdateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.service.ShoppingCartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,26 +28,29 @@ public class ShoppingCartController {
         this.service = service;
     }
 
-    @PutMapping ("/item")
-    public ResponseEntity<ShoppingCartItem> putCartItem(
+    @PutMapping ("/")
+    public ResponseEntity<?> putCartItem(
         @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
     ){
-        return new ResponseEntity<>(service.put(shoppingCartItemCreateDto), HttpStatus.OK);
+        service.put(shoppingCartItemCreateDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 
     @GetMapping("/item/{id}/")
-    public ResponseEntity<ShoppingCartItem> getCartItem(
+    public ResponseEntity<ShoppingCartItemReadDto> getCartItem(
         @PathVariable("id") long id
     ) throws NotFoundException {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
 
     @PatchMapping("/item/{id}/")
-    public ResponseEntity<ShoppingCartItem> updateCartItem(
+    public ResponseEntity<?> updateCartItem(
         @Valid @RequestBody ShoppingCartItemUpdateDto shoppingCartItemUpdateDto,
         @PathVariable("id") long id
     ) throws NotFoundException {
-        return new ResponseEntity<>(service.update(id,shoppingCartItemUpdateDto), HttpStatus.OK);
+        service.update(id,shoppingCartItemUpdateDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/item/{id}/")
@@ -58,7 +62,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Collection<ShoppingCartItem>> getShoppingCart(){
+    public ResponseEntity<Collection<ShoppingCartItemReadDto>> getShoppingCart(){
         return new ResponseEntity<>(
             service.getAll(),
             HttpStatus.OK

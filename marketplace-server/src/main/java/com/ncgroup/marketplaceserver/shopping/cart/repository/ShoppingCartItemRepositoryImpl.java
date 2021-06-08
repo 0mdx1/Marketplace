@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.repository;
 
+import com.ncgroup.marketplaceserver.model.Goods;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import com.ncgroup.marketplaceserver.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
             res = namedParameterJdbcTemplate.queryForObject(
                     selectByIdsQuery,
                     shoppingCartItemParams,
-                    ShoppingCartItemRepositoryImpl::mapRow
+                    ShoppingCartItemRepositoryImpl::mapRowToShoppingCartItem
             );
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -59,7 +60,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
         return namedParameterJdbcTemplate.query(
                 selectByUserIdQuery,
                 shoppingCartItemParams,
-                ShoppingCartItemRepositoryImpl::mapRow
+                ShoppingCartItemRepositoryImpl::mapRowToShoppingCartItem
         );
     }
 
@@ -67,34 +68,26 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
     private String insertQuery;
 
     @Override
-    public ShoppingCartItem save(ShoppingCartItem shoppingCartItem) {
+    public void save(ShoppingCartItem shoppingCartItem) {
         SqlParameterSource shoppingCartItemParams = new MapSqlParameterSource()
                 .addValue("userId", shoppingCartItem.getUserId())
-                .addValue("goodsId", shoppingCartItem.getGoodsId())
+                .addValue("goodsId", shoppingCartItem.getGoods().getId())
                 .addValue("quantity", shoppingCartItem.getQuantity())
                 .addValue("addingTime", shoppingCartItem.getAddingTime());
-        return namedParameterJdbcTemplate.queryForObject(
-                insertQuery,
-                shoppingCartItemParams,
-                ShoppingCartItemRepositoryImpl::mapRow
-        );
+        namedParameterJdbcTemplate.update(insertQuery,shoppingCartItemParams);
     }
 
     @Value("${shopping-cat-item.update-by-ids-query}")
     private String updateByIdsQuery;
 
     @Override
-    public ShoppingCartItem update(ShoppingCartItem shoppingCartItem) {
+    public void update(ShoppingCartItem shoppingCartItem) {
         SqlParameterSource shoppingCartItemParams = new MapSqlParameterSource()
                 .addValue("userId", shoppingCartItem.getUserId())
-                .addValue("goodsId", shoppingCartItem.getGoodsId())
+                .addValue("goodsId", shoppingCartItem.getGoods().getId())
                 .addValue("quantity", shoppingCartItem.getQuantity())
                 .addValue("addingTime", shoppingCartItem.getAddingTime());
-        return namedParameterJdbcTemplate.queryForObject(
-                updateByIdsQuery,
-                shoppingCartItemParams,
-                ShoppingCartItemRepositoryImpl::mapRow
-        );
+        namedParameterJdbcTemplate.update(updateByIdsQuery,shoppingCartItemParams);
     }
 
     @Value("${shopping-cat-item.delete-by-ids-query}")
@@ -104,7 +97,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
     public void remove(ShoppingCartItem shoppingCartItem) {
         SqlParameterSource shoppingCartItemParams = new MapSqlParameterSource()
                 .addValue("userId", shoppingCartItem.getUserId())
-                .addValue("goodsId", shoppingCartItem.getGoodsId());
+                .addValue("goodsId", shoppingCartItem.getGoods().getId());
         namedParameterJdbcTemplate.update(
                 deleteByIdsQuery,
                 shoppingCartItemParams
@@ -124,11 +117,24 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
         );
     }
 
-    private static ShoppingCartItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+    private static Goods mapRowToGoods(ResultSet rs, int rowNum) throws SQLException {
+        return Goods
+                .builder()
+                .id(rs.getLong("goods_id"))
+                .name(rs.getString("name"))
+                .category(rs.getString("category"))
+                .description(rs.getString("description"))
+                .image(rs.getString("image"))
+                .price(rs.getInt("price"))
+                .quantity(rs.getInt("goods_quantity"))
+                .build();
+    }
+
+    private static ShoppingCartItem mapRowToShoppingCartItem(ResultSet rs, int rowNum) throws SQLException {
         return ShoppingCartItem
                 .builder()
                 .userId(rs.getLong("user_id"))
-                .goodsId(rs.getLong("goods_id"))
+                .goods(mapRowToGoods(rs,rowNum))
                 .quantity(rs.getInt("quantity"))
                 .addingTime(rs.getLong("adding_time"))
                 .build();

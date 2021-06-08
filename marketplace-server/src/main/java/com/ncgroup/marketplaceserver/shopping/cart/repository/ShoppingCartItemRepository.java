@@ -12,9 +12,9 @@ public interface ShoppingCartItemRepository {
 
     public List<ShoppingCartItem> findAllByUser(User user);
 
-    public ShoppingCartItem save(ShoppingCartItem shoppingCartItem);
+    public void save(ShoppingCartItem shoppingCartItem);
 
-    public ShoppingCartItem update(ShoppingCartItem shoppingCartItem);
+    public void update(ShoppingCartItem shoppingCartItem);
 
     public void remove(ShoppingCartItem shoppingCartItem);
 
