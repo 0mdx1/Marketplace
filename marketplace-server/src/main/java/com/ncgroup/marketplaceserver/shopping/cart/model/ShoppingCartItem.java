@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.model;
 
+import com.ncgroup.marketplaceserver.model.Goods;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ShoppingCartItem {
     private long userId;
-    private long goodsId;
+    private Goods goods;
     private int quantity;
     private long addingTime;
 }

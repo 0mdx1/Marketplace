@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
+import com.ncgroup.marketplaceserver.model.Goods;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.Data;
 
@@ -15,7 +16,13 @@ public class ShoppingCartItemCreateDto {
     private long addingTime;
 
     public void mapTo(ShoppingCartItem shoppingCartItem){
-        shoppingCartItem.setGoodsId(goodsId);
+        Goods goods = shoppingCartItem.getGoods();
+        if(goods==null){
+            goods = Goods.builder().id(goodsId).build();
+            shoppingCartItem.setGoods(goods);
+        }else{
+            goods.setId(goodsId);
+        }
         shoppingCartItem.setQuantity(quantity);
         shoppingCartItem.setAddingTime(addingTime);
     }

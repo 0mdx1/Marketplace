@@ -9,19 +9,4 @@ import { ProductService } from 'src/app/_services/product.service';
 })
 export class ProductListComponent {
   @Input() products: Product[] = [];
-  /*constructor(
-    private cdr: ChangeDetectorRef
-  ) {}*/
-
-  /*ngAfterViewInit() {
-    this.cdr.detectChanges();
-  }*/
-
-  /*getStatusList() {
-    return this.service.getStatusList();
-  }
-
-  createUser() {
-    this.service.navigateToRegisterStaff();
-  }*/
 }

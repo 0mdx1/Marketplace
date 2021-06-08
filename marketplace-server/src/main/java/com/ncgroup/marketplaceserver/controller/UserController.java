@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.OK;
 import java.io.IOException;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -73,7 +74,7 @@ public class UserController  {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto user) {
+    public ResponseEntity<UserDto> register(@Valid @RequestBody UserDto user) throws MessagingException {
         UserDto newUser = userService.register(
         		user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getPhone());
         return new ResponseEntity<>(newUser, OK);
@@ -93,7 +94,11 @@ public class UserController  {
     
     @PostMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@RequestBody JsonNode email) {
-        userService.resetPassword(email.get("email").asText());
+        try {
+            userService.resetPassword(email.get("email").asText());
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         return ResponseEntity.noContent().build();
     }
     

@@ -1,9 +1,13 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import static org.springframework.http.HttpStatus.OK;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
@@ -11,6 +15,8 @@ import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +58,6 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.getById(id), OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> findAll() {
-        return new ResponseEntity<>(courierService.getAll(), OK);
-    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<CourierUpdateDto> updateCourier(
@@ -65,13 +67,14 @@ public class CourierController  {
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
-    @GetMapping(params = {"filter", "search", "page"})
-    public String findAllByFilter(
-            @RequestParam("filter") final String filter,
-            @RequestParam("search") final String search,
-            @RequestParam("page") final int page
+    @GetMapping()
+    public ResponseEntity<Map<String, Object>> findByNameSurname(
+            @RequestParam(value = "filter", required = false, defaultValue = "all") final String filter,
+            @RequestParam(value = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(value = "page", required = false, defaultValue = "1") final int page
     ) {
-        return filter + search + page;
+
+        return new ResponseEntity<>(courierService.getByNameSurname(filter, search, page), OK);
     }
 
 

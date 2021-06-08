@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ncgroup.marketplaceserver.constants.EmailParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +32,8 @@ import com.ncgroup.marketplaceserver.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @Service
 @Qualifier("userDetailsService")
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private EmailSenderService emailSenderService;
 	
 	private final int LINK_VALID_TIME_HOUR = 24;
+
 
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, 
@@ -75,7 +79,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	
 
 	@Override
-	public UserDto register(String name, String surname, String email, String password, String phone) {
+	public UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException {
 		validateNewEmail(StringUtils.EMPTY, email);
 		//validate password
 		if(!validatePasswordPattern(password)) {
@@ -91,7 +95,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				.lastFailedAuth(LocalDateTime.now())
 				.role(Role.ROLE_USER)
 				.build();
-        
+
+
+
 		String authlink = emailSenderService.sendSimpleEmailValidate(email);
 		user.setAuthLink(authlink);		
 		user = userRepository.save(user);
@@ -99,7 +105,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("New user registered");
         return UserDto.convertToDto(user);
 	}
-	
+
 	//Set user.enabled true after user has clicked the correct link sent by email
 	@Override
 	public UserDto enableUser(String link) {
@@ -173,7 +179,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void resetPassword(String email) throws EmailNotFoundException {
+	public void resetPassword(String email) throws EmailNotFoundException, MessagingException {
 		User user = userRepository.findByEmail(email);
 		if(user == null) {
 			log.info(email);			
@@ -270,6 +276,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		   return count >= 3;
 	}
-	
-	
+
 }

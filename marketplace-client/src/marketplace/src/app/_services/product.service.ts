@@ -35,7 +35,6 @@ export class ProductService {
   }
 
   getProduct(): Observable<Product> {
-    console.log('Url to get product ' + this.router.url);
     return this.http.get<Product>(baseUrl + '/products/' + this.getProductId());
   }
 
