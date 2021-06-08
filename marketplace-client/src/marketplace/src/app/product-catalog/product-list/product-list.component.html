@@ -1,4 +1,7 @@
 <div class="container">
+
+
+
   <div class="row flex-lg-nowrap">
     <div class="col">
       <div class="row flex-lg-nowrap">
@@ -6,8 +9,8 @@
           <div class="card">
             <div class="card-body">
                <app-search (results)="products = search.getProducts()" #search> </app-search>
-              <app-filter (results)="products = filter.getProducts()"  #filter>
-              </app-filter>
+               <app-filter (results)="products = filter.getProducts()"  #filter>
+               </app-filter>
             </div>
           </div>
         </div>
@@ -20,6 +23,7 @@
                     <thead>
                       <tr>
 
+                        <th class="max-width">Id</th>
                         <th class="max-width">Name</th>
                         <th class="max-width">Price</th>
                         <th class="max-width">Quantity</th>
@@ -27,18 +31,37 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let product of products" routerLink="[/product, product.id]" class="pointer">
-                        <td class="text-nowrap align-middle">{{product.goodName}}</td>
-                        <td class="text-nowrap align-middle">{{product.price}}</td>
-                        <td class="text-nowrap align-middle">{{product.quantity}}</td>
+                      <tr *ngFor="let product of products" routerLink="{{product.id}}" class="pointer">
+                        <td class="text-nowrap align-middle" >{{product.id}}</td>
+                        <td class="text-nowrap align-middle" >{{product.goodName}}</td>
+                        <td class="text-nowrap align-middle" >{{product.price}}</td>
+                        <td class="text-nowrap align-middle" >{{product.quantity}}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
+                <!--<div class="card-deck ">
+                  <div *ngFor="let product of products" routerLink="{{product.id}}" class="card">
+                    <img class="card-img-top" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">{{product.goodName}}</h5>
+                      <p class="card-text">Price: {{product.price}} per {{product.unit}}</p>
+                      <p class="card-text">
+                        <small *ngIf="product.inStock" class="text-muted">In stock</small>
+                        <small *ngIf="!product.inStock" class="text-muted">Out of stock</small>
+                      </p>
+                    </div>
+                  </div>
+                </div> -->
                 <app-pagination (results)="products = page.getProducts()" #page></app-pagination>
               </div>
             </div>
           </div>
+
+
+
+
         </div>
       </div>
     </div>

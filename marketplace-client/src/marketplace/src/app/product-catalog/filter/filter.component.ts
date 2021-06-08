@@ -34,16 +34,18 @@ export class FilterComponent implements OnInit {
 
   private filter(filter: Filter, init: boolean) {
     this.subscription = this.service
-      .getFilteredProducts(this.filters, init)
+      .getFilteredProducts(filter, init)
       .subscribe((results: ProductDto) => {
         this.products = results.result_set;
         this.results.emit();
       });
   }
 
-  /*onChange(e: any) {
-    this.filterStatus(e.target.value, false);
-  }*/
+  chooseCategory(category: string) {
+    console.log(category);
+    this.filters.category = category;
+    this.filter(this.filters, false);
+  }
 
   private getFilter(): Filter {
     return this.service.getFilter();
@@ -54,10 +56,50 @@ export class FilterComponent implements OnInit {
       .getCategories()
       .subscribe((results: string[]) => {
         this.categories = results;
+        this.categories.unshift('all');
       });
+  }
+
+  onSortChange(e: any) {
+    console.log(e.target.value);
+    if (e.target.value === 'nameAsc') {
+      this.filters.sort = 'name';
+      this.filters.direction = 'ASC';
+    } else if (e.target.value === 'nameDesc') {
+      this.filters.sort = 'name';
+      this.filters.direction = 'DESC';
+    } else if (e.target.value === 'priceAsc') {
+      this.filters.sort = 'price';
+      this.filters.direction = 'ASC';
+    } else {
+      this.filters.sort = 'price';
+      this.filters.direction = 'DESC';
+    }
+    console.log(this.filters.sort + ' ' + this.filters.direction);
+    this.filter(this.filters, false);
   }
 
   getProducts(): Product[] {
     return this.products;
+  }
+
+  isPriceAsc(): boolean {
+    console.log(this.filters.sort + ' ' + this.filters.direction);
+    return this.filters.sort === 'price' && this.filters.direction === 'ASC';
+  }
+
+  isPriceDesc(): boolean {
+    console.log(this.filters.sort + ' ' + this.filters.direction);
+    return this.filters.sort === 'price' && this.filters.direction === 'DESC';
+  }
+
+  isNameAsc(): boolean {
+    console.log(this.filters.sort + " " + this.filters.direction);
+    return this.filters.sort === 'name' && this.filters.direction === 'ASC';
+  }
+
+  isNameDesc(): boolean {
+    console.log(this.filters.sort + " " + this.filters.direction);
+    return this.filters.sort === 'name' && this.filters.direction === 'DESC';
   }
 }

@@ -35,9 +35,13 @@ export class ProductService {
   }
 
   getProduct(): Observable<Product> {
-    return this.http.get<Product>(
-      baseUrl + '/products' + this.activatedRoute.snapshot.paramMap.get('id')
-    );
+    console.log('Url to get product ' + this.router.url);
+    return this.http.get<Product>(baseUrl + '/products/' + this.getProductId());
+  }
+
+  private getProductId(): string {
+    let urlPart = this.router.url.split('/');
+    return urlPart[urlPart.length - 1];
   }
 
   private buildQueryParams(
