@@ -11,4 +11,4 @@ public class MailConstants {
 	public static final String ACTIVATE_ACCOUNT_SUBJECT = "Activate account";
 	public static final String PASSWORD_RECOVERY_SUBJECT = "Password recovery";
 	public static final String PASSWORD_CREATION_SUBJECT = "Password creation";
-} 
+}

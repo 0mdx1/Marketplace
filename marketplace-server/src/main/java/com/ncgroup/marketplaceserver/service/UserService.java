@@ -6,8 +6,10 @@ import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
+import javax.mail.MessagingException;
+
 public interface UserService {
-    UserDto register(String name, String surname, String email, String password, String phone);
+    UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException;
 
     UserDto enableUser(String link);
 
@@ -25,7 +27,7 @@ public interface UserService {
 
     void deleteUser(long id);
 
-    void resetPassword(String email);
+    void resetPassword(String email) throws MessagingException;
 
     User setNewPassword(String link, String newPassword);
 
