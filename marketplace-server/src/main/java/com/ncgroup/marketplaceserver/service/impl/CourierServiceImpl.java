@@ -2,7 +2,10 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
@@ -15,6 +18,9 @@ import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -95,27 +101,101 @@ public class CourierServiceImpl implements CourierService {
         courier.getUser().setAuthLink(authlink);
         User user = userRepository.save(courier.getUser());
         courier.getUser().setId(user.getId());
-        System.out.println(courier);
         courier = courierRepository.save(courier);
         log.info("New courier registered");
         return UserDto.convertToDto(courier.getUser());
     }
 
     @Override
-    public Courier getById(int id) {
-        return courierRepository.getByid(id);
+    public User getById(long id) {
+        Courier courier = courierRepository.getByid(id);
+        User courierUser = courier.getUser();
+        courierUser.setStatus(calculateStatus(courierUser.isEnabled(), courier.isStatus()));
+        return courierUser;
+    }
+
+    private String calculateStatus(boolean isEnabled, boolean isStatus) {
+        String status = StatusConstants.TERMINATED;
+        if(isEnabled) {
+            if(isStatus) {
+                status = StatusConstants.ACTIVE;
+                return status;
+            }else {
+                status = StatusConstants.INACTIVE;
+                return status;
+            }
+        }
+        return status;
     }
 
     @Override
-    public List<Courier> getAll() {
-        return courierRepository.getAll();
-    }
-
-    @Override
-    public Courier updateCourier(int id, CourierUpdateDto courier) {
-        Courier currentCourier = this.getById(id);
+    public CourierUpdateDto updateCourier(long id, CourierUpdateDto courier) {
+        boolean isActive;
+        boolean isEnabled;
+        User currentCourier = this.getById(id);
+        if(courier.getStatus().equals(StatusConstants.ACTIVE)) {
+            isEnabled = true;
+            isActive = true;
+        }else if (courier.getStatus().equals(StatusConstants.INACTIVE)){
+            isEnabled = true;
+            isActive = false;
+        }else {
+            isActive = false;
+            isEnabled = false;
+        }
         courier.toDto(currentCourier);
-        return courierRepository.update(currentCourier, id);
+
+        return courierRepository.update(courier, id, isEnabled, isActive);
+    }
+
+    private List<User> calculateStatusForCollection(List<Courier> couriers) {
+        List<User> userList = new LinkedList<>();
+        for(int i = 0; i < couriers.size(); i++) {
+            User userTemp = couriers.get(i).getUser();
+            userTemp.setStatus(calculateStatus(userTemp.isEnabled(), couriers.get(i).isStatus()));
+            userList.add(userTemp);
+        }
+        return userList;
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<User> couriers = null;
+        int allPages = 0;
+
+        switch(filter) {
+            case "active":
+                List<Courier> couriersActive = courierRepository.getByNameSurname(search, true, true, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersActive);
+                allPages = courierRepository.getNumberOfRows(search, true, true);
+                break;
+            case "inactive":
+                List<Courier> couriersInactive= courierRepository.getByNameSurname(search, true, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersInactive);
+                allPages = courierRepository.getNumberOfRows(search, true, false);
+                break;
+            case "terminated":
+                List<Courier> couriersTerminated = courierRepository.getByNameSurname(search, false, false, (page-1)*10);
+                couriers = calculateStatusForCollection(couriersTerminated);
+                allPages = courierRepository.getNumberOfRows(search, false, false);
+                break;
+            case "all":
+                List<Courier> couriersAll = courierRepository.getByNameSurnameAll(search, page);
+                couriers = calculateStatusForCollection(couriersAll);
+                allPages = courierRepository.getNumberOfRowsAll(search);
+                break;
+            default:
+                //TODO create exception for this error
+                log.info("Incorrect filer. Must be active, inactive, terminated or all");
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("users", couriers);
+        result.put("currentPage", page);
+        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
+
+        return result;
     }
 
 

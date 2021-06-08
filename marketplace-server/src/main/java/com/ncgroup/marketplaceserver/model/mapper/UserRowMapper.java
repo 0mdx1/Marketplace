@@ -32,6 +32,12 @@ public class UserRowMapper implements RowMapper<User>{
 				.authLink(rs.getString("auth_link"))
 				.authLinkDate(rs.getObject("auth_link_date", LocalDateTime.class))
 				.build();
+		if(rs.getBoolean("is_enabled")) {
+			user.setStatus("active");
+		}else {
+			user.setStatus("terminated");
+		}
+
 		log.info(""+user.isEnabled());
 		return user;
 	}

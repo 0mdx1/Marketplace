@@ -1,0 +1,16 @@
+<div>
+  <label>Status:</label>
+  <div *ngFor="let status of statusList" class="px-2">
+    <div class="custom-control custom-radio">
+      <input type="radio"
+            class="custom-control-input"
+            value={{status}}
+            name="isActive"
+            id={{status}}
+            [checked]="activeRadioButton === status"
+            (change)="onChange($event)">
+      <label class="custom-control-label" for={{status}}>{{status}}</label>
+    </div>
+  </div>
+</div>
+

@@ -11,16 +11,16 @@ import java.util.Collection;
 
 public interface ShoppingCartItemService {
 
-    public ShoppingCartItem create(ShoppingCartItemCreateDto shoppingCartItemDto);
+    public ShoppingCartItem put(ShoppingCartItemCreateDto shoppingCartItemDto);
 
-    public ShoppingCartItem update(long id,ShoppingCartItemUpdateDto shoppingCartItemDto) throws AccessDeniedException, NotFoundException;
+    public ShoppingCartItem update(long id,ShoppingCartItemUpdateDto shoppingCartItemDto) throws NotFoundException;
 
-    public void delete(long id) throws NotFoundException, AccessDeniedException;
+    public void delete(long id) throws NotFoundException;
 
     public void deleteAll();
 
-    public ShoppingCartItem read(long id) throws NotFoundException, AccessDeniedException;
+    public ShoppingCartItem get(long id) throws NotFoundException;
 
-    public Collection<ShoppingCartItem> readAll();
+    public Collection<ShoppingCartItem> getAll();
 
 }

@@ -1,8 +1,9 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.ManagerUpdateDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
@@ -13,12 +14,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,6 +64,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .phone(phone)
                 .email(email)
                 .birthday(birthday)
+                .isEnabled(true)
                 .lastFailedAuth(LocalDateTime.now())
                 .role(Role.ROLE_PRODUCT_MANAGER)
                 .isEnabled(isEnabled)
@@ -72,18 +78,51 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public User getById(long id) {
-        return managerRepository.getById(id);
+        User manager = managerRepository.getById(id);
+        if(manager.isEnabled()) {
+            manager.setStatus(StatusConstants.ACTIVE);
+        }else {
+            manager.setStatus(StatusConstants.TERMINATED);
+        }
+        return manager;
     }
 
     @Override
-    public List<User> getAll() {
-        return managerRepository.getAll();
-    }
-
-    @Override
-    public User updateManager(long id, ManagerUpdateDto manager) {
+    public User updateManager(long id, User manager) {
         User currentManager = this.getById(id);
         manager.toDto(currentManager);
         return managerRepository.update(currentManager, id);
+    }
+
+    @Override
+    public Map<String, Object> getByNameSurname(String filter, String search, int page) {
+        List<User> managers = null;
+        int allPages = 0;
+
+        switch(filter) {
+            case "active":
+                managers = managerRepository.getByNameSurname(search, true, (page-1)*10);
+                allPages = managerRepository.getNumberOfRows(search, true);
+                break;
+            case "terminated":
+                managers = managerRepository.getByNameSurname(search, false, (page-1)*10);
+                allPages = managerRepository.getNumberOfRows(search, false);
+                break;
+            case "all":
+                managers = managerRepository.getByNameSurnameAll(search, (page-1)*10);
+                allPages = managerRepository.getNumberOfRowsAll(search);
+                break;
+            default:
+                //TODO create exception for this error
+                log.info("Incorrect filer. Must be active, terminated or all");
+        }
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("users", managers);
+        result.put("currentPage", page);
+        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
+
+        return result;
     }
 }

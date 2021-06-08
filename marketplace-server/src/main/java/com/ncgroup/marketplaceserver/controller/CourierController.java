@@ -1,15 +1,22 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import static org.springframework.http.HttpStatus.OK;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -47,26 +54,28 @@ public class CourierController  {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Courier> findById(@PathVariable int id) {
-        Courier courier = courierService.getById(id);
-        return new ResponseEntity<>(courier, OK);
+    public ResponseEntity<User> findById(@PathVariable int id) {
+        return new ResponseEntity<>(courierService.getById(id), OK);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Courier>> findAll() {
-        List<Courier> couriers = courierService.getAll();
-        return new ResponseEntity<>(couriers, OK);
-    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Courier> updateCourier(
+    public ResponseEntity<CourierUpdateDto> updateCourier(
             @Valid @RequestBody CourierUpdateDto courier,
             @PathVariable("id") int id
     ) {
         return new ResponseEntity<>(courierService.updateCourier(id, courier), OK);
     }
 
+    @GetMapping()
+    public ResponseEntity<Map<String, Object>> findByNameSurname(
+            @RequestParam(value = "filter", required = false, defaultValue = "all") final String filter,
+            @RequestParam(value = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(value = "page", required = false, defaultValue = "1") final int page
+    ) {
 
+        return new ResponseEntity<>(courierService.getByNameSurname(filter, search, page), OK);
+    }
 
 
 }
