@@ -12,7 +12,6 @@ import {AuthGuardService} from './_auth/auth.guard.service';
 import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
 import {RoleGuardService} from './_auth/auth.guard.role.service';
 import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
-import {MainLayoutComponent} from "./main/layout/main.layout.component";
 
 @NgModule({
   imports: [
