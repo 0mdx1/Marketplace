@@ -10,8 +10,8 @@ import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpd
 import com.ncgroup.marketplaceserver.shopping.cart.repository.ShoppingCartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,19 +31,18 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
     @Override
     public void put(ShoppingCartItemCreateDto shoppingCartItemDto) {
         User user = userService.getCurrentUser();
-        Optional<ShoppingCartItem> shoppingCartItemOpt = repository.findByGoodsIdAndUserId(
+        ShoppingCartItem shoppingCartItem = repository.findByGoodsIdAndUserId(
                 shoppingCartItemDto.getGoodsId(),
                 user.getId()
         );
-        if(shoppingCartItemOpt.isPresent()){
-            ShoppingCartItem shoppingCartItem = shoppingCartItemOpt.get();
+        if(shoppingCartItem!=null){
             shoppingCartItem.setQuantity(shoppingCartItemDto.getQuantity());
             repository.update(shoppingCartItem);
             return;
         }
-        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+        shoppingCartItem = new ShoppingCartItem();
         shoppingCartItem.setUserId(user.getId());
-        shoppingCartItemDto.mapTo(shoppingCartItem);
+        shoppingCartItemDto.projectOnto(shoppingCartItem);
         repository.save(shoppingCartItem);
     }
 
@@ -74,16 +73,25 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
 
     private ShoppingCartItem getById(long id) throws NotFoundException {
         User user = userService.getCurrentUser();
-        Optional<ShoppingCartItem> shoppingCartItemOpt = repository.findByGoodsIdAndUserId(id,user.getId());
-        if(!shoppingCartItemOpt.isPresent()){
+        ShoppingCartItem shoppingCartItem = repository.findByGoodsIdAndUserId(id,user.getId());
+        if(shoppingCartItem==null){
             throw new NotFoundException("Shopping cart item with goods id "+ id +" not found");
         }
-        return shoppingCartItemOpt.get();
+        return shoppingCartItem;
     }
 
     @Override
     public List<ShoppingCartItemReadDto> getAll() {
         User user = userService.getCurrentUser();
         return repository.findAllByUser(user).stream().map(ShoppingCartItemReadDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos) {
+        this.deleteAll();
+        for (ShoppingCartItemCreateDto shoppingCartItemCreateDto: shoppingCartItemCreateDtos) {
+            this.put(shoppingCartItemCreateDto);
+        }
     }
 }

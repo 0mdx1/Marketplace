@@ -65,18 +65,6 @@ CREATE TABLE IF NOT EXISTS courier
     is_active BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS shopping_cart_item
-(
-    user_id     INTEGER                  NOT NULL,
-    goods_id    INTEGER                  NOT NULL
-        CONSTRAINT shopping_cart_item_goods_id_fk
-            REFERENCES goods,
-    quantity    INTEGER                  NOT NULL,
-    adding_time BIGINT NOT NULL,
-    CONSTRAINT shopping_cart_item_pk
-        PRIMARY KEY (user_id, goods_id)
-);
-
 CREATE TABLE IF NOT EXISTS firm
 (
     id SERIAL NOT NULL
@@ -124,3 +112,15 @@ CREATE TABLE IF NOT EXISTS goods
     image varchar(100),
     description text
 );
+
+CREATE TABLE IF NOT EXISTS shopping_cart_item
+(
+    user_id     INTEGER                  NOT NULL,
+    goods_id    INTEGER                  NOT NULL
+    CONSTRAINT shopping_cart_item_goods_id_fk
+    REFERENCES goods,
+    quantity    INTEGER                  NOT NULL,
+    adding_time BIGINT NOT NULL,
+    CONSTRAINT shopping_cart_item_pk
+    PRIMARY KEY (user_id, goods_id)
+    );
