@@ -75,7 +75,6 @@ export class FilterComponent implements OnInit {
       this.filters.sort = 'price';
       this.filters.direction = 'DESC';
     }
-    console.log(this.filters.sort + ' ' + this.filters.direction);
     this.filter(this.filters, false);
   }
 
@@ -84,22 +83,18 @@ export class FilterComponent implements OnInit {
   }
 
   isPriceAsc(): boolean {
-    console.log(this.filters.sort + ' ' + this.filters.direction);
     return this.filters.sort === 'price' && this.filters.direction === 'ASC';
   }
 
   isPriceDesc(): boolean {
-    console.log(this.filters.sort + ' ' + this.filters.direction);
     return this.filters.sort === 'price' && this.filters.direction === 'DESC';
   }
 
   isNameAsc(): boolean {
-    console.log(this.filters.sort + " " + this.filters.direction);
     return this.filters.sort === 'name' && this.filters.direction === 'ASC';
   }
 
   isNameDesc(): boolean {
-    console.log(this.filters.sort + " " + this.filters.direction);
     return this.filters.sort === 'name' && this.filters.direction === 'DESC';
   }
 }

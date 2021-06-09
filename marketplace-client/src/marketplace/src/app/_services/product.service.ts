@@ -2,10 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { Observable, Subject } from 'rxjs';
+import { empty, Observable, of, pipe, Subject } from 'rxjs';
 import { Filter } from '../_models/products/filter';
 import { Product } from '../_models/products/product';
 import { ProductDto } from '../_models/products/productDto';
+import { catchError, switchMap } from 'rxjs/operators';
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -29,9 +30,11 @@ export class ProductService {
   ): Observable<ProductDto> {
     this.addQueryParams(filter, search, page);
     //get method to backend api
-    return this.http.get<ProductDto>(`${baseUrl}/products`, {
-      params: this.buildQueryParams(filter, search, page),
-    });
+    return this.http
+      .get<ProductDto>(`${baseUrl}/products`, {
+        params: this.buildQueryParams(filter, search, page),
+      })
+      .pipe(catchError((error: any) => of(new ProductDto())));
   }
 
   getProduct(): Observable<Product> {

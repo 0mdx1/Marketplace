@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, merge, Subscription } from 'rxjs';
 import { debounceTime, map, switchAll } from 'rxjs/operators';
 import { Product } from 'src/app/_models/products/product';
 import { ProductDto } from 'src/app/_models/products/productDto';
@@ -29,24 +29,33 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.search = this.service.getSearch();
 
-    this.subscription = fromEvent(this.el.nativeElement, 'keyup')
+    this.subscription = merge(
+      fromEvent(this.el.nativeElement, 'keyup'),
+      fromEvent(this.el.nativeElement, 'search')
+    )
       .pipe(
         map((e: any) => e.target.value),
         //filter((text:string) => text.length>0),
         debounceTime(250),
         map((query: string) => {
+          console.log(query);
           const obs = this.service.getSearchedProducts(query, this.init);
           this.init = false;
           return obs;
         }),
         switchAll()
       )
-      .subscribe((results: ProductDto) => {
-        console.log('emit search');
-        //this.results.emit(results.users);
-        this.products = results.result_set;
-        this.results.emit();
-      });
+      .subscribe(
+        (results: ProductDto) => {
+          //this.results.emit(results.users);
+          this.products = results.result_set;
+          this.results.emit();
+        },
+        (error) => {
+          this.products = [];
+          this.results.emit();
+        }
+      );
   }
 
   ngOnDestroy(): void {

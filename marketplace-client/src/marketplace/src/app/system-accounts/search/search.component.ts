@@ -6,7 +6,7 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, merge, Subscription } from 'rxjs';
 import { debounceTime, map, switchAll } from 'rxjs/operators';
 import { StaffMember } from 'src/app/_models/staff-member';
 import { UserDto } from 'src/app/_models/UserDto';
@@ -29,7 +29,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.search = this.service.getSearch();
 
-    this.subscription = fromEvent(this.el.nativeElement, 'keyup')
+    this.subscription = merge(
+      fromEvent(this.el.nativeElement, 'keyup'),
+      fromEvent(this.el.nativeElement, 'search')
+    )
       .pipe(
         map((e: any) => e.target.value),
         //filter((text:string) => text.length>0),
