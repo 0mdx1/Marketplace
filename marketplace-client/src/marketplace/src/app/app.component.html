@@ -7,9 +7,9 @@
 <body>
 <div class="top-header">
   <div class="top-header-content">
-    <a>LOG IN</a>
+    <a routerLink="accounts/login">LOG IN</a>
     <span>&#183;</span>
-    <a>CREATE ACCOUNT</a>
+    <a routerLink="accounts/register">CREATE ACCOUNT</a>
   </div>
 </div>
 <div class="bot-header">
@@ -21,15 +21,15 @@
         </button>
       </nav>
       <div class="collapse" id="minMenu">
-        <a>HOME</a>
-        <a>SHOP</a>
+        <a routerLink="home">HOME</a>
+        <a routerLink="products">SHOP</a>
         <a>SALES</a>
         <a>DELIVERY</a>
       </div>
     </div>
     <div class="max-menu">
-      <a>HOME</a>
-      <a>SHOP</a>
+      <a routerLink="home">HOME</a>
+      <a routerLink="products">SHOP</a>
       <a><img src="assets/logo.svg"></a>
       <a>SALES</a>
       <a>DELIVERY</a>
@@ -43,7 +43,9 @@
     </div>
   </div>
 </div>
-<router-outlet></router-outlet>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
 <div class="footer">
   <p>&#169;NetCracker 2021</p>
 </div>
