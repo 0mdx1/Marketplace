@@ -10,6 +10,7 @@ import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpd
 import com.ncgroup.marketplaceserver.shopping.cart.repository.ShoppingCartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,5 +84,14 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
     public List<ShoppingCartItemReadDto> getAll() {
         User user = userService.getCurrentUser();
         return repository.findAllByUser(user).stream().map(ShoppingCartItemReadDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos) {
+        this.deleteAll();
+        for (ShoppingCartItemCreateDto shoppingCartItemCreateDto: shoppingCartItemCreateDtos) {
+            this.put(shoppingCartItemCreateDto);
+        }
     }
 }
