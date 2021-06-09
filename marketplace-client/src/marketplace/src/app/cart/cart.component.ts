@@ -32,7 +32,7 @@ export class CartComponent implements OnInit {
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
-    return cartItem.quantity*cartItem.goods.price
+    return cartItem.quantity*this.getPrice(cartItem);
   }
 
   getTotalPrice(cartItems: CartItem[]): number {
@@ -43,5 +43,7 @@ export class CartComponent implements OnInit {
     return totalPrice;
   }
 
-
+  getPrice(cartItem: CartItem): number{
+    return cartItem.goods.price-cartItem.goods.price*(cartItem.goods.discount/100);
+  }
 }
