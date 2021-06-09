@@ -3,6 +3,10 @@ DROP TABLE person;
 DROP TABLE credentials;
 DROP TABLE role;
 DROP TABLE shopping_cart_item;
+DROP TABLE goods;
+DROP TABLE firm;
+DROP TABLE product;
+DROP TABLE category;
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -120,4 +124,3 @@ CREATE TABLE IF NOT EXISTS goods
     image varchar(100),
     description text
 );
-
