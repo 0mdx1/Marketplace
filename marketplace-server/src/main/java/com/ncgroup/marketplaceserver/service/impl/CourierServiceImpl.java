@@ -162,7 +162,6 @@ public class CourierServiceImpl implements CourierService {
     public Map<String, Object> getByNameSurname(String filter, String search, int page) {
         List<User> couriers = null;
         int allPages = 0;
-
         switch(filter) {
             case "active":
                 List<Courier> couriersActive = courierRepository.getByNameSurname(search, true, true, (page-1)*10);
@@ -180,7 +179,7 @@ public class CourierServiceImpl implements CourierService {
                 allPages = courierRepository.getNumberOfRows(search, false, false);
                 break;
             case "all":
-                List<Courier> couriersAll = courierRepository.getByNameSurnameAll(search, page);
+                List<Courier> couriersAll = courierRepository.getByNameSurnameAll(search, (page-1)*10);
                 couriers = calculateStatusForCollection(couriersAll);
                 allPages = courierRepository.getNumberOfRowsAll(search);
                 break;
