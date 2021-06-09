@@ -1,4 +1,4 @@
-package com.ncgroup.marketplaceserver.model;
+ package com.ncgroup.marketplaceserver.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
