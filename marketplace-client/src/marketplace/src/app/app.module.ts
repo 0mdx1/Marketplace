@@ -14,7 +14,13 @@ import {RoleGuardService} from './_auth/auth.guard.role.service';
 import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
 import {CartComponent} from "./cart/cart.component";
 import { SystemAccountsModule } from './system-accounts/system-accounts.module';
-
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ProductCatalogModule } from './product-catalog/product-catalog.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -24,13 +30,14 @@ import { SystemAccountsModule } from './system-accounts/system-accounts.module';
     HttpClientModule,
     BrowserModule,
     SystemAccountsModule,
-    FormsModule
+    ProductCatalogModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    NgxSpinnerModule,
+    FormsModule,
+    ToastrModule.forRoot(),
   ],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CartComponent
-  ],
+  declarations: [AppComponent, HomeComponent, CartComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

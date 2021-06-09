@@ -1,16 +1,16 @@
 import {
   Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
-  EventEmitter,
-  ElementRef,
-  OnDestroy,
 } from '@angular/core';
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { debounceTime, map, switchAll } from 'rxjs/operators';
-import { StaffMember } from 'src/app/_models/staff-member';
-import { UserDto } from 'src/app/_models/UserDto';
-import { SystemAccountService } from 'src/app/_services/system-account.service';
+import { Product } from 'src/app/_models/products/product';
+import { ProductDto } from 'src/app/_models/products/productDto';
+import { ProductService } from 'src/app/_services/product.service';
 
 @Component({
   selector: 'app-search',
@@ -19,12 +19,12 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
-  users: StaffMember[] = [];
+  products: Product[] = [];
   search: string = '';
   init: boolean = true;
   subscription!: Subscription;
 
-  constructor(private service: SystemAccountService, private el: ElementRef) {}
+  constructor(private service: ProductService, private el: ElementRef) {}
 
   ngOnInit(): void {
     this.search = this.service.getSearch();
@@ -38,25 +38,31 @@ export class SearchComponent implements OnInit, OnDestroy {
         //filter((text:string) => text.length>0),
         debounceTime(250),
         map((query: string) => {
-          const obs = this.service.getSearchedUsers(query, this.init);
+          console.log(query);
+          const obs = this.service.getSearchedProducts(query, this.init);
           this.init = false;
           return obs;
         }),
         switchAll()
       )
-      .subscribe((results: UserDto) => {
-        console.log('emit search');
-        //this.results.emit(results.users);
-        this.users = results.users;
-        this.results.emit();
-      });
+      .subscribe(
+        (results: ProductDto) => {
+          //this.results.emit(results.users);
+          this.products = results.result_set;
+          this.results.emit();
+        },
+        (error) => {
+          this.products = [];
+          this.results.emit();
+        }
+      );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  getUsers(): StaffMember[] {
-    return this.users;
+  getProducts(): Product[] {
+    return this.products;
   }
 }

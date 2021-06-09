@@ -1,17 +1,14 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
-  <button class="navbar-toggler" type="button"
-    aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation"
+  <button class="navbar-toggler" type="button" aria-controls="navbarNavAltMarkup" aria-label="Toggle navigation"
     (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup" [(ngbCollapse)]="isCollapsed">
-    <div class="navbar-nav" >
-      <a class="nav-item nav-link" [ngClass]="{'active': isActive('couriers')}"
-      routerLink="couriers">Couriers
-        <span *ngIf="isActive('couriers')"  class="sr-only">(current)</span>
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" [ngClass]="{'active': isActive('couriers')}" routerLink="couriers">Couriers
+        <span *ngIf="isActive('couriers')" class="sr-only">(current)</span>
       </a>
-      <a class="nav-item nav-link" [ngClass]="{'active': isActive('managers')}"
-      routerLink="managers">Product managers
+      <a class="nav-item nav-link" [ngClass]="{'active': isActive('managers')}" routerLink="managers">Product managers
         <span *ngIf="isActive('managers')" class="sr-only">(current)</span>
       </a>
     </div>

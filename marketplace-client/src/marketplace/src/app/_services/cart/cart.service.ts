@@ -57,4 +57,3 @@ export class CartService {
     this.cart.removeItem(item);
   }
 }
-

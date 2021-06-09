@@ -1,4 +1,3 @@
-
 <div class="container">
   <div *ngIf="items.length === 0;" class="text-center my-5">
     <h4>Your Cart Is Empty</h4>
@@ -10,57 +9,53 @@
       <div class="col my-4">
         <table class="table">
           <thead class="table-dark">
-          <tr class="text-center">
-            <th>Image</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-          </tr>
+            <tr class="text-center">
+              <th>Image</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let cartItem of this.items">
-            <td class="d-flex align-items-center justify-content-around" >
-              <img [src]="cartItem.goods.image" alt="{{cartItem.goods.name}}" height="60" class="order-1">
-              <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash" (click)="delete(cartItem)"></i></span>
-            </td>
-            <td><p>{{cartItem.goods.name}}</p></td>
-            <td>
-              <p>{{cartItem.goods.price | currency:'USD'}}</p>
-            </td>
-            <td>
-              <form>
-                <div class="value-button" id="decrease" (click)="decreaseQuantityByOne(cartItem)">
-                  <i class="fa fa-minus"></i>
-                </div>
-                <input
-                  type="number"
-                  id="number"
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="cartItem.quantity"
-                  (ngModelChange)="setQuantity(cartItem,$event)"
-                  (focusout)="cartItem.quantity==null ? cartItem.quantity = 1 : '';"
-                  [value]="cartItem.quantity"
-                  [min]="0"
-                  [max]="cartItem.goods.quantity"
-                />
-                <div class="value-button" id="increase" (click)="increaseQuantityByOne(cartItem)">
-                  <i class="fa fa-plus"></i>
-                </div>
-              </form>
-            </td>
-            <td>
-              <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
-            </td>
-          </tr>
-          <tr class="border-0">
-            <td style="border: none;"></td>
-            <td></td>
-            <td></td>
-            <td>TOTAL</td>
-            <td>{{getTotalPrice(items) | currency:'USD'}}</td>
+            <tr *ngFor="let cartItem of this.items">
+              <td class="d-flex align-items-center justify-content-around">
+                <img [src]="cartItem.goods.image" alt="{{cartItem.goods.name}}" height="60" class="order-1">
+                <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash"
+                    (click)="delete(cartItem)"></i></span>
+              </td>
+              <td>
+                <p>{{cartItem.goods.name}}</p>
+              </td>
+              <td>
+                <p>{{cartItem.goods.price | currency:'USD'}}</p>
+              </td>
+              <td>
+                <form>
+                  <div class="value-button" id="decrease" (click)="decreaseQuantityByOne(cartItem)">
+                    <i class="fa fa-minus"></i>
+                  </div>
+                  <input type="number" id="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="cartItem.quantity"
+                    (ngModelChange)="setQuantity(cartItem,$event)"
+                    (focusout)="cartItem.quantity==null ? cartItem.quantity = 1 : '';" [value]="cartItem.quantity"
+                    [min]="0" [max]="cartItem.goods.quantity" />
+                  <div class="value-button" id="increase" (click)="increaseQuantityByOne(cartItem)">
+                    <i class="fa fa-plus"></i>
+                  </div>
+                </form>
+              </td>
+              <td>
+                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+              </td>
+            </tr>
+            <tr class="border-0">
+              <td style="border: none;"></td>
+              <td></td>
+              <td></td>
+              <td>TOTAL</td>
+              <td>{{getTotalPrice(items) | currency:'USD'}}</td>
 
-          </tr>
+            </tr>
 
           </tbody>
         </table>

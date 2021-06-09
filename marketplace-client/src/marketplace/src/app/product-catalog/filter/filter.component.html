@@ -1,0 +1,46 @@
+<ul class="list-group list-group-flush">
+
+  <li class="list-group-item">
+    <h3>Categories</h3>
+  </li>
+  <li *ngFor="let cat of categories"
+      class="list-group-item"
+      [ngClass]="{'active': cat === filters.category}"
+      (click)="chooseCategory(cat)">{{cat}}</li>
+</ul>
+Sort By:
+<div class="px-2">
+  <div class="custom-control custom-radio">
+    <input type="radio"
+          class="custom-control-input"
+          value='nameDesc'
+          name='sort'
+          id="nameDesc"
+          [checked]="isNameDesc()"
+          (change)="onSortChange($event)">
+    <label class="custom-control-label"
+          for='nameDesc'>Sort by name in descending order</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio"
+          class="custom-control-input"
+          value='nameAsc'
+          name="sort"
+          id="nameAsc"
+          [checked]="isNameAsc()"
+          (change)="onSortChange($event)">
+    <label class="custom-control-label" for='nameAsc'>Sort by name in ascending order</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" value='priceDesc' name="sort" id="priceDesc"
+      [checked]="isPriceDesc()" (change)="onSortChange($event)">
+    <label class="custom-control-label" for='priceDesc'>Sort by price in descending order</label>
+  </div>
+  <div class="custom-control custom-radio">
+    <input type="radio" class="custom-control-input" value='priceAsc' name="sort" id="priceAsc"
+      [checked]="isPriceAsc()" (change)="onSortChange($event)">
+    <label class="custom-control-label" for='priceAsc'>Sort by price in ascending order</label>
+  </div>
+</div>
+
+
