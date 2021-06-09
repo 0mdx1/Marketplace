@@ -15,49 +15,6 @@ export class CartComponent implements OnInit {
     this.items = this.cartService.getCart().getItems();
   }
 
-  public setTestItems() {
-    let cartItems: CartItem[] = [
-      {
-        goods: {
-          id: 1,
-          name: 'prod1',
-          category: 'category1',
-          description: 'description',
-          image: 'image',
-          price: 20,
-          quantity: 30,
-        },
-        quantity: 2,
-        addingTime: Math.floor(Date.now() / 1000)
-      }, {
-        goods: {
-          id: 2,
-          name: 'prod2',
-          category: 'category1',
-          description: 'description',
-          image: 'image',
-          price: 50,
-          quantity: 100,
-        },
-        quantity: 6,
-        addingTime: Math.floor(Date.now() / 1000)
-      }, {
-        goods: {
-          id: 3,
-          name: 'prod3',
-          category: 'category1',
-          description: 'description',
-          image: 'image',
-          price: 13,
-          quantity: 100,
-        },
-        quantity: 10,
-        addingTime: Math.floor(Date.now() / 1000)
-      }
-    ]
-    this.cartService.getCart().setItems(cartItems);
-  }
-
   increaseQuantityByOne(cartItem: CartItem): void {
     this.cartService.addProduct(cartItem.goods);
   }

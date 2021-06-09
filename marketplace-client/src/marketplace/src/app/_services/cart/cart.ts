@@ -1,4 +1,3 @@
-import {Product} from "../../_models/product.model";
 import {CartItem} from "../../_models/cart-item.model";
 
 export interface Cart{

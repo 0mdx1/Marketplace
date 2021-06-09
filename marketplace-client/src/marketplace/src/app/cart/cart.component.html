@@ -1,7 +1,7 @@
 <div class="container">
   <div *ngIf="items.length === 0;" class="text-center my-5">
     <h4>Your Cart Is Empty</h4>
-    <button class="btn btn-primary btn-lg mt-3" (click)="setTestItems()">GO TO SHOP</button>
+    <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
   </div>
 
   <ng-container *ngIf="items.length !== 0">
@@ -20,12 +20,14 @@
           <tbody>
             <tr *ngFor="let cartItem of this.items">
               <td class="d-flex align-items-center justify-content-around">
-                <img [src]="cartItem.goods.image" alt="{{cartItem.goods.name}}" height="60" class="order-1">
+                <img
+                  [src]="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fsmilytiffany%2F100x100-images%2F&psig=AOvVaw3xQvbQnb1NnoFIsFBlIvmJ&ust=1623328407610000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjAmN3HivECFQAAAAAdAAAAABAJ"
+                  alt="{{cartItem.goods.goodName}}" height="60" class="order-1">
                 <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash"
                     (click)="delete(cartItem)"></i></span>
               </td>
               <td>
-                <p>{{cartItem.goods.name}}</p>
+                <p>{{cartItem.goods.goodName}}</p>
               </td>
               <td>
                 <p>{{cartItem.goods.price | currency:'USD'}}</p>
