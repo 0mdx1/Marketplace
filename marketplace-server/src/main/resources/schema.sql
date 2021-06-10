@@ -113,8 +113,6 @@ CREATE TABLE IF NOT EXISTS goods
     description text
 );
 
-<<<<<<< HEAD
-=======
 CREATE TABLE IF NOT EXISTS shopping_cart_item
 (
     user_id     INTEGER                  NOT NULL,
@@ -126,4 +124,3 @@ CREATE TABLE IF NOT EXISTS shopping_cart_item
     CONSTRAINT shopping_cart_item_pk
     PRIMARY KEY (user_id, goods_id)
     );
->>>>>>> develop
