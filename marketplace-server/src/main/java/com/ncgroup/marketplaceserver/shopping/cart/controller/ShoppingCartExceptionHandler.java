@@ -1,8 +1,8 @@
 package com.ncgroup.marketplaceserver.shopping.cart.controller;
 
 import com.ncgroup.marketplaceserver.domain.ApiError;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.AccessDeniedException;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
+import com.ncgroup.marketplaceserver.shopping.cart.exception.AccessDeniedException;
+import com.ncgroup.marketplaceserver.shopping.cart.exception.NotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;

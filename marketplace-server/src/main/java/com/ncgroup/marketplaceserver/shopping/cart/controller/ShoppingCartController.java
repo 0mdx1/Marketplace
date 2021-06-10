@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.controller;
 
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
-import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
+import com.ncgroup.marketplaceserver.shopping.cart.exception.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemReadDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpdateDto;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
