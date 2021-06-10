@@ -4,7 +4,7 @@ import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

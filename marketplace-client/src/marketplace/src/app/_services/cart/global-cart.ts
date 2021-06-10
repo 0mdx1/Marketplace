@@ -26,26 +26,29 @@ export class GlobalCart implements Cart, OnDestroy{
     private http: HttpClient,
     private auth: AuthService
   ) {
-      this.subscription = interval(10000)
-        .subscribe(() => {
-          if(this.auth.isAuthenticated()) {
-            this.init().subscribe(() => {
-              if(!document.hidden){
-                console.log("polling...");
-                this.getShoppingCart()
-                  .subscribe({
-                    next: items => {
-                      if (JSON.stringify(items) !== JSON.stringify(this.cart.getItems())) {
-                        console.log("changes detected. updating...")
-                        this.cart.setItems(items);
-                      }
-                    },
-                    error: e => console.log(e)
-                  })
-              }
-            })
-          }
-      });
+    if(this.auth.isAuthenticated()) {
+      this.init().subscribe(() => {});
+    }
+    this.subscription = interval(10000)
+      .subscribe(() => {
+        if(this.auth.isAuthenticated()) {
+          this.init().subscribe(() => {
+            if(!document.hidden){
+              console.log("polling...");
+              this.getShoppingCart()
+                .subscribe({
+                  next: items => {
+                    if (JSON.stringify(items) !== JSON.stringify(this.cart.getItems())) {
+                      console.log("changes detected. updating...")
+                      this.cart.setItems(items);
+                    }
+                  },
+                  error: e => console.log(e)
+                })
+            }
+          })
+        }
+    });
   }
 
   private getShoppingCart() {
