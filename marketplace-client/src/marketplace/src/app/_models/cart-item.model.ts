@@ -1,4 +1,4 @@
-import {Product} from "./product.model";
+import {Product} from "./products/product";
 
 export class CartItem {
   goods: Product;

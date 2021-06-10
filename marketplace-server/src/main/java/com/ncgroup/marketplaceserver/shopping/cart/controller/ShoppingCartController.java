@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -28,7 +30,7 @@ public class ShoppingCartController {
         this.service = service;
     }
 
-    @PutMapping ("/")
+    @PutMapping ("/item/")
     public ResponseEntity<?> putCartItem(
         @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
     ){
@@ -62,11 +64,17 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Collection<ShoppingCartItemReadDto>> getShoppingCart(){
+    public ResponseEntity<List<ShoppingCartItemReadDto>> getShoppingCart(){
         return new ResponseEntity<>(
             service.getAll(),
             HttpStatus.OK
         );
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> putShoppingCart(@Valid @RequestBody ShoppingCartItemCreateDto[] shoppingCartItemCreateDtos){
+        this.service.setAll(Arrays.asList(shoppingCartItemCreateDtos));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/")

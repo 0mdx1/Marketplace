@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ShoppingCartItemRepository {
 
-    public Optional<ShoppingCartItem> findByGoodsIdAndUserId(long goodsId, long userId);
+    public ShoppingCartItem findByGoodsIdAndUserId(long goodsId, long userId);
 
     public List<ShoppingCartItem> findAllByUser(User user);
 

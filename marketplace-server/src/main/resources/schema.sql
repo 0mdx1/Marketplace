@@ -3,6 +3,10 @@ DROP TABLE person;
 DROP TABLE credentials;
 DROP TABLE role;
 DROP TABLE shopping_cart_item;
+DROP TABLE goods;
+DROP TABLE firm;
+DROP TABLE product;
+DROP TABLE category;
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -61,18 +65,6 @@ CREATE TABLE IF NOT EXISTS courier
     is_active BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS shopping_cart_item
-(
-    user_id     INTEGER                  NOT NULL,
-    goods_id    INTEGER                  NOT NULL
-        CONSTRAINT shopping_cart_item_goods_id_fk
-            REFERENCES goods,
-    quantity    INTEGER                  NOT NULL,
-    adding_time BIGINT NOT NULL,
-    CONSTRAINT shopping_cart_item_pk
-        PRIMARY KEY (user_id, goods_id)
-);
-
 CREATE TABLE IF NOT EXISTS firm
 (
     id SERIAL NOT NULL
@@ -121,3 +113,17 @@ CREATE TABLE IF NOT EXISTS goods
     description text
 );
 
+<<<<<<< HEAD
+=======
+CREATE TABLE IF NOT EXISTS shopping_cart_item
+(
+    user_id     INTEGER                  NOT NULL,
+    goods_id    INTEGER                  NOT NULL
+    CONSTRAINT shopping_cart_item_goods_id_fk
+    REFERENCES goods,
+    quantity    INTEGER                  NOT NULL,
+    adding_time BIGINT NOT NULL,
+    CONSTRAINT shopping_cart_item_pk
+    PRIMARY KEY (user_id, goods_id)
+    );
+>>>>>>> develop

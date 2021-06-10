@@ -25,4 +25,6 @@ public interface ShoppingCartItemService {
 
     public List<ShoppingCartItemReadDto> getAll();
 
+    public void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos);
+
 }
