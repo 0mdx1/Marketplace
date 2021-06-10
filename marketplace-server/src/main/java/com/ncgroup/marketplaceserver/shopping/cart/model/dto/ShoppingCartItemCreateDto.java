@@ -1,11 +1,13 @@
 package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
 import com.ncgroup.marketplaceserver.goods.model.Good;
+import com.ncgroup.marketplaceserver.shopping.cart.annotation.SufficientGoodsStock;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.Data;
 import javax.validation.constraints.Min;
 
 @Data
+@SufficientGoodsStock
 public class ShoppingCartItemCreateDto {
     @Min(value = 1, message = "goodsId cannot be below 1")
     private long goodsId;
