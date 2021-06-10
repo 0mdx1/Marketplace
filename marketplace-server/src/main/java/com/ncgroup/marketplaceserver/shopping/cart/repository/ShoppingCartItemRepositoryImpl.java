@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.shopping.cart.repository;
 
-import com.ncgroup.marketplaceserver.model.Goods;
+import com.ncgroup.marketplaceserver.goods.model.Good;
+import com.ncgroup.marketplaceserver.goods.model.Unit;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import com.ncgroup.marketplaceserver.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @PropertySource("classpath:database/queries.properties")
 @Repository
@@ -32,7 +31,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
     private String selectByIdsQuery;
 
     @Override
-    public Optional<ShoppingCartItem> findByGoodsIdAndUserId(long goodsId, long userId) {
+    public ShoppingCartItem findByGoodsIdAndUserId(long goodsId, long userId) {
         SqlParameterSource shoppingCartItemParams = new MapSqlParameterSource()
                 .addValue("goodsId", goodsId)
                 .addValue("userId",userId);
@@ -44,10 +43,10 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
                     ShoppingCartItemRepositoryImpl::mapRowToShoppingCartItem
             );
         } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
+            return null;
         }
 
-        return Optional.of(res);
+        return res;
     }
 
     @Value("${shopping-cat-item.select-by-user-id-query}")
@@ -117,16 +116,18 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
         );
     }
 
-    private static Goods mapRowToGoods(ResultSet rs, int rowNum) throws SQLException {
-        return Goods
-                .builder()
+    private static Good mapRowToGoods(ResultSet rs, int rowNum) throws SQLException {
+        return Good.builder()
                 .id(rs.getLong("goods_id"))
-                .name(rs.getString("name"))
-                .category(rs.getString("category"))
+                .unit(Unit.valueOf(rs.getString("unit")))
+                .quantity(rs.getInt("quantity"))
+                .categoryName(rs.getString("category_name"))
+                .goodName(rs.getString("product_name"))
+                .firmName(rs.getString("firm_name"))
+                .price(rs.getDouble("price"))
+                .discount(rs.getByte("discount"))
+                .inStock(rs.getBoolean("in_stock"))
                 .description(rs.getString("description"))
-                .image(rs.getString("image"))
-                .price(rs.getInt("price"))
-                .quantity(rs.getInt("goods_quantity"))
                 .build();
     }
 

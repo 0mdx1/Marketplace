@@ -1,12 +1,13 @@
 package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
-import com.ncgroup.marketplaceserver.model.Goods;
+import com.ncgroup.marketplaceserver.goods.model.Good;
+import com.ncgroup.marketplaceserver.shopping.cart.annotation.SufficientGoodsStock;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.Data;
-
 import javax.validation.constraints.Min;
 
 @Data
+@SufficientGoodsStock
 public class ShoppingCartItemCreateDto {
     @Min(value = 1, message = "goodsId cannot be below 1")
     private long goodsId;
@@ -15,10 +16,10 @@ public class ShoppingCartItemCreateDto {
     @Min(value = 1, message = "addingTime Unix timestamp cannot be below 1")
     private long addingTime;
 
-    public void mapTo(ShoppingCartItem shoppingCartItem){
-        Goods goods = shoppingCartItem.getGoods();
+    public void projectOnto(ShoppingCartItem shoppingCartItem){
+        Good goods = shoppingCartItem.getGoods();
         if(goods==null){
-            goods = Goods.builder().id(goodsId).build();
+            goods = Good.builder().id(goodsId).build();
             shoppingCartItem.setGoods(goods);
         }else{
             goods.setId(goodsId);

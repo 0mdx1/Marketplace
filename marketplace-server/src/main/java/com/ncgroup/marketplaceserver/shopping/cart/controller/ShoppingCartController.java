@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.controller;
 
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
-import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
+import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemReadDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpdateDto;
@@ -9,16 +8,18 @@ import com.ncgroup.marketplaceserver.shopping.cart.service.ShoppingCartItemServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(
         path = "/api/shopping-cart",
         produces = "application/json"
 )
+@Validated
 public class ShoppingCartController {
 
     private ShoppingCartItemService service;
@@ -28,7 +29,7 @@ public class ShoppingCartController {
         this.service = service;
     }
 
-    @PutMapping ("/")
+    @PutMapping ("/item/")
     public ResponseEntity<?> putCartItem(
         @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
     ){
@@ -62,16 +63,27 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Collection<ShoppingCartItemReadDto>> getShoppingCart(){
+    public ResponseEntity<List<ShoppingCartItemReadDto>> getShoppingCart(){
         return new ResponseEntity<>(
             service.getAll(),
             HttpStatus.OK
         );
     }
 
+    @PutMapping("/")
+    public ResponseEntity<?> putShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items){
+        this.service.setAll(items);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @DeleteMapping("/")
     public ResponseEntity<?> emptyShoppingCart(){
         service.deleteAll();
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/validate/")
+    public ResponseEntity<?> validateShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items){
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

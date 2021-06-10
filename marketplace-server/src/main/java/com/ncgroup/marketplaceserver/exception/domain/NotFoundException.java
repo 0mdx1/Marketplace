@@ -1,4 +1,4 @@
-package com.ncgroup.marketplaceserver.shopping.cart.exceptions;
+package com.ncgroup.marketplaceserver.exception.domain;
 
 public class NotFoundException extends Exception{
     public NotFoundException(String message) {

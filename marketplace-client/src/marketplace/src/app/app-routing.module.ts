@@ -8,7 +8,9 @@ import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './cart/cart.component';
 
 const accountModule = () =>
-  import('./account/account.module').then((x) => x.AccountModule);
+  import('./account/account.module').then(
+    (x) => x.AccountModule
+  );
 const systemAccountModule = () =>
   import('./system-accounts/system-accounts.module').then(
     (x) => x.SystemAccountsModule
@@ -19,9 +21,18 @@ const productCatalogModule = () =>
   );
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
-  { path: '', loadChildren: accountModule },
-  { path: 'cart', component: CartComponent },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'accounts',
+    loadChildren: accountModule
+  },
+  {
+    path: 'cart',
+    component: CartComponent
+  },
   {
     path: 'sysaccounts',
     loadChildren: systemAccountModule,
@@ -32,8 +43,11 @@ const routes: Routes = [
     path: 'products',
     loadChildren: productCatalogModule,
   },
-  // otherwise redirect to home
-  { path: '**', pathMatch: 'full', redirectTo: 'home' },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

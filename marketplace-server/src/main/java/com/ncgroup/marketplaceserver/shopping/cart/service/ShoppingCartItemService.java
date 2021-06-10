@@ -1,14 +1,10 @@
 package com.ncgroup.marketplaceserver.shopping.cart.service;
 
-import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.AccessDeniedException;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
-import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
+import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemReadDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemUpdateDto;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ShoppingCartItemService {
@@ -24,5 +20,7 @@ public interface ShoppingCartItemService {
     public ShoppingCartItemReadDto get(long id) throws NotFoundException;
 
     public List<ShoppingCartItemReadDto> getAll();
+
+    public void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos);
 
 }

@@ -26,10 +26,14 @@ export class GlobalCart implements Cart, OnDestroy{
     private http: HttpClient,
     private auth: AuthService
   ) {
-      this.subscription = interval(10000)
-        .subscribe(() => {
-          if(this.auth.isAuthenticated()) {
-            this.init().subscribe(() => {
+    if(this.auth.isAuthenticated()) {
+      this.init().subscribe(() => {});
+    }
+    this.subscription = interval(10000)
+      .subscribe(() => {
+        if(this.auth.isAuthenticated()) {
+          this.init().subscribe(() => {
+            if(!document.hidden){
               console.log("polling...");
               this.getShoppingCart()
                 .subscribe({
@@ -41,9 +45,10 @@ export class GlobalCart implements Cart, OnDestroy{
                   },
                   error: e => console.log(e)
                 })
-            })
-          }
-        });
+            }
+          })
+        }
+    });
   }
 
   private getShoppingCart() {
@@ -150,7 +155,7 @@ export class GlobalCart implements Cart, OnDestroy{
   }
 
   private putShoppingCartItem(item: CartItem): Observable<any>{
-    return this.http.put(`${baseUrl}/shopping-cart/`,this.mapToDto(item));
+    return this.http.put(`${baseUrl}/shopping-cart/item/`,this.mapToDto(item));
   }
 
   private patchShoppingCartItem(item: CartItem): Observable<any>{
@@ -159,13 +164,10 @@ export class GlobalCart implements Cart, OnDestroy{
   }
 
   private putShoppingCart(items: CartItem[]): Observable<any>{
-    return this.deleteShoppingCart().pipe(switchMap((v)=>{
-      let requests: Observable<any>[] = []
-      items.forEach(
-        item => {
-          requests.push(this.putShoppingCartItem(item))
-        });
-      return forkJoin(requests)
-    }));
+    let itemDtos: CartItemCreateDto[] = [];
+    items.forEach((item)=>{
+      itemDtos.push(this.mapToDto(item));
+    })
+    return this.http.put(`${baseUrl}/shopping-cart/`,itemDtos);
   }
 }

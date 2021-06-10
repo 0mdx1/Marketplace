@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
-import com.ncgroup.marketplaceserver.model.Goods;
+import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ShoppingCartItemReadDto {
-    private Goods goods;
+    private Good goods;
     private int quantity;
     private long addingTime;
 
