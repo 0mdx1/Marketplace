@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,8 +24,11 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     @Value("${manager.find-by-id}")
     private String selectById;
 
-    @Value("${manager.update}")
-    private String updateManager;
+    @Value("${manager.update-person}")
+    private String updateManagerPerson;
+
+    @Value("${manager.update-credentials}")
+    private String updateManagerCredentials;
 
     @Value("${manager.find-by-name-surname}")
     private String filterNameQuery;
@@ -51,15 +55,23 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         return managers.isEmpty() ? null : managers.get(0);
     }
 
+    @Transactional
     @Override
     public User update(User manager, long id) {
-        SqlParameterSource managerParams = new MapSqlParameterSource()
+        SqlParameterSource credentialsParams = new MapSqlParameterSource()
+                .addValue("userStatus", manager.isEnabled())
+                .addValue("email", manager.getEmail())
+                .addValue("id", id);
+        namedParameterJdbcTemplate.update(updateManagerCredentials, credentialsParams);
+
+
+        SqlParameterSource personParams = new MapSqlParameterSource()
                 .addValue("name", manager.getName())
                 .addValue("surname", manager.getSurname())
                 .addValue("phone", manager.getPhone())
                 .addValue("birthday", manager.getBirthday())
-                .addValue("userStatus", manager.isEnabled());
-        namedParameterJdbcTemplate.update(updateManager, managerParams);
+                .addValue("id", id);
+        namedParameterJdbcTemplate.update(updateManagerPerson, personParams);
         return manager;
     }
 
