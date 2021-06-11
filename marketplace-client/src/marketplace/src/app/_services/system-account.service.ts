@@ -161,20 +161,20 @@ export class SystemAccountService {
     });
   }
 
-  getCourierProfileInfo(){
-    return this.http.get(`${baseUrl}/courier/4`);
+  getCourierProfileInfo(id: number){
+    return this.http.get(`${baseUrl}/courier/` + id);
   }
 
   getManagerProfileInfo(id: number){
     return this.http.get(`${baseUrl}/manager/` + id);
   }
 
-  updateCourierInfo(account: StaffMember): Observable<any> {
-      return this.http.patch(`${baseUrl}/courier`, account);
+  updateCourierInfo(account: StaffMember, id: number): Observable<any> {
+      return this.http.patch(`${baseUrl}/courier` + id, account);
   }
 
-  updateManagerInfo(account: StaffMember): Observable<any> {
-    return this.http.patch(`${baseUrl}/manager`, account);
+  updateManagerInfo(account: StaffMember, id: number): Observable<any> {
+    return this.http.patch(`${baseUrl}/manager/` + id, account);
   }
 
   navigateToUpdatedStaff(id:number) {

@@ -25,7 +25,7 @@ export class AccountListComponent {
   createUser() {
     this.service.navigateToRegisterStaff();
   }
-  changeInfo(id:number){
+  changeInfo(id:number, user: object){
     this.service.navigateToUpdatedStaff(id);
   }
 }

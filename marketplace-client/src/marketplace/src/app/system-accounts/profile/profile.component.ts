@@ -23,11 +23,19 @@ export class ProfileComponent implements OnInit {
   ngOnInit(){
      //.subscribe((response) => {
 
-        this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
-          .subscribe((response) => {
-            this.response=response;
-            console.log(this.response);
-          })
+    try {
+      this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
+        .subscribe((response) => {
+          this.response = response;
+          console.log(this.response);
+        })
+    }catch (error){
+      this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
+        .subscribe((response) => {
+          this.response = response;
+          console.log(this.response);
+        })
+    }
   }
 }
 
