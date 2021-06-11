@@ -21,6 +21,7 @@ import {
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
+import { AlertComponent } from './alert/alert.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -37,7 +38,7 @@ import { ProductCatalogModule } from './product-catalog/product-catalog.module';
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  declarations: [AppComponent, HomeComponent, CartComponent],
+  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

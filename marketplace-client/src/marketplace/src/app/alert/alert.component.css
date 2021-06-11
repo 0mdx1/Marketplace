@@ -1,0 +1,9 @@
+.alert-container{
+  padding: 15px;
+  position:fixed;
+  top: 90px;
+  right: 0px;
+  width: 30%;
+  z-index:9999;
+  border-radius:0px
+}
