@@ -23,8 +23,6 @@ export class UpdateInfoComponent implements OnInit{
 
   submitted = false;
 
-  roles: Role[] = [Role.Courier, Role.ProductManager];
-
   courierStatuses: string[] = ['active', 'inactive', 'terminated'];
 
   pmStatuses: string[] = ['active', 'terminated'];
@@ -37,41 +35,25 @@ export class UpdateInfoComponent implements OnInit{
 
   test: string = "asa";
 
-  role: string = "";
 
 
   ngOnInit(){
     //.subscribe((response) => {
-    try {
-      this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
-        .subscribe((response) => {
-          this.response = response;
-          console.log(this.response);
-          this.test = this.response.name;
+      if(this.route.snapshot.params.role.localeCompare(1)) {
+        this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
+          .subscribe((response) => {
+            this.response = response;
+            console.log(this.response);
+            this.formCreation();
+          })
+      }
 
-          let newDate = new Date(this.response.birthday);
-
-
-          this.form = this.formBuilder.group(
-            {
-              name: [this.response.name, Validators.required],
-              surname: [this.response.surname, Validators.required],
-              phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
-              birthday: [""],
-              status: ["", Validators.required],
-            },
-            {
-              validator: [validateBirthday],
-            }
-          );
-        })
-      this.role = this.response.role;
-    }catch (error){
+   else if (this.route.snapshot.params.role.localeCompare(2)){
       this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           console.log(this.response);
-          this.test = this.response.name;
+          this.formCreation();
         })
     }
 
@@ -81,9 +63,22 @@ export class UpdateInfoComponent implements OnInit{
     private formBuilder: FormBuilder,
     private accountService: SystemAccountService,
     private route: ActivatedRoute,
-  ) {
-      }
+  ) {}
 
+  formCreation(){
+    this.form = this.formBuilder.group(
+      {
+        name: [this.response.name, Validators.required],
+        surname: [this.response.surname, Validators.required],
+        phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
+        birthday: [""],
+        status: [this.response.status, Validators.required],
+      },
+      {
+        validator: [validateBirthday],
+      }
+    );
+  }
 
   get getForm(): { [p: string]: AbstractControl } {
     return this.form.controls;
@@ -117,11 +112,11 @@ export class UpdateInfoComponent implements OnInit{
     }
     this.loading = true;
     let observable = null;
-    if (this.role.localeCompare("ROLE_PRODUCT_MANAGER" )){
+    if (this.route.snapshot.params.role.localeCompare(1)){
       observable = this.accountService.updateManagerInfo(
         this.mapToStaffMember(this.form.value), (this.route.snapshot.params.id)
       );
-    } else if (this.role.localeCompare("ROLE_COURIER")) {
+    } else if (this.route.snapshot.params.role.localeCompare(2)) {
       observable = this.accountService.updateCourierInfo(
         this.mapToStaffMember(this.form.value), (this.route.snapshot.params.id)
       );

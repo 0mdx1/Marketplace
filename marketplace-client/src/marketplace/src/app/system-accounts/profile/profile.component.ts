@@ -14,6 +14,7 @@ import {switchMap} from "rxjs/operators";
 
 export class ProfileComponent implements OnInit {
   response: any;
+  birthday: string = "-";
 
   constructor(
     private accountService: SystemAccountService,
@@ -23,19 +24,24 @@ export class ProfileComponent implements OnInit {
   ngOnInit(){
      //.subscribe((response) => {
 
-    try {
+    if(this.route.snapshot.params.role.localeCompare(1)) {
       this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           console.log(this.response);
         })
-    }catch (error){
+
+    }
+
+    else if (this.route.snapshot.params.role.localeCompare(2)){
       this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           console.log(this.response);
         })
     }
+    if (this.response.birthday == !null)
+    this.birthday = this.response.birthday;
   }
 }
 

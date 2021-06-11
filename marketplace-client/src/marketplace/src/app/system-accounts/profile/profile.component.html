@@ -1,6 +1,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
  <body>
 <div class ="global">
+  <!--
   <div class="header">
 
     <nav class="container1">
@@ -29,47 +30,42 @@
       </ul>
     </nav>
   </div>
-
+-->
 <div class="container2">
 
-  <h1 class="pers-info">Персональная информация</h1>
-  <p class = "note" id="note-heading">Ваша персональная информация</p>
+  <h1 class="pers-info">Personal information</h1>
+  <p class = "note" id="note-heading">Your personal information</p>
   <hr class = "pers-line">
 
   <div *ngIf="response"  id="full-pers-info">
       <div class ="pers">
-              <p class = "note">Фамилия:</p>
+              <p class = "note">Surname:</p>
               <p class = "info-text">{{response.surname}}</p>
               <hr class = "info-line">
       </div>
       <div  class ="pers">
-              <p class = "note">Имя:</p>
+              <p class = "note">Name:</p>
               <p class = "info-text">{{response.name}}</p>
               <hr class = "info-line">
 
       </div>
 
       <div class ="pers">
-            <p class = "note">Отчество:</p>
-            <p class = "info-text"></p>
-            <hr class = "info-line">
-      </div>
-      <div class ="pers">
-            <p class = "note">Дата рождения:</p>
-            <p class = "info-text">{{response.dateOfBirth}}</p>
+            <p class = "note">Date of birthday:</p>
+            <p class = "info-text">{{birthday}}</p>
             <hr class = "info-line">
       </div>
 
 
-      <h2 class="pers-info" id="contact-details">Ваши контактные данные</h2>
+      <h2 class="pers-info" id="contact-details">Your contact information</h2>
 
       <div class ="pers">
-        <p class = "note">Номер телефона:</p>
+        <p class = "note">Number:</p>
         <p class = "info-text">{{response.phone}}</p>
         <hr class = "info-line">
       </div>
       <div class ="pers">
-        <p class = "note">Почта:</p>
+        <p class = "note">Mail:</p>
         <p class = "info-text">{{response.email}}</p>
         <hr class = "info-line">
       </div>

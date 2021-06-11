@@ -177,12 +177,12 @@ export class SystemAccountService {
     return this.http.patch(`${baseUrl}/manager/` + id, account);
   }
 
-  navigateToUpdatedStaff(id:number) {
+  navigateToUpdatedStaff(id:number, role:number) {
     let currentUrl = this.router.url;
     let subpath = this.router.url.split('/');
     currentUrl = currentUrl.replace(
-      subpath[subpath.length - 1],
-      'update-info/' + id
+      subpath[subpath.length - 1],'role/'+ role +
+      '/update-info/' + id
     );
     this.router.navigate([currentUrl]);
   }

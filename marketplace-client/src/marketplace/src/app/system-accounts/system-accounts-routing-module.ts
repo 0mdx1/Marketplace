@@ -14,8 +14,8 @@ const routes: Routes = [
       { path: 'couriers', component: AccountListComponent },
       { path: 'managers', component: AccountListComponent },
       { path: 'register-stuff', component: RegisterStuffComponent },
-      { path: 'profile/:id', component: ProfileComponent },
-      { path: 'update-info/:id', component: UpdateInfoComponent },
+      { path: 'role/:role/profile/:id', component: ProfileComponent },
+      { path: 'role/:role/update-info/:id', component: UpdateInfoComponent },
       /*{
         path: '',
         pathMatch: 'prefix',
