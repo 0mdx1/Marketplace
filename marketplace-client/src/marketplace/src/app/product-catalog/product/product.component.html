@@ -15,7 +15,10 @@
             <div class="price text-success">
               <h5 class="mt-4">{{product.price}}$/{{product.unit}}</h5>
             </div>
-            <a (click)="addToCart()" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+            <div>
+              <button type="button" (click)="addToCart()" class="btn btn-danger mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+              <button type="button" (click)="addToComparison()" class="btn btn-info mt-3"><i class="fas fa-balance-scale"></i> Add to Comparison</button>
+            </div>
           </div>
         </div>
       </div>

@@ -22,6 +22,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
 import { AlertComponent } from './_components/alert/alert.component';
+import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -38,7 +39,7 @@ import { AlertComponent } from './_components/alert/alert.component';
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent],
+  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent, ProductComparisonComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
