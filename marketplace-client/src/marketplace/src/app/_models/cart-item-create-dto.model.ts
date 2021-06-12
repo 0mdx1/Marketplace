@@ -1,3 +1,5 @@
+import {CartItem} from "./cart-item.model";
+
 export class CartItemCreateDto {
   goodsId: number;
   addingTime: number;
@@ -7,5 +9,9 @@ export class CartItemCreateDto {
     this.goodsId = goodsId;
     this.addingTime = addingTime;
     this.quantity = quantity;
+  }
+
+  public static mapToDto(item: CartItem): CartItemCreateDto {
+    return new CartItemCreateDto(item.goods.id,item.addingTime,item.quantity);
   }
 }
