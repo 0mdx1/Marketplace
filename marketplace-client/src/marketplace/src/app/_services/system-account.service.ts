@@ -4,6 +4,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserDto } from '../_models/UserDto';
+import {ResetPasswordDTO} from "../_models/resetPasswordDTO";
+import {StaffMember} from "../_models/staff-member";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -13,6 +15,7 @@ const baseUrl = `${environment.apiUrl}`;
 export class SystemAccountService {
   pageNumSource: Subject<number> = new Subject();
   pageSource: Subject<number> = new Subject();
+
 
   readonly ALL = 'all';
   readonly ACTIVE = 'active';
@@ -157,4 +160,41 @@ export class SystemAccountService {
       this.pageSource.next(res.currentPage);
     });
   }
+
+  getCourierProfileInfo(id: number){
+    return this.http.get(`${baseUrl}/courier/` + id);
+  }
+
+  getManagerProfileInfo(id: number){
+    return this.http.get(`${baseUrl}/manager/` + id);
+  }
+
+  updateCourierInfo(account: StaffMember, id: number): Observable<any> {
+      return this.http.patch(`${baseUrl}/courier` + id, account);
+  }
+
+  updateManagerInfo(account: StaffMember, id: number): Observable<any> {
+    return this.http.patch(`${baseUrl}/manager/` + id, account);
+  }
+
+  navigateToUpdatedStaff(id:number, role:number) {
+    let currentUrl = this.router.url;
+    let subpath = this.router.url.split('/');
+    currentUrl = currentUrl.replace(
+      subpath[subpath.length - 1],'role/'+ role +
+      '/update-info/' + id
+    );
+    this.router.navigate([currentUrl]);
+  }
+
 }
+/*{
+    "dateOfBirth": "undefined",
+    "email": "dwf6h@vmani.com",
+    "id": 3,
+    "name": "Artem",
+    "phone": "+380934460974",
+    "role": "ROLE_PRODUCT_MANAGER",
+    "status": "inactive",
+    "surname": "Krivoruchenko"
+}*/
