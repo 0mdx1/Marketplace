@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.order.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,10 +63,11 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public OrderPostDto addOrder(OrderPostDto orderDto) throws NotFoundException {
-		/*Order order = OrderPostDto.toOrder(orderDto);
-		if(order.getUser().getEmail() != null) {
-			order.getUser().setId(userService.findUserByEmail(order.getUser().getEmail()).getId());
+	public OrderReadDto addOrder(OrderPostDto orderDto, String token)  {
+		Order order = OrderPostDto.toOrder(orderDto);
+		if(token != null) {
+			token = token.split(" ")[1];
+			order.getUser().setId(userService.findUserByEmail(jwtProvider.getSubject(token)).getId());
 		} else {
 			long userId = userService.addUserWithoutCredentials(
 					order.getUser().getName(), order.getUser().getSurname(), order.getUser().getPhone()).getId();
@@ -75,11 +77,29 @@ public class OrderServiceImpl implements OrderService{
 		
 		order = orderRepo.saveOrderDetails(order);
 		for(OrderItem item : order.getItems()) {
-			item.setSum(calculateSum(item.getGood().getId(), item.getQuantity()));
+			item.setPrice(calculateSum(item.getGood().getId(), item.getQuantity()));
 			orderRepo.saveOrderGood(item, order.getId());
 		}
-		return orderDto;*/
-		return null;
+		return OrderReadDto.convertToDto(order);
+	}
+	
+	@Override
+	public List<LocalDateTime> getFreeSlots() {
+		List<LocalDateTime> freeSlots = new LinkedList<LocalDateTime>();
+		List<LocalDateTime> busySlots = orderRepo.findFreeSlots();
+		LocalDateTime endDay = LocalDateTime.now();
+		while(endDay.isBefore(LocalDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
+			//endDay = endDay.withHour(endDay.getHour()+1).withMinute(0);
+			while(endDay.getHour() <= 18) {
+				endDay = endDay.withHour(endDay.getHour()+1).withMinute(0).withSecond(0).withNano(0);
+				if(!busySlots.contains(endDay)) {
+					freeSlots.add(endDay);
+				}
+			}
+			
+			endDay = endDay.plusDays(1);
+			endDay = endDay.withHour(9).withMinute(0).withSecond(0).withNano(0);		}
+		return freeSlots;
 	}
 	
 	@Override
@@ -95,10 +115,14 @@ public class OrderServiceImpl implements OrderService{
 		return OrderReadDto.convertToDto(orderRepo.getOrder(id));
 	}
 	
-	private float calculateSum(long goodId, int quantity) throws NotFoundException {
-		Good good = goodService.findById(goodId);
-		return ((float) (good.getPrice()-good.getPrice()*good.getDiscount()))*quantity;
-		
+	private float calculateSum(long goodId, int quantity) {
+		try {
+			Good good = goodService.findById(goodId);
+			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount())) * quantity;
+		} catch (NotFoundException e) {
+			return 0;
+		}
+
 	}
 
 	

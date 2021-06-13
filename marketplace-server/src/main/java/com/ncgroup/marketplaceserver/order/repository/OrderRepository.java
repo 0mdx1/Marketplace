@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.order.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.order.model.Order;
@@ -13,5 +14,6 @@ public interface OrderRepository {
 	Order saveOrderDetails(Order order);
 	OrderItem saveOrderGood(OrderItem item, long orderId);
 	void modifyStatus(long id, OrderStatus status);
+	List<LocalDateTime> findFreeSlots();
 
 }

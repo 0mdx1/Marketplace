@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.order.repository.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
+import com.ncgroup.marketplaceserver.order.model.mapper.DateRowMapper;
 import com.ncgroup.marketplaceserver.order.model.mapper.OrderItemRowMapper;
 import com.ncgroup.marketplaceserver.order.model.mapper.OrderRowMapper;
 import com.ncgroup.marketplaceserver.order.repository.OrderRepository;
@@ -45,6 +47,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 	
 	@Value("${order.update-status}")
 	private String updateStatusQuery;
+	
+	@Value("${order.find-free-slots}")
+	private String selectFreeSlots;
 	
 	
 	@Autowired
@@ -103,14 +108,18 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 	@Override
 	public OrderItem saveOrderGood(OrderItem item, long orderId) {
-		/*SqlParameterSource itemParams = new MapSqlParameterSource()
-				.addValue("goods_id", item.getGoodId())
+		SqlParameterSource itemParams = new MapSqlParameterSource()
+				.addValue("goods_id", item.getGood().getId())
 				.addValue("order_id", orderId)
 				.addValue("quantity", item.getQuantity())
-				.addValue("sum", item.getSum());
+				.addValue("sum", item.getPrice());
 		namedParameterJdbcTemplate.update(insertItemQuery, itemParams);
-		return item;*/
-		return null;
+		return item;
+	}
+	
+	@Override
+	public List<LocalDateTime> findFreeSlots() {
+		return jdbcTemplate.query(selectFreeSlots, new DateRowMapper());
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {

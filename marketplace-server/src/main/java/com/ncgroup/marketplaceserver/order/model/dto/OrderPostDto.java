@@ -16,13 +16,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Builder
-/*@AllArgsConstructor
-@NoArgsConstructor*/
+@AllArgsConstructor
+@NoArgsConstructor
+@Slf4j
 public class OrderPostDto {
-	/*private String email;
 	private String name;
 	private String surname;
 	private String phone;
@@ -36,6 +37,7 @@ public class OrderPostDto {
 	private List<ShoppingCartItemCreateDto> items;
 	
 	public static Order toOrder(OrderPostDto orderDto) {
+		log.info(orderDto.toString()); 
 		Order order = Order.builder()
 				.user(
 						User.builder()
@@ -52,17 +54,13 @@ public class OrderPostDto {
 				.totalSum(orderDto.getTotalSum())
 				.discountSum(orderDto.getDiscountSum())
 				.build();
-		
-		if(!StringUtils.isBlank(orderDto.email)) {
-			order.getUser().setEmail(orderDto.getEmail());
-		}
-		
+		log.info(order.toString()); 
 		List<OrderItem> orderItems = new LinkedList<>();
 		for(ShoppingCartItemCreateDto cartItem : orderDto.getItems()) {
-			orderItems.add(ShoppingCartItemCreateDto.toOrderItem(cartItem));
+			orderItems.add(ShoppingCartItemCreateDto.convertFromDto(cartItem));
 		}
 		order.setItems(orderItems);
 		
 		return order;
-	}*/
+	}
 }

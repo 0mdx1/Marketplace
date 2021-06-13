@@ -1,11 +1,16 @@
 package com.ncgroup.marketplaceserver.order.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
+import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.service.OrderService;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
@@ -64,9 +71,17 @@ public class OrderController {
 		return ResponseEntity.noContent().build(); 
 	}
 	
-	/*@PostMapping
-	public ResponseEntity<Void> saveOrder(@RequestBody OrderPostDto order) {
-		
-	}*/
-
+	@GetMapping("/freeslots")
+	public ResponseEntity<List<LocalDateTime>> getFreeSlots() {
+		return new ResponseEntity<>(orderService.getFreeSlots(), HttpStatus.OK);
+	}
+	
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<OrderReadDto> saveOrder(
+			@RequestHeader(value = "Authorization", required = false) String token,
+			@RequestBody OrderPostDto order) {
+		log.info("HERE " + order.toString());
+		return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
+	}
+	
 }

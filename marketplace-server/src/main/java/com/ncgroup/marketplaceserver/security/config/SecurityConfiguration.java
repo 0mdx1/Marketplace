@@ -79,7 +79,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
 		web.ignoring()
 			.antMatchers("/swagger/swagger-ui/**", "/v3/api-docs/**")
 			.antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password")
-			.antMatchers("/api/confirm-passreset/**", "/api/confirm-passcreate/**", "/api/setnewpassword/**");
+			.antMatchers("/api/confirm-passreset/**", "/api/confirm-passcreate/**", "/api/setnewpassword/**")
+			.antMatchers("/api/orders/freeslots");
 	}
 
     @Bean

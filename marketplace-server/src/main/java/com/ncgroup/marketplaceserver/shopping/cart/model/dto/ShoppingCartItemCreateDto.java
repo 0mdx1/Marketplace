@@ -26,4 +26,16 @@ public class ShoppingCartItemCreateDto {
         shoppingCartItem.setQuantity(quantity);
         shoppingCartItem.setAddingTime(addingTime);
     }
+    
+    public static OrderItem convertFromDto(ShoppingCartItemCreateDto itemDto) {
+    	return OrderItem
+    			.builder()
+    			.good(Good
+    					.builder()
+    					.id(itemDto.getGoodsId())
+    					.build()
+    					)
+    			.quantity(itemDto.getQuantity())
+    			.build();
+    }
 }
