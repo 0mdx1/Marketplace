@@ -5,14 +5,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
+import {HomeComponent} from './_components/home/home.component';
 import {AuthInterceptor} from './_auth/auth.interceptor';
 import {AuthService} from './_auth/auth.service';
 import {AuthGuardService} from './_auth/auth.guard.service';
 import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
 import {RoleGuardService} from './_auth/auth.guard.role.service';
 import {HttpConfigInterceptor} from './_interceptor/httpconfig.interceptor';
-import {CartComponent} from "./cart/cart.component";
+import {CartComponent} from "./_components/cart/cart.component";
 import { SystemAccountsModule } from './system-accounts/system-accounts.module';
 import {
   BrowserAnimationsModule,
@@ -21,7 +21,8 @@ import {
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
-import { AlertComponent } from './alert/alert.component';
+import { AlertComponent } from './_components/alert/alert.component';
+import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -38,7 +39,7 @@ import { AlertComponent } from './alert/alert.component';
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent],
+  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent, ProductComparisonComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

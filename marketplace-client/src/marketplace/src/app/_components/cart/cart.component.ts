@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {CartService} from "../_services/cart/cart.service";
-import {CartItem} from "../_models/cart-item.model";
-import {CartValidatorService} from "../_services/cart/cart-validator.service";
+import {CartService} from "../../_services/cart/cart.service";
+import {CartItem} from "../../_models/cart-item.model";
+import {CartValidatorService} from "../../_services/cart/cart-validator.service";
 import {catchError} from "rxjs/operators";
-import {HttpErrorHandlerService} from "../_services/http-error-handler.service";
+import {HttpErrorHandlerService} from "../../_services/http-error-handler.service";
 
 @Component({
   selector: 'mg-cart',
