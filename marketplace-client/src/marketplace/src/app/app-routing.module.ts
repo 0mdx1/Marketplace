@@ -7,6 +7,8 @@ import { Role } from './_models/role';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
 import {ProductComparisonComponent} from "./_components/product-comparison/product-comparison.component";
+import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
+import {CreatePasswordComponent} from "./account/create-password/create-password.component";
 
 const accountModule = () =>
   import('./account/account.module').then(
@@ -53,6 +55,7 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'home'
   },
+
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
