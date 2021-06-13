@@ -16,11 +16,12 @@ export class ProductComponent implements OnInit {
     private cartService: CartService,
     @Inject(LimitedProductComparisonService)private comparisonService: ProductComparisonService,
   ) {}
-  product: Product = new Product(0, '', '', 0, 0, '', 0, false, '', '');
+  product: Product = new Product
+  (0, '', '', 0, 0, '', 0, false, '', '');
 
   ngOnInit(): void {
-    this.service.getProduct().subscribe((result: Product) => {
-      this.product = result;
+    this.service.getProduct().subscribe((response: Product) => {
+      this.product = response;
     });
   }
 

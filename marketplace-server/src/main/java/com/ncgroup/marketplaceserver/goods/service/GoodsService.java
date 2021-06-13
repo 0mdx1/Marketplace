@@ -12,10 +12,9 @@ public interface GoodsService {
     Good edit(GoodDto goodDto, long id) throws NotFoundException;
     Good findById(long id) throws NotFoundException;
 
-    Map<String, Object> display(Optional<String> filter, Optional<String> category,
-                                Optional<String> minPrice, Optional<String> maxPrice,
-                                Optional<String> sortBy, Optional<String> sortDirection,
-                                Optional<Integer> page) throws NotFoundException;
+    Map<String, Object> display
+            (String filter, String category, String minPrice, String maxPrice,
+             String sortBy, String sortDirection, Integer page) throws NotFoundException;
 
     List<String> getCategories() throws NotFoundException;
 }

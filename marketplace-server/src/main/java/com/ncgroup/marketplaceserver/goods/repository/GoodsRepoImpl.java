@@ -9,7 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,10 +30,13 @@ import java.util.Optional;
 public class GoodsRepoImpl implements GoodsRepository {
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GoodsRepoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public GoodsRepoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                         JdbcTemplate jdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Value("${firm.find-by-name}")
@@ -197,6 +201,18 @@ public class GoodsRepoImpl implements GoodsRepository {
         return Optional.ofNullable(good);
     }
 
+
+    //TODO: WHAT TO DO?
+    public int countGoods(String query) {
+        try {
+            return jdbcTemplate.queryForObject(query, Integer.class);
+        }
+        catch (NullPointerException e) {
+            return 0;
+        }
+    }
+
+
     @Override
     public List<Good> display(String query) {
         return namedParameterJdbcTemplate.query(
@@ -208,9 +224,9 @@ public class GoodsRepoImpl implements GoodsRepository {
     @Value("${categories.get}")
     String getCategories;
     @Override
-    public List<String> getCategories() throws NotFoundException{
-        List<String> res = namedParameterJdbcTemplate.query(getCategories,
-                (resultSet, i) -> resultSet.getString("name"));
+    public List<String> getCategories() throws NotFoundException {
+        List<String> res = namedParameterJdbcTemplate
+                .query(getCategories, (resultSet, i) -> resultSet.getString("name"));
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;

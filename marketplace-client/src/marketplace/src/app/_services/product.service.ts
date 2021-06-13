@@ -65,7 +65,8 @@ export class ProductService {
     return params;
   }
 
-  private addQueryParams(filter: Filter, search: string, page: number): string {
+  private addQueryParams
+  (filter: Filter, search: string, page: number): string {
     //filter = this.validateFilter(filter);
     let currentUrl = this.router.url.split('?')[0];
     if (!this.isBlank(search)) {
@@ -79,7 +80,7 @@ export class ProductService {
           direction: filter.direction,
           page: page,
           search: search,
-        },
+        }
       });
       currentUrl =
         currentUrl +

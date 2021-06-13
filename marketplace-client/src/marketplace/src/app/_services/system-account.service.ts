@@ -149,7 +149,7 @@ export class SystemAccountService {
     return statusList;
   }
 
-  //checks whether string blank,null or undefined
+  //checks whether string blank, null or undefined
   private isBlank(str: string): boolean {
     return !str || /^\s*$/.test(str);
   }

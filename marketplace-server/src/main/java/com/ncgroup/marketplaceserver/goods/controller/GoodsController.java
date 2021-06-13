@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -50,20 +49,20 @@ public class GoodsController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> display(
-            @RequestParam("name")
-                    Optional<String> name,
-            @RequestParam("category")
-                    Optional<String> category,
-            @RequestParam("minPrice")
-                    Optional<String> minPrice,
-            @RequestParam("maxPrice")
-                    Optional<String> maxPrice,
-            @RequestParam("sort")
-                    Optional<String> sortBy,
-            @RequestParam("direction") // ASC or DESC
-                    Optional<String> sortDirection,
-            @RequestParam("page")
-                    Optional<Integer> page) throws NotFoundException {
+            @RequestParam(value = "name", required = false)
+                    String name,
+            @RequestParam(value = "category", required = false)
+                    String category,
+            @RequestParam(value = "minPrice", required = false)
+                    String minPrice,
+            @RequestParam(value = "maxPrice", required = false)
+                    String maxPrice,
+            @RequestParam(value = "sort", required = false)
+                    String sortBy,
+            @RequestParam(value = "direction", required = false) // ASC or DESC
+                    String sortDirection,
+            @RequestParam(value = "page", required = false)
+                    Integer page) throws NotFoundException {
         return new ResponseEntity<>(
                 service.display(name, category, minPrice, maxPrice, sortBy,
                                 sortDirection, page), HttpStatus.OK);

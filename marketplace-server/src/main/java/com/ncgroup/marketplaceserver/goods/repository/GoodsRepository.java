@@ -16,5 +16,6 @@ public interface GoodsRepository {
 
     List<Good> display(String query);
 
+    int countGoods(String query);
     List<String> getCategories();
 }
