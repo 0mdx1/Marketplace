@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ncgroup.marketplaceserver.order.model.OrderStatus;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.service.OrderService;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 
 @RequestMapping("/api/orders")
@@ -51,6 +53,11 @@ public class OrderController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(orderService.getOrder(id), HttpStatus.OK);
+	}
+	
+	@PostMapping("/{id}/status")
+	public ResponseEntity<OrderReadDto> modifyStatus(@PathVariable long id) {
+		return new ResponseEntity<>(orderService.modifyStatus(id), HttpStatus.OK);
 	}
 	
 	public ResponseEntity<Void> validateCart(@Valid List<ShoppingCartItemCreateDto> shoppingCart) {

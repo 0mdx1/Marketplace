@@ -10,10 +10,12 @@ import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
+import com.ncgroup.marketplaceserver.order.model.OrderStatus;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.repository.OrderRepository;
 import com.ncgroup.marketplaceserver.order.service.OrderService;
+import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
@@ -80,10 +82,25 @@ public class OrderServiceImpl implements OrderService{
 		return null;
 	}
 	
+	@Override
+	public OrderReadDto modifyStatus(long id) {
+		Order order = orderRepo.getOrder(id);
+		if(order.getStatus().equals(OrderStatus.SUBMITTED)) {
+			orderRepo.modifyStatus(id, OrderStatus.IN_DELIVERY);
+			order.setStatus(OrderStatus.IN_DELIVERY);
+		} else if (order.getStatus().equals(OrderStatus.IN_DELIVERY)) {
+			orderRepo.modifyStatus(id, OrderStatus.DELIVERED);
+			order.setStatus(OrderStatus.DELIVERED);
+		}
+		return OrderReadDto.convertToDto(orderRepo.getOrder(id));
+	}
+	
 	private float calculateSum(long goodId, int quantity) throws NotFoundException {
 		Good good = goodService.findById(goodId);
 		return ((float) (good.getPrice()-good.getPrice()*good.getDiscount()))*quantity;
 		
 	}
+
+	
 
 }

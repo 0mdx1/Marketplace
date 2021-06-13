@@ -19,7 +19,10 @@ import com.ncgroup.marketplaceserver.order.model.mapper.OrderItemRowMapper;
 import com.ncgroup.marketplaceserver.order.model.mapper.OrderRowMapper;
 import com.ncgroup.marketplaceserver.order.repository.OrderRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Repository
+@Slf4j
 public class OrderRepositoryImpl implements OrderRepository {
 	
 	private JdbcTemplate jdbcTemplate;
@@ -39,6 +42,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 	
 	@Value("${order.select-order-goods}")
 	private String selectOrderItems;
+	
+	@Value("${order.update-status}")
+	private String updateStatusQuery;
 	
 	
 	@Autowired
@@ -89,8 +95,10 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 	@Override
 	public void modifyStatus(long id, OrderStatus status) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(status);
+		Object[] params = {status.toString(), id};
+		log.info(status.toString());
+		jdbcTemplate.update(updateStatusQuery, params);
 	}
 
 	@Override
