@@ -48,6 +48,9 @@ public class UserRepositoryImpl implements UserRepository {
 	@Value("${user.insert}")
 	private String insertUserQuery;
 	
+	@Value("${user.insert-without-credentials}")
+	private String insertUserWithoutCredentialsQuery;
+	
 	@Value("${user.update-last-failed-auth}")
 	private String updateLastFailedAuthQuery;
 	
@@ -114,6 +117,18 @@ public class UserRepositoryImpl implements UserRepository {
 				.addValue("phone", user.getPhone());
 
 		namedParameterJdbcTemplate.update(insertUserQuery, userParameters, userHolder);
+		user.setId(userHolder.getKey().longValue());
+		return user;
+	}
+	
+	@Override
+	public User saveWithoutCredentials(User user) {
+		KeyHolder userHolder = new GeneratedKeyHolder();
+		SqlParameterSource userParameters = new MapSqlParameterSource()
+				.addValue("name", user.getName())
+				.addValue("surname", user.getSurname())
+				.addValue("phone", user.getPhone());
+		namedParameterJdbcTemplate.update(insertUserWithoutCredentialsQuery, userParameters, userHolder);
 		user.setId(userHolder.getKey().longValue());
 		return user;
 	}

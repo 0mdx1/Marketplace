@@ -1,6 +1,7 @@
-package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
+  package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
 import com.ncgroup.marketplaceserver.goods.model.Good;
+import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.Data;
 import javax.validation.constraints.Min;
