@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Role;
@@ -9,7 +10,7 @@ import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import javax.mail.MessagingException;
 
 public interface UserService {
-    UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException;
+    UserDto register(String name, String surname, String email, String password, String phone, LocalDate birthday) throws MessagingException;
 
     UserDto enableUser(String link);
 
