@@ -47,28 +47,28 @@ INSERT INTO goods(prod_id, firm_id, price, unit, discount,
 (13, 1, 200, 'ITEM', 50, null, true, null, null, 'Casual Roshen Banana', 40),
 (14, 1, 70, 'ITEM', 50, null, true, null, null, 'Casual Roshen Banana', 40);
 
-INSERT INTO person 
-VALUES (4, null, 'User', 'Surname', '+380671234567', null);
+--INSERT INTO person 
+--VALUES (4, null, 'User', 'Surname', '+380671234567', null);
 
-INSERT INTO credentials
-VALUES(3, 3, 'courier@gmail.com', '$2a$10$KISUA3yCJwzcxASjBHR5au/ZTKfn0dq0M25X.bB/wXtXifXpeaM1e',
-	 true, 0, null, null, null);
+--INSERT INTO credentials
+--VALUES(3, 3, 'courier@gmail.com', '$2a$10$KISUA3yCJwzcxASjBHR5au/ZTKfn0dq0M25X.bB/wXtXifXpeaM1e',
+--	 true, 0, null, null, null);
 
-INSERT INTO person
-VALUES(3, 3, 'Courier Name', 'Courier Surname', null, null);
+--INSERT INTO person
+--VALUES(3, 3, 'Courier Name', 'Courier Surname', null, null);
 
-INSERT INTO order_details
-VALUES(1, 4, 3, '2021-07-11 18:00', 'address', 'SUBMITTED', 'comment', false, 20, 15);
-INSERT INTO order_details
-VALUES(2, 4, 3, '2021-07-11 16:00', 'address', 'SUBMITTED', 'comment', true, 20, 15);
+--INSERT INTO order_details
+--VALUES(1, 4, 3, '2021-07-11 18:00', 'address', 'SUBMITTED', 'comment', false, 20, 15);
+--INSERT INTO order_details
+--VALUES(2, 4, 3, '2021-07-11 16:00', 'address', 'SUBMITTED', 'comment', true, 20, 15);
 
-INSERT INTO order_goods(goods_id, order_id, quantity, sum)
-VALUES(2, 1, 3, 5),
-(3, 1, 3, 5),
-(4, 1, 3, 5),
-(5, 1, 3, 5);
+--INSERT INTO order_goods(goods_id, order_id, quantity, sum)
+--VALUES(2, 1, 3, 5),
+--(3, 1, 3, 5),
+--(4, 1, 3, 5),
+--(5, 1, 3, 5);
 
-INSERT INTO order_goods(goods_id, order_id, quantity, sum)
-VALUES(2, 2, 3, 5),
-(3, 2, 3, 5),
-(5, 2, 3, 5);
+--INSERT INTO order_goods(goods_id, order_id, quantity, sum)
+--VALUES(2, 2, 3, 5),
+--(3, 2, 3, 5),
+--(5, 2, 3, 5);
