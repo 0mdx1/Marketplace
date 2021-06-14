@@ -30,4 +30,13 @@ public class S3Storage implements FileStorage{
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
+
+    @Override
+    public void delete(String path, String filename) {
+        try {
+            amazonS3.deleteObject(path, filename);
+        } catch (AmazonServiceException e) {
+            throw new IllegalStateException("Failed to upload the file", e);
+        }
+    }
 }

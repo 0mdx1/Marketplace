@@ -55,4 +55,9 @@ public class MediaServiceImpl implements MediaService{
     public String getResourceUrl(String filename) {
         return String.format("https://%s.s3.%s.amazonaws.com/%s",bucketName,bucketRegion,filename);
     }
+
+    @Override
+    public void delete(String filename) {
+        this.fileStorage.delete(bucketName,filename);
+    }
 }

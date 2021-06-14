@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.file.controller;
 
+import com.ncgroup.marketplaceserver.file.model.dto.FileMetadataReadDto;
 import com.ncgroup.marketplaceserver.file.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,11 @@ public class MediaController {
         path = "/",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile file){
-        return new ResponseEntity<>(mediaService.getResourceUrl(mediaService.upload(file)), HttpStatus.OK);
+    public ResponseEntity<FileMetadataReadDto> upload(@RequestParam("file") MultipartFile file){
+        String filename = mediaService.upload(file);
+        return new ResponseEntity<>(
+                new FileMetadataReadDto(filename,mediaService.getResourceUrl(filename)),
+                HttpStatus.OK
+        );
     }
 }
