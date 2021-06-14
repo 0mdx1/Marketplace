@@ -111,7 +111,8 @@ public class UserRepositoryImpl implements UserRepository {
 				.addValue("credentials_id", credentialsHolder.getKey().longValue())
 				.addValue("name", user.getName())
 				.addValue("surname", user.getSurname())
-				.addValue("phone", user.getPhone());
+				.addValue("phone", user.getPhone())
+				.addValue("birthday", user.getBirthday());
 
 		namedParameterJdbcTemplate.update(insertUserQuery, userParameters, userHolder);
 		user.setId(userHolder.getKey().longValue());
