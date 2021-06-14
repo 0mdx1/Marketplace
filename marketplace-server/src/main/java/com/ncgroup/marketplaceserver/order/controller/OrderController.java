@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
@@ -75,6 +76,17 @@ public class OrderController {
 	@GetMapping("/freeslots")
 	public ResponseEntity<List<LocalDateTime>> getFreeSlots() {
 		return new ResponseEntity<>(orderService.getFreeSlots(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/userinfo")
+	public ResponseEntity<UserDisplayInfoDto> getUserInfoForOrder(
+			@RequestHeader(value = "Authorization", required = false) String token) {
+		UserDisplayInfoDto userInfo = orderService.getUserInfoForOrder(token);
+		if(userInfo == null) {
+			return new ResponseEntity<UserDisplayInfoDto>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<UserDisplayInfoDto>(userInfo, HttpStatus.OK);
+		
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -14,6 +14,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
+import com.ncgroup.marketplaceserver.model.mapper.UserDisplayInfoRowMapper;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
@@ -54,6 +56,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 	
 	@Value("${order.find-free-courier-id}")
 	private String findFreeCourierIdQuery;
+	
+	@Value("${user.find-info-for-order}")
+	private String findUserInfoForOrderQuery;
 	
 	
 	@Autowired
@@ -132,6 +137,13 @@ public class OrderRepositoryImpl implements OrderRepository {
 		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);
 		log.info(timeSlot.toString());
 		return jdbcTemplate.queryForObject(findFreeCourierIdQuery, Long.class, new Object[] {timeSlot.toString().replace('T', ' ')+":00"});
+	}
+	
+	@Override
+	public UserDisplayInfoDto findUserForOrder(String email) {
+		List<UserDisplayInfoDto> users = jdbcTemplate
+				.query(findUserInfoForOrderQuery, new UserDisplayInfoRowMapper(), new Object[] {email});
+		return users.isEmpty() ? null : users.get(0);
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {

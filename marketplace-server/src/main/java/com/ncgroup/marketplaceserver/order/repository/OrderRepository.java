@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.order.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
@@ -16,5 +17,6 @@ public interface OrderRepository {
 	void modifyStatus(long id, OrderStatus status);
 	List<LocalDateTime> findFreeSlots();
 	long getFreeCourierId(LocalDateTime timeSlot);
+	UserDisplayInfoDto findUserForOrder(String email);
 
 }

@@ -12,6 +12,7 @@ import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
@@ -23,9 +24,11 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 
-import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService{
 	
 	private OrderRepository orderRepo;
@@ -95,7 +98,7 @@ public class OrderServiceImpl implements OrderService{
 				int oldQunatity = goodService.findById(item.getGood().getId()).getQuantity();
 				goodService.updateQuantity(item.getGood().getId(), oldQunatity-item.getQuantity());
 			} catch (NotFoundException e) {
-				Log.warn(e.getMessage());
+				log.warn(e.getMessage());
 			}
 			item.setPrice(calculateSum(item.getGood().getId(), item.getQuantity()));
 			orderRepo.saveOrderGood(item, order.getId());
@@ -133,6 +136,14 @@ public class OrderServiceImpl implements OrderService{
 			order.setStatus(OrderStatus.DELIVERED);
 		}
 		return OrderReadDto.convertToDto(orderRepo.getOrder(id));
+	}
+	
+	@Override
+	public UserDisplayInfoDto getUserInfoForOrder(String token) {
+		if(token == null) return null;
+		token = token.split(" ")[1];
+		String email = jwtProvider.getSubject(token); 
+		return orderRepo.findUserForOrder(email);
 	}
 	
 	private float calculateSum(long goodId, int quantity) {
