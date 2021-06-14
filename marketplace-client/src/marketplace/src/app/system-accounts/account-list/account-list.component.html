@@ -31,7 +31,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let courier of users" routerLink="[/couriers, courier.id]" class="pointer">
+                      <tr *ngFor="let courier of users" (click)="changeInfo(courier.id, courier.role)" class="pointer">
                         <td class="text-nowrap align-middle">{{courier.name}}</td>
                         <td class="text-nowrap align-middle">{{courier.surname}}</td>
                         <td class="text-nowrap align-middle">{{courier.phone}}</td>

@@ -67,6 +67,7 @@ public class OrderController {
 		return new ResponseEntity<>(orderService.modifyStatus(id), HttpStatus.OK);
 	}
 	
+	@GetMapping("/validate")
 	public ResponseEntity<Void> validateCart(@Valid List<ShoppingCartItemCreateDto> shoppingCart) {
 		return ResponseEntity.noContent().build(); 
 	}
@@ -79,7 +80,7 @@ public class OrderController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<OrderReadDto> saveOrder(
 			@RequestHeader(value = "Authorization", required = false) String token,
-			@RequestBody OrderPostDto order) {
+			@RequestBody @Valid OrderPostDto order) {
 		log.info("HERE " + order.toString());
 		return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
 	}

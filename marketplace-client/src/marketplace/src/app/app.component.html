@@ -35,9 +35,9 @@
       <a>DELIVERY</a>
     </div>
     <div class="header-right">
-      <div class="compare-icon">
+      <div routerLink="products/comparison" class="compare-icon">
         <i class="fas fa-balance-scale"></i>
-        <div class="number-circle">15</div>
+        <div *ngIf="comparedProd.length>0" class="number-circle">{{comparedProd.length}}</div>
       </div>
       <button routerLink="cart" class="cart-btn">CART</button>
     </div>
@@ -45,6 +45,7 @@
 </div>
 <div class="content">
   <router-outlet></router-outlet>
+  <app-alert></app-alert>
 </div>
 <div class="footer">
   <p>&#169;NetCracker 2021</p>

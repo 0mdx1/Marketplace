@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {CartService} from "../_services/cart/cart.service";
-import {CartItem} from "../_models/cart-item.model";
+import {CartService} from "../../_services/cart/cart.service";
+import {CartItem} from "../../_models/cart-item.model";
+import {CartValidatorService} from "../../_services/cart/cart-validator.service";
+import {catchError} from "rxjs/operators";
+import {HttpErrorHandlerService} from "../../_services/http-error-handler.service";
 
 @Component({
   selector: 'mg-cart',
@@ -9,7 +12,11 @@ import {CartItem} from "../_models/cart-item.model";
 })
 export class CartComponent implements OnInit {
   items: CartItem[] = [];
-  constructor(private cartService: CartService){}
+  constructor(
+    private cartService: CartService,
+    private cartValidatorService: CartValidatorService,
+    private errorHandler: HttpErrorHandlerService
+  ){}
 
   ngOnInit() {
     this.items = this.cartService.getCart().getItems();
@@ -45,5 +52,17 @@ export class CartComponent implements OnInit {
 
   getPrice(cartItem: CartItem): number{
     return cartItem.goods.price-cartItem.goods.price*(cartItem.goods.discount/100);
+  }
+
+  checkout() {
+      this.cartValidatorService.validate(this.items)
+        .pipe(
+          catchError(err => {
+            return this.errorHandler.displayValidationError(err);
+          })
+        )
+        .subscribe({
+          next: ()=>console.log("Cart is valid"),
+        })
   }
 }

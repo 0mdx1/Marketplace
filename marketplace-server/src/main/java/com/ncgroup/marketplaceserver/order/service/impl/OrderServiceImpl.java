@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.model.Courier;
@@ -21,7 +22,6 @@ import com.ncgroup.marketplaceserver.order.service.OrderService;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
-import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
 
 import jdk.internal.org.jline.utils.Log;
 
@@ -136,12 +136,14 @@ public class OrderServiceImpl implements OrderService{
 	}
 	
 	private float calculateSum(long goodId, int quantity) {
+		
 		try {
 			Good good = goodService.findById(goodId);
 			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount())) * quantity;
 		} catch (NotFoundException e) {
 			return 0;
 		}
+		
 
 	}
 

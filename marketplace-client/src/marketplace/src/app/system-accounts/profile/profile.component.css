@@ -1,0 +1,232 @@
+/* общие параметры*/
+body{
+  background-color: #F5F7F7;
+  min-height:100vh;
+  width: 100%;
+}
+.container1 {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 95%;
+  min-height: 100%;
+}
+.container2 {
+  margin: 4% auto;
+  width: 100%;
+  max-width: 58%;
+  padding: 0 15px;
+  height: 700px;
+  background-color: white;
+}
+
+*, *:after, *:before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  transition: .5s ease-in-out;
+  /* добавим плавность переходов для всех элементов страницы*/
+}
+
+/* хедер*/
+.header{
+  width: 100%;
+  height: 8%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  position: relative;
+  margin-bottom: 30px;
+  padding: 7px 0;
+}
+
+nav{
+  display: flex;
+  height: auto;
+}
+nav ul{
+  margin-top: 20px;
+  margin-left: 25%;
+}
+.im_logo{
+  float: left;
+  width:76px;
+}
+.img_profile{
+  height:32px;
+}
+
+.nav-items{
+  float:right;
+}
+.nav-items li{
+  margin-left: 5vw;
+  display: inline-block;
+
+  font-family: 'Roboto', Roboto, serif; /* Гарнитура текста */
+  font-size: 130%;
+
+}
+
+.nav-items a{
+  text-decoration: none;
+  list-style-type: none;
+  color: black;
+}
+
+.nav-items a:hover {
+  color: #007dc3;
+}
+
+ul li:last-child {
+  position: absolute;
+  float: right;
+  margin-left: 20vw;
+}
+
+/* класс, который будет добавлен в верхнему меню при нажатии на кнопку и покажет скрытое меню*/
+.nav-items.active {
+  max-height: 123px;
+}
+
+
+/* боди*/
+
+h1,h2{
+  margin-top: 10px;
+  font-size: 200%;
+  margin-left: 50px;
+}
+
+.pers-info{
+  padding-top: 2%;
+  margin-left: 4%;
+}
+hr{
+
+  color: #007dc3;
+  border: 1px solid #007dc3;
+}
+
+.pers-line{
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
+.info-line{
+  min-width: 150px;
+  width: 21vw;
+  margin: 0px;
+}
+
+.info-text{
+  width: 150px;
+  margin-left: 5%;
+  font-size: 120%;
+  margin-bottom: 3px;
+}
+
+.note{
+  color: #959191;
+  margin: 0px;
+}
+#note-heading{
+  margin-top: 1%;
+  margin-left: 7%;
+  margin-bottom: 5px;
+}
+
+#contact-details{
+  margin-top: 4%;
+}
+
+#full-pers-info{
+  margin-top: 2%;
+  }
+.pers{
+  margin-top: 3%;
+  margin-left: 7%;
+  margin-right: 5%;
+  display: inline-block;
+}
+
+/* медиа запросы*/
+
+@media (max-width: 768px) {
+  /* показываем кнопку для переключения верхней навигации */
+  .container2{
+    max-width: 100%;
+  }
+  .current {
+    display: block;
+  }
+
+  .container1 {
+    position: relative;
+    min-height: 40px;
+  }
+
+  .container1 ul {
+    width: 180px;
+    padding: 5px 0;
+    position: absolute;
+    float: right;
+    top: 0;
+    left: 0;
+    border: solid 1px #aaa;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+
+
+  .container1 li {
+    display: none; /* скройте все элементы &lt;li&gt; */
+    margin: 0;
+  }
+
+  .container1 .current {
+    display: block; /* показывайте только текущий элемент &lt;li&gt; */
+  }
+
+  .container1 a {
+    display: block;
+    padding: 5px 5px 5px 32px;
+    text-align: left;
+  }
+
+  .container1 ul li:last-child{
+    display: none;
+  }
+  .container1 .current a {
+    background: none;
+    color: #666;
+  }
+  /* при проведении мышью */
+  .container1 ul:hover {
+    background-image: none;
+  }
+  .container1 ul:hover li {
+    display: block;
+    margin: 0 0 5px;
+  }
+
+  /* по правой стороне */
+  .container1.right ul {
+    left: auto;
+    right: 0;
+  }
+
+}
+
+  @media (max-width: 480px) {
+    /* отменяем обтекание для логотипа и выравниваем по центру*/
+    .im_logo {
+      float: none;
+
+    }
+
+    /* позиционируем меню на увеличившуюся высоту шапки */
+    .nav-items {
+      top: 118px;
+    }
+
+  }
