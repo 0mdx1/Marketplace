@@ -51,10 +51,8 @@ public class Good {
 
     public void setProperties(GoodDto goodDto, Long id) {
         this.setId(id);
-
        //this.setShippingDate(goodDto.getShippingDate());
         this.setUnit(goodDto.getUnit());
-
         this.setGoodName(goodDto.getGoodName().toLowerCase());
         this.setFirmName(goodDto.getFirmName().toLowerCase());
         this.setQuantity(goodDto.getQuantity());

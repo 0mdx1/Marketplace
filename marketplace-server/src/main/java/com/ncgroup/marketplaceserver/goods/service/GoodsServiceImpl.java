@@ -44,13 +44,10 @@ public class GoodsServiceImpl implements GoodsService {
         Good good = this.findById(id); // pull the good object if exists
         String oldImage = good.getImage();
         String newImage = goodDto.getImage();
-        log.info("Old image: "+oldImage);
-        log.info("New image: "+newImage);
-        if(!oldImage.isEmpty() && !oldImage.equals(newImage)){
+        if(!newImage.isEmpty() && !oldImage.isEmpty() && !oldImage.equals(newImage)){
             log.info("Deleting old image");
             mediaService.delete(oldImage);
         }
-        goodDto.setImage(newImage);
         good.setProperties(goodDto, id);
         repository.editGood(goodDto, id); // push the changed good object
         good.setImage(mediaService.getResourceUrl(good.getImage()));
