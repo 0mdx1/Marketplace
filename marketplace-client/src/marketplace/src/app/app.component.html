@@ -7,9 +7,11 @@
 <body>
 <div class="top-header">
   <div class="top-header-content">
-    <a routerLink="accounts/login">LOG IN</a>
+    <a *ngIf="!account.email" routerLink="accounts/login">LOG IN</a>
+    <p *ngIf="account.email" routerLink="accounts/login">{{account.email}}</p>
     <span>&#183;</span>
-    <a routerLink="accounts/register">CREATE ACCOUNT</a>
+    <a *ngIf="!account.email" routerLink="accounts/register">CREATE ACCOUNT</a>
+    <a *ngIf="account.email" (click)="logout()" routerLink="">LOGOUT</a>
   </div>
 </div>
 <div class="bot-header">

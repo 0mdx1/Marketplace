@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import Token from '../_models/jwt';
 import {Role} from '../_models/role';
+import {Account} from '../_models/account';
 import decode from 'jwt-decode';
 
 @Injectable({
@@ -25,7 +26,6 @@ export class AuthService {
       return false;
     }
     const decodedToken = decode<Token>(token);
-    console.log(decodedToken.authorities[0]+ " " + expectedRole);
     return decodedToken.authorities[0] ==  expectedRole;
   }
 
@@ -33,4 +33,23 @@ export class AuthService {
     if (this.jwtHelper.isTokenExpired(token)) { localStorage.removeItem('token'); }
     return this.jwtHelper.isTokenExpired(token);
   }
+
+  public getRole(): string | null {
+    const token: string  | null = localStorage.getItem('token');
+    if (!token){
+      return null;
+    }
+    return decode<Token>(token).authorities[0];
+  }
+
+  public getAccount(): Account | null {
+    const token: string  | null = localStorage.getItem('token');
+    if (!token){
+      return null;
+    }
+    const decodedToken = decode<Token>(token);
+    const account = new Account(decodedToken.sub, decodedToken.authorities[0]);
+    return account;
+  }
+
 }
