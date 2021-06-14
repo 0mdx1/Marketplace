@@ -1,11 +1,14 @@
 package com.ncgroup.marketplaceserver.order.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
@@ -13,6 +16,7 @@ import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
+import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
@@ -49,27 +53,36 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
-	public List<OrderReadDto> getCourierOrders(String token, int page) {
+	@Transactional
+	public Map<String, Object> getCourierOrders(String token, int page) {
 		token = token.split(" ")[1];
 		String email = jwtProvider.getSubject(token); //courier email
-		List<Order> orders = orderRepo.getOrders(
-				userService.findUserByEmail(email).getId(), 
-				page-1);
+		long courierId = userService.findUserByEmail(email).getId();
+		List<Order> orders = orderRepo.getOrders(courierId, page-1);
 		List<OrderReadDto> ordersDto = new LinkedList<>();
 		for(Order order : orders) {
 			ordersDto.add(OrderReadDto.convertToDto(order));
 		}
-		return ordersDto;
+		
+		int totalPages = orderRepo.getTotalPages(courierId);
+		
+		Map<String, Object> result = new HashMap<>();
+
+        result.put("orders", ordersDto);
+        result.put("page", page);
+        result.put("totalPages", totalPages % 10 == 0 ? totalPages / 10 : totalPages / 10 + 1);
+		return result;
 	}
 
 	@Override
 	public OrderReadDto getOrder(long id) {
 		Order order = orderRepo.getOrder(id);
 		if(order == null) return null;
-		return OrderReadDto.convertToDto(orderRepo.getOrder(id));
+		return OrderReadDto.convertToDto(order);
 	}
 
 	@Override
+	@Transactional
 	public OrderReadDto addOrder(OrderPostDto orderDto, String token)  {
 		Order order = OrderPostDto.toOrder(orderDto);
 		if(token != null) {
@@ -80,13 +93,21 @@ public class OrderServiceImpl implements OrderService{
 					order.getUser().getName(), order.getUser().getSurname(), order.getUser().getPhone()).getId();
 			order.getUser().setId(userId);
 		}
+		
+		long courierId = -1;
+		try {
+			courierId = orderRepo.getFreeCourierId(orderDto.getDeliveryTime());
+		} catch (Exception e) {
+			throw new NoCouriersException("Sorry, there are no free couriers for that time");
+		}
+		
 		order.setCourier(
 				Courier
 				.builder()
 				.user(
 						User
 						.builder()
-						.id(orderRepo.getFreeCourierId(orderDto.getDeliveryTime()))
+						.id(courierId)
 						.build()
 						)
 				.build()
@@ -126,16 +147,17 @@ public class OrderServiceImpl implements OrderService{
 	}
 	  
 	@Override
-	public OrderReadDto modifyStatus(long id) {
+	@Transactional
+	public OrderStatus modifyStatus(long id) {
 		Order order = orderRepo.getOrder(id);
 		if(order.getStatus().equals(OrderStatus.SUBMITTED)) {
 			orderRepo.modifyStatus(id, OrderStatus.IN_DELIVERY);
-			order.setStatus(OrderStatus.IN_DELIVERY);
+			return OrderStatus.IN_DELIVERY;
 		} else if (order.getStatus().equals(OrderStatus.IN_DELIVERY)) {
 			orderRepo.modifyStatus(id, OrderStatus.DELIVERED);
-			order.setStatus(OrderStatus.DELIVERED);
+			return OrderStatus.DELIVERED;
 		}
-		return OrderReadDto.convertToDto(orderRepo.getOrder(id));
+		return OrderStatus.DELIVERED;
 	}
 	
 	@Override
@@ -150,7 +172,7 @@ public class OrderServiceImpl implements OrderService{
 		
 		try {
 			Good good = goodService.findById(goodId);
-			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount())) * quantity;
+			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount()/100)) * quantity;
 		} catch (NotFoundException e) {
 			return 0;
 		}

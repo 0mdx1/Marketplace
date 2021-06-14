@@ -66,8 +66,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/courier")
                     .hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/orders/**")
-                	.hasRole("COURIER")
+                //.antMatchers(HttpMethod.GET, "/api/orders/**")
+                	//.hasRole("COURIER")
                 .and()
 
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)

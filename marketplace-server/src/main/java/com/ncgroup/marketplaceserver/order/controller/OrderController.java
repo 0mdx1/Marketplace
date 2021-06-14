@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
+import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
@@ -44,13 +46,10 @@ public class OrderController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<List<OrderReadDto>> getOrdersForCourier(
+	public ResponseEntity<Map<String, Object>> getOrdersForCourier(
 			@RequestHeader("Authorization") String token,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-		List<OrderReadDto> orders = orderService.getCourierOrders(token, page);
-		if(orders.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+		
 		return new ResponseEntity<>(orderService.getCourierOrders(token, page), HttpStatus.OK);
 	}
 	
@@ -64,7 +63,7 @@ public class OrderController {
 	}
 	
 	@PostMapping("/{id}/status")
-	public ResponseEntity<OrderReadDto> modifyStatus(@PathVariable long id) {
+	public ResponseEntity<OrderStatus> modifyStatus(@PathVariable long id) {
 		return new ResponseEntity<>(orderService.modifyStatus(id), HttpStatus.OK);
 	}
 	
@@ -89,12 +88,16 @@ public class OrderController {
 		
 	}
 	
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<OrderReadDto> saveOrder(
+	@PostMapping
+	public ResponseEntity<?> saveOrder(
 			@RequestHeader(value = "Authorization", required = false) String token,
 			@RequestBody @Valid OrderPostDto order) {
-		log.info("HERE " + order.toString());
-		return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
+		try {
+			return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
+		} catch(NoCouriersException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+		
 	}
 	
 }

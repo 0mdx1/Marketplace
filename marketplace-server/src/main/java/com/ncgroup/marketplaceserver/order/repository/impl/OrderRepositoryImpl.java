@@ -60,6 +60,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Value("${user.find-info-for-order}")
 	private String findUserInfoForOrderQuery;
 	
+	@Value("${order.total-pages}")
+	private String findTotalPages;
+	
 	
 	@Autowired
 	public OrderRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -135,8 +138,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 		log.info(timeSlot.toString().replace('T', ' ')+":00");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);
-		log.info(timeSlot.toString());
-		return jdbcTemplate.queryForObject(findFreeCourierIdQuery, Long.class, new Object[] {timeSlot.toString().replace('T', ' ')+":00"});
+		return jdbcTemplate.queryForObject(
+				findFreeCourierIdQuery, Long.class, new Object[] {timeSlot.toString().replace('T', ' ')+":00"});
 	}
 	
 	@Override
@@ -144,6 +147,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 		List<UserDisplayInfoDto> users = jdbcTemplate
 				.query(findUserInfoForOrderQuery, new UserDisplayInfoRowMapper(), new Object[] {email});
 		return users.isEmpty() ? null : users.get(0);
+	}
+	
+	public int getTotalPages(long courierId) {
+		return jdbcTemplate.queryForObject(
+				findTotalPages, Integer.class, new Object[] {courierId});
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {
