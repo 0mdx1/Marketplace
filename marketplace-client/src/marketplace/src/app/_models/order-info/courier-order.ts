@@ -1,18 +1,19 @@
 import {CartItem} from "../cart-item.model";
 import {UserDisplayInfo} from "./userDisplayInfo";
+import {Status} from "../status";
+import {OrderProductInfo} from "./orderProductInfo";
 
-export interface CourierOrder {
-  id: number;
-  user: UserDisplayInfo;
-  deliveryTime: string; // not number
-  address: string;
-  status: boolean;
-  comment: string;
-  disturb: boolean;
-  totalSum: number;
-  discountSum: number;
-  goods: CartItem[];
-
+export class CourierOrder {
+  id?: number;
+  user?: UserDisplayInfo;
+  deliveryTime?: string; // not number
+  status?: Status;
+  comment?: string;
+  disturb?: boolean;
+  totalSum?: number;
+  discountSum?: number;
+  goods?: OrderProductInfo[];
+  address?: string;
   // constructor(
   //   id: number,
   //   user: User,

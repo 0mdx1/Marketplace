@@ -26,6 +26,7 @@ import { AlertComponent } from './_components/alert/alert.component';
 import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 import { OrderListComponent } from './order-catalog/order-list/order-list.component';
 import { OrderComponent } from './order-catalog/order/order.component';
+//import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,7 @@ import { OrderComponent } from './order-catalog/order/order.component';
     ToastrModule.forRoot(),
   ],
 
-  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent, ProductComparisonComponent, OrderListComponent, OrderComponent],
+  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent, ProductComparisonComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

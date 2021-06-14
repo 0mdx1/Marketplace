@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subject} from "rxjs";
 import {CourierOrder} from "../_models/order-info/courier-order";
 import {environment} from "../../environments/environment";
 import {ActivatedRoute, Router} from "@angular/router";
-import {OrderDto} from "../_models/order-info/order-dto";
+import {OrderPage} from "../_models/order-info/order-page";
 import {catchError} from "rxjs/operators";
-import {AuthService} from "../_auth/auth.service";
+import {Status} from "../_models/status";
 
 const baseUrl = `${environment.apiUrl}`; // Is it ok?
 
@@ -17,12 +17,12 @@ export class OrderService {
 
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router,
-    private service: AuthService
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
-  public getOrders(page: number): Observable<OrderDto> {
+  public getPagedOrders(page: number): Observable<OrderPage> {
+
     let currentUrl = this.router.url.split('?')[0];
 
     this.router.navigate([currentUrl], {
@@ -31,10 +31,10 @@ export class OrderService {
       }
     });
 
-    return this.http.get<OrderDto>(baseUrl + '/orders', {
+    return this.http.get<OrderPage>(baseUrl + '/orders', {
       params: new HttpParams().set('page', page.toString())
     })
-      .pipe(catchError((error: any) => of(new OrderDto())));
+      .pipe(catchError((error: any) => of(new OrderPage())));
   }
 
   public getOrder(): Observable<CourierOrder> {
@@ -42,16 +42,12 @@ export class OrderService {
     (baseUrl + '/orders/' + this.getOrderId());
   }
 
-  /**
-   * for couriers & for orders
-   */
-
   private getOrderId(): string {
-    return this.route.snapshot.params['orderId'];
+    return this.activatedRoute.snapshot.params['orderId'];
   }
 
-  private getCourierMail(): string {
-    return this.route.snapshot.params['courierMail'];
+  public changeStatus(): Observable<Status> {
+    return this.http.get<Status>(baseUrl + '/orders/' + this.getOrderId() + '/status')
   }
 
 }

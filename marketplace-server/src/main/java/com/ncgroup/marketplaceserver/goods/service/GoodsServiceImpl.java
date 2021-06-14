@@ -102,7 +102,6 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
 
-
         if (sortBy != null) {
             if(sortBy.equals("price")) {
                 flexibleQuery.append(" ORDER BY goods.price");

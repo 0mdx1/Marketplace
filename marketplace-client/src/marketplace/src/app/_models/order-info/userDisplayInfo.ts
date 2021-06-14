@@ -3,7 +3,7 @@ export interface UserDisplayInfo {
   name: string;
   surname: string;
   phone: string;
-  address: string;
+  // address: string;
 
   // constructor(
   //   id: number,

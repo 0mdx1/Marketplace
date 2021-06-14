@@ -14,7 +14,8 @@ const baseUrl = `${environment.apiUrl}`;
   providedIn: 'root',
 })
 export class ProductService {
-  pageNumSource: Subject<number> = new Subject();
+
+  pageTotalSource: Subject<number> = new Subject();
   pageSource: Subject<number> = new Subject();
 
   constructor(
@@ -28,6 +29,8 @@ export class ProductService {
     search: string,
     page: number
   ): Observable<ProductDto> {
+    this.pageTotalSource.next()
+
     this.addQueryParams(filter, search, page);
     //get method to backend api
     return this.http
@@ -185,9 +188,9 @@ export class ProductService {
     );
   }
 
-  private notifyPageComponent(users: Observable<ProductDto>) {
-    users.subscribe((res) => {
-      this.pageNumSource.next(res.total);
+  private notifyPageComponent(products: Observable<ProductDto>) {
+    products.subscribe((res) => {
+      this.pageTotalSource.next(res.total);
       this.pageSource.next(res.current);
     });
   }

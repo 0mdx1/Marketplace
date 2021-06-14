@@ -22,6 +22,10 @@ const productCatalogModule = () =>
   import('./product-catalog/product-catalog.module').then(
     (x) => x.ProductCatalogModule
   );
+const orderCatalogModule = () =>
+  import('./order-catalog/order.module').then(
+    (x) => x.OrderModule
+  );
 
 const routes: Routes = [
   {
@@ -51,11 +55,14 @@ const routes: Routes = [
     loadChildren: productCatalogModule,
   },
   {
+    path: 'orders',
+    loadChildren: orderCatalogModule
+  },
+  {
     path: '**',
     pathMatch: 'full',
     redirectTo: 'home'
-  },
-
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

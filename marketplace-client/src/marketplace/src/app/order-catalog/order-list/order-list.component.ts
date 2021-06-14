@@ -1,44 +1,19 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {OrderDto} from "../../_models/order-info/order-dto";
+import {OrderPage} from "../../_models/order-info/order-page";
 import {OrderService} from "../../_services/order.service";
 import {Subscription} from "rxjs";
+import {Product} from "../../_models/products/product";
+import {CourierOrder} from "../../_models/order-info/courier-order";
 
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.css']
 })
-export class OrderListComponent implements OnInit, OnDestroy {
-  subscription!: Subscription;
-  orderDto: OrderDto = new OrderDto();
+export class OrderListComponent {
+  @Input() orders: CourierOrder[] = [];
 
   constructor(private service: OrderService) {
-  }
-
-  getOrders(): void {
-    this.subscription = this.service.getOrders(this.orderDto.page)
-      .subscribe((response: OrderDto) => {
-          this.orderDto = response;
-        }
-      )
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this.getOrders();
-  }
-
-  next(): void {
-    this.orderDto.page = this.orderDto.page + 1;
-    this.getOrders();
-  }
-
-  prev(): void {
-    this.orderDto.page = this.orderDto.page - 1;
-    this.getOrders();
   }
 
 }
