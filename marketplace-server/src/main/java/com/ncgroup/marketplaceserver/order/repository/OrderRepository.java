@@ -15,5 +15,6 @@ public interface OrderRepository {
 	OrderItem saveOrderGood(OrderItem item, long orderId);
 	void modifyStatus(long id, OrderStatus status);
 	List<LocalDateTime> findFreeSlots();
+	long getFreeCourierId(LocalDateTime timeSlot);
 
 }

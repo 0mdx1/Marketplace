@@ -1,17 +1,17 @@
-DROP TABLE order_goods;
-DROP TABLE order_details;
-DROP TABLE courier;
-DROP TABLE person;
-DROP TABLE credentials;
-DROP TABLE role;
-DROP TABLE shopping_cart_item;
-DROP TABLE goods;
-DROP TABLE firm;
-DROP TABLE product;
-DROP TABLE category;
+DROP TABLE IF EXISTS order_goods;
+DROP TABLE IF EXISTS order_details;
+DROP TABLE IF EXISTS courier;
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS credentials;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS shopping_cart_item;
+DROP TABLE IF EXISTS goods;
+DROP TABLE IF EXISTS firm;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS category;
 
-DROP TYPE delivery_status;
-DROP TYPE unit_type;
+DROP TYPE IF EXISTS delivery_status;
+DROP TYPE IF EXISTS unit_type;
 
 CREATE TABLE IF NOT EXISTS role
 (

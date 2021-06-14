@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.order.repository.impl;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Value("${order.find-free-slots}")
 	private String selectFreeSlots;
 	
+	@Value("${order.find-free-courier-id}")
+	private String findFreeCourierIdQuery;
+	
 	
 	@Autowired
 	public OrderRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -88,7 +92,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 				.addValue("courier_id", order.getCourier().getUser().getId())
 				.addValue("delivery_time", order.getDelieveryTime())
 				.addValue("address", order.getAddress())
-				.addValue("status", order.getStatus())
+				.addValue("status", order.getStatus().toString())
 				.addValue("comment", order.getComment())
 				.addValue("disturb", order.isDisturb())
 				.addValue("total_sum",  order.getTotalSum())
@@ -100,7 +104,6 @@ public class OrderRepositoryImpl implements OrderRepository {
 
 	@Override
 	public void modifyStatus(long id, OrderStatus status) {
-		System.out.println(status);
 		Object[] params = {status.toString(), id};
 		log.info(status.toString());
 		jdbcTemplate.update(updateStatusQuery, params);
@@ -120,6 +123,15 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Override
 	public List<LocalDateTime> findFreeSlots() {
 		return jdbcTemplate.query(selectFreeSlots, new DateRowMapper());
+	}
+	
+	@Override
+	public long getFreeCourierId(LocalDateTime timeSlot) {
+		log.info(timeSlot.toString().replace('T', ' ')+":00");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);
+		log.info(timeSlot.toString());
+		return jdbcTemplate.queryForObject(findFreeCourierIdQuery, Long.class, new Object[] {timeSlot.toString().replace('T', ' ')+":00"});
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {

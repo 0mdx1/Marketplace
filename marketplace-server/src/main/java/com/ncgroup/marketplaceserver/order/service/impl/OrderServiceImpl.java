@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
+import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
@@ -20,6 +22,8 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 import com.ncgroup.marketplaceserver.shopping.cart.exceptions.NotFoundException;
+
+import jdk.internal.org.jline.utils.Log;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -73,10 +77,26 @@ public class OrderServiceImpl implements OrderService{
 					order.getUser().getName(), order.getUser().getSurname(), order.getUser().getPhone()).getId();
 			order.getUser().setId(userId);
 		}
-		order.setCourier(null);
+		order.setCourier(
+				Courier
+				.builder()
+				.user(
+						User
+						.builder()
+						.id(orderRepo.getFreeCourierId(orderDto.getDeliveryTime()))
+						.build()
+						)
+				.build()
+				);
 		
 		order = orderRepo.saveOrderDetails(order);
 		for(OrderItem item : order.getItems()) {
+			try {
+				int oldQunatity = goodService.findById(item.getGood().getId()).getQuantity();
+				goodService.updateQuantity(item.getGood().getId(), oldQunatity-item.getQuantity());
+			} catch (NotFoundException e) {
+				Log.warn(e.getMessage());
+			}
 			item.setPrice(calculateSum(item.getGood().getId(), item.getQuantity()));
 			orderRepo.saveOrderGood(item, order.getId());
 		}
@@ -101,7 +121,7 @@ public class OrderServiceImpl implements OrderService{
 			endDay = endDay.withHour(9).withMinute(0).withSecond(0).withNano(0);		}
 		return freeSlots;
 	}
-	
+	  
 	@Override
 	public OrderReadDto modifyStatus(long id) {
 		Order order = orderRepo.getOrder(id);
