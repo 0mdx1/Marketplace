@@ -36,6 +36,7 @@ public class Good {
     private boolean inStock;
     private String description;
     private String categoryName;
+    private String image;
     //private String status;
 
 //    public void setShippingDate(LocalDate date) {
@@ -62,6 +63,7 @@ public class Good {
         this.setInStock(goodDto.isInStock());
         this.setDescription(goodDto.getDescription());
         this.setCategoryName(goodDto.getCategoryName().toLowerCase());
+        this.setImage(goodDto.getImage());
     }
 
 }

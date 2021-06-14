@@ -76,7 +76,7 @@ public class GoodsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Good> getGood(@PathVariable("id") long id) throws NotFoundException {
-        return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(service.find(id), HttpStatus.OK);
     }
 }
 

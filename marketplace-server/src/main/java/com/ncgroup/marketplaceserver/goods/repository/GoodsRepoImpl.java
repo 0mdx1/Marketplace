@@ -140,11 +140,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("goodDiscount", goodDto.getDiscount())
                     .addValue("goodInStock", goodDto.isInStock())
                     .addValue("goodDescription", goodDto.getDescription())
-
+                    .addValue("image", goodDto.getImage())
                     .addValue("unit", goodDto.getUnit().toString())
-
-                    //.addValue("date", goodDto.getShippingDate())
-
                     .addValue("productId", productId)
                     .addValue("firmId", firmId);
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
@@ -172,9 +169,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .addValue("price", goodDto.getPrice())
                 .addValue("discount", goodDto.getDiscount())
                 .addValue("inStock", goodDto.isInStock())
-
+                .addValue("image", goodDto.getImage())
                 .addValue("unit", goodDto.getUnit().toString())
-
                 .addValue("description", goodDto.getDescription());
         namedParameterJdbcTemplate.update(updateProduct, parameters);
     }
@@ -223,7 +219,6 @@ public class GoodsRepoImpl implements GoodsRepository {
                 //.shippingDate(rs.getObject("shipping_date", LocalDate.class))
 
                 .unit(Unit.valueOf(rs.getString("unit")))
-
                 .quantity(rs.getInt("quantity"))
                 .categoryName(rs.getString("category_name"))
                 .goodName(rs.getString("product_name"))
@@ -232,6 +227,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .discount(rs.getByte("discount"))
                 .inStock(rs.getBoolean("in_stock"))
                 .description(rs.getString("description"))
+                .image(rs.getString("image"))
                 .build();
     }
 }
