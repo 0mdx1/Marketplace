@@ -3,6 +3,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import Token from '../_models/jwt';
 import {Role} from '../_models/role';
 import decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,15 @@ export class AuthService {
   public isExpired(token: string): boolean {
     if (this.jwtHelper.isTokenExpired(token)) { localStorage.removeItem('token'); }
     return this.jwtHelper.isTokenExpired(token);
+  }
+
+  public getMail(): string | null {
+    if (this.isAuthenticated()) {
+      const token: string = String(localStorage.getItem('token'));
+      if (!this.isExpired(token)) {
+        return jwtDecode<Token>(token).sub;
+      }
+    }
+    return null;
   }
 }

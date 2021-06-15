@@ -24,6 +24,8 @@ import { ProductCatalogModule } from './product-catalog/product-catalog.module';
 import { AlertComponent } from './_components/alert/alert.component';
 import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 import { ImageUploadingComponent } from './_components/image-uploading/image-uploading.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -40,7 +42,15 @@ import { ImageUploadingComponent } from './_components/image-uploading/image-upl
     FormsModule,
     ToastrModule.forRoot(),
   ],
-  declarations: [AppComponent, HomeComponent, CartComponent, AlertComponent, ProductComparisonComponent, ImageUploadingComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    CartComponent,
+    AlertComponent,
+    ProductComparisonComponent,
+    ImageUploadingComponent,
+    CheckoutComponent
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
