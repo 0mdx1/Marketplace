@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	
 
 	@Override
-	public UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException {
+	public UserDto register(String name, String surname, String email, String password, String phone, LocalDate birthday) throws MessagingException {
 		validateNewEmail(StringUtils.EMPTY, email);
 		//validate password
 		if(!validatePasswordPattern(password)) {
@@ -91,6 +92,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				.surname(surname)
 				.phone(phone)
 				.email(email)
+				.birthday(birthday)
 				.password(encodePassword(password))
 				.lastFailedAuth(LocalDateTime.now())
 				.role(Role.ROLE_USER)
