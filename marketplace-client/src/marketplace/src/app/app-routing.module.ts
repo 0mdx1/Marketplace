@@ -6,15 +6,13 @@ import { AuthGuardService } from './_auth/auth.guard.service';
 import { Role } from './_models/role';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
-import {ProductComparisonComponent} from "./_components/product-comparison/product-comparison.component";
-import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
-import {CreatePasswordComponent} from "./account/create-password/create-password.component";
+import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
+import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
+import { CreatePasswordComponent } from './account/create-password/create-password.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 
 const accountModule = () =>
-  import('./account/account.module').then(
-    (x) => x.AccountModule
-  );
+  import('./account/account.module').then((x) => x.AccountModule);
 const systemAccountModule = () =>
   import('./system-accounts/system-accounts.module').then(
     (x) => x.SystemAccountsModule
@@ -27,19 +25,19 @@ const productCatalogModule = () =>
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: 'accounts',
-    loadChildren: accountModule
+    loadChildren: accountModule,
   },
   {
     path: 'cart',
-    component: CartComponent
+    component: CartComponent,
   },
   {
     path: 'products/comparison',
-    component: ProductComparisonComponent
+    component: ProductComparisonComponent,
   },
   {
     path: 'sysaccounts',
@@ -53,14 +51,13 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
-    component: CheckoutComponent
+    component: CheckoutComponent,
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'home'
+    redirectTo: 'home',
   },
-
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

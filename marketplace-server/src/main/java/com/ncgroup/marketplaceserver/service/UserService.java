@@ -16,6 +16,8 @@ public interface UserService {
 
     List<UserDto> getUsers();
 
+    UserDto findUserByToken(String token);
+    
     User findUserByEmail(String email);
 
     User findUserById(long id);

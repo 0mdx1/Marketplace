@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {catchError, shareReplay, tap} from 'rxjs/operators';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
-import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
-import {StaffMember} from "../_models/staff-member";
+import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
+import { StaffMember } from '../_models/staff-member';
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -16,10 +16,7 @@ export class AccountService {
   private accountSubject: BehaviorSubject<User>;
   public account: Observable<User>;
 
-  constructor(
-    private router: Router,
-    private http: HttpClient
-  ) {
+  constructor(private router: Router, private http: HttpClient) {
     this.accountSubject = new BehaviorSubject<User>({} as any);
     this.account = this.accountSubject.asObservable();
   }
@@ -29,10 +26,16 @@ export class AccountService {
   }
 
   login(email: string, password: string): Observable<HttpResponse<User>> {
-    return this.http.post<User>(`${baseUrl}/login`, {email, password},
-      {observe: 'response'}).pipe(
-        tap(res => this.setToken(res)),
-        shareReplay());
+    return this.http
+      .post<User>(
+        `${baseUrl}/login`,
+        { email, password },
+        { observe: 'response' }
+      )
+      .pipe(
+        tap((res) => this.setToken(res)),
+        shareReplay()
+      );
   }
 
   logout(): void {
@@ -62,9 +65,14 @@ export class AccountService {
     return this.http.post(`${baseUrl}/setnewpassword`, body);
   }
 
-  setToken(authResult: any): void {
-    const token = authResult.headers.get('Authorization');
-    if (token) { localStorage.setItem('token', token); }
+  getUser(): Observable<User> {
+    return this.http.get(`${baseUrl}/userinfo`);
   }
 
+  setToken(authResult: any): void {
+    const token = authResult.headers.get('Authorization');
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+  }
 }
