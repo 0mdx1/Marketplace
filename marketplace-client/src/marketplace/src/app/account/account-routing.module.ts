@@ -6,7 +6,6 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { ConfirmedComponent } from './confirmed/confirmed.component';
-import { AuthGuardService } from '../_auth/auth.guard.service';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { ProfileComponent } from './profile/profile.component';
 

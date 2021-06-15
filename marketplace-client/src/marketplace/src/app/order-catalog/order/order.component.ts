@@ -21,7 +21,6 @@ export class OrderComponent implements OnInit {
       .subscribe((response: Status) => {
         this.order.status = response;
       })
-
   }
 
   ngOnInit(): void {

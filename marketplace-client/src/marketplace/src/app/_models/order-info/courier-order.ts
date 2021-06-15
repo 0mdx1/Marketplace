@@ -4,27 +4,27 @@ import {Status} from "../status";
 import {OrderProductInfo} from "./orderProductInfo";
 
 export class CourierOrder {
-  id?: number;
-  user?: UserDisplayInfo;
-  deliveryTime?: string; // not number
-  status?: Status;
-  comment?: string;
-  disturb?: boolean;
-  totalSum?: number;
-  discountSum?: number;
-  goods?: OrderProductInfo[];
-  address?: string;
+  id: number = 0;
+  user: UserDisplayInfo | null = null;
+  deliveryTime: string = ''; // not number
+  status: Status | null = null;
+  comment: string = '';
+  disturb: boolean = false;
+  totalSum: number = 0;
+  discountSum: number = 0;
+  goods: OrderProductInfo[] = [];
+  address: string = '';
   // constructor(
   //   id: number,
-  //   user: User,
+  //   user: UserDisplayInfo,
   //   deliveryTime: string, // not number
   //   address: string,
-  //   status: boolean,
+  //   status: Status,
   //   comment: string,
   //   disturb: boolean,
   //   totalSum: number,
   //   discountSum: number, // why
-  //   goods: CartItem[] = [] // why
+  //   goods: OrderProductInfo[] = [] // why
   // ) {
   //   this.id = id;
   //   this.user = user;

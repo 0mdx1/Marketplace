@@ -28,10 +28,10 @@
                     <tbody>
                     <tr *ngFor="let order of orders" routerLink = "{{order.id}}" class="pointer">
                       <td class="text-nowrap align-middle">{{order.id}}</td>
-                      <td class="text-nowrap align-middle">{{order.user.name}}</td>
-                      <td class="text-nowrap align-middle">{{order.user.surname}}</td>
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.name : 'order.user.name'}}</td>
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.surname : ''}}</td>
 <!--                      <td class="text-nowrap align-middle">{{order.user.address}}</td>-->
-                      <td class="text-nowrap align-middle">{{order.user.phone}}</td>
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.phone : ''}}</td>
                       <td class="text-nowrap align-middle">{{order.totalSum}}</td>
                       <td class="text-nowrap align-middle">{{order.discountSum}}</td>
                       <td class="text-nowrap align-middle">{{order.deliveryTime}}</td>

@@ -12,8 +12,6 @@ export class PaginationComponent implements OnInit {
 
   orderPage: OrderPage = new OrderPage();
   subscription!: Subscription;
-  // pages?: Array<number>[];
-
 
   @Output() notification: EventEmitter<void> = new EventEmitter<void>();
 
@@ -50,12 +48,5 @@ export class PaginationComponent implements OnInit {
     this.orderPage.page = this.orderPage.page - 1;
     this.getOrders();
   }
-
-  // private arrayOfPages(pages: number){
-  //   let arr: Array<number>[] = new Array<number>();
-  //   for (var i = 0; i < pages; i++) {
-  //     pages
-  //   }
-  // }
 
 }

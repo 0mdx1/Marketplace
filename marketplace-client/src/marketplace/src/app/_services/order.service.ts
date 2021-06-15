@@ -5,7 +5,6 @@ import {CourierOrder} from "../_models/order-info/courier-order";
 import {environment} from "../../environments/environment";
 import {ActivatedRoute, Router} from "@angular/router";
 import {OrderPage} from "../_models/order-info/order-page";
-import {catchError} from "rxjs/operators";
 import {Status} from "../_models/status";
 
 const baseUrl = `${environment.apiUrl}`; // Is it ok?
@@ -33,8 +32,9 @@ export class OrderService {
 
     return this.http.get<OrderPage>(baseUrl + '/orders', {
       params: new HttpParams().set('page', page.toString())
-    })
-      .pipe(catchError((error: any) => of(new OrderPage())));
+    });
+
+  // .pipe(catchError((error: any) => of(new OrderPage())))
   }
 
   public getOrder(): Observable<CourierOrder> {

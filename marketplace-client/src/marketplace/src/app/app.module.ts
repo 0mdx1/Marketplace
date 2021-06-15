@@ -27,6 +27,7 @@ import { ProductComparisonComponent } from './_components/product-comparison/pro
 
 import { CheckoutComponent } from './checkout/checkout.component';
 
+
 @NgModule({
   imports: [
     BrowserModule,
