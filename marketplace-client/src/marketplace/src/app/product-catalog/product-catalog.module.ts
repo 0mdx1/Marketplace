@@ -7,6 +7,7 @@ import { FilterComponent } from './filter/filter.component';
 import { SearchComponent } from './search/search.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProductComponent } from './product/product.component';
+import {ProductCardComponent} from "./product-card/product-card.component";
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ProductComponent } from './product/product.component';
     FilterComponent,
     SearchComponent,
     PaginationComponent,
-    ProductComponent
+    ProductComponent,
+    ProductCardComponent
   ],
   imports: [
     CommonModule,
