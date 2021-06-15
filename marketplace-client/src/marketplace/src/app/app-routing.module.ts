@@ -9,6 +9,7 @@ import { CartComponent } from './_components/cart/cart.component';
 import {ProductComparisonComponent} from "./_components/product-comparison/product-comparison.component";
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {CreatePasswordComponent} from "./account/create-password/create-password.component";
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const accountModule = () =>
   import('./account/account.module').then(
@@ -49,6 +50,10 @@ const routes: Routes = [
   {
     path: 'products',
     loadChildren: productCatalogModule,
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   },
   {
     path: '**',
