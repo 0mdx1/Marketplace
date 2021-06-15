@@ -18,6 +18,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.Valid;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -33,7 +35,8 @@ public class OrderPostDto {
 	private boolean disturb;
 	private float totalSum;
 	private float discountSum;
-	
+
+	@Valid
 	private List<ShoppingCartItemCreateDto> items;
 	
 	public static Order toOrder(OrderPostDto orderDto) {

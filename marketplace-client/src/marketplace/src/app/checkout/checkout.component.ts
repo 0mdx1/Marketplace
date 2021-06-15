@@ -6,6 +6,9 @@ import { User } from "../_models/user";
 import { BrowserCart } from "../_services/cart/browser-cart";
 import { CartService } from "../_services/cart/cart.service";
 import { Checkout } from "../_services/checkout/checkout.service";
+import {catchError} from "rxjs/operators";
+import {HttpErrorHandlerService} from "../_services/http-error-handler.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'mg-checkout',
@@ -20,11 +23,13 @@ export class CheckoutComponent implements OnInit {
   isVisibleBanner = true;
 
   constructor(
-    private cartService: CartService, 
+    private cartService: CartService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private checkoutService: Checkout,
-    private browserCart: BrowserCart
+    private browserCart: BrowserCart,
+    private errorHandler: HttpErrorHandlerService,
+    private router: Router
   ) {
     this.orderDetailsForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -89,14 +94,14 @@ export class CheckoutComponent implements OnInit {
       return;
     }
     this.submitted = true;
-    
+
   }
 
   private getAuthUserInfo() {
     if(this.isAuth()) {
       this.checkoutService.getUser()
         .subscribe((user: User) => this.authUser=user);
-      
+
     }
   }
 
@@ -132,18 +137,23 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.checkoutService.sendOrderDetails(receiveObj)
+      .pipe(
+        catchError(err => {
+          return this.errorHandler.displayValidationError(err);
+        })
+      )
       .subscribe(
         () => {
           this.submitted = false;
           this.browserCart.empty();
           this.items = [];
           console.log("Succes!")
-        }, 
+        },
         (msg) => {
-          console.log("Error: " + msg);
+          this.router.navigateByUrl('/cart')
         }
     );
-    
+
   }
 
   hideBanner() {
