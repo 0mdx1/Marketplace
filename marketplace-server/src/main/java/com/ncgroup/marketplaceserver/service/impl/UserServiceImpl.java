@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
 import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
+import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
 import com.ncgroup.marketplaceserver.service.UserService;
 
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private BCryptPasswordEncoder passwordEncoder;
 	private LoginAttemptService loginAttemptService;
 	private EmailSenderService emailSenderService;
+	private JwtProvider jwtProvider;
 	
 	private final int LINK_VALID_TIME_HOUR = 24;
 
@@ -51,11 +54,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public UserServiceImpl(UserRepository userRepository, 
 						   BCryptPasswordEncoder passwordEncoder, 
 			               LoginAttemptService loginAttemptService,
-			               EmailSenderService emailSenderService) {
+			               EmailSenderService emailSenderService,
+			               JwtProvider jwtProvider) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.loginAttemptService = loginAttemptService;
 		this.emailSenderService = emailSenderService;
+		this.jwtProvider = jwtProvider;
 	}
 
 	@Override
@@ -75,11 +80,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	    String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.findUserByEmail(email);
     }
-
+    
+    @Override
+    public UserDto findUserByToken(String token) {
+    	if(token != null) {
+			token = token.split(" ")[1];
+			User user = findUserByEmail(jwtProvider.getSubject(token));
+			return UserDto.convertToDto(user);
+		} else {
+			return null;
+		}
+    }
 	
 
 	@Override
-	public UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException {
+	public UserDto register(String name, String surname, String email, String password, String phone, LocalDate birthday) throws MessagingException {
 		validateNewEmail(StringUtils.EMPTY, email);
 		//validate password
 		if(!validatePasswordPattern(password)) {
@@ -91,6 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				.surname(surname)
 				.phone(phone)
 				.email(email)
+				.birthday(birthday)
 				.password(encodePassword(password))
 				.lastFailedAuth(LocalDateTime.now())
 				.role(Role.ROLE_USER)
@@ -158,6 +174,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPhone(phone);
         userRepository.save(user);
 		return user;
+	}
+	
+	@Override
+	public User addUserWithoutCredentials(String name, String surname, String phone) {
+		User user = new User();
+        user.setName(name);
+        user.setSurname(surname);
+        user.setPhone(phone);
+        return userRepository.saveWithoutCredentials(user);
 	}
 
 	@Override

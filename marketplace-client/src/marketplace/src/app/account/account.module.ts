@@ -18,6 +18,7 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { AuthGuardService } from '../_auth/auth.guard.service';
 import { RoleGuardService } from '../_auth/auth.guard.role.service';
 import { AuthService } from '../_auth/auth.service';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule],
@@ -31,6 +32,7 @@ import { AuthService } from '../_auth/auth.service';
     LoginFormComponent,
     CreatePasswordComponent,
     PasswordFormComponent,
+    ProfileComponent,
   ],
   providers: [PasswordFormComponent],
 })

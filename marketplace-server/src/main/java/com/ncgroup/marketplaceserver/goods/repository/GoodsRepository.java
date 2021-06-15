@@ -18,4 +18,6 @@ public interface GoodsRepository {
 
     int countGoods(String query);
     List<String> getCategories();
+    
+    void editQuantity(long id, int quantity);
 }

@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Role;
@@ -9,12 +10,14 @@ import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import javax.mail.MessagingException;
 
 public interface UserService {
-    UserDto register(String name, String surname, String email, String password, String phone) throws MessagingException;
+    UserDto register(String name, String surname, String email, String password, String phone, LocalDate birthday) throws MessagingException;
 
     UserDto enableUser(String link);
 
     List<UserDto> getUsers();
 
+    UserDto findUserByToken(String token);
+    
     User findUserByEmail(String email);
 
     User findUserById(long id);
@@ -22,6 +25,8 @@ public interface UserService {
     User getUserByLink(String link);
 
     User addUser(String name, String surname, String email, Role role, String phone);
+    
+    User addUserWithoutCredentials(String name, String surname, String phone);
 
     User updateUser(long id, String newName, String newSurname, String newEmail, String newPhone, boolean isEnabled);
 
