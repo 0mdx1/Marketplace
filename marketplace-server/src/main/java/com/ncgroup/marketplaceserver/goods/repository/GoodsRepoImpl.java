@@ -41,6 +41,8 @@ public class GoodsRepoImpl implements GoodsRepository {
     private String findCategoryByName;
     @Value("${fake-product.find-by-name}")
     private String findProductByName;
+    @Value("${good.update-price}")
+    private String editProductQunatity;
 
     public Optional<Long> findByName(String name, String paramName, String sqlQuery) {
         SqlParameterSource parameter = new MapSqlParameterSource()
@@ -214,6 +216,14 @@ public class GoodsRepoImpl implements GoodsRepository {
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;
+    }
+    
+    @Override
+    public void editQuantity(long id, int quantity) {
+    	SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("id", id) 
+                .addValue("quantity", quantity);
+        namedParameterJdbcTemplate.update(editProductQunatity, parameters);
     }
 
     private Good mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -18,5 +18,6 @@ public interface GoodsService {
                                 Optional<Integer> page) throws NotFoundException;
 
     List<String> getCategories() throws NotFoundException;
+    void updateQuantity(long id, int qunatity);
 }
 
