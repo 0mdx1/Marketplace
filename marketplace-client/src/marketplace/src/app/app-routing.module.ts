@@ -8,6 +8,7 @@ import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
 import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import {ProfileComponent} from "./account/profile/profile.component";
 
 const accountModule = () =>
   import('./account/account.module').then((x) => x.AccountModule);
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'products/comparison',
     component: ProductComparisonComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
   {
     path: 'sysaccounts',

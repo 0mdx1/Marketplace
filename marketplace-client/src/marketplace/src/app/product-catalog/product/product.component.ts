@@ -17,8 +17,9 @@ export class ProductComponent implements OnInit {
     @Inject(LimitedProductComparisonService)
     private comparisonService: ProductComparisonService,
   ) {}
-  product: Product = new Product
-  (0, '', '', 0, 0, '', 0, false, '', '');
+
+
+  product: Product = new Product(0, '', '', 0, 0, '', 0, false, '', '', '');
 
   ngOnInit(): void {
     this.service.getProduct().subscribe((response: Product) => {

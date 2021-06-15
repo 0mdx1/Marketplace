@@ -7,9 +7,11 @@
 <body>
 <div class="top-header">
   <div class="top-header-content">
-    <a routerLink="accounts/login">LOG IN</a>
+    <a *ngIf="!account.email" routerLink="accounts/login">LOG IN</a>
+    <p *ngIf="account.email" routerLink="accounts/login">{{account.email}}</p>
     <span>&#183;</span>
-    <a routerLink="accounts/register">CREATE ACCOUNT</a>
+    <a *ngIf="!account.email" routerLink="accounts/register">CREATE ACCOUNT</a>
+    <a *ngIf="account.email" (click)="logout()" routerLink="">LOGOUT</a>
   </div>
 </div>
 <div class="bot-header">
@@ -22,17 +24,19 @@
       </nav>
       <div class="collapse" id="minMenu">
         <a routerLink="home">HOME</a>
-        <a routerLink="products">SHOP</a>
-        <a>SALES</a>
-        <a>DELIVERY</a>
+        <a routerLink="products">STORE</a>
+        <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
+        <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+        <a *ngIf="account.email" routerLink="accounts/profile">PROFILE</a>
       </div>
     </div>
     <div class="max-menu">
       <a routerLink="home">HOME</a>
-      <a routerLink="products">SHOP</a>
+      <a routerLink="products">STORE</a>
       <a><img src="assets/logo.svg"></a>
-      <a>SALES</a>
-      <a>DELIVERY</a>
+      <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
+      <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+      <a *ngIf="account.email" routerLink="accounts/profile">PROFILE</a>
     </div>
     <div class="header-right">
       <div routerLink="products/comparison" class="compare-icon">
