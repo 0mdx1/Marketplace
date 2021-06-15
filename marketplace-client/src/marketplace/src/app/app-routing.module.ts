@@ -10,7 +10,7 @@ import { ProductComparisonComponent } from './_components/product-comparison/pro
 import { ForgotPasswordComponent } from './account/forgot-password/forgot-password.component';
 import { CreatePasswordComponent } from './account/create-password/create-password.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import {ProfileComponent} from "./system-accounts/profile/profile.component";
+import {ProfileComponent} from "./account/profile/profile.component";
 
 const accountModule = () =>
   import('./account/account.module').then((x) => x.AccountModule);
