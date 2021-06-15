@@ -6,8 +6,8 @@ import {catchError, shareReplay, tap} from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
-import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
-import {StaffMember} from "../_models/staff-member";
+import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
+import { StaffMember } from '../_models/staff-member';
 import {Account} from "../_models/account";
 import {AuthService} from "../_auth/auth.service";
 
@@ -15,8 +15,8 @@ const baseUrl = `${environment.apiUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private accountSubject: BehaviorSubject<Account>;
-  public account: Observable<Account>;
+  private accountSubject: BehaviorSubject<User>;
+  public account: Observable<User>;
 
   constructor(
     private router: Router,
@@ -45,7 +45,7 @@ export class AccountService {
   }
 
   logout(): void {
-    this.accountSubject.next(new User());
+    this.accountSubject.next({} as any);
     localStorage.clear();
     this.router.navigate(['/login']);
   }
@@ -71,6 +71,10 @@ export class AccountService {
     return this.http.post(`${baseUrl}/setnewpassword`, body);
   }
 
+  getUser(): Observable<User> {
+    return this.http.get(`${baseUrl}/userinfo`);
+  }
+
   setToken(authResult: any): void {
     const token = authResult.headers.get('Authorization');
     if (token) {
@@ -81,4 +85,5 @@ export class AccountService {
       this.accountSubject.next(account);
     }
   }
+
 }

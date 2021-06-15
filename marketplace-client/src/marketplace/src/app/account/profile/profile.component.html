@@ -37,22 +37,22 @@
   <p class = "note" id="note-heading">Your personal information</p>
   <hr class = "pers-line">
 
-  <div *ngIf="response"  id="full-pers-info">
+  <div *ngIf="user"  id="full-pers-info">
       <div class ="pers">
               <p class = "note">Surname:</p>
-              <p class = "info-text">{{response.surname}}</p>
+              <p class = "info-text">{{user.surname}}</p>
               <hr class = "info-line">
       </div>
       <div  class ="pers">
               <p class = "note">Name:</p>
-              <p class = "info-text">{{response.name}}</p>
+              <p class = "info-text">{{user.name}}</p>
               <hr class = "info-line">
 
       </div>
 
       <div class ="pers">
             <p class = "note">Date of birthday:</p>
-            <p class = "info-text">{{birthday}}</p>
+            <p class = "info-text">--</p>
             <hr class = "info-line">
       </div>
 
@@ -61,12 +61,12 @@
 
       <div class ="pers">
         <p class = "note">Number:</p>
-        <p class = "info-text">{{response.phone}}</p>
+        <p class = "info-text">{{user.phone}}</p>
         <hr class = "info-line">
       </div>
       <div class ="pers">
         <p class = "note">Mail:</p>
-        <p class = "info-text">{{response.email}}</p>
+        <p class = "info-text">{{user.email}}</p>
         <hr class = "info-line">
       </div>
 

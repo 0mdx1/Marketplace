@@ -90,7 +90,9 @@
             Account was created successfully
           </h3>
           <div class="form-group col text-right">
-            <a routerLink="/" class="btn btn-link">Back to staff table</a>
+            <a (click) = "createAnotherUser()"
+            routerLink="/sysaccounts/register-stuff"
+            class="btn btn-link">Create another account</a>
           </div>
         </div>
       </div>

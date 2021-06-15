@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,15 @@ public class UserController  {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtProvider = jwtProvider;
+    }
+    
+    @GetMapping("/userinfo")
+    public ResponseEntity<UserDto> getUser(@RequestHeader(value = "Authorization", required = false) String token) {
+    	UserDto user = userService.findUserByToken(token);
+    	if(user == null) {
+    		return new ResponseEntity<UserDto>(HttpStatus.NOT_FOUND);
+    	}
+    	return new ResponseEntity<UserDto>(user, HttpStatus.OK);
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -128,32 +138,6 @@ public class UserController  {
     	List<UserDto> users = userService.getUsers();
         return new ResponseEntity<>(users, OK);
     }
-    
-    
-    /*@PostMapping("/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User newUser = userService.addUser(user.getName(),user.getSurname(), user.getEmail(), user.getRole(), user.getPassword());
-        return new ResponseEntity<>(newUser, OK);
-    }
-    
-    @GetMapping("/find/{id}")
-    public ResponseEntity<User> addUser(@PathVariable long id) {
-        User user = userService.findUserById(id);
-        return new ResponseEntity<>(user, OK);
-    }
-    
-    @GetMapping("/list")
-    public ResponseEntity<List<UserDto>> findAllUsers() {
-    	List<UserDto> users = userService.getUsers();
-        return new ResponseEntity<>(users, OK);
-    }
-    
-    @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        User updateUser = userService.updateUser(
-        		user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.isEnabled())
-;        return new ResponseEntity<>(updateUser, OK);
-    }*/
 
     private HttpHeaders getJwtHeader(UserPrincipal user) {
         HttpHeaders headers = new HttpHeaders();
