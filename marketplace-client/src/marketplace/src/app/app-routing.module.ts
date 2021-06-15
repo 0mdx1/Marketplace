@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './_components/home/home.component';
 import { AuthGuardService } from './_auth/auth.guard.service';
 import { Role } from './_models/role';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
-import { CartComponent } from './cart/cart.component';
+import { CartComponent } from './_components/cart/cart.component';
+import {ProductComparisonComponent} from "./_components/product-comparison/product-comparison.component";
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {CreatePasswordComponent} from "./account/create-password/create-password.component";
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const accountModule = () =>
   import('./account/account.module').then(
@@ -36,6 +38,10 @@ const routes: Routes = [
     component: CartComponent
   },
   {
+    path: 'products/comparison',
+    component: ProductComparisonComponent
+  },
+  {
     path: 'sysaccounts',
     loadChildren: systemAccountModule,
     canActivate: [RoleGuardService],
@@ -44,6 +50,10 @@ const routes: Routes = [
   {
     path: 'products',
     loadChildren: productCatalogModule,
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   },
   {
     path: '**',

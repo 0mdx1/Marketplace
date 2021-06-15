@@ -59,7 +59,7 @@ public class GoodsServiceImpl implements GoodsService {
         String flexibleQuery = "SELECT goods.id, product.name AS product_name, " +
                 "firm.name AS firm_name, category.name AS category_name, unit, " +
                 " goods.quantity, goods.price, goods.discount, goods.in_stock," +
-                " goods.description FROM goods INNER JOIN " +
+                " goods.description, goods.image FROM goods INNER JOIN " +
                 "product ON goods.prod_id = product.id " +
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
                 "INNER JOIN category ON category.id = product.category_id";
@@ -156,5 +156,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<String> getCategories() throws NotFoundException{
         return repository.getCategories();
+    }
+    
+    @Override
+    public void updateQuantity(long id, int qunatity) {
+    	repository.editQuantity(id, qunatity);
     }
 }

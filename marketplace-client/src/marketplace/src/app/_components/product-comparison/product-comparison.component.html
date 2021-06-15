@@ -1,0 +1,24 @@
+<div class="container" style="padding-top: 30px">
+  <div class="row flex-row flex-nowrap">
+    <div *ngFor="let product of products" class="col-3">
+      <div class="card">
+        <img class="card-img-top" src="https://static.vecteezy.com/system/resources/thumbnails/002/033/006/small/set-of-delicious-fast-food-vector.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h2 class="card-title">{{product.goodName}}</h2>
+          <p class="card-text">{{product.description}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Price: </strong>{{product.price}}</li>
+          <li class="list-group-item"><strong>Category: </strong>{{product.categoryName}}</li>
+          <li class="list-group-item"><strong>Firm: </strong>{{product.firmName}}</li>
+          <li class="list-group-item"><strong>In Stock: </strong>{{product.inStock}}</li>
+          <li class="list-group-item"><strong>Unit: </strong>{{product.unit}}</li>
+        </ul>
+        <div class="card-body">
+          <button class="card-link btn btn-success mt-3" (click)="addProductToCart(product)">Add to cart</button>
+          <button class="card-link btn btn-danger mt-3" (click)="removeProduct(product)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

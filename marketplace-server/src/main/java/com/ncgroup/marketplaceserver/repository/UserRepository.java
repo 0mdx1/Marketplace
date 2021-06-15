@@ -12,6 +12,8 @@ public interface UserRepository {
 	User findByAuthLink(String link);
 
 	User save(User user);
+	
+	User saveWithoutCredentials(User user);
 
 	List<User> findAll();
 

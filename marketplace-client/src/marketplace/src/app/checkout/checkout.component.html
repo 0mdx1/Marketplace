@@ -1,0 +1,274 @@
+<div class="container">
+  <div class="mt-3"></div>
+  <div *ngIf="!isAuth() && this.isVisibleBanner">
+    <div class="d-flex p-2 flex-column border rounded shadow">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="16" 
+        height="16" 
+        fill="currentColor" 
+        class="bi bi-x" 
+        viewBox="0 0 16 16"
+        (click)="hideBanner()">
+        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+      </svg>
+
+      <h1 class="text-danger font-italic text-center">Looks like you not authorized :(</h1>
+      <div class="row p-2 d-flex justify-content-center">
+        <div class="col-sm-3">
+          <a routerLink="/accounts/login" class="btn btn-secondary btn-md order-1 w-100">Login</a>
+        </div>
+      </div>
+
+      <div class="row p-2 d-flex justify-content-center">
+        <div class="col-sm-3">
+          <a routerLink="/accounts/register" class="btn btn-secondary btn-md order-1 w-100">Register</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div *ngIf="items.length === 0" class="text-center my-5">
+    <h4>Your Cart Is Empty</h4>
+    <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
+  </div>
+
+  <div *ngIf="items.length !== 0">
+
+    <form *ngIf="!submitted" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
+      <hr />
+      <h1>Checkout form</h1>
+      <hr />
+
+      <div *ngIf="!isAuth()" class="row d-flex p-2 justify-content-center">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Name</label>
+
+            <input 
+              type="text" 
+              formControlName="name" 
+              class="form-control" 
+              [ngClass]="{ 'is-invalid': getForm.name.errors }" />
+
+            <div *ngIf="getForm.name.errors" class="invalid-feedback">
+              <div *ngIf="getForm.name.errors.required">Name is required</div>
+            </div>
+
+          </div>
+        </div>
+  
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Surname</label>
+            
+            <input 
+              type="text" 
+              formControlName="surname" 
+              class="form-control" 
+              [ngClass]="{ 'is-invalid': getForm.surname.errors }" />
+
+            <div *ngIf="getForm.surname.errors" class="invalid-feedback">
+              <div *ngIf="getForm.surname.errors.required">Surname is required</div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Phone</label>
+            
+            <input 
+              type="text" 
+              formControlName="phone" 
+              class="form-control" 
+              [ngClass]="{ 'is-invalid': getForm.phone.errors }" />
+
+            <div *ngIf="getForm.phone.errors" class="invalid-feedback">
+              <div *ngIf="getForm.phone.errors.required">Phone is required</div>
+              <div *ngIf="getForm.phone.errors.pattern">Phone must be in format +380</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row d-flex p-2 justify-content-center">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Delivery Time</label>
+
+            <select 
+              class="form-control" 
+              formControlName="deliveryTime" 
+              [ngClass]="{ 'is-invalid': getForm.deliveryTime.errors }">
+
+              <option></option>
+              <option *ngFor="let time of deliveryTime">
+                {{ time }}
+              </option>
+            </select>
+            <div *ngIf="getForm.deliveryTime.errors" class="invalid-feedback">
+              <div *ngIf="getForm.deliveryTime.errors.required">Choose delivery time</div>
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>Address</label>
+
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="address" 
+              [ngClass]="{ 'is-invalid': getForm.address.errors }" />
+
+            <div *ngIf="getForm.address.errors" class="invalid-feedback">
+              <div *ngIf="getForm.address.errors.required">Address is required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row d-flex p-2 justify-content-center">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Comment</label>
+            <textarea class="form-control" rows="2" formControlName="comment"></textarea>
+          </div>
+        </div> 
+      </div>
+  
+      <div class="row d-flex p-2 justify-content-center">
+        <div class="col-md-2">
+          <div class="form-group">
+            <input type="checkbox" class="form-check-input" formControlName="disturb" />
+            <label>Don't disturb?</label>
+          </div>
+        </div> 
+      </div>
+  
+      <div class="row d-flex p-2 justify-content-center">
+        <div class="col-md-3">
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          </div>
+        </div> 
+      </div>
+    </form>
+
+    <div *ngIf="submitted">
+      <h1 class="font-weight-bold mt-3">Details order:</h1>
+
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">Name</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['name'].value }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Surname</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['surname'].value }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Phone</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['phone'].value }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Address</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['address'].value }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Delivery Time</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['deliveryTime'].value }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">Disturb</th>
+            <td class="text-center" *ngIf="this.orderDetailsForm.controls['disturb'].value">
+              Yes
+            </td>
+            <td class="text-center" *ngIf="!this.orderDetailsForm.controls['disturb'].value">
+              No
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">Comment</th>
+            <td class="text-center">{{ this.orderDetailsForm.controls['comment'].value }}</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+      <form (ngSubmit)="doOrder()">
+        <div class="row d-flex p-2 justify-content-end">
+          <div class="col-md-3">
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">Submit Order</button>
+            </div>
+          </div> 
+        </div>
+      </form>
+
+    
+  </div>
+
+  <div *ngIf="items.length !== 0">
+    <hr />
+    <h1 class="font-weight-bold">Products: {{getTotalPrice(items) | currency:'USD'}}</h1>
+    <hr />
+    
+    <div class="row">
+      <div class="col my-4">
+        <table class="table table-bordered">
+          <thead class="table-dark">
+            <tr class="text-center">
+              <th>Image</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let cartItem of this.items" class="text-center">
+              <td class="d-flex align-items-center justify-content-around">
+                <img
+                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fsmilytiffany%2F100x100-images%2F&psig=AOvVaw3xQvbQnb1NnoFIsFBlIvmJ&ust=1623328407610000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjAmN3HivECFQAAAAAdAAAAABAJ"
+                  alt="{{cartItem.goods.goodName}}" height="60" class="order-1">
+              </td>
+
+              <td>
+                <p>{{cartItem.goods.goodName}}</p>
+              </td>
+
+              <td>
+                <p>{{getPrice(cartItem) | currency:'USD'}}</p>
+              </td>
+
+              <td>
+                <p>{{ getSubtotalPrice(cartItem) / getPrice(cartItem) }}</p>
+              </td>
+
+              <td>
+                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+              </td>
+            </tr>
+  
+          </tbody>
+        </table>
+  
+  
+      </div>
+    </div>
+  </div>
+  
+</div>
