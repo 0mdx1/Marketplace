@@ -10,6 +10,7 @@ import {ProductComparisonComponent} from "./_components/product-comparison/produ
 import {ForgotPasswordComponent} from "./account/forgot-password/forgot-password.component";
 import {CreatePasswordComponent} from "./account/create-password/create-password.component";
 import { CheckoutComponent } from './checkout/checkout.component';
+import {ProfileComponent} from "./system-accounts/profile/profile.component";
 
 const accountModule = () =>
   import('./account/account.module').then(
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'products/comparison',
     component: ProductComparisonComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   },
   {
     path: 'sysaccounts',

@@ -1,0 +1,15 @@
+<div class="col">
+<div class="card">
+  <img *ngIf="product.discount" src="../../../assets/sale.svg" class="sale-icon" alt="Good image">
+  <img *ngIf="!product.image" src="../../../assets/product.svg" class="card-img-top" alt="Good image">
+  <div class="card-body text-center">
+    <a routerLink="{{product.id}}">{{product.goodName}}</a>
+    <div class="price-block">
+    <p *ngIf="product.discount" class="old-price"> {{product.price}}</p>
+    <p *ngIf="product.discount" class="new-price"> {{product.discount}} UAH</p>
+    <p *ngIf="!product.discount" class="price"> {{product.price}} UAH</p>
+    </div>
+    <button type="button" (click)="addToCart()" class="cart btn btn-default"><i class="fas fa-shopping-cart"></i></button>
+  </div>
+</div>
+</div>

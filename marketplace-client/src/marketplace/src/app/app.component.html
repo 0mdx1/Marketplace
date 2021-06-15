@@ -24,17 +24,19 @@
       </nav>
       <div class="collapse" id="minMenu">
         <a routerLink="home">HOME</a>
-        <a routerLink="products">SHOP</a>
-        <a>SALES</a>
-        <a>DELIVERY</a>
+        <a routerLink="products">STORE</a>
+        <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
+        <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+        <a *ngIf="account.email" routerLink="profile">PROFILE</a>
       </div>
     </div>
     <div class="max-menu">
       <a routerLink="home">HOME</a>
-      <a routerLink="products">SHOP</a>
+      <a routerLink="products">STORE</a>
       <a><img src="assets/logo.svg"></a>
-      <a>SALES</a>
-      <a>DELIVERY</a>
+      <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
+      <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+      <a *ngIf="account.email" routerLink="profile">PROFILE</a>
     </div>
     <div class="header-right">
       <div routerLink="products/comparison" class="compare-icon">
