@@ -17,4 +17,6 @@ public interface GoodsRepository {
     List<Good> display(String query);
 
     List<String> getCategories();
+    
+    void editQuantity(long id, int quantity);
 }

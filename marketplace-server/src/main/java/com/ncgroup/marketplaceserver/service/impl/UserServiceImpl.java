@@ -161,6 +161,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
 		return user;
 	}
+	
+	@Override
+	public User addUserWithoutCredentials(String name, String surname, String phone) {
+		User user = new User();
+        user.setName(name);
+        user.setSurname(surname);
+        user.setPhone(phone);
+        return userRepository.saveWithoutCredentials(user);
+	}
 
 	@Override
 	public User updateUser(long id, String newName, String newSurname, String newEmail, String newPhone,

@@ -157,4 +157,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<String> getCategories() throws NotFoundException{
         return repository.getCategories();
     }
+    
+    @Override
+    public void updateQuantity(long id, int qunatity) {
+    	repository.editQuantity(id, qunatity);
+    }
 }

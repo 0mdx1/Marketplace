@@ -1,6 +1,7 @@
-package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
+  package com.ncgroup.marketplaceserver.shopping.cart.model.dto;
 
 import com.ncgroup.marketplaceserver.goods.model.Good;
+import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.shopping.cart.annotation.SufficientGoodsStock;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import lombok.Data;
@@ -26,5 +27,17 @@ public class ShoppingCartItemCreateDto {
         }
         shoppingCartItem.setQuantity(quantity);
         shoppingCartItem.setAddingTime(addingTime);
+    }
+    
+    public static OrderItem convertFromDto(ShoppingCartItemCreateDto itemDto) {
+    	return OrderItem
+    			.builder()
+    			.good(Good
+    					.builder()
+    					.id(itemDto.getGoodsId())
+    					.build()
+    					)
+    			.quantity(itemDto.getQuantity())
+    			.build();
     }
 }

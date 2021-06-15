@@ -1,12 +1,17 @@
-DROP TABLE courier;
-DROP TABLE person;
-DROP TABLE credentials;
-DROP TABLE role;
-DROP TABLE shopping_cart_item;
-DROP TABLE goods;
-DROP TABLE firm;
-DROP TABLE product;
-DROP TABLE category;
+DROP TABLE IF EXISTS order_goods;
+DROP TABLE IF EXISTS order_details;
+DROP TABLE IF EXISTS courier;
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS credentials;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS shopping_cart_item;
+DROP TABLE IF EXISTS goods;
+DROP TABLE IF EXISTS firm;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS category;
+
+DROP TYPE IF EXISTS delivery_status;
+DROP TYPE IF EXISTS unit_type;
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -14,7 +19,7 @@ CREATE TABLE IF NOT EXISTS role
         CONSTRAINT pk_role_id
         PRIMARY KEY,
     role VARCHAR(50)
-);
+); 
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
   ON role (role);
@@ -123,4 +128,53 @@ CREATE TABLE IF NOT EXISTS shopping_cart_item
     adding_time BIGINT NOT NULL,
     CONSTRAINT shopping_cart_item_pk
     PRIMARY KEY (user_id, goods_id)
-    );
+);
+
+--ORDER
+
+CREATE TYPE delivery_status AS ENUM ('SUBMITTED', 'IN_DELIVERY', 'DELIVERED');
+
+CREATE TABLE IF NOT EXISTS order_details
+(
+	id 				SERIAL,
+	person_id 		INTEGER NOT NULL,
+	courier_id 		INTEGER NOT NULL,
+	delivery_time 	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+	address 		VARCHAR(200),
+	status 			DELIVERY_STATUS NOT NULL,
+	comment 		TEXT,
+	disturb 		BOOLEAN NOT NULL DEFAULT true,
+	total_sum 		DECIMAL(12, 2),
+	discount_sum 	DECIMAL(12, 2),
+	
+	CONSTRAINT order_details_pk
+	PRIMARY KEY (id),
+	
+	CONSTRAINT person_order_details_fk
+	FOREIGN KEY(person_id)
+	REFERENCES person(id),
+	
+	CONSTRAINT person_courier_order_details_fk
+	FOREIGN KEY(courier_id)
+	REFERENCES person(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS order_goods 
+(
+	goods_id INTEGER NOT NULL,
+	order_id INTEGER NOT NULL,
+	quantity INTEGER NOT NULL DEFAULT 0,
+	sum 	 DECIMAL NOT NULL DEFAULT 0,
+	
+	CONSTRAINT goods_order_goods_fk
+	FOREIGN KEY(goods_id)
+	REFERENCES goods(id),
+	
+	CONSTRAINT order_detals_order_goods_fk
+	FOREIGN KEY(order_id)
+	REFERENCES order_details(id),
+	
+	CONSTRAINT order_goods_pk
+	PRIMARY KEY (goods_id, order_id)
+);
