@@ -12,12 +12,6 @@ import { ConfirmedComponent } from './confirmed/confirmed.component';
 import { LoginFormComponent } from './_components/login.form.component';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { PasswordFormComponent } from './_components/password.form.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpConfigInterceptor } from '../_interceptor/httpconfig.interceptor';
-import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
-import { AuthGuardService } from '../_auth/auth.guard.service';
-import { RoleGuardService } from '../_auth/auth.guard.role.service';
-import { AuthService } from '../_auth/auth.service';
 import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
