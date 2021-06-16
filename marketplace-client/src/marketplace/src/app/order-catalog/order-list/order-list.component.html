@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row flex-lg-nowrap">
+    <div class="col">
+      <div class="row flex-lg-nowrap">
+
+        <div class="col mb-3">
+          <div class="e-panel card">
+            <div class="card-body">
+              <div class="e-table">
+                <div class="table-responsive table-lg mt-3">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+
+                      <th class="max-width">Order Id</th>
+                      <th class="max-width">Name</th>
+                      <th class="max-width">Surname</th>
+                      <th class="max-width">Address</th>
+                      <th class="max-width">Phone Number</th>
+                      <th class="max-width">Total Sum</th>
+                      <th class="max-width">Discount Sum</th>
+                      <th class="max-width">Delivery Time</th>
+                      <th class="max-width">Disturb</th>
+                      <th class="max-width">Status</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let order of orders" routerLink = "{{order.id}}" class="pointer">
+                      <td class="text-nowrap align-middle">{{order.id}}</td>
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.name : 'order.user.name'}}</td>
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.surname : ''}}</td>
+<!--                      <td class="text-nowrap align-middle">{{order.user.address}}</td>-->
+                      <td class="text-nowrap align-middle">{{order.user ? order.user.phone : ''}}</td>
+                      <td class="text-nowrap align-middle">{{order.totalSum}}</td>
+                      <td class="text-nowrap align-middle">{{order.discountSum}}</td>
+                      <td class="text-nowrap align-middle">{{order.deliveryTime}}</td>
+                      <td class="text-nowrap align-middle">{{order.disturb}}</td>
+                      <td class="text-nowrap align-middle">{{order.status}}</td>
+
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <app-pagination-order (notification)="orders = page.orderPage.orders" #page></app-pagination-order>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,7 +23,7 @@
   height:30px;
   color: #fff;
   background: #007dc3;
-  font-size: 70%;
+  font-size: 12px;
   box-shadow: 0px 1px 3px rgba(150, 150, 150, 1);
   z-index: 100;
 }
@@ -31,6 +31,13 @@
 .top-header-content{
   padding-right: 85px;
   padding-top: 7px;
+}
+
+.top-header-content p{
+  display: inline-block;
+  font-size: 13px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .top-header-content a, .top-header-content a:hover, .top-header-content a:focus, .top-header-content a:active {

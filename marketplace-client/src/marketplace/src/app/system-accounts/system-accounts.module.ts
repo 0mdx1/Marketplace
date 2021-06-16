@@ -9,8 +9,7 @@ import { RegisterStuffComponent } from './register-stuff/register-stuff.componen
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountListComponent } from './account-list/account-list.component';
-import {ProfileComponent} from "./profile/profile.component";
-import {UpdateInfoComponent} from "./update-info/update-info.component";
+import { UpdateInfoComponent } from './update-info/update-info.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import {UpdateInfoComponent} from "./update-info/update-info.component";
     FilterComponent,
     RegisterStuffComponent,
     AccountListComponent,
-    ProfileComponent,
     UpdateInfoComponent,
   ],
   imports: [

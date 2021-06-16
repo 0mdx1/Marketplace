@@ -17,11 +17,16 @@ import { StaffMember } from '../../_models/staff-member';
   styleUrls: ['./register-stuff.component.css'],
 })
 export class RegisterStuffComponent {
-  form: FormGroup;
+  form!: FormGroup;
 
   submitted = false;
 
   roles: Role[] = [Role.Courier, Role.ProductManager];
+
+  roleNames: Record<string, string> = {
+    [Role.Courier]: "Courier",
+    [Role.ProductManager]: "Product manager",
+  };
 
   courierStatuses: string[] = ['active', 'inactive', 'terminated'];
 
@@ -36,6 +41,22 @@ export class RegisterStuffComponent {
     private formBuilder: FormBuilder,
     private accountService: AccountService
   ) {
+    this.buildForm();
+  }
+
+  get getForm(): { [p: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  courierRoleSelected(): boolean {
+    return this.form.value.role == Role.Courier;
+  }
+
+  pmRoleSelected(): boolean {
+    return this.form.value.role == Role.ProductManager;
+  }
+
+  private buildForm() {
     this.form = this.formBuilder.group(
       {
         name: ['', Validators.required],
@@ -50,18 +71,6 @@ export class RegisterStuffComponent {
         validator: [validateBirthday],
       }
     );
-  }
-
-  get getForm(): { [p: string]: AbstractControl } {
-    return this.form.controls;
-  }
-
-  courierRoleSelected(): boolean {
-    return this.form.value.role == Role.Courier;
-  }
-
-  pmRoleSelected(): boolean {
-    return this.form.value.role == Role.ProductManager;
   }
 
   private mapToStaffMember(o: any): StaffMember {
@@ -108,5 +117,15 @@ export class RegisterStuffComponent {
         this.loading = false;
       },
     });
+  }
+
+  createAnotherUser() {
+    this.loading = false;
+    this.showPassword = false;
+    this.showConfirmPassword = false;
+    this.registered = false;
+    this.submitted = false;
+
+    this.buildForm();
   }
 }

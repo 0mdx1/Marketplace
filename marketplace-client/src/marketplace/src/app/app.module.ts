@@ -6,7 +6,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './_components/home/home.component';
-import {AuthInterceptor} from './_auth/auth.interceptor';
 import {AuthService} from './_auth/auth.service';
 import {AuthGuardService} from './_auth/auth.guard.service';
 import {JWT_OPTIONS, JwtHelperService} from '@auth0/angular-jwt';
@@ -21,10 +20,10 @@ import {
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
-import { AlertComponent } from './_components/alert/alert.component';
 import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
 import { ImageUploadingComponent } from './_components/image-uploading/image-uploading.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import {AlertComponent} from './_components/alert/alert.component';
 
 @NgModule({
   imports: [

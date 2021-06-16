@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Configuration
 public class DefaultAdminConfiguration extends UserConfiguration{
 
@@ -17,6 +19,9 @@ public class DefaultAdminConfiguration extends UserConfiguration{
 
     @Value("${default-admin.surname}")
     private String surname;
+
+    @Value("${default-admin.phone}")
+    private String phone;
 
     @Value("${default-admin.email}")
     private String email;
@@ -34,6 +39,8 @@ public class DefaultAdminConfiguration extends UserConfiguration{
                 .builder()
                 .name(name)
                 .surname(surname)
+                .phone(phone)
+                .birthday(LocalDate.now())
                 .email(email)
                 .password(password)
                 .role(Role.ROLE_ADMIN)
