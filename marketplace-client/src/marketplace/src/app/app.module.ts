@@ -17,50 +17,47 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
 import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
-import { ImageUploadingComponent } from './_components/image-uploading/image-uploading.component';
+import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import {AlertComponent} from './_components/alert/alert.component';
 
 @NgModule({
-  imports: [
-    ReactiveFormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserModule,
-    SystemAccountsModule,
-    ProductCatalogModule,
-    BrowserAnimationsModule,
-    NoopAnimationsModule,
-    NgxSpinnerModule,
-    FormsModule,
-    ToastrModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    CartComponent,
-    AlertComponent,
-    ProductComparisonComponent,
-    ImageUploadingComponent,
-    CheckoutComponent
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpConfigInterceptor,
-      multi: true,
-    },
-    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService,
-    AuthGuardService,
-    RoleGuardService,
-    AuthService,
-  ],
-  bootstrap: [AppComponent],
+    imports: [
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserModule,
+        SystemAccountsModule,
+        ProductCatalogModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        NgxSpinnerModule,
+        FormsModule,
+    ],
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        CartComponent,
+        AlertComponent,
+        ProductComparisonComponent,
+        CheckoutComponent
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpConfigInterceptor,
+            multi: true,
+        },
+        {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
+        JwtHelperService,
+        AuthGuardService,
+        RoleGuardService,
+        AuthService,
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
