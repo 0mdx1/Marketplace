@@ -1,5 +1,5 @@
-import {Inject, Injectable, OnDestroy, OnInit} from "@angular/core";
-import {interval, Observable, Subscription, forkJoin, of} from "rxjs";
+import {Inject, Injectable, OnDestroy} from "@angular/core";
+import {interval, Observable, of, Subscription} from "rxjs";
 
 import {CartItem} from "../../_models/cart-item.model";
 import {Cart} from "./cart";
@@ -9,6 +9,7 @@ import {CartItemCreateDto} from "../../_models/cart-item-create-dto.model";
 import {BrowserCart} from "./browser-cart";
 import {environment} from "../../../environments/environment";
 import {switchMap} from "rxjs/operators";
+import {Role} from "../../_models/role";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -26,12 +27,12 @@ export class GlobalCart implements Cart, OnDestroy{
     private http: HttpClient,
     private auth: AuthService
   ) {
-    if(this.auth.isAuthenticated()) {
+    if(this.alowedToSendRequests()) {
       this.init().subscribe(() => {});
     }
     this.subscription = interval(10000)
       .subscribe(() => {
-        if(this.auth.isAuthenticated()) {
+        if(this.alowedToSendRequests()) {
           this.init().subscribe(() => {
             if(!document.hidden){
               console.log("polling...");
@@ -84,7 +85,7 @@ export class GlobalCart implements Cart, OnDestroy{
 
   addItem(item: CartItem): void {
     this.cart.addItem(item);
-    if(this.auth.isAuthenticated()){
+    if(this.alowedToSendRequests()){
       this.init().subscribe(()=>{
         this.putShoppingCartItem(item)
           .subscribe({error: e=>console.log(e)});
@@ -94,12 +95,16 @@ export class GlobalCart implements Cart, OnDestroy{
 
   empty(): void {
     this.cart.empty();
-    if(this.auth.isAuthenticated()) {
+    if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.deleteShoppingCart()
           .subscribe({error: e => console.log(e)});
       })
     }
+  }
+
+  private alowedToSendRequests() {
+    return this.auth.isAuthenticated()&&this.auth.isExpectedRole(Role.User);
   }
 
   getItems(): CartItem[] {
@@ -108,7 +113,7 @@ export class GlobalCart implements Cart, OnDestroy{
 
   removeItem(item: CartItem): void {
     this.cart.removeItem(item);
-    if(this.auth.isAuthenticated()) {
+    if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.deleteShoppingCartItem(item)
           .subscribe({error: e => console.log(e)});
@@ -120,7 +125,7 @@ export class GlobalCart implements Cart, OnDestroy{
 
   setItems(items: CartItem[]): void {
     this.cart.setItems(items);
-    if(this.auth.isAuthenticated()) {
+    if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.putShoppingCart(items)
           .subscribe({
@@ -133,7 +138,7 @@ export class GlobalCart implements Cart, OnDestroy{
 
   updateItem(item: CartItem): void {
     this.cart.updateItem(item);
-    if(this.auth.isAuthenticated()) {
+    if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.patchShoppingCartItem(item)
           .subscribe({error: e => console.log(e)});
