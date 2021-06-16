@@ -19,4 +19,5 @@ public interface OrderRepository {
 	long getFreeCourierId(LocalDateTime timeSlot);
 	UserDisplayInfoDto findUserForOrder(String email);
 	int getTotalPages(long courierId);
+	int getAvailableCouriersNum();
 }

@@ -92,11 +92,7 @@ public class OrderController {
 	public ResponseEntity<?> saveOrder(
 			@RequestHeader(value = "Authorization", required = false) String token,
 			@RequestBody @Valid OrderPostDto order) {
-		try {
-			return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
-		} catch(NoCouriersException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
+		return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
 		
 	}
 	

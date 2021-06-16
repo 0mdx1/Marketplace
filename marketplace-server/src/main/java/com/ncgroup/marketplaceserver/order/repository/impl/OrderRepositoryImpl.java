@@ -51,8 +51,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Value("${order.update-status}")
 	private String updateStatusQuery;
 	
-	@Value("${order.find-free-slots}")
-	private String selectFreeSlots;
+	@Value("${order.find-busy-slots}")
+	private String selectBusySlots;
+	
+	@Value("${order.find-couriers-num}")
+	private String selectAvalblCouriersNum;;
 	
 	@Value("${order.find-free-courier-id}")
 	private String findFreeCourierIdQuery;
@@ -130,7 +133,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 	
 	@Override
 	public List<LocalDateTime> findFreeSlots() {
-		return jdbcTemplate.query(selectFreeSlots, new DateRowMapper());
+		return jdbcTemplate.query(selectBusySlots, new DateRowMapper());
 	}
 	
 	@Override
@@ -149,9 +152,15 @@ public class OrderRepositoryImpl implements OrderRepository {
 		return users.isEmpty() ? null : users.get(0);
 	}
 	
+	@Override
 	public int getTotalPages(long courierId) {
 		return jdbcTemplate.queryForObject(
 				findTotalPages, Integer.class, new Object[] {courierId});
+	}
+	
+	@Override
+	public int getAvailableCouriersNum() {
+		return jdbcTemplate.queryForObject(selectAvalblCouriersNum, Integer.class);
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {

@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService{
 		try {
 			courierId = orderRepo.getFreeCourierId(orderDto.getDeliveryTime());
 		} catch (Exception e) {
-			throw new NoCouriersException("Sorry, there are no free couriers for that time");
+			throw new NoCouriersException("Sorry, there are no available couriers for that time");
 		}
 		
 		order.setCourier(
@@ -129,6 +129,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Override
 	public List<LocalDateTime> getFreeSlots() {
+		if(orderRepo.getAvailableCouriersNum() < 1) {
+			throw new NoCouriersException("Sorry, there are no available couriers");
+		}
 		List<LocalDateTime> freeSlots = new LinkedList<LocalDateTime>();
 		List<LocalDateTime> busySlots = orderRepo.findFreeSlots();
 		LocalDateTime endDay = LocalDateTime.now();
@@ -169,15 +172,12 @@ public class OrderServiceImpl implements OrderService{
 	}
 	
 	private float calculateSum(long goodId, int quantity) {
-		
 		try {
 			Good good = goodService.findById(goodId);
 			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount()/100)) * quantity;
 		} catch (NotFoundException e) {
 			return 0;
 		}
-		
-
 	}
 
 	
