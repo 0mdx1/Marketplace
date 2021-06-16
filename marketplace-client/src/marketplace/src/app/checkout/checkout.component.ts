@@ -118,7 +118,8 @@ export class CheckoutComponent implements OnInit {
         inStock: item.goods.inStock,
         price: item.goods.price,
         unit: item.goods.unit,
-        quantity: item.quantity
+        quantity: item.quantity,
+        addingTime: item.addingTime
       })
     })
 
