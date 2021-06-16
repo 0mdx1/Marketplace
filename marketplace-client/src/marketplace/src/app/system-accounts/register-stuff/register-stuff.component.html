@@ -56,7 +56,7 @@
                 <label>Role</label>
                 <select class="form-control" formControlName="role">
                   <option *ngFor="let role of roles" [ngValue]="role">
-                    {{role}}
+                    {{roleNames[role]}}
                   </option>
                 </select>
               </div>

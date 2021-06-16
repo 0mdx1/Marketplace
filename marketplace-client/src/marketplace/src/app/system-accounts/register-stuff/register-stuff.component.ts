@@ -23,6 +23,11 @@ export class RegisterStuffComponent {
 
   roles: Role[] = [Role.Courier, Role.ProductManager];
 
+  roleNames: Record<string, string> = {
+    [Role.Courier]: "Courier",
+    [Role.ProductManager]: "Product manager",
+  };
+
   courierStatuses: string[] = ['active', 'inactive', 'terminated'];
 
   pmStatuses: string[] = ['active', 'terminated'];

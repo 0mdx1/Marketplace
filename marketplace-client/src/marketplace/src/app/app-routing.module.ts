@@ -37,10 +37,14 @@ const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.User] },
   },
   {
     path: 'products/comparison',
     component: ProductComparisonComponent,
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.User] },
   },
   {
     path: 'profile',

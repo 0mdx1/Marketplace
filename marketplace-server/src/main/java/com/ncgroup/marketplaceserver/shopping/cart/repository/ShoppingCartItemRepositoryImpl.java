@@ -120,7 +120,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
         return Good.builder()
                 .id(rs.getLong("goods_id"))
                 .unit(Unit.valueOf(rs.getString("unit")))
-                .quantity(rs.getInt("quantity"))
+                .quantity(rs.getInt("goods_quantity"))
                 .categoryName(rs.getString("category_name"))
                 .goodName(rs.getString("product_name"))
                 .firmName(rs.getString("firm_name"))
