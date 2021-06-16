@@ -1,11 +1,15 @@
 import {AbstractControl} from '@angular/forms';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 
 export function validateBirthday(control: AbstractControl): void{
   const birthday = control.get('birthday');
   const formYear = birthday?.value.split('-')[0];
-  if (birthday && birthday.value && (formYear > moment().toDate().getFullYear() || formYear < 1920)) {
-    birthday.setErrors({InvalidDate: true});
+  if (
+    birthday &&
+    birthday.value &&
+    (formYear > new Date().getFullYear() || formYear < 1920)
+  ) {
+    birthday.setErrors({ InvalidDate: true });
   }
 }
 

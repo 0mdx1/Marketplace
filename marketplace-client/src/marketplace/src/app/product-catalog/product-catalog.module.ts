@@ -8,6 +8,9 @@ import { SearchComponent } from './search/search.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProductComponent } from './product/product.component';
 import {ProductCardComponent} from "./product-card/product-card.component";
+import {AddProductComponent} from "./add-product/add-product.component";
+import {UpdateProductComponent} from "./update-product/update-product.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -17,10 +20,13 @@ import {ProductCardComponent} from "./product-card/product-card.component";
     SearchComponent,
     PaginationComponent,
     ProductComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    AddProductComponent,
+    UpdateProductComponent,
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     ProductCatalogRoutingModule
   ]
 })
