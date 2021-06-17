@@ -1,6 +1,8 @@
 package com.ncgroup.marketplaceserver.exception.domain;
 
-public class LinkNotValidException extends RuntimeException {
+import com.ncgroup.marketplaceserver.exception.basic.NotValidException;
+
+public class LinkNotValidException extends NotValidException {
 	public LinkNotValidException(String message) {
         super(message);
     }

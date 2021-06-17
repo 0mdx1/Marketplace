@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.model.Courier;
@@ -24,7 +24,6 @@ import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.repository.OrderRepository;
 import com.ncgroup.marketplaceserver.order.service.OrderService;
-import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 
