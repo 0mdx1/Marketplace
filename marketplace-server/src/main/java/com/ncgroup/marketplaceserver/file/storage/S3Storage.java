@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.ncgroup.marketplaceserver.file.helper.FileHelper.getBucket;
-import static com.ncgroup.marketplaceserver.file.helper.FileHelper.getKey;
-
 @Component
 public class S3Storage implements CloudStorage {
 
@@ -34,7 +31,7 @@ public class S3Storage implements CloudStorage {
         ObjectMetadata objectMetadata = new ObjectMetadata();
             metadata.forEach(objectMetadata::addUserMetadata);
         try {
-            amazonS3.putObject(getBucket(filepath), getKey(filepath), is,objectMetadata);
+            amazonS3.putObject(bucketName, filepath, is,objectMetadata);
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to upload the file", e);
         }
@@ -44,20 +41,20 @@ public class S3Storage implements CloudStorage {
     public void delete(String filepath) {
 
         try {
-            amazonS3.deleteObject(getBucket(filepath), getKey(filepath));
+            amazonS3.deleteObject(bucketName, filepath);
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to upload the file", e);
         }
     }
 
     @Override
-    public void move(String filepathFrom, String filepathTo) {
+    public void copy(String filepathFrom, String filepathTo) {
         try {
             amazonS3.copyObject(
-                    getBucket(filepathFrom),
-                    getKey(filepathFrom),
-                    getBucket(filepathTo),
-                    getKey(filepathTo)
+                    bucketName,
+                    filepathFrom,
+                    bucketName,
+                    filepathTo
             );
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to move the file", e);

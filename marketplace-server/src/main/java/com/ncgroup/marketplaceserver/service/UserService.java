@@ -16,6 +16,8 @@ public interface UserService {
 
     List<UserDto> getUsers();
 
+    UserDto findUserByToken(String token);
+    
     User findUserByEmail(String email);
 
     User findUserById(long id);
@@ -23,6 +25,8 @@ public interface UserService {
     User getUserByLink(String link);
 
     User addUser(String name, String surname, String email, Role role, String phone);
+    
+    User addUserWithoutCredentials(String name, String surname, String phone);
 
     User updateUser(long id, String newName, String newSurname, String newEmail, String newPhone, boolean isEnabled);
 

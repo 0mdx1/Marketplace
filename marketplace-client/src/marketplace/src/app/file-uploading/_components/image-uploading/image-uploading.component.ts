@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Observable} from "rxjs";
-import {FileService} from "../../_services/file.service";
+import {FileService} from "../../../_services/file.service";
 
 @Component({
   selector: 'app-image-uploading',
@@ -11,14 +11,14 @@ export class ImageUploadingComponent implements OnChanges{
 
   @Input() imageUrl: string = '';
 
-  @Output() imageFilename: EventEmitter<string> = new EventEmitter<string>();
+  @Output() imageFilenameEvent: EventEmitter<string> = new EventEmitter<string>();
 
   public isLoading: boolean = false;
 
   constructor(private fileService: FileService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.imageFilename.emit(this.getFilename(changes.imageUrl.currentValue))
+    this.imageFilenameEvent.emit(this.getFilename(changes.imageUrl.currentValue))
   }
 
   private getFilename(url:string): string {
@@ -35,7 +35,7 @@ export class ImageUploadingComponent implements OnChanges{
         next: fileMetadata => {
           this.isLoading=false;
           this.imageUrl = fileMetadata.resourceUrl;
-          this.imageFilename.emit(fileMetadata.filename)
+          this.imageFilenameEvent.emit(fileMetadata.filename)
           console.log(fileMetadata);
         },
         error: e=>{

@@ -1,44 +1,26 @@
-<div class="container">
 
-
-
+<div class="container product-list-container">
   <div class="row flex-lg-nowrap">
     <div class="col">
       <div class="row flex-lg-nowrap">
         <div class="col-12 col-lg-3 mb-3">
           <div class="card">
             <div class="card-body">
-               <app-search (results)="products = search.getProducts()" #search> </app-search>
-               <app-filter (results)="products = filter.getProducts()"  #filter>
-               </app-filter>
+              <div class="text-center px-xl-3">
+                <button class="btn btn-success" type="button" routerLink="add-product/">Create new product</button>
+              </div>
+              <app-search (results)="products = search.getProducts()" #search></app-search>
+              <app-filter (results)="products = filter.getProducts()" #filter>
+              </app-filter>
             </div>
           </div>
         </div>
         <div class="col mb-3">
           <div class="e-panel card">
-            <div class="card-body">
-              <div class="e-table">
-                <div class="table-responsive table-lg mt-3">
-                  <table class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-
-                        <th class="max-width">Id</th>
-                        <th class="max-width">Name</th>
-                        <th class="max-width">Price</th>
-                        <th class="max-width">Quantity</th>
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let product of products" routerLink="{{product.id}}" class="pointer">
-                        <td class="text-nowrap align-middle" >{{product.id}}</td>
-                        <td class="text-nowrap align-middle" >{{product.goodName}}</td>
-                        <td class="text-nowrap align-middle" >{{product.price}}</td>
-                        <td class="text-nowrap align-middle" >{{product.quantity}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+            <div class="row row-cols-1 row-cols-md-3 g-4 list" >
+                      <app-product-card *ngFor="let product of products" [product]="product">
+                      </app-product-card>
+            </div>
                 </div>
 
                 <!--<div class="card-deck ">
@@ -55,13 +37,6 @@
                   </div>
                 </div> -->
                 <app-pagination (results)="products = page.getProducts()" #page></app-pagination>
-              </div>
-            </div>
-          </div>
-
-
-
-
         </div>
       </div>
     </div>

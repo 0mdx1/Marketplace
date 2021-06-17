@@ -14,13 +14,9 @@ import java.util.Set;
 public class ApiError {
 
     private HttpStatus status;
-
     private LocalDateTime timestamp;
-
     private String message;
-
     private String debugMessage;
-
     private List<ApiSubError> subErrors;
 
     private ApiError() {

@@ -1,8 +1,7 @@
-import {Component, Inject} from '@angular/core';
+import { Component, Inject} from '@angular/core';
 
 import { AccountService } from './_services/account.service';
-import { User } from './_models/user';
-import { Role } from './_models/role';
+import {Account} from "./_models/account";
 import {Product} from "./_models/products/product";
 import {ProductComparisonService} from "./_services/product-comparison/product-comparison";
 import {LimitedProductComparisonService} from "./_services/product-comparison/limited-product-comparison.service";
@@ -11,21 +10,19 @@ import {LimitedProductComparisonService} from "./_services/product-comparison/li
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css']})
 export class AppComponent {
-  role = Role;
-  // @ts-ignore
-  user: User;
+  account: Account;
 
   comparedProd: Product[] = [];
 
-  constructor(
-    private accountService: AccountService,
-    @Inject(LimitedProductComparisonService)private comparisonService: ProductComparisonService
-  ) {
+  constructor(private accountService: AccountService,
+              @Inject(LimitedProductComparisonService)private comparisonService: ProductComparisonService) {
+    this.account = new Account();
+    this.accountService.account.subscribe(x => this.account = x);
     this.comparedProd = comparisonService.getProducts();
-    this.accountService.account.subscribe(x => this.user = x);
+    console.log(this.account.email);
   }
 
-/*  logout() {
+  logout() {
     this.accountService.logout();
-  }*/
+  }
 }

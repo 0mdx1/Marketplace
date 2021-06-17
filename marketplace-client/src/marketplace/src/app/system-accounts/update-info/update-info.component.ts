@@ -1,24 +1,29 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Role} from "../../_models/role";
-import {SystemAccountService} from "../../_services/system-account.service";
-import {validateBirthday} from "../../_helpers/validators.service";
-import {StaffMember} from "../../_models/staff-member";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Role } from '../../_models/role';
+import { SystemAccountService } from '../../_services/system-account.service';
+import { validateBirthday } from '../../_helpers/validators.service';
+import { StaffMember } from '../../_models/staff-member';
 
-import {first} from "rxjs/operators";
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'update-info',
   templateUrl: './update-info.component.html',
   styleUrls: ['./update-info.component.css'],
 })
-export class UpdateInfoComponent implements OnInit{
-
-
+export class UpdateInfoComponent implements OnInit {
   //form: FormGroup;
   form = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
   });
 
   submitted = false;
@@ -33,45 +38,42 @@ export class UpdateInfoComponent implements OnInit{
 
   response: any;
 
-  test: string = "asa";
+  //test: string = "asa";
 
-
-
-  ngOnInit(){
+  ngOnInit() {
     //.subscribe((response) => {
-      if(this.route.snapshot.params.role.localeCompare(1)) {
-        this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
-          .subscribe((response) => {
-            this.response = response;
-            console.log(this.response);
-            this.formCreation();
-          })
-      }
-
-   else if (this.route.snapshot.params.role.localeCompare(2)){
-      this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
+    if (this.route.snapshot.params.role.localeCompare(1)) {
+      this.accountService
+        .getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           console.log(this.response);
           this.formCreation();
-        })
+        });
+    } else if (this.route.snapshot.params.role.localeCompare(2)) {
+      this.accountService
+        .getCourierProfileInfo(this.route.snapshot.params.id)
+        .subscribe((response) => {
+          this.response = response;
+          console.log(this.response);
+          this.formCreation();
+        });
     }
-
   }
 
   constructor(
     private formBuilder: FormBuilder,
     private accountService: SystemAccountService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
-  formCreation(){
+  formCreation() {
     this.form = this.formBuilder.group(
       {
         name: [this.response.name, Validators.required],
         surname: [this.response.surname, Validators.required],
         phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
-        birthday: [""],
+        birthday: [''],
         status: [this.response.status, Validators.required],
       },
       {
@@ -112,20 +114,22 @@ export class UpdateInfoComponent implements OnInit{
     }
     this.loading = true;
     let observable = null;
-    if (this.route.snapshot.params.role.localeCompare(1)){
+    if (this.route.snapshot.params.role.localeCompare(1)) {
       observable = this.accountService.updateManagerInfo(
-        this.mapToStaffMember(this.form.value), (this.route.snapshot.params.id)
+        this.mapToStaffMember(this.form.value),
+        this.route.snapshot.params.id
       );
     } else if (this.route.snapshot.params.role.localeCompare(2)) {
       observable = this.accountService.updateCourierInfo(
-        this.mapToStaffMember(this.form.value), (this.route.snapshot.params.id)
+        this.mapToStaffMember(this.form.value),
+        this.route.snapshot.params.id
       );
     } else {
-      console.log("Role mistake")
+      console.log('Role mistake');
       return;
     }
 
-    console.log(this.mapToStaffMember(this.form.value))
+    console.log(this.mapToStaffMember(this.form.value));
 
     observable.pipe(first()).subscribe({
       next: () => {
@@ -134,5 +138,4 @@ export class UpdateInfoComponent implements OnInit{
       },
     });
   }
-
 }

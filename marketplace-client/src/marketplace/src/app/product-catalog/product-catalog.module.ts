@@ -7,6 +7,12 @@ import { FilterComponent } from './filter/filter.component';
 import { SearchComponent } from './search/search.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProductComponent } from './product/product.component';
+import {ProductCardComponent} from "./product-card/product-card.component";
+import {AddProductComponent} from "./add-product/add-product.component";
+import {UpdateProductComponent} from "./update-product/update-product.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {AppModule} from "../app.module";
+import {FileUploadingModule} from "../file-uploading/file-uploading.module";
 
 
 @NgModule({
@@ -15,11 +21,16 @@ import { ProductComponent } from './product/product.component';
     FilterComponent,
     SearchComponent,
     PaginationComponent,
-    ProductComponent
+    ProductComponent,
+    ProductCardComponent,
+    AddProductComponent,
+    UpdateProductComponent,
   ],
-  imports: [
-    CommonModule,
-    ProductCatalogRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        ProductCatalogRoutingModule,
+        FileUploadingModule
+    ]
 })
 export class ProductCatalogModule { }

@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col my-4">
         <table class="table">
-          <thead class="table-dark">
+          <thead class="table">
             <tr class="text-center">
               <th>Image</th>
               <th>Title</th>
@@ -23,8 +23,6 @@
                 <img
                   src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fsmilytiffany%2F100x100-images%2F&psig=AOvVaw3xQvbQnb1NnoFIsFBlIvmJ&ust=1623328407610000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjAmN3HivECFQAAAAAdAAAAABAJ"
                   alt="{{cartItem.goods.goodName}}" height="60" class="order-1">
-                <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash"
-                    (click)="delete(cartItem)"></i></span>
               </td>
               <td>
                 <p>{{cartItem.goods.goodName}}</p>
@@ -47,7 +45,11 @@
                 </form>
               </td>
               <td>
-                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+                <div class="d-flex justify-content-between">
+                  <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+                  <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash"
+                    (click)="delete(cartItem)"></i></span>
+                </div>
               </td>
             </tr>
             <tr class="border-0">
@@ -67,8 +69,8 @@
 
       <div class="col-md-12 d-flex mb-5">
         <div class="d-flex w-100 justify-content-between flex-sm-column flex-md-row">
-          <a (click)="checkout()" class="btn btn-danger btn-sm order-1">Checkout</a>
-          <a routerLink="/products" class="btn btn-success btn-sm order-0">Continue Shopping</a>
+          <a (click)="checkout()" class="btn btn-success btn-md order-1">Checkout</a>
+          <a routerLink="/products" class="btn btn-outline-info btn-md order-0">Continue Shopping</a>
         </div>
       </div>
 

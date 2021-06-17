@@ -45,6 +45,12 @@ public class CourierRepositoryImpl implements CourierRepository {
     @Value("${courier.update}")
     private String updateCourier;
 
+    @Value("${courier.update-person}")
+    private String updatePerson;
+
+    @Value("${courier.update-credentials}")
+    private String updateCredentials;
+
     @Value("${courier.find-by-name-surname}")
     private String filterNameQuery;
 
@@ -83,13 +89,21 @@ public class CourierRepositoryImpl implements CourierRepository {
 
     @Override
     public CourierUpdateDto update(CourierUpdateDto courier, long id, boolean isEnabled, boolean isActive) {
-        SqlParameterSource courierParams = new MapSqlParameterSource()
+        SqlParameterSource personParams = new MapSqlParameterSource()
+                .addValue("id", id)
                 .addValue("name", courier.getName())
                 .addValue("surname", courier.getSurname())
-                .addValue("phone", courier.getBirthday())
-                .addValue("birthday", courier.getBirthday())
-                .addValue("userStatus", isEnabled)
-                .addValue("courierStatus", isActive)
+                .addValue("phone", courier.getPhone())
+                .addValue("birthday", courier.getBirthday());
+        namedParameterJdbcTemplate.update(updatePerson, personParams);
+
+        SqlParameterSource credentialsParams = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("is_enabled", isEnabled);
+        namedParameterJdbcTemplate.update(updateCredentials, credentialsParams);
+
+        SqlParameterSource courierParams = new MapSqlParameterSource()
+                .addValue("is_active", isActive)
                 .addValue("id", id);
         namedParameterJdbcTemplate.update(updateCourier, courierParams);
 

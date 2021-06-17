@@ -6,8 +6,10 @@ import {catchError, shareReplay, tap} from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
-import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
-import {StaffMember} from "../_models/staff-member";
+import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
+import { StaffMember } from '../_models/staff-member';
+import {Account} from "../_models/account";
+import {AuthService} from "../_auth/auth.service";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -18,9 +20,16 @@ export class AccountService {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
-    this.accountSubject = new BehaviorSubject<User>({} as any);
+    const account = authService.getAccount();
+    if(account){
+      this.accountSubject = new BehaviorSubject<Account>(account);
+    }
+    else{
+      this.accountSubject = new BehaviorSubject<Account>(new Account());
+    }
     this.account = this.accountSubject.asObservable();
   }
 
@@ -62,9 +71,19 @@ export class AccountService {
     return this.http.post(`${baseUrl}/setnewpassword`, body);
   }
 
+  getUser(): Observable<User> {
+    return this.http.get(`${baseUrl}/userinfo`);
+  }
+
   setToken(authResult: any): void {
     const token = authResult.headers.get('Authorization');
-    if (token) { localStorage.setItem('token', token); }
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+    const account = this.authService.getAccount();
+    if(account){
+      this.accountSubject.next(account);
+    }
   }
 
 }

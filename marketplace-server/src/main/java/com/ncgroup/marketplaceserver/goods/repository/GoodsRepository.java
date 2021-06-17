@@ -10,11 +10,13 @@ import java.util.Optional;
 
 public interface GoodsRepository {
     Long createGood(GoodDto goodDto) throws GoodAlreadyExistsException;
-
     void editGood(GoodDto good, Long id);
     Optional<Good> findById(long id);
-
     List<Good> display(String query);
-
+    int countGoods(String query);
     List<String> getCategories();
+    List<String> getFirms();
+
+
+    void editQuantity(long id, int quantity);
 }

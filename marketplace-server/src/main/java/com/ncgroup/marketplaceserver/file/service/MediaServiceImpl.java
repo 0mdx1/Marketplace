@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 
+import static com.ncgroup.marketplaceserver.file.helper.FileHelper.getPath;
 import static org.apache.http.entity.ContentType.*;
 import static org.springframework.util.StringUtils.getFilename;
 
@@ -54,10 +55,14 @@ public class MediaServiceImpl implements MediaService{
 
     @Override
     public String confirmUpload(String filepath) {
-        String filename = getFilename(filepath);
-        String newFilepath = String.format("media/%s",filename);
-        this.cloudStorage.move(filepath,newFilepath);
-        return newFilepath;
+        if(!getPath(filepath).equals("media")){
+            String filename = getFilename(filepath);
+            String newFilepath = String.format("media/%s",filename);
+            this.cloudStorage.copy(filepath,newFilepath);
+            this.cloudStorage.delete(filepath);
+            return newFilepath;
+        }
+        return filepath;
     }
 
     @Override

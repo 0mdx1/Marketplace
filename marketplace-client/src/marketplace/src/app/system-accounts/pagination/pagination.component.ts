@@ -12,6 +12,7 @@ export class PaginationComponent implements OnInit {
   currentPage: number = 1;
   pageNum: number = 1; //total number of pages
   users: StaffMember[] = [];
+
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service: SystemAccountService) {}

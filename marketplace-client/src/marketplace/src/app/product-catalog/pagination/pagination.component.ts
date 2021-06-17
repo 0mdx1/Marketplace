@@ -1,13 +1,12 @@
 import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
+  Component, EventEmitter, OnDestroy,
+  OnInit, Optional,
   Output,
 } from '@angular/core';
-import { Product } from 'src/app/_models/products/product';
-import { ProductDto } from 'src/app/_models/products/productDto';
-import { ProductService } from 'src/app/_services/product.service';
+import {Product} from 'src/app/_models/products/product';
+import {ProductDto} from 'src/app/_models/products/productDto';
+import {ProductService} from 'src/app/_services/product.service';
+import {of, Subject} from "rxjs";
 
 @Component({
   selector: 'app-pagination',
@@ -18,14 +17,28 @@ export class PaginationComponent implements OnInit {
   currentPage: number = 1;
   pageNum: number = 1; //total number of pages
   products: Product[] = [];
+
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service: ProductService) {}
 
   ngOnInit(): void {
-    this.service.pageNumSource.subscribe((pageNum) => {
+
+    // const subject$ = new Subject();
+    //
+    // subject$.subscribe({
+    //     next(value) {
+    //       console.log(value)
+    //     }
+    //   }
+    // )
+    // subject$.next('Hello World')
+    // of(1, 4, 6).subscribe()
+
+    this.service.pageTotalSource.subscribe((pageNum) => {
       this.pageNum = pageNum;
     });
+    //TODO: get page twice?
     this.service.pageSource.subscribe((page) => {
       this.currentPage = page;
     });
@@ -34,7 +47,6 @@ export class PaginationComponent implements OnInit {
     this.service
       .getPagedProducts(this.currentPage)
       .subscribe((results: ProductDto) => {
-        //this.results.emit(results.users);
         this.products = results.result_set;
         this.results.emit();
         this.pageNum = results.total;
@@ -63,7 +75,6 @@ export class PaginationComponent implements OnInit {
     this.service
       .getPagedProducts(this.currentPage)
       .subscribe((results: ProductDto) => {
-        //this.results.emit(results.users);
         this.products = results.result_set;
         this.results.emit();
         this.pageNum = results.total;
@@ -74,4 +85,6 @@ export class PaginationComponent implements OnInit {
   getProducts(): Product[] {
     return this.products;
   }
+
+
 }

@@ -1,0 +1,130 @@
+<div class="container h-100">
+  <div class="row h-100">
+    <div class="my-auto col-sm-10 offset-sm-1 col-m-8 offset-m-2 col-lg-6 offset-lg-3 mt-5">
+      <div class="card m-3">
+        <h1 class="text-center card-header">Update product</h1>
+        <div *ngIf="!updated" class="card-body">
+          <form *ngIf="response" [formGroup]="form" (ngSubmit)="onSubmit()" >
+
+            <div class="form-row">
+
+              <div class="form-group col-6">
+                <label>Good Name*</label>
+                <input type="text" formControlName="goodName" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.goodName.errors }" />
+                <div *ngIf="submitted && getForm.goodName.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.goodName.errors.required">Firm name is required</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Firm Name*</label>
+                <input type="text" formControlName="firmName" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.firmName.errors }" />
+                <div *ngIf="submitted && getForm.firmName.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.firmName.errors.required">Firm name is required</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-row">
+
+              <div class="form-group col-6">
+                <label>Quantity*</label>
+                <input type="number" formControlName="quantity" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.quantity.errors }" />
+                <div *ngIf="submitted && getForm.quantity.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.quantity.errors.required">Quantity is required</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Price*</label>
+                <input type="number" formControlName="price" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.price.errors }" />
+                <div *ngIf="submitted && getForm.price.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.price.errors.required">Quantity is required</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Unit*</label>
+                <select class="form-control" formControlName="unit">
+                  <ng-container *ngIf="response">
+                    <option *ngFor="let status of unit" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Discount</label>
+                <input type="number" formControlName="discount" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }" />
+                <div *ngIf="submitted && getForm.discount.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.discount.errors.required">Price is required</div>
+                </div>
+              </div>
+
+              <div class="form-group col-6">
+                <label>In Stock*</label>
+                <select class="form-control" formControlName="inStock">
+                  <ng-container *ngIf="response">
+                    <option *ngFor="let status of inStock" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+
+              <div class="form-group col-6">
+                <label>Category*</label>
+                <select class="form-control" formControlName="categoryName">
+                  <ng-container *ngIf="response">
+                    <option *ngFor="let status of categoryName" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+
+              <app-image-uploading [imageUrl]="this.response.image" (imageFilenameEvent)="setImage($event)"></app-image-uploading>
+
+              <div class="form-group col-12">
+                <label>Description</label>
+                <textarea rows= "3" type="text" formControlName="description" class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.description.errors }" >
+                </textarea>
+                <div *ngIf="submitted && getForm.description.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.description.errors.required">Price is required</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button [disabled]="loading" type="submit" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                  Update
+                </button>
+                <a routerLink="/products" href="" class="btn btn-link">Cancel</a>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+
+        <div *ngIf="updated" class="card-body">
+          <h3 class="text-center">
+            Product was updated successfully
+          </h3>
+          <div class="form-group col text-right">
+            <a routerLink="/products" class="btn btn-link">Back to products</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

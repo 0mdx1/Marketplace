@@ -14,7 +14,8 @@ const baseUrl = `${environment.apiUrl}`;
   providedIn: 'root',
 })
 export class ProductService {
-  pageNumSource: Subject<number> = new Subject();
+
+  pageTotalSource: Subject<number> = new Subject();
   pageSource: Subject<number> = new Subject();
 
   constructor(
@@ -28,6 +29,8 @@ export class ProductService {
     search: string,
     page: number
   ): Observable<ProductDto> {
+    this.pageTotalSource.next()
+
     this.addQueryParams(filter, search, page);
     //get method to backend api
     return this.http
@@ -65,7 +68,8 @@ export class ProductService {
     return params;
   }
 
-  private addQueryParams(filter: Filter, search: string, page: number): string {
+  private addQueryParams
+  (filter: Filter, search: string, page: number): string {
     //filter = this.validateFilter(filter);
     let currentUrl = this.router.url.split('?')[0];
     if (!this.isBlank(search)) {
@@ -79,7 +83,7 @@ export class ProductService {
           direction: filter.direction,
           page: page,
           search: search,
-        },
+        }
       });
       currentUrl =
         currentUrl +
@@ -184,9 +188,9 @@ export class ProductService {
     );
   }
 
-  private notifyPageComponent(users: Observable<ProductDto>) {
-    users.subscribe((res) => {
-      this.pageNumSource.next(res.total);
+  private notifyPageComponent(products: Observable<ProductDto>) {
+    products.subscribe((res) => {
+      this.pageTotalSource.next(res.total);
       this.pageSource.next(res.current);
     });
   }
@@ -194,5 +198,17 @@ export class ProductService {
   //checks whether string blank,null or undefined
   private isBlank(str: string): boolean {
     return !str || /^\s*$/.test(str);
+  }
+
+  AddProduct(account: Product): Observable<any> {
+    return this.http.post(`${baseUrl}/products`, account);
+  }
+
+  getProductInfo(id: number){
+    return this.http.get(`${baseUrl}/products/` + id);
+  }
+
+  updateProduct(account: Product, id: number): Observable<any> {
+    return this.http.put(`${baseUrl}/products/` + id, account);
   }
 }
