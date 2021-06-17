@@ -63,6 +63,9 @@ public class S3Storage implements CloudStorage {
 
     @Override
     public String getResourceUrl(String filepath) {
+        if(filepath==null||filepath.isEmpty()){
+            return "";
+        }
         return String.format("https://%s.s3.%s.amazonaws.com/%s",bucketName,bucketRegion,filepath);
     }
 }

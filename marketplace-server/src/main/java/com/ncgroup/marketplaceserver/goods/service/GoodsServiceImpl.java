@@ -36,7 +36,10 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
-        goodDto.setImage(this.mediaService.confirmUpload(goodDto.getImage()));
+        String newImage = goodDto.getImage();
+        if(!newImage.isEmpty()){
+            goodDto.setImage(this.mediaService.confirmUpload(newImage));
+        }
         Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
         Good good = new Good();
         good.setProperties(goodDto, goodId);
@@ -47,12 +50,14 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Good edit(GoodDto goodDto, long id) throws NotFoundException {
         Good good = this.findById(id); // pull the good object if exists
-        String oldImage = good.getImage();
         String newImage = goodDto.getImage();
-        goodDto.setImage(this.mediaService.confirmUpload(newImage));
-        if(!newImage.isEmpty() && !oldImage.isEmpty() && !oldImage.equals(newImage)){
-            log.info("Deleting old image");
-            mediaService.delete(oldImage);
+        if(!newImage.isEmpty()){
+            String oldImage = good.getImage();
+            goodDto.setImage(this.mediaService.confirmUpload(newImage));
+            if(!oldImage.isEmpty() && !oldImage.equals(newImage)){
+                log.info("Deleting old image");
+                mediaService.delete(oldImage);
+            }
         }
         good.setProperties(goodDto, id);
         repository.editGood(goodDto, id); // push the changed good object
