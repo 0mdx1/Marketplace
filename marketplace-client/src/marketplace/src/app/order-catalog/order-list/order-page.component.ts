@@ -8,9 +8,5 @@ import {OrderPage} from "../../_models/order-info/order-page";
   styleUrls: ['./order-page.component.css']
 })
 export class OrderPageComponent {
-  // @Input() orders: CourierOrder[] = [];
-  // @Input() page: number = 0;
-  // @Input() totalPages: number = 0;
-
   @Input() orderPage: OrderPage = new OrderPage();
 }
