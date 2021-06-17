@@ -39,7 +39,7 @@ const routes: Routes = [
     path: 'cart',
     component: CartComponent,
     canActivate: [RoleGuardService],
-    data: { roles: [Role.User] },
+    data: { roles: [Role.User,Role.AnonymousUser] },
   },
   {
     path: 'image-uploading',
@@ -49,7 +49,7 @@ const routes: Routes = [
     path: 'products/comparison',
     component: ProductComparisonComponent,
     canActivate: [RoleGuardService],
-    data: { roles: [Role.User] },
+    data: { roles: [Role.User,Role.AnonymousUser]},
   },
   {
     path: 'profile',
