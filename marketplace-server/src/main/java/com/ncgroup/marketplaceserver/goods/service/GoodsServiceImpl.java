@@ -188,6 +188,11 @@ public class GoodsServiceImpl implements GoodsService {
     public List<String> getCategories() throws NotFoundException {
         return repository.getCategories();
     }
+
+    @Override
+    public List<String> getFirms() throws NotFoundException {
+        return repository.getFirms();
+    }
     
     @Override
     public void updateQuantity(long id, int qunatity) {
