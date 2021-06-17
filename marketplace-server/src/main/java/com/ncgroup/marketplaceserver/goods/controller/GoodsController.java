@@ -73,6 +73,11 @@ public class GoodsController {
         return new ResponseEntity<>(service.getCategories(), HttpStatus.OK);
     }
 
+    @GetMapping("/firms")
+    public ResponseEntity<List<String>> getFirms() throws NotFoundException {
+        return new ResponseEntity<>(service.getFirms(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Good> getGood(@PathVariable("id") long id) throws NotFoundException {
         return new ResponseEntity<>(service.find(id), HttpStatus.OK);
