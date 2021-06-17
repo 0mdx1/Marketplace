@@ -17,6 +17,8 @@ public interface GoodsService {
              String sortBy, String sortDirection, Integer page) throws NotFoundException;
 
     List<String> getCategories() throws NotFoundException;
+    List<String> getFirms() throws NotFoundException;
+
     void updateQuantity(long id, int qunatity);
 }
 

@@ -223,13 +223,25 @@ public class GoodsRepoImpl implements GoodsRepository {
     String getCategories;
     @Override
     public List<String> getCategories() throws NotFoundException {
-        List<String> res = namedParameterJdbcTemplate
+        List<String> res = jdbcTemplate
                 .query(getCategories, (resultSet, i) -> resultSet.getString("name"));
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;
     }
-    
+
+    @Value("${firms.get}")
+    String getFirms;
+    @Override
+    public List<String> getFirms() {
+        List<String> res = jdbcTemplate
+                .query(getFirms, (resultSet, i) -> resultSet.getString("name"));
+        if (res.isEmpty()) {
+            throw new NotFoundException("Sorry, but there are no firms yet.");
+        }
+        return res;
+    }
+
     @Override
     public void editQuantity(long id, int quantity) {
     	SqlParameterSource parameters = new MapSqlParameterSource()

@@ -33,8 +33,6 @@ export class OrderService {
     return this.http.get<OrderPage>(baseUrl + '/orders', {
       params: new HttpParams().set('page', page.toString())
     });
-
-  // .pipe(catchError((error: any) => of(new OrderPage())))
   }
 
   public getOrder(): Observable<CourierOrder> {
