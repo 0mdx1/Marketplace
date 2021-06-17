@@ -14,12 +14,12 @@ import java.util.Date;
 @Getter
 @Setter
 public class HttpResponse {
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy hh:mm:ss")
     private Date timeStamp;
     private int httpStatusCode; 
     private HttpStatus httpStatus;
     private String reason;
-
     private String message;
 
 

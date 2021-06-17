@@ -22,10 +22,9 @@ export class PaginationComponent implements OnInit {
       this.service.getPagedOrders(this.orderPage.page || 1)
         .subscribe((response: OrderPage) => {
           this.orderPage.orders = response.orders;
-          // this.pages = new number[response.totalPages];
-          this.notification.emit();
           this.orderPage.totalPages = response.totalPages;
-
+          this.orderPage.page = response.page;
+          this.notification.emit();
         })
   }
 
@@ -38,13 +37,11 @@ export class PaginationComponent implements OnInit {
   }
 
   next(): void {
-    // @ts-ignore
     this.orderPage.page = this.orderPage.page + 1;
     this.getOrders();
   }
 
   prev(): void {
-    // @ts-ignore
     this.orderPage.page = this.orderPage.page - 1;
     this.getOrders();
   }

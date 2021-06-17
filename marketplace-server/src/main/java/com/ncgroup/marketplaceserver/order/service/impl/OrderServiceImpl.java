@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.model.Courier;
@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService{
 		order = orderRepo.saveOrderDetails(order);
 		for(OrderItem item : order.getItems()) {
 			try {
-				int oldQunatity = goodService.findById(item.getGood().getId()).getQuantity();
+				int oldQunatity = goodService.find(item.getGood().getId()).getQuantity();
 				goodService.updateQuantity(item.getGood().getId(), oldQunatity-item.getQuantity());
 			} catch (NotFoundException e) {
 				log.warn(e.getMessage());
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements OrderService{
 	
 	private float calculateSum(long goodId, int quantity) {
 		try {
-			Good good = goodService.findById(goodId);
+			Good good = goodService.find(goodId);
 			return ((float) (good.getPrice() - good.getPrice() * good.getDiscount()/100)) * quantity;
 		} catch (NotFoundException e) {
 			return 0;

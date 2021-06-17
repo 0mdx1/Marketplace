@@ -1,4 +1,8 @@
 <div class="container" style="padding-top: 30px">
+  <div *ngIf="products.length === 0;" class="text-center my-5">
+    <h4>No items to compare</h4>
+    <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
+  </div>
   <div class="row flex-row flex-nowrap">
     <div *ngFor="let product of products" class="col-3">
       <div class="card">

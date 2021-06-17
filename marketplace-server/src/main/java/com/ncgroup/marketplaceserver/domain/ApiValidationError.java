@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ApiValidationError extends ApiSubError{
+public class ApiValidationError extends ApiSubError {
     private String field;
     private Object rejectedValue;
     private String message;

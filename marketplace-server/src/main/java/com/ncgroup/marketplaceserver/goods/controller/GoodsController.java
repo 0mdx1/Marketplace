@@ -4,7 +4,7 @@ import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
-import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,9 +73,14 @@ public class GoodsController {
         return new ResponseEntity<>(service.getCategories(), HttpStatus.OK);
     }
 
+    @GetMapping("/firms")
+    public ResponseEntity<List<String>> getFirms() throws NotFoundException {
+        return new ResponseEntity<>(service.getFirms(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Good> getGood(@PathVariable("id") long id) throws NotFoundException {
-        return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(service.find(id), HttpStatus.OK);
     }
 }
 

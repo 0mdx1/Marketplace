@@ -26,23 +26,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let order of orders" routerLink = "{{order.id}}" class="pointer">
+                    <tr *ngFor="let order of orderPage.orders" routerLink = "{{order.id}}" class="pointer">
                       <td class="text-nowrap align-middle">{{order.id}}</td>
-                      <td class="text-nowrap align-middle">{{order.user ? order.user.name : 'order.user.name'}}</td>
-                      <td class="text-nowrap align-middle">{{order.user ? order.user.surname : ''}}</td>
-<!--                      <td class="text-nowrap align-middle">{{order.user.address}}</td>-->
-                      <td class="text-nowrap align-middle">{{order.user ? order.user.phone : ''}}</td>
+                      <td class="text-nowrap align-middle">{{order.user?.name}}</td>
+                      <td class="text-nowrap align-middle">{{order.user?.surname}}</td>
+                      <td class="text-nowrap align-middle">{{order.address}}</td>
+                      <td class="text-nowrap align-middle">{{order.user?.phone}}</td>
                       <td class="text-nowrap align-middle">{{order.totalSum}}</td>
                       <td class="text-nowrap align-middle">{{order.discountSum}}</td>
                       <td class="text-nowrap align-middle">{{order.deliveryTime}}</td>
-                      <td class="text-nowrap align-middle">{{order.disturb}}</td>
+                      <td class="text-nowrap align-middle">{{order.disturb ? 'Yes' : 'No'}}</td>
+
                       <td class="text-nowrap align-middle">{{order.status}}</td>
 
                     </tr>
                     </tbody>
                   </table>
                 </div>
-                <app-pagination-order (notification)="orders = page.orderPage.orders" #page></app-pagination-order>
+                <app-pagination-order (notification)="orderPage = page.orderPage" #page></app-pagination-order>
               </div>
             </div>
           </div>

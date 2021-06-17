@@ -146,11 +146,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("goodDiscount", goodDto.getDiscount())
                     .addValue("goodInStock", goodDto.isInStock())
                     .addValue("goodDescription", goodDto.getDescription())
-
+                    .addValue("image", goodDto.getImage())
                     .addValue("unit", goodDto.getUnit().toString())
-
-                    //.addValue("date", goodDto.getShippingDate())
-
                     .addValue("productId", productId)
                     .addValue("firmId", firmId);
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
@@ -178,9 +175,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .addValue("price", goodDto.getPrice())
                 .addValue("discount", goodDto.getDiscount())
                 .addValue("inStock", goodDto.isInStock())
-
+                .addValue("image", goodDto.getImage())
                 .addValue("unit", goodDto.getUnit().toString())
-
                 .addValue("description", goodDto.getDescription());
         namedParameterJdbcTemplate.update(updateProduct, parameters);
     }
@@ -227,13 +223,25 @@ public class GoodsRepoImpl implements GoodsRepository {
     String getCategories;
     @Override
     public List<String> getCategories() throws NotFoundException {
-        List<String> res = namedParameterJdbcTemplate
+        List<String> res = jdbcTemplate
                 .query(getCategories, (resultSet, i) -> resultSet.getString("name"));
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;
     }
-    
+
+    @Value("${firms.get}")
+    String getFirms;
+    @Override
+    public List<String> getFirms() {
+        List<String> res = jdbcTemplate
+                .query(getFirms, (resultSet, i) -> resultSet.getString("name"));
+        if (res.isEmpty()) {
+            throw new NotFoundException("Sorry, but there are no firms yet.");
+        }
+        return res;
+    }
+
     @Override
     public void editQuantity(long id, int quantity) {
     	SqlParameterSource parameters = new MapSqlParameterSource()
@@ -249,7 +257,6 @@ public class GoodsRepoImpl implements GoodsRepository {
                 //.shippingDate(rs.getObject("shipping_date", LocalDate.class))
 
                 .unit(Unit.valueOf(rs.getString("unit")))
-
                 .quantity(rs.getInt("quantity"))
                 .categoryName(rs.getString("category_name"))
                 .goodName(rs.getString("product_name"))
@@ -258,6 +265,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .discount(rs.getByte("discount"))
                 .inStock(rs.getBoolean("in_stock"))
                 .description(rs.getString("description"))
+                .image(rs.getString("image"))
                 .build();
     }
 }
