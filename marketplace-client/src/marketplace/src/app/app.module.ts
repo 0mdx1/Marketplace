@@ -19,7 +19,7 @@ import {
 } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ProductCatalogModule } from './product-catalog/product-catalog.module';
-import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
+import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
 import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import {AlertComponent} from './_components/alert/alert.component';

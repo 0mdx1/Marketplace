@@ -7,7 +7,7 @@ import { Role } from './_models/role';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
 import {ImageUploadingComponent} from "./file-uploading/_components/image-uploading/image-uploading.component";
-import { ProductComparisonComponent } from './_components/product-comparison/product-comparison.component';
+import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import {ProfileComponent} from "./account/profile/profile.component";
 
@@ -44,12 +44,6 @@ const routes: Routes = [
   {
     path: 'image-uploading',
     component: ImageUploadingComponent
-  },
-  {
-    path: 'products/comparison',
-    component: ProductComparisonComponent,
-    canActivate: [RoleGuardService],
-    data: { roles: [Role.User,Role.AnonymousUser]},
   },
   {
     path: 'profile',
