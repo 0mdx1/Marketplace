@@ -23,8 +23,8 @@ export class PaginationComponent implements OnInit {
         .subscribe((response: OrderPage) => {
           this.orderPage.orders = response.orders;
           // this.pages = new number[response.totalPages];
-          this.notification.emit();
           this.orderPage.totalPages = response.totalPages;
+          this.notification.emit();
 
         })
   }
