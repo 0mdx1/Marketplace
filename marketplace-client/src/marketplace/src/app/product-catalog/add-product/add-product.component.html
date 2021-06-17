@@ -93,9 +93,7 @@
                 </select>
               </div>
 
-              <div class="form-group col-6">
-                <input type="file" formControlName="image" >
-              </div>
+              <app-image-uploading (imageFilenameEvent)="setImage($event)"></app-image-uploading>
 
               <div class="form-group col-12">
                 <label>Description</label>

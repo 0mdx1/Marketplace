@@ -11,6 +11,8 @@ import {ProductCardComponent} from "./product-card/product-card.component";
 import {AddProductComponent} from "./add-product/add-product.component";
 import {UpdateProductComponent} from "./update-product/update-product.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {AppModule} from "../app.module";
+import {FileUploadingModule} from "../file-uploading/file-uploading.module";
 
 
 @NgModule({
@@ -24,10 +26,11 @@ import {ReactiveFormsModule} from "@angular/forms";
     AddProductComponent,
     UpdateProductComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ProductCatalogRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        ProductCatalogRoutingModule,
+        FileUploadingModule
+    ]
 })
 export class ProductCatalogModule { }

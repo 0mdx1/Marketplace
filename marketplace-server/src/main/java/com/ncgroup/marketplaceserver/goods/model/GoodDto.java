@@ -24,6 +24,8 @@ public class GoodDto {
     @Max(99)
     private double discount;
 
+    private String image;
+
     /**
      * 03.04.2021
      * 03-04-2021
