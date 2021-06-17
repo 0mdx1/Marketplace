@@ -53,7 +53,7 @@ public class MediaServiceImpl implements MediaService{
 
     @Override
     public String getResourceUrl(String filename) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",bucketName,bucketRegion,filename);
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, bucketRegion,filename);
     }
 
     @Override

@@ -26,11 +26,6 @@ public class GoodDto {
 
     private String image;
 
-    /**
-     * 03.04.2021
-     * 03-04-2021
-     * 03/04/2021
-     */
 //    @Past
 //    private String shippingDate;
 
@@ -38,5 +33,9 @@ public class GoodDto {
     private String description;
     @NotEmpty
     private String categoryName;
-    //private String status;
+    private boolean status;
+
+//    public void GoodDto(Good good) {
+//
+//    }
 }
