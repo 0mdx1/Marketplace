@@ -32,10 +32,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
+        goodDto.setImage(this.mediaService.confirmUpload(goodDto.getImage()));
         Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
         Good good = new Good();
         good.setProperties(goodDto, goodId);
-        good.setImage(mediaService.getResourceUrl(good.getImage()));
+        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         return good;
     }
 
@@ -44,20 +45,21 @@ public class GoodsServiceImpl implements GoodsService {
         Good good = this.findById(id); // pull the good object if exists
         String oldImage = good.getImage();
         String newImage = goodDto.getImage();
+        goodDto.setImage(this.mediaService.confirmUpload(good.getImage()));
         if(!newImage.isEmpty() && !oldImage.isEmpty() && !oldImage.equals(newImage)){
             log.info("Deleting old image");
             mediaService.delete(oldImage);
         }
         good.setProperties(goodDto, id);
         repository.editGood(goodDto, id); // push the changed good object
-        good.setImage(mediaService.getResourceUrl(good.getImage()));
+        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         return good;
     }
 
     @Override
     public Good find(long id) throws NotFoundException {
         Good good = findById(id);
-        good.setImage(mediaService.getResourceUrl(good.getImage()));
+        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         return good;
     }
 
@@ -78,7 +80,7 @@ public class GoodsServiceImpl implements GoodsService {
         String flexibleQuery = "SELECT goods.id, product.name AS product_name, " +
                 "firm.name AS firm_name, category.name AS category_name, unit, " +
                 " goods.quantity, goods.price, goods.discount, goods.in_stock," +
-                " goods.description FROM goods INNER JOIN " +
+                " goods.description, goods.image FROM goods INNER JOIN " +
                 "product ON goods.prod_id = product.id " +
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
                 "INNER JOIN category ON category.id = product.category_id";
@@ -157,7 +159,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         for (Good good : res) {
             good.setPrice(good.getPrice(), good.getDiscount());
-            good.setImage(mediaService.getResourceUrl(good.getImage()));
+            good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         }
 //        if (page.isPresent()) {
 //            flexibleQuery += " LIMIT " + PAGE_CAPACITY + " OFFSET " + (page.get() - 1) * PAGE_CAPACITY;

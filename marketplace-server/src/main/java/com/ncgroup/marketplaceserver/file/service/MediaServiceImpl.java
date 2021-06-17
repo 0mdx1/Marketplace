@@ -1,8 +1,7 @@
 package com.ncgroup.marketplaceserver.file.service;
 
-import com.ncgroup.marketplaceserver.file.storage.FileStorage;
+import com.ncgroup.marketplaceserver.file.storage.CloudStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,15 +9,12 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.apache.http.entity.ContentType.*;
+import static org.springframework.util.StringUtils.getFilename;
 
 @Service
 public class MediaServiceImpl implements MediaService{
 
-    private FileStorage fileStorage;
-    @Value("${aws.bucket.name}")
-    private String bucketName;
-    @Value("${aws.bucket.region}")
-    private String bucketRegion;
+    private CloudStorage cloudStorage;
     private static final List<String> allowedTypes = Arrays.asList(
             IMAGE_PNG.getMimeType(),
             IMAGE_BMP.getMimeType(),
@@ -27,8 +23,8 @@ public class MediaServiceImpl implements MediaService{
     );
 
     @Autowired
-    public MediaServiceImpl(FileStorage fileStorage) {
-        this.fileStorage = fileStorage;
+    public MediaServiceImpl(CloudStorage fileStorage) {
+        this.cloudStorage = fileStorage;
     }
 
     @Override
@@ -39,25 +35,33 @@ public class MediaServiceImpl implements MediaService{
         if (!allowedTypes.contains(file.getContentType())) {
             throw new IllegalStateException("File uploaded is not an image");
         }
-        String fileName = String.format("%s_%s",UUID.randomUUID(),file.getOriginalFilename());
+        String filepath = String.format("tmp/%s_%s",UUID.randomUUID(),file.getOriginalFilename());
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         try {
-            fileStorage.upload(bucketName, fileName, file.getInputStream(),metadata);
+            cloudStorage.upload(filepath, file.getInputStream(),metadata);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to upload file", e);
+            throw new IllegalStateException("Failed to get input stream", e);
         }
-        return fileName;
+        return filepath;
     }
 
     @Override
-    public String getResourceUrl(String filename) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",bucketName,bucketRegion,filename);
+    public void delete(String filepath) {
+        this.cloudStorage.delete(filepath);
     }
 
     @Override
-    public void delete(String filename) {
-        this.fileStorage.delete(bucketName,filename);
+    public String confirmUpload(String filepath) {
+        String filename = getFilename(filepath);
+        String newFilepath = String.format("media/%s",filename);
+        this.cloudStorage.move(filepath,newFilepath);
+        return newFilepath;
+    }
+
+    @Override
+    public CloudStorage getCloudStorage() {
+        return this.cloudStorage;
     }
 }
