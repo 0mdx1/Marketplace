@@ -32,6 +32,7 @@ export class AddProductComponent {
 
   loading = false;
   registered = false;
+  image: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +58,10 @@ export class AddProductComponent {
     return this.form.controls;
   }
 
+  public setImage(imageName: string){
+    this.image = imageName;
+  }
+
 
   private mapToProduct(o: any): Product {
     return {
@@ -66,7 +71,7 @@ export class AddProductComponent {
       quantity: o.quantity,
       price: o.price,
       unit: o.unit,
-      image: "",
+      image: o.image,
       discount: o.discount,
       inStock: o.inStock,
       categoryName: o.categoryName,
@@ -82,8 +87,10 @@ export class AddProductComponent {
     this.loading = true;
 
     let observable = null;
+    let product = this.mapToProduct(this.form.value);
+    product.image = this.image;
     observable = this.productService.AddProduct(
-      this.mapToProduct(this.form.value)
+      product
     );
 
     observable.pipe(first()).subscribe({

@@ -34,7 +34,7 @@ export class UpdateProductComponent implements OnInit{
 
   response: any;
 
-
+  image: string = '';
 
   ngOnInit(){
     //.subscribe((response) => {
@@ -45,6 +45,10 @@ export class UpdateProductComponent implements OnInit{
           this.formCreation();
         })
 
+  }
+
+  public setImage(imageName: string){
+    this.image = imageName;
   }
 
   constructor(
@@ -81,7 +85,7 @@ export class UpdateProductComponent implements OnInit{
       quantity: o.quantity,
       price: o.price,
       unit: o.unit,
-      image: "",
+      image: o.image,
       discount: o.discount,
       inStock: o.inStock,
       categoryName: o.categoryName,
@@ -97,8 +101,10 @@ export class UpdateProductComponent implements OnInit{
     this.loading = true;
     let observable = null;
 
-      observable = this.accountService.updateProduct(
-        this.mapToProduct(this.form.value), (this.route.snapshot.params.id)
+    let product = this.mapToProduct(this.form.value);
+    product.image = this.image;
+    observable = this.accountService.updateProduct(
+        product, (this.route.snapshot.params.id)
       );
 
     console.log(this.mapToProduct(this.form.value))
