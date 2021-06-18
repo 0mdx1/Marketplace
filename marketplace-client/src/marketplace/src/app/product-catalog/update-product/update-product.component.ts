@@ -19,15 +19,7 @@ export class UpdateProductComponent implements OnInit{
   form = new FormGroup({
     name: new FormControl('')
   });
-
-  myControl = new FormControl();
   submitted = false;
-
-  categories: string[] = [];
-
-  products: Product[] = [];
-  categorySubscription!: Subscription;
-
 
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
   inStock: string[] = ["true", "false"];
@@ -44,7 +36,6 @@ export class UpdateProductComponent implements OnInit{
 
 
   ngOnInit(){
-
     //.subscribe((response) => {
       this.accountService.getProductInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
@@ -53,6 +44,10 @@ export class UpdateProductComponent implements OnInit{
           this.formCreation();
         })
 
+  }
+
+  public setImage(imageName: string){
+    this.image = imageName;
   }
 
   private getCategories() {
@@ -99,7 +94,7 @@ export class UpdateProductComponent implements OnInit{
       quantity: o.quantity,
       price: o.price,
       unit: o.unit,
-      image: "",
+      image: o.image,
       discount: o.discount,
       inStock: o.inStock,
       status: o.status,
@@ -116,8 +111,10 @@ export class UpdateProductComponent implements OnInit{
     this.loading = true;
     let observable = null;
 
-      observable = this.accountService.updateProduct(
-        this.mapToProduct(this.form.value), (this.route.snapshot.params.id)
+    let product = this.mapToProduct(this.form.value);
+    product.image = this.image;
+    observable = this.accountService.updateProduct(
+        product, (this.route.snapshot.params.id)
       );
 
     console.log(this.mapToProduct(this.form.value))

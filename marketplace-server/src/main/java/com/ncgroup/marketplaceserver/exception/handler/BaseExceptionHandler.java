@@ -1,7 +1,7 @@
 package com.ncgroup.marketplaceserver.exception.handler;
 
 import com.ncgroup.marketplaceserver.domain.ApiError;
-import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 
 import org.springframework.core.Ordered;
@@ -23,12 +23,12 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request){
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,ex.getMessage(),ex);
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(),ex);
         return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    protected ResponseEntity<Object> handleConstraintViolation( ConstraintViolationException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getConstraintViolations());

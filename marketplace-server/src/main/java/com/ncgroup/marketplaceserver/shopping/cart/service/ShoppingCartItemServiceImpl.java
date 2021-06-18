@@ -2,7 +2,7 @@ package com.ncgroup.marketplaceserver.shopping.cart.service;
 
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.service.UserService;
-import com.ncgroup.marketplaceserver.exception.domain.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemCreateDto;
 import com.ncgroup.marketplaceserver.shopping.cart.model.dto.ShoppingCartItemReadDto;

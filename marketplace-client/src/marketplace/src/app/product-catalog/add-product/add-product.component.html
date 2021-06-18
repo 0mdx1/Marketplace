@@ -83,21 +83,17 @@
               </div>
 
               <div class="form-group col-6">
-                <label>Active*</label>
-                <select class="form-control" formControlName="status">
-                  <ng-container>
-                    <option *ngFor="let status of status" [ngValue]="status">
+                <label>Category*</label>
+                <select class="form-control" formControlName="categoryName">
+                  <ng-container >
+                    <option *ngFor="let status of categoryName" [ngValue]="status">
                       {{status}}
                     </option>
                   </ng-container>
                 </select>
               </div>
 
-
-              <div class="form-group col-6">
-                <label>Add image</label>
-                <input type="file" formControlName="image" class="image">
-              </div>
+              <app-image-uploading (imageFilenameEvent)="setImage($event)"></app-image-uploading>
 
               <div class="form-group col-12">
                 <label>Description</label>
