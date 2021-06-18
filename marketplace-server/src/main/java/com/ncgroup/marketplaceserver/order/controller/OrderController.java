@@ -88,12 +88,33 @@ public class OrderController {
 		
 	}
 	
+	@GetMapping("/{id}/courierinfo")
+	public ResponseEntity<UserDisplayInfoDto> getCourierInfoForOrder(@PathVariable("id") long orderId) {
+		UserDisplayInfoDto courierInfo = orderService.getCourierInfoForOrder(orderId);
+		if(courierInfo == null) {
+			return new ResponseEntity<UserDisplayInfoDto>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<UserDisplayInfoDto>(courierInfo, HttpStatus.OK);
+	}
+	
 	@PostMapping
 	public ResponseEntity<?> saveOrder(
 			@RequestHeader(value = "Authorization", required = false) String token,
 			@RequestBody @Valid OrderPostDto order) {
 		return new ResponseEntity<>(orderService.addOrder(order, token), HttpStatus.CREATED);
 		
+	}
+	
+	@GetMapping("/incoming")
+	public ResponseEntity<List<OrderReadDto>> getUserOrders(
+			@RequestHeader(value = "Authorization", required = false) String token) {
+		return new ResponseEntity<>(orderService.getUserOrders(token), HttpStatus.OK);
+	}
+	
+	@GetMapping("/history")
+	public ResponseEntity<List<OrderReadDto>> getUserHistory(
+			@RequestHeader(value = "Authorization", required = false) String token) {
+		return new ResponseEntity<>(orderService.getUserHistory(token), HttpStatus.OK);
 	}
 	
 }

@@ -8,7 +8,7 @@
 <div class="top-header">
   <div class="top-header-content">
     <a *ngIf="!account.email" routerLink="accounts/login">LOG IN</a>
-    <p *ngIf="account.email" routerLink="accounts/login">{{account.email}}</p>
+    <a *ngIf="account.email" routerLink="accounts/profile">{{account.email}}</a>
     <span>&#183;</span>
     <a *ngIf="!account.email" routerLink="accounts/register">CREATE ACCOUNT</a>
     <a *ngIf="account.email" (click)="logout()" routerLink="">LOGOUT</a>
@@ -26,16 +26,16 @@
         <a routerLink="home">HOME</a>
         <a routerLink="products">STORE</a>
         <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
-        <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+        <a *ngIf="account.role=='ROLE_USER'" routerLink="accounts/orders/incoming">ORDERS</a>
         <a *ngIf="account.email" routerLink="accounts/profile">PROFILE</a>
       </div>
     </div>
     <div class="max-menu">
       <a routerLink="home">HOME</a>
       <a routerLink="products">STORE</a>
-      <a><img src="assets/logo.svg"></a>
+      <span class="mx-2"><img src="assets/logo.svg"></span>
       <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
-      <a *ngIf="account.role=='ROLE_USER' || !account.role">ORDERS</a>
+      <a *ngIf="account.role=='ROLE_USER'" routerLink="accounts/orders/incoming">ORDERS</a>
       <a *ngIf="account.email" routerLink="accounts/profile">PROFILE</a>
     </div>
     <div class="header-right">
@@ -43,7 +43,10 @@
         <i class="fas fa-balance-scale"></i>
         <div *ngIf="comparedProd.length>0" class="number-circle">{{comparedProd.length}}</div>
       </div>
-      <button *ngIf="account.role=='ROLE_USER' || !account.role" routerLink="cart" class="cart-btn">CART</button>
+      <div *ngIf="account.role=='ROLE_USER' || !account.role" routerLink="cart" class="compare-icon">
+        <i class="fas fa-shopping-cart"></i>
+        <div *ngIf="cartProd.length>0" class="number-circle">{{cartProd.length}}</div>
+      </div>
     </div>
   </div>
 </div>

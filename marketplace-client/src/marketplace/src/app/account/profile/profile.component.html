@@ -1,77 +1,59 @@
- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
- <body>
-<div class ="global">
-  <!--
-  <div class="header">
-
-    <nav class="container1">
-      <div>
-        <img class="im_logo"  src="https://igorzuevich.com/wp-content/uploads/2016/01/shop-icon.png">
-      </div>
-
-      <ul class="nav-items">
-
-        <li class="current" >
-          <a href="#">Продукты</a>
-        </li>
-
-        <li>
-          <a href="#">Аукцион</a>
-        </li>
-
-        <li>
-          <a href="#">Все товары</a>
-        </li>
-        <li>
-          <img class="img_profile" src="https://img.icons8.com/ios/452/user--v1.png">
-          <a class="t_prof" href="#"> Мой профиль</a>
-        </li>
-
-      </ul>
-    </nav>
-  </div>
--->
-<div class="container2">
-
-  <h1 class="pers-info">Personal information</h1>
-  <p class = "note" id="note-heading">Your personal information</p>
-  <hr class = "pers-line">
-
+<div class="container">
   <div *ngIf="user"  id="full-pers-info">
-      <div class ="pers">
-              <p class = "note">Surname:</p>
-              <p class = "info-text">{{user.surname}}</p>
-              <hr class = "info-line">
+    <h2 class="text-left mb-0">{{user.name}} {{user.surname}}</h2>
+    <h3 *ngIf="user.role=='ROLE_USER'" class="text-left text-muted">Customer</h3>
+    <div class="accordion">
+      <div class="card">
+        <div class="card-header">
+            <button class="btn btn-block text-left" (click)="showHideInfo()" type="button" data-toggle="collapse"
+                    data-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
+              Personal information
+              <i *ngIf="!collapsedInfo" class="fas fa-angle-down text-muted float-right"></i>
+              <i *ngIf="collapsedInfo" class="fas fa-angle-up text-muted float-right"></i>
+            </button>
+        </div>
+        <div id="collapseInfo" class="collapse show">
+          <div class="card-body">
+            <div class ="pers">
+              <h3 class = "note">Surname:</h3>
+              <h4 class = "info-text">{{user.surname}}</h4>
+            </div>
+            <div  class ="pers">
+              <h3 class = "note">Name:</h3>
+              <h4 class = "info-text">{{user.name}}</h4>
+            </div>
+            <div class ="pers">
+              <h3 class = "note mb-0">Date of birthday:</h3>
+              <h4 *ngIf="!user.dateOfBirth" class = "info-text">--</h4>
+              <h4 *ngIf="user.dateOfBirth" class = "info-text">{{user.dateOfBirth}}</h4>
+            </div>
+          </div>
+        </div>
       </div>
-      <div  class ="pers">
-              <p class = "note">Name:</p>
-              <p class = "info-text">{{user.name}}</p>
-              <hr class = "info-line">
-
+      <div class="card">
+        <div class="card-header">
+            <button class="btn btn-block text-left collapsed" (click)="showHideContact()" type="button"
+                    data-toggle="collapse" data-target="#collapseContact" aria-expanded="false" aria-controls="collapseContact">
+              Contact information
+              <i *ngIf="!collapsedContact" class="fas fa-angle-down text-muted float-right"></i>
+              <i *ngIf="collapsedContact" class="fas fa-angle-up text-muted float-right"></i>
+            </button>
+        </div>
+        <div id="collapseContact" class="collapse show">
+          <div class="card-body">
+            <div class ="pers">
+              <h3 class = "note">Phone:</h3>
+              <h4 *ngIf="user.phone" class = "info-text">{{user.phone}}</h4>
+              <h4 *ngIf="!user.phone" class = "info-text">--</h4>
+            </div>
+            <div class ="pers">
+              <h3 class = "note">Mail:</h3>
+              <h4 class = "info-text">{{user.email}}</h4>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class ="pers">
-            <p class = "note">Date of birthday:</p>
-            <p class = "info-text">--</p>
-            <hr class = "info-line">
-      </div>
-
-
-      <h2 class="pers-info" id="contact-details">Your contact information</h2>
-
-      <div class ="pers">
-        <p class = "note">Number:</p>
-        <p class = "info-text">{{user.phone}}</p>
-        <hr class = "info-line">
-      </div>
-      <div class ="pers">
-        <p class = "note">Mail:</p>
-        <p class = "info-text">{{user.email}}</p>
-        <hr class = "info-line">
-      </div>
-
     </div>
   </div>
 </div>
- </body>
 

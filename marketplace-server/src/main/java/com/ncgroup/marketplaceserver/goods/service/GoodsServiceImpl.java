@@ -91,16 +91,16 @@ public class GoodsServiceImpl implements GoodsService {
                 " goods.quantity, goods.price, goods.discount, goods.in_stock," +
                 " goods.description, goods.image ");
 
-        String fromQuery = "FROM goods INNER JOIN " +
+        StringBuilder fromQuery = new StringBuilder("FROM goods INNER JOIN " +
                 "product ON goods.prod_id = product.id " +
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
-                "INNER JOIN category ON category.id = product.category_id";
+                "INNER JOIN category ON category.id = product.category_id");
 
         // Sort can be by: price, product.name, discount.
 
-        flexibleQuery.append(fromQuery);
+        //flexibleQuery.append(fromQuery);
 
-
+        log.info("Name " + name);;
         if (name != null) {
             concatenator.add(" product.name LIKE '%" + name.toLowerCase() + "%'");
             counter++;
@@ -112,41 +112,48 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         if (minPrice != null) {
-            concatenator.add(" price >= " + minPrice);
+            concatenator.add(" price - price*discount/100 >= " + minPrice);
             counter++;
         }
 
         if (maxPrice != null) {
-            concatenator.add(" price <= " + maxPrice);
+            concatenator.add(" price - price*discount/100 <= " + maxPrice);
             counter++;
         }
 
 
         if (counter > 0) {
-            flexibleQuery.append(" WHERE").append(concatenator.get(0));
+            fromQuery.append(" WHERE").append(concatenator.get(0));
             for (int i = 1; i < counter; i++) {
-                flexibleQuery.append(" AND").append(concatenator.get(i));
+            	log.info(concatenator.get(i));
+            	fromQuery.append(" AND").append(concatenator.get(i));
             }
         }
-
-
+        
+        log.info("SELECT COUNT(*) " + fromQuery.toString());
+        int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery.toString());
+        
         if (sortBy != null) {
             if(sortBy.equals("price")) {
-                flexibleQuery.append(" ORDER BY goods.price");
+            	fromQuery.append(" ORDER BY goods.price");
             } else if (sortBy.equals("name")) {
-                flexibleQuery.append(" ORDER BY product.name");
+            	fromQuery.append(" ORDER BY product.name");
             }
         } else {
-            flexibleQuery.append(" ORDER BY product.name");
+        	fromQuery.append(" ORDER BY product.name");
         }
 
         if (sortDirection != null) {
-            flexibleQuery.append(" ").append(sortDirection.toUpperCase());
+        	fromQuery.append(" ").append(sortDirection.toUpperCase());
         } else {
-            flexibleQuery.append(" DESC");
+        	fromQuery.append(" DESC");
         }
-
-        int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery);
+        
+        flexibleQuery.append(fromQuery);
+        
+        log.info(fromQuery.toString());
+        log.info(flexibleQuery.toString());
+        
 
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
@@ -166,7 +173,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         for (Good good : res) {
-            good.setPrice(good.getPrice(), good.getDiscount());
+            //good.setPrice(good.getPrice(), good.getDiscount());
             good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         }
 

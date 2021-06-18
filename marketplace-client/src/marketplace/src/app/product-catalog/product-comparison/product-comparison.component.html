@@ -1,27 +1,24 @@
-<div class="container" style="padding-top: 30px">
+<div class="container mt-5">
   <div *ngIf="products.length === 0;" class="text-center my-5">
-    <h4>No items to compare</h4>
-    <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
+    <h1>No products to compare</h1>
+    <button class="btn store-btn btn-lg mt-3" routerLink="/products">Go to store</button>
   </div>
-  <div class="row flex-row flex-nowrap">
-    <div *ngFor="let product of products" class="col-3">
+  <div class="d-flex w-100 justify-content-between flex-column flex-md-row">
+    <div *ngFor="let product of products" class="col product-card mb-5">
       <div class="card">
-        <img class="card-img-top" src="https://static.vecteezy.com/system/resources/thumbnails/002/033/006/small/set-of-delicious-fast-food-vector.jpg" alt="Card image cap">
-        <div class="card-body">
-          <h2 class="card-title">{{product.goodName}}</h2>
-          <p class="card-text">{{product.description}}</p>
+        <button class="btn remove-btn" (click)="removeProduct(product)"><i class="fas fa-times-circle"></i></button>
+        <img class="card-img-top mx-auto" src="assets/product.svg" alt="Card image cap">
+        <div class="card-body pb-2">
+          <a routerLink="../{{product.id}}" class="card-title mb-0" >{{product.goodName}}</a>
+          <p class="card-subtitle text-muted">{{product.firmName}}</p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Price: </strong>{{product.price}}</li>
           <li class="list-group-item"><strong>Category: </strong>{{product.categoryName}}</li>
-          <li class="list-group-item"><strong>Firm: </strong>{{product.firmName}}</li>
           <li class="list-group-item"><strong>In Stock: </strong>{{product.inStock}}</li>
-          <li class="list-group-item"><strong>Unit: </strong>{{product.unit}}</li>
+          <li class="list-group-item unit"><strong>Unit: </strong>{{product.unit}}</li>
+          <li class="list-group-item"><strong>Price: </strong>{{product.price}}$</li>
         </ul>
-        <div class="card-body">
-          <button class="card-link btn btn-success mt-3" (click)="addProductToCart(product)">Add to cart</button>
-          <button class="card-link btn btn-danger mt-3" (click)="removeProduct(product)">Remove</button>
-        </div>
+          <button class="card-link btn buy-btn" (click)="addProductToCart(product)">Buy</button>
       </div>
     </div>
   </div>

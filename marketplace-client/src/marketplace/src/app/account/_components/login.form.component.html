@@ -10,9 +10,9 @@
   </div>
   <div class="form-group">
     <label>Password</label>
-    <div class="input-group">
+    <div class="input-group password-div">
       <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
-             class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }" />
+             class="form-control password-input" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }" />
       <div class="input-group-append">
     <span class="input-group-text">
       <i
@@ -31,7 +31,7 @@
       </div>
     </div>
   </div>
-  <div class="form-row">
+  <div class="form-row link-div">
     <div class="form-group col">
       <button [disabled]="loading" type="submit" class="btn btn-primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

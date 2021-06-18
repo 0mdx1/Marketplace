@@ -100,7 +100,7 @@
           <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
           <div *ngIf="submitted && getForm.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
         </div>
-        <div class="form-group">
+        <div class="form-group link-div">
           <button [disabled]="loading" type="submit" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Register

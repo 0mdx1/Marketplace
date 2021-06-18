@@ -19,7 +19,7 @@ public class Order {
 	private long id;
 	private Courier courier;
 	private User user;
-	private LocalDateTime delieveryTime;
+	private LocalDateTime deliveryTime;
 	private String address;
 	private OrderStatus status;
 	private String comment;

@@ -1,0 +1,57 @@
+.product-card h1 {
+  text-transform: capitalize;
+}
+
+.product-card h4 {
+  text-transform: capitalize;
+}
+
+.cart-btn {
+  background-color: #007dc3;
+  color: #fff;
+}
+
+.compare-btn {
+  border: 1px solid #636363 ;
+  color: #636363;
+}
+
+.fas {
+  margin-right: 5px;
+}
+
+.btn {
+  position: relative;
+  bottom: 0px;
+}
+
+.price h4 {
+  display: inline-block;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.price span {
+  margin-left: 5px;
+  text-transform: lowercase;
+  color: #aaaaaa;
+}
+
+.sale-icon {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  width: 80px;
+}
+
+.price-div {
+  display: inline-block;
+}
+
+.old-price {
+  display: block;
+  text-align: center;
+  text-decoration: line-through;
+  font-size: 20px;
+  color: rgb(123, 123, 123);
+}
