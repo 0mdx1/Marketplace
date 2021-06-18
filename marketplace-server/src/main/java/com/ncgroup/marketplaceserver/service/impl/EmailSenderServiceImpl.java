@@ -39,7 +39,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
 
     @Override
-    public String sendSimpleEmailValidate(String toEmail) throws MessagingException {
+    public String sendSimpleEmailValidate(String toEmail, String name) throws MessagingException {
         javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
         EmailParam emailParam = new EmailParam();
@@ -50,6 +50,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
         emailParam.setMess(String.format(MailConstants.REGISTRATION_MESSAGE));
         emailParam.setLink(String.format(confirmAccountUrl, emailParam.getToken()));
+        emailParam.setName(name);
 
         Context context = new Context();
         context.setVariable("EmailParam", emailParam);
@@ -62,7 +63,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public String sendSimpleEmailPasswordRecovery(String toEmail) throws MessagingException {
+    public String sendSimpleEmailPasswordRecovery(String toEmail, String name) throws MessagingException {
         javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
         EmailParam emailParam = new EmailParam();
@@ -73,6 +74,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
         emailParam.setMess(String.format(MailConstants.PASSWORD_RECOVERY_MESSAGE));
         emailParam.setLink(String.format(resetPasswordUrl, emailParam.getToken()));
+        emailParam.setName(name);
 
         Context context = new Context();
         context.setVariable("EmailParam", emailParam);
@@ -85,20 +87,36 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     }
 
     @Override
-    public String sendSimpleEmailPasswordCreation(String toEmail) {
-        SimpleMailMessage message = new SimpleMailMessage();
+    public String sendSimpleEmailPasswordCreation(String toEmail, String name) throws MessagingException {
+        javax.mail.internet.MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+        EmailParam emailParam = new EmailParam();
+
+
         message.setFrom(MailConstants.SENDER_EMAIL);
         message.setTo(toEmail);
-        String generatedToken = generateToken();
-        message.setText(String.format(MailConstants.PASSWORD_CREATION_MESSAGE + createPasswordUrl, generatedToken));
+        //String generatedToken = generateToken();
+
+       // message.setText(String.format(MailConstants.PASSWORD_CREATION_MESSAGE + createPasswordUrl, generatedToken));
         message.setSubject(MailConstants.PASSWORD_CREATION_SUBJECT);
-        mailSender.send(message);
-        System.out.println("Mail Send...");
-        return generatedToken;
+
+        emailParam.setMess(String.format(MailConstants.PASSWORD_CREATION_MESSAGE));
+        emailParam.setLink(String.format(createPasswordUrl, emailParam.getToken()));
+        emailParam.setName(name);
+
+        Context context = new Context();
+        context.setVariable("EmailParam", emailParam);
+
+        String html = templateEngine.process("EmailValidation", context);
+        message.setText(html, true);
+        mailSender.send(mimeMessage);
+        return emailParam.getToken();
 
 
     }
     private String generateToken(){
         return UUID.randomUUID().toString();
     }
+
+
 }

@@ -35,6 +35,8 @@ import com.ncgroup.marketplaceserver.constants.StatusConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @Service
 @Qualifier("userDetailsService")
@@ -97,7 +99,13 @@ public class CourierServiceImpl implements CourierService {
                 )
                 .status(isActive)
                 .build();
-        String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
+
+        String authlink = null;
+        try {
+            authlink = emailSenderService.sendSimpleEmailPasswordCreation(email, name);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         courier.getUser().setAuthLink(authlink);
         User user = userRepository.save(courier.getUser());
         courier.getUser().setId(user.getId());

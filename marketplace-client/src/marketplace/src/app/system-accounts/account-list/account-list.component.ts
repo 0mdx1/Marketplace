@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { StaffMember } from 'src/app/_models/staff-member';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
-import {AuthService} from "../../_auth/auth.service";
 
 @Component({
   selector: 'app-account-list',

@@ -24,31 +24,57 @@ export class UpdateProductComponent implements OnInit{
   });
   submitted = false;
 
-  categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
-  inStock: string[] = ["true", "false", "null"];
+  categoryName: string[]= [""];
+  inStock: string[] = ["true", "false"];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
+  status: string[] = ["true", "false"];
+  firmName: string[]=[""];
 
   loading = false;
 
   updated = false;
 
   response: any;
-
+  responseCategory: any;
+  responseFirm: any;
   image: string = '';
 
   ngOnInit(){
     //.subscribe((response) => {
-      this.accountService.getProductInfo(this.route.snapshot.params.id)
-        .subscribe((response) => {
-          this.response = response;
-          console.log(this.response);
-          this.formCreation();
-        })
+    this.accountService.getProductInfo(this.route.snapshot.params.id)
+      .subscribe((response) => {
+        this.response = response;
+        console.log(this.response);
+        this.formCreation();
+
+        this.firm()
+        this.category();
+      })
+
+
 
   }
 
   public setImage(imageName: string){
     this.image = imageName;
+  }
+
+  public category(){
+    this.accountService.getCategories()
+      .subscribe((categ) =>{
+        this.responseCategory = categ;
+        console.log(this.responseCategory);
+        this.categoryName = this.responseCategory;
+      })
+  }
+
+  public firm(){
+    this.accountService.getFirm()
+      .subscribe((firm) =>{
+        this.responseFirm = firm;
+        console.log(this.responseFirm);
+        this.firmName = this.responseFirm;
+      })
   }
 
   constructor(
@@ -67,6 +93,7 @@ export class UpdateProductComponent implements OnInit{
         unit: [this.response.unit, Validators.required],
         discount: [this.response.discount, [Validators.min(1), Validators.required]],
         inStock: [String(this.response.inStock), Validators.required],
+        status: ['', Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
         description: [this.response.description, Validators.required],
       },
@@ -79,12 +106,13 @@ export class UpdateProductComponent implements OnInit{
 
   private mapToProduct(o: any): Product {
     return {
-      id: -1,
+      id: this.response.id,
       goodName: o.goodName,
       firmName: o.firmName,
       quantity: o.quantity,
       price: o.price,
       unit: o.unit,
+      status: o.status,
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
@@ -104,8 +132,8 @@ export class UpdateProductComponent implements OnInit{
     let product = this.mapToProduct(this.form.value);
     product.image = this.image;
     observable = this.accountService.updateProduct(
-        product, (this.route.snapshot.params.id)
-      );
+      product, (this.route.snapshot.params.id)
+    );
 
     console.log(this.mapToProduct(this.form.value))
 

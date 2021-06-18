@@ -7,6 +7,7 @@ export class Product {
   unit: string;
   discount: number;
   inStock: boolean;
+  status: boolean;
   image: string;
   description: string;
   categoryName: string;
@@ -20,6 +21,7 @@ export class Product {
     unit: string,
     discount: number,
     inStock: boolean,
+    status: boolean,
     image: string,
     description: string,
     categoryName: string
@@ -32,6 +34,7 @@ export class Product {
     this.unit = unit;
     this.discount = discount;
     this.inStock = inStock;
+    this.status = status;
     this.image = image;
     this.description = description;
     this.categoryName = categoryName;
