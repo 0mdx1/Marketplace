@@ -106,7 +106,7 @@ export class UpdateProductComponent implements OnInit{
 
   private mapToProduct(o: any): Product {
     return {
-      id: -1,
+      id: this.response.id,
       goodName: o.goodName,
       firmName: o.firmName,
       quantity: o.quantity,

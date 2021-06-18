@@ -84,11 +84,11 @@
 
               <div class="form-group col-6">
                 <label>Category*</label>
-                <input type="text" list="cars" class="form-control" formControlName="categoryName"/>
-                <datalist id="cars">
+                <input type="text" list="categories" class="form-control" formControlName="categoryName"/>
+                <datalist id="categories">
                   <ng-container *ngIf="response">
-                    <option *ngFor="let status of categoryName" [ngValue]="status">
-                      {{status}}
+                    <option *ngFor="let category of categoryName" [ngValue]="category">
+                      {{category}}
                     </option>
                   </ng-container>
                 </datalist>
