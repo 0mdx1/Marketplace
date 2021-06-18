@@ -80,8 +80,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	    String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.findUserByEmail(email);
     }
-    
-    @Override
+
+	@Override
+	public User updateRoleUser(User user, String token) {
+		if(token == null) return null;
+		token = token.split(" ")[1];
+		String email = jwtProvider.getSubject(token);
+		userRepository.updateUserByEmail(user, email);
+		return user;
+	}
+
+	@Override
     public UserDto findUserByToken(String token) {
     	if(token != null) {
 			token = token.split(" ")[1];
