@@ -18,6 +18,9 @@ export class ProfileComponent implements OnInit {
   subscription!: Subscription;
   birthday: string = '-';
 
+  collapsedInfo: boolean = true;
+  collapsedContact: boolean = true;
+
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute
@@ -48,5 +51,13 @@ export class ProfileComponent implements OnInit {
     }
     if (this.response.birthday == !null)
     this.birthday = this.response.birthday;*/
+  }
+
+  showHideInfo():void {
+    this.collapsedInfo = !this.collapsedInfo;
+  }
+
+  showHideContact():void {
+    this.collapsedContact = !this.collapsedContact;
   }
 }

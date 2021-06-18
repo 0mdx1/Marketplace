@@ -49,7 +49,7 @@ public class GoodsController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> display(
-            @RequestParam(value = "name", required = false)
+            @RequestParam(value = "search", required = false)
                     String name,
             @RequestParam(value = "category", required = false)
                     String category,

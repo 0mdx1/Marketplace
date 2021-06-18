@@ -1,7 +1,36 @@
 .list {
-  margin: 30px 20px;
+  margin: 15px 20px;
 }
 
-.product-list-container {
-  margin-top: 20px;
+.dropdown {
+  margin-top: 10px;
+}
+
+.dropdown .btn{
+  color: #fff;
+  background-color: #007dc3;
+  float: right;
+  margin-right: 15px;
+  margin-top: 10px;
+  text-transform: capitalize;
+}
+
+.dropdown h2{
+  float: right;
+  margin-right: 15px;
+  margin-top: 12px;
+}
+
+.ascending-btn {
+  float: right;
+  margin-right: 35px;
+  margin-top: 17px;
+  color: #007dc3;
+  background-color: #FFFFFF;
+  border: none;
+}
+
+.ascending-btn:focus {
+  border: none;
+  outline: none;
 }

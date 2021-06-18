@@ -1,79 +1,69 @@
 <div class="container">
   <div *ngIf="items.length === 0;" class="text-center my-5">
-    <h4>Your Cart Is Empty</h4>
-    <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
+    <h1>Your shopping cart is empty</h1>
+    <button class="btn store-btn btn-lg mt-3" routerLink="/products">Go to store</button>
   </div>
-
   <ng-container *ngIf="items.length !== 0">
     <div class="row">
       <div class="col my-4">
-        <table class="table">
-          <thead class="table">
+        <table class="table table-responsive-sm">
+          <thead class="cart-table">
             <tr class="text-center">
-              <th>Image</th>
+              <th></th>
               <th>Title</th>
               <th>Price</th>
               <th>Quantity</th>
               <th>Subtotal</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let cartItem of this.items">
-              <td class="d-flex align-items-center justify-content-around">
-                <img
-                  src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fsmilytiffany%2F100x100-images%2F&psig=AOvVaw3xQvbQnb1NnoFIsFBlIvmJ&ust=1623328407610000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJjAmN3HivECFQAAAAAdAAAAABAJ"
-                  alt="{{cartItem.goods.goodName}}" height="60" class="order-1">
+              <td class="align-items-center text-center">
+                <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
               </td>
-              <td>
-                <p>{{cartItem.goods.goodName}}</p>
+              <td class="text-center">
+                <a routerLink="../products/{{cartItem.goods.id}}" class="good-name">{{cartItem.goods.goodName}}</a>
               </td>
-              <td>
+              <td class="text-center">
                 <p>{{getPrice(cartItem) | currency:'USD'}}</p>
               </td>
               <td>
                 <form>
-                  <div class="value-button" id="decrease" (click)="decreaseQuantityByOne(cartItem)">
+                  <div *ngIf="cartItem.quantity>1" class="value-button" id="decrease" (click)="decreaseQuantityByOne(cartItem)">
+                    <i class="fa fa-minus"></i>
+                  </div>
+                  <div *ngIf="cartItem.quantity<2" class="min-value-btn value-button">
                     <i class="fa fa-minus"></i>
                   </div>
                   <input type="number" id="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="cartItem.quantity"
                     (ngModelChange)="setQuantity(cartItem,$event)"
-                    (focusout)="cartItem.quantity==null ? cartItem.quantity = 1 : '';" [value]="cartItem.quantity"
+                    (focusout)="cartItem.quantity == 0 || cartItem.quantity == undefined? cartItem.quantity = 1: '';" [value]="cartItem.quantity"
                     [min]="0" [max]="cartItem.goods.quantity" />
                   <div class="value-button" id="increase" (click)="increaseQuantityByOne(cartItem)">
                     <i class="fa fa-plus"></i>
                   </div>
                 </form>
               </td>
-              <td>
-                <div class="d-flex justify-content-between">
-                  <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
-                  <span class="text-danger" style="cursor: pointer;"><i class="fa fa-trash"
-                    (click)="delete(cartItem)"></i></span>
-                </div>
+              <td class="text-center">
+                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+              </td>
+              <td class="text-center">
+                <span class="delete-icon"><i class="fa fa-trash" (click)="delete(cartItem)"></i></span>
               </td>
             </tr>
-            <tr class="border-0">
-              <td style="border: none;"></td>
-              <td></td>
-              <td></td>
-              <td>TOTAL</td>
-              <td>{{getTotalPrice(items) | currency:'USD'}}</td>
-
-            </tr>
-
           </tbody>
         </table>
-
-
       </div>
-
       <div class="col-md-12 d-flex mb-5">
-        <div class="d-flex w-100 justify-content-between flex-sm-column flex-md-row">
-          <a (click)="checkout()" class="btn btn-success btn-md order-1">Checkout</a>
-          <a routerLink="/products" class="btn btn-outline-info btn-md order-0">Continue Shopping</a>
+        <div class="d-flex w-100 justify-content-between flex-column flex-sm-row">
+          <a routerLink="/products" class="my-auto mb-3 btn btn-sm order-1 order-sm-0 back-btn">Continue Shopping</a>
+          <div class="total text-center mb-3 order-0 order-sm-1">
+            {{getTotalPrice(items) | currency:'USD'}}
+            <a (click)="checkout()" class="btn">Checkout</a>
+          </div>
         </div>
       </div>
-
     </div>
   </ng-container>
 

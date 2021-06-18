@@ -9,12 +9,13 @@ import { ProductDto } from '../_models/products/productDto';
 import { catchError, switchMap } from 'rxjs/operators';
 
 const baseUrl = `${environment.apiUrl}`;
+const MAX_PRICE = 400;
+const MIN_PRICE = 0;
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-
   pageTotalSource: Subject<number> = new Subject();
   pageSource: Subject<number> = new Subject();
 
@@ -29,8 +30,7 @@ export class ProductService {
     search: string,
     page: number
   ): Observable<ProductDto> {
-    this.pageTotalSource.next()
-
+    this.pageTotalSource.next();
     this.addQueryParams(filter, search, page);
     //get method to backend api
     return this.http
@@ -63,13 +63,12 @@ export class ProductService {
       .set('page', page.toString());
     if (!this.isBlank(search)) {
       //add search param only if it is not empty
-      return params.set('name', search);
+      return params.set('search', search);
     }
     return params;
   }
 
-  private addQueryParams
-  (filter: Filter, search: string, page: number): string {
+  private addQueryParams(filter: Filter, search: string, page: number): string {
     //filter = this.validateFilter(filter);
     let currentUrl = this.router.url.split('?')[0];
     if (!this.isBlank(search)) {
@@ -83,7 +82,7 @@ export class ProductService {
           direction: filter.direction,
           page: page,
           search: search,
-        }
+        },
       });
       currentUrl =
         currentUrl +
@@ -181,15 +180,42 @@ export class ProductService {
   }
 
   getFilter(): Filter {
+    const MAX_RPICE = 400;
+    const MIN_PRICE = 0;
+    let maxPrice = Number(
+      this.activatedRoute.snapshot.queryParamMap.get('maxPrice') || MAX_RPICE
+    );
+    if (maxPrice > MAX_RPICE || maxPrice < MIN_PRICE + 1) {
+      maxPrice = MAX_RPICE;
+    }
     return new Filter(
       this.activatedRoute.snapshot.queryParamMap.get('category') || 'all',
-      Number(this.activatedRoute.snapshot.queryParamMap.get('minPrice') || 0),
-      Number(
-        this.activatedRoute.snapshot.queryParamMap.get('maxPrice') || 99999
-      ),
+      this.validateMinPrice(),
+      this.validateMaxPrice(),
       this.activatedRoute.snapshot.queryParamMap.get('sort') || 'name',
       this.activatedRoute.snapshot.queryParamMap.get('direction') || 'DESC'
     );
+  }
+
+  private validateMaxPrice(): number {
+    let maxPrice = Number(
+      this.activatedRoute.snapshot.queryParamMap.get('maxPrice') || MAX_PRICE
+    );
+    if (maxPrice > MAX_PRICE || maxPrice < MIN_PRICE + 1) {
+      maxPrice = MAX_PRICE;
+    }
+    console.log(maxPrice);
+    return maxPrice;
+  }
+
+  private validateMinPrice(): number {
+    let minPrice = Number(
+      this.activatedRoute.snapshot.queryParamMap.get('minPrice') || MIN_PRICE
+    );
+    if (minPrice > MAX_PRICE - 1 || minPrice < MIN_PRICE) {
+      minPrice = MIN_PRICE;
+    }
+    return minPrice;
   }
 
   private notifyPageComponent(products: Observable<ProductDto>) {
@@ -208,7 +234,7 @@ export class ProductService {
     return this.http.post(`${baseUrl}/products`, account);
   }
 
-  getProductInfo(id: number){
+  getProductInfo(id: number) {
     return this.http.get(`${baseUrl}/products/` + id);
   }
 

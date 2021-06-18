@@ -8,15 +8,13 @@ import { SearchComponent } from './search/search.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProductComponent } from './product/product.component';
 import {ProductCardComponent} from "./product-card/product-card.component";
+import {NgxSliderModule} from "@angular-slider/ngx-slider";
+import {FormsModule} from "@angular/forms";
 import {AddProductComponent} from "./add-product/add-product.component";
 import {UpdateProductComponent} from "./update-product/update-product.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {AppModule} from "../app.module";
 import {FileUploadingModule} from "../file-uploading/file-uploading.module";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectModule} from "@angular/material/select";
-import {MatOptionModule} from "@angular/material/core";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 @NgModule({
@@ -30,15 +28,14 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     AddProductComponent,
     UpdateProductComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    ProductCatalogRoutingModule,
-    FileUploadingModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatAutocompleteModule
-  ]
+    imports: [
+        CommonModule,
+        ProductCatalogRoutingModule,
+        NgxSliderModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ProductCatalogRoutingModule,
+        FileUploadingModule
+    ]
 })
 export class ProductCatalogModule { }

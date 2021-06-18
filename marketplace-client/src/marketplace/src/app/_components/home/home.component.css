@@ -1,6 +1,5 @@
 .home-content {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 30px;
 }
 
 .home-image{
@@ -14,10 +13,15 @@
   background-color: #007dc3;
   border-radius: 25px;
   color:#fff;
+  text-decoration: none;
   border: none;
   margin-top: 20px;
   padding: 10px 30px;
   font-size: 20px;
+}
+
+.store-btn:hover {
+  box-shadow: 0 0 8pt 3pt #7fc5ee;
 }
 
 .home-text-title {

@@ -16,4 +16,7 @@ public interface OrderService {
 	OrderReadDto addOrder(OrderPostDto order, String token);
 	OrderStatus modifyStatus(long id);
 	UserDisplayInfoDto getUserInfoForOrder(String token);
+	List<OrderReadDto> getUserOrders(String token);
+	List<OrderReadDto> getUserHistory(String token);
+	UserDisplayInfoDto getCourierInfoForOrder(long id);
 }

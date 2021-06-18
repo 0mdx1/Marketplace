@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class OrderReadDto {
 	private long id;
 	private UserDisplayInfoDto user;
-	private LocalDateTime delieveryTime;
+	private LocalDateTime deliveryTime;
 	private String address;
 	private OrderStatus status;
 	private String comment;
@@ -42,7 +42,7 @@ public class OrderReadDto {
 						.phone(order.getUser().getPhone())
 						.build()
 						)
-				.delieveryTime(order.getDelieveryTime())
+				.deliveryTime(order.getDeliveryTime())
 				.address(order.getAddress())
 				.status(order.getStatus())
 				.comment(order.getComment())

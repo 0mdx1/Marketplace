@@ -30,7 +30,10 @@ public class MediaController {
     public ResponseEntity<FileMetadataReadDto> upload(@RequestParam("file") MultipartFile file){
         String filename = mediaService.upload(file);
         return new ResponseEntity<>(
-                new FileMetadataReadDto(filename,mediaService.getResourceUrl(filename)),
+                new FileMetadataReadDto(
+                        filename,
+                        mediaService.getCloudStorage().getResourceUrl(filename)
+                ),
                 HttpStatus.OK
         );
     }

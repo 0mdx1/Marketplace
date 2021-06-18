@@ -36,7 +36,11 @@
 
   <div *ngIf="items.length !== 0">
 
-    <form *ngIf="!submitted" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="!freeCouriers" class="text-center my-5">
+      <h1 class="text-danger font-weight-bold">Sorry, there are no available couriers</h1>
+    </div>
+
+    <form *ngIf="!submitted && freeCouriers" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
       <hr />
       <h1>Checkout form</h1>
       <hr />
@@ -96,6 +100,26 @@
       <div class="row d-flex p-2 justify-content-center">
         <div class="col-md-3">
           <div class="form-group">
+            <label>Delivery Day</label>
+
+            <select 
+              class="form-control" 
+              formControlName="deliveryDay" 
+              [ngClass]="{ 'is-invalid': getForm.deliveryDay.errors }">
+
+              <option></option>
+              <option *ngFor="let time of delivery">
+                {{ time.date }}
+              </option>
+            </select>
+            <div *ngIf="getForm.deliveryDay.errors" class="invalid-feedback">
+              <div *ngIf="getForm.deliveryDay.errors.required">Choose delivery day</div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="this.orderDetailsForm.value['deliveryDay'] !== '' && getDeliveryTimes()" class="col-md-3">
+          <div class="form-group">
             <label>Delivery Time</label>
 
             <select 
@@ -104,8 +128,8 @@
               [ngClass]="{ 'is-invalid': getForm.deliveryTime.errors }">
 
               <option></option>
-              <option *ngFor="let time of deliveryTime">
-                {{ time }}
+              <option *ngFor="let time of deliveryTimes">
+                {{ time.slice(0, -3) }}
               </option>
             </select>
             <div *ngIf="getForm.deliveryTime.errors" class="invalid-feedback">

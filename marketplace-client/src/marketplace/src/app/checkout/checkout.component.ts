@@ -17,11 +17,14 @@ import {Router} from "@angular/router";
 })
 export class CheckoutComponent implements OnInit {
   items: CartItem[] = [];
-  deliveryTime: string[] = [];
+  delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
   authUser: User = {};
   isVisibleBanner = true;
+
+  deliveryTimes: string[] = []
+  freeCouriers = false;
 
   constructor(
     private cartService: CartService,
@@ -37,6 +40,7 @@ export class CheckoutComponent implements OnInit {
       surname: ['', Validators.required],
       phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
       address: ['', Validators.required],
+      deliveryDay: ['', Validators.required],
       deliveryTime: ['', Validators.required],
       comment: [''],
       disturb: [false]
@@ -47,8 +51,36 @@ export class CheckoutComponent implements OnInit {
     this.items = this.cartService.getCart().getItems();
     this.getAuthUserInfo();
     this.checkoutService.getDeliveryTime()
+    .pipe(
+      catchError(err => {
+        return this.errorHandler.displayValidationError(err);
+      })
+    )
     .subscribe(
-      data => this.deliveryTime = data
+      data => {
+        this.freeCouriers = true;
+        let splittedData: string[][] = [];
+        data.forEach(elem => splittedData.push(elem.split('T')));
+        
+
+        let prevDate = '';
+        let arrtimes = [];
+
+        for(let i = 0; i < splittedData.length; i++) {
+          if(splittedData[i][0] !== prevDate) {
+            arrtimes = [];
+            prevDate = splittedData[i][0];
+            arrtimes.push(splittedData[i][1]);
+            let obj = {
+              date: prevDate,
+              times: arrtimes
+            }
+            this.delivery.push(obj);
+          }else {
+            arrtimes.push(splittedData[i][1]);
+          }
+        }
+      }
     );
   }
 
@@ -130,14 +162,14 @@ export class CheckoutComponent implements OnInit {
       surname: this.orderDetailsForm.value['surname'],
       phone: this.orderDetailsForm.value['phone'],
       address: this.orderDetailsForm.value['address'],
-      deliveryTime: this.orderDetailsForm.value['deliveryTime'],
+      deliveryTime: this.orderDetailsForm.value['deliveryDay'] + 'T' + (this.orderDetailsForm.value['deliveryTime'] + ':00'),
       comment: this.orderDetailsForm.value['comment'],
       disturb: this.orderDetailsForm.value['disturb'],
       totalSum: this.getTotalPrice(this.items),
       discountSum: this.getTotalPrice(this.items) - this.getTotalDiscount(this.items),
       items: mappedItems,
     }
-
+    
     this.checkoutService.sendOrderDetails(receiveObj)
       .pipe(
         catchError(err => {
@@ -160,7 +192,15 @@ export class CheckoutComponent implements OnInit {
 
   hideBanner() {
     this.isVisibleBanner = false;
+  } 
+
+  getDeliveryTimes(): boolean {
+    for(let i = 0; i < this.delivery.length; i++) {
+      if(this.delivery[i].date == this.orderDetailsForm.value['deliveryDay']) {
+        this.deliveryTimes = this.delivery[i].times;
+        return true;
+      }
+    }
+    return false;
   }
-
-
 }

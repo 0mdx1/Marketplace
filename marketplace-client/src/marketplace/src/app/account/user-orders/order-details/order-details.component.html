@@ -1,0 +1,39 @@
+
+<h2 class="card-title">Order details</h2>
+<p class="card-text">Courier: {{courier.name}}  {{courier.surname}}</p>
+<p class="card-text">Courier phone: {{courier.phone}}</p>
+<p class="card-text">Total sum: {{order.discountSum | currency:'USD'}}</p>
+          <div class="col mb-3">
+            <div class="e-panel card">
+              <div class="card-body">
+                <div class="e-table">
+                  <div class="table-responsive table-lg mt-3">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+
+                          <th class="max-width">Product Name</th>
+                          <th class="max-width">Firm</th>
+                          <th class="max-width">Category</th>
+                          <th class="max-width">Quantity</th>
+                          <th class="max-width">Price</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let good of order.goods">
+                          <td class="text-nowrap align-middle">{{good.name}}</td>
+                          <td class="text-nowrap align-middle">{{good.firm}}</td>
+                          <td class="text-nowrap align-middle">{{good.category}}</td>
+                          <td class="text-nowrap align-middle">{{good.quantity}}</td>
+                          <td class="text-nowrap align-middle">{{good.price | currency:'USD'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
