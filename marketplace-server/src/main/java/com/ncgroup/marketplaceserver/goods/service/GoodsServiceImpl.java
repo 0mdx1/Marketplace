@@ -80,7 +80,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<String> concatenator = new ArrayList<>();
 
         StringBuilder flexibleQuery = new StringBuilder
-                ("SELECT goods.id, product.name AS product_name, " +
+                ("SELECT goods.id, product.name AS product_name, status, " +
                 "firm.name AS firm_name, category.name AS category_name, unit, " +
                 " goods.quantity, goods.price, goods.discount, goods.in_stock," +
                 " goods.description, goods.image ");
