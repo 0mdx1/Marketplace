@@ -28,5 +28,7 @@ public interface UserRepository {
 
 	void updatePassword(String email, String password);
 
+	void updateUserByEmail(User user, String email);
+
 	List<User> allCouriersManagers();
 }

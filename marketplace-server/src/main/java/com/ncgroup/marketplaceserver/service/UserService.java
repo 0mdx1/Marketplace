@@ -45,4 +45,6 @@ public interface UserService {
 
     User getCurrentUser();
 
+    User updateRoleUser(User user, String token);
+
 }

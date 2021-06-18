@@ -17,13 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ncgroup.marketplaceserver.model.User;
@@ -137,6 +131,14 @@ public class UserController  {
     public ResponseEntity<List<UserDto>> findAllUsers() {
     	List<UserDto> users = userService.getUsers();
         return new ResponseEntity<>(users, OK);
+    }
+
+    @PatchMapping("/updateUserRole")
+    public ResponseEntity<User> updateRoleUser(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestBody User user
+    ) {
+        return new ResponseEntity<>(userService.updateRoleUser(user, token), OK);
     }
 
     private HttpHeaders getJwtHeader(UserPrincipal user) {
