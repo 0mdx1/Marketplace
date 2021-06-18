@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Filter } from 'src/app/_models/products/filter';
 import { Product } from 'src/app/_models/products/product';
@@ -25,8 +25,8 @@ export class FilterComponent implements OnInit {
     ceil: 400,
     showTicks: false,
   };
-  @Input() sort: string = "name";
-  @Input() direction: string = "ASC";
+  @Input() sort: string = 'name';
+  @Input() direction: string = 'ASC';
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private service: ProductService) {}
@@ -34,10 +34,12 @@ export class FilterComponent implements OnInit {
   ngOnInit(): void {
     this.getCategories();
     this.filters = this.getFilter();
-    this.filters.sort=this.sort;
-    this.filters.direction=this.direction;
-    this.filters.maxPrice=this.maxPrice;
-    this.filters.minPrice=this.minPrice;
+    this.filters.sort = this.sort;
+    this.filters.direction = this.direction;
+    //this.maxPrice = this.filters.maxPrice;
+    //this.minPrice = this.filters.minPrice;
+    this.filters.maxPrice = this.maxPrice;
+    this.filters.minPrice = this.minPrice;
     this.filter(this.filters, true);
   }
 
@@ -46,8 +48,8 @@ export class FilterComponent implements OnInit {
     this.categorySubscription.unsubscribe();
   }
 
-  ngOnChanges():void{
-    if(this.filters) {
+  ngOnChanges(): void {
+    if (this.filters) {
       this.filters.sort = this.sort;
       this.filters.direction = this.direction;
       this.filter(this.filters, false);
@@ -59,9 +61,9 @@ export class FilterComponent implements OnInit {
       .getFilteredProducts(filter, init)
       .subscribe((results: ProductDto) => {
         this.products = results.result_set;
-        if(category || init){
+        if (category || init) {
           const maxPrice = this.getMaxPrice();
-          this.options= {
+          this.options = {
             floor: 0,
             ceil: maxPrice,
             showTicks: false,
@@ -81,9 +83,9 @@ export class FilterComponent implements OnInit {
     this.filter(this.filters, false, true);
   }
 
-  setPrice():void {
-    this.filters.maxPrice=this.maxPrice;
-    this.filters.minPrice=this.minPrice;
+  setPrice(): void {
+    this.filters.maxPrice = this.maxPrice;
+    this.filters.minPrice = this.minPrice;
     this.filter(this.filters, false);
   }
 
@@ -121,6 +123,11 @@ export class FilterComponent implements OnInit {
   }
 
   getMaxPrice(): number {
-    return Math.max.apply(Math, this.products.map(function(product) { return product.price; }));
+    return Math.max.apply(
+      Math,
+      this.products.map(function (product) {
+        return product.price;
+      })
+    );
   }
 }
