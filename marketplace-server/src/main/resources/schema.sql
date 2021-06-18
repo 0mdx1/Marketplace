@@ -1,18 +1,17 @@
+DROP TABLE IF EXISTS order_goods CASCADE;
+DROP TABLE IF EXISTS order_details CASCADE;
+DROP TABLE IF EXISTS courier CASCADE;
+DROP TABLE IF EXISTS person CASCADE;
+DROP TABLE IF EXISTS credentials CASCADE;
+DROP TABLE IF EXISTS role CASCADE;
+DROP TABLE IF EXISTS shopping_cart_item CASCADE;
+DROP TABLE IF EXISTS goods CASCADE;
+DROP TABLE IF EXISTS firm CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS category CASCADE;
 
-DROP TABLE IF EXISTS order_goods;
-DROP TABLE IF EXISTS order_details;
-DROP TABLE IF EXISTS courier;
-DROP TABLE IF EXISTS person;
-DROP TABLE IF EXISTS credentials;
-DROP TABLE IF EXISTS role;
-DROP TABLE IF EXISTS shopping_cart_item;
-DROP TABLE IF EXISTS goods;
-DROP TABLE IF EXISTS firm;
-DROP TABLE IF EXISTS product;
-DROP TABLE IF EXISTS category;
-
-DROP TYPE IF EXISTS delivery_status;
-DROP TYPE IF EXISTS unit_type;
+DROP TYPE IF EXISTS delivery_status CASCADE;
+DROP TYPE IF EXISTS unit_type CASCADE;
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -20,7 +19,7 @@ CREATE TABLE IF NOT EXISTS role
         CONSTRAINT pk_role_id
             PRIMARY KEY,
     role VARCHAR(50)
-); 
+);
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
     ON role (role);
@@ -114,7 +113,7 @@ CREATE TABLE IF NOT EXISTS goods
     discount      DECIMAL(12, 2),
     shipping_date TIMESTAMP,
     in_stock      BOOLEAN,
-    status        varchar(50),
+    status        BOOLEAN,
     image         varchar(100),
     description   text
 );
@@ -128,7 +127,7 @@ CREATE TABLE IF NOT EXISTS shopping_cart_item
     quantity    INTEGER NOT NULL,
     adding_time BIGINT  NOT NULL,
     CONSTRAINT shopping_cart_item_pk
-    PRIMARY KEY (user_id, goods_id)
+        PRIMARY KEY (user_id, goods_id)
 );
 
 --ORDER
@@ -137,46 +136,46 @@ CREATE TYPE delivery_status AS ENUM ('SUBMITTED', 'IN_DELIVERY', 'DELIVERED');
 
 CREATE TABLE IF NOT EXISTS order_details
 (
-	id 				SERIAL,
-	person_id 		INTEGER NOT NULL,
-	courier_id 		INTEGER NOT NULL,
-	delivery_time 	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-	address 		VARCHAR(200),
-	status 			DELIVERY_STATUS NOT NULL,
-	comment 		TEXT,
-	disturb 		BOOLEAN NOT NULL DEFAULT true,
-	total_sum 		DECIMAL(12, 2),
-	discount_sum 	DECIMAL(12, 2),
-	
-	CONSTRAINT order_details_pk
-	PRIMARY KEY (id),
-	
-	CONSTRAINT person_order_details_fk
-	FOREIGN KEY(person_id)
-	REFERENCES person(id),
-	
-	CONSTRAINT person_courier_order_details_fk
-	FOREIGN KEY(courier_id)
-	REFERENCES person(id)
+    id 				SERIAL,
+    person_id 		INTEGER NOT NULL,
+    courier_id 		INTEGER NOT NULL,
+    delivery_time 	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    address 		VARCHAR(200),
+    status 			DELIVERY_STATUS NOT NULL,
+    comment 		TEXT,
+    disturb 		BOOLEAN NOT NULL DEFAULT true,
+    total_sum 		DECIMAL(12, 2),
+    discount_sum 	DECIMAL(12, 2),
+
+    CONSTRAINT order_details_pk
+        PRIMARY KEY (id),
+
+    CONSTRAINT person_order_details_fk
+        FOREIGN KEY(person_id)
+            REFERENCES person(id),
+
+    CONSTRAINT person_courier_order_details_fk
+        FOREIGN KEY(courier_id)
+            REFERENCES person(id)
 );
 
 
-CREATE TABLE IF NOT EXISTS order_goods 
+CREATE TABLE IF NOT EXISTS order_goods
 (
-	goods_id INTEGER NOT NULL,
-	order_id INTEGER NOT NULL,
-	quantity INTEGER NOT NULL DEFAULT 0,
-	sum 	 DECIMAL NOT NULL DEFAULT 0,
-	
-	CONSTRAINT goods_order_goods_fk
-	FOREIGN KEY(goods_id)
-	REFERENCES goods(id),
-	
-	CONSTRAINT order_detals_order_goods_fk
-	FOREIGN KEY(order_id)
-	REFERENCES order_details(id),
-	
-	CONSTRAINT order_goods_pk
-	PRIMARY KEY (goods_id, order_id)
+    goods_id INTEGER NOT NULL,
+    order_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 0,
+    sum 	 DECIMAL NOT NULL DEFAULT 0,
+
+    CONSTRAINT goods_order_goods_fk
+        FOREIGN KEY(goods_id)
+            REFERENCES goods(id),
+
+    CONSTRAINT order_detals_order_goods_fk
+        FOREIGN KEY(order_id)
+            REFERENCES order_details(id),
+
+    CONSTRAINT order_goods_pk
+        PRIMARY KEY (goods_id, order_id)
 );
 

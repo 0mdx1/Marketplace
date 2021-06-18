@@ -1,7 +1,9 @@
 package com.ncgroup.marketplaceserver.goods.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class GoodDto {
 
     @NotEmpty
@@ -26,11 +30,6 @@ public class GoodDto {
 
     private String image;
 
-    /**
-     * 03.04.2021
-     * 03-04-2021
-     * 03/04/2021
-     */
 //    @Past
 //    private String shippingDate;
 
@@ -38,5 +37,9 @@ public class GoodDto {
     private String description;
     @NotEmpty
     private String categoryName;
-    //private String status;
+    private boolean status;
+
+//    public void GoodDto(Good good) {
+//
+//    }
 }

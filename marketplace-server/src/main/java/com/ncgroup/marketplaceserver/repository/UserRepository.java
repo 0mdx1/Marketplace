@@ -1,8 +1,10 @@
 package com.ncgroup.marketplaceserver.repository;
 
-import java.util.List;
+
 
 import com.ncgroup.marketplaceserver.model.User;
+
+import java.util.List;
 
 public interface UserRepository {
 	User findById(long id);

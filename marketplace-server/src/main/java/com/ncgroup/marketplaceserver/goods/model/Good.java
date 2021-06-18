@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.goods.model;
 
+import com.ncgroup.marketplaceserver.file.service.MediaService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,7 +38,7 @@ public class Good {
     private String description;
     private String categoryName;
     private String image;
-    //private String status;
+    private boolean status;
 
 //    public void setShippingDate(LocalDate date) {
 //        System.out.println(date);
@@ -45,10 +46,11 @@ public class Good {
 //        this.shippingDate = LocalDate.parse(dat, EUROPEAN_DATE_FORMATTER);
 //    }
 
-    public void setPrice(double price, double discount) {
-        this.price = price - (price * (discount / 100));
-    }
+//    public void setPrice(double price, double discount) {
+//        this.price = price - (price * (discount / 100));
+//    }
 
+//    , MediaService mediaService
     public void setProperties(GoodDto goodDto, Long id) {
         this.setId(id);
        //this.setShippingDate(goodDto.getShippingDate());
@@ -56,12 +58,14 @@ public class Good {
         this.setGoodName(goodDto.getGoodName().toLowerCase());
         this.setFirmName(goodDto.getFirmName().toLowerCase());
         this.setQuantity(goodDto.getQuantity());
-        this.setPrice(goodDto.getPrice(), goodDto.getDiscount());
+//        this.setPrice(goodDto.getPrice(), goodDto.getDiscount());
+        this.setPrice(goodDto.getPrice());
         this.setDiscount(goodDto.getDiscount());
         this.setInStock(goodDto.isInStock());
         this.setDescription(goodDto.getDescription());
         this.setCategoryName(goodDto.getCategoryName().toLowerCase());
         this.setImage(goodDto.getImage());
+        this.setStatus(goodDto.isStatus());
     }
 
 }
