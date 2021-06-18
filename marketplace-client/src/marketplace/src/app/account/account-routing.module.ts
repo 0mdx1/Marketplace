@@ -8,6 +8,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ConfirmedComponent } from './confirmed/confirmed.component';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UpdateAccount } from './update/update.account';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'create-password', component: CreatePasswordComponent },
       { path: 'confirmed', component: ConfirmedComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'update-account', component: UpdateAccount},
     ],
     path: '',
     component: LayoutComponent,

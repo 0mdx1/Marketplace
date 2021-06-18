@@ -13,6 +13,7 @@ import { LoginFormComponent } from './_components/login.form.component';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { PasswordFormComponent } from './_components/password.form.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UpdateAccount } from './update/update.account';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule],
@@ -27,6 +28,7 @@ import { ProfileComponent } from './profile/profile.component';
     CreatePasswordComponent,
     PasswordFormComponent,
     ProfileComponent,
+    UpdateAccount,
   ],
   providers: [PasswordFormComponent],
 })
