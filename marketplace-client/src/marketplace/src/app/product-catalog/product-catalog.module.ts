@@ -13,6 +13,10 @@ import {UpdateProductComponent} from "./update-product/update-product.component"
 import {ReactiveFormsModule} from "@angular/forms";
 import {AppModule} from "../app.module";
 import {FileUploadingModule} from "../file-uploading/file-uploading.module";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
+import {MatOptionModule} from "@angular/material/core";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 @NgModule({
@@ -26,11 +30,15 @@ import {FileUploadingModule} from "../file-uploading/file-uploading.module";
     AddProductComponent,
     UpdateProductComponent,
   ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        ProductCatalogRoutingModule,
-        FileUploadingModule
-    ]
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ProductCatalogRoutingModule,
+    FileUploadingModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatAutocompleteModule
+  ]
 })
 export class ProductCatalogModule { }

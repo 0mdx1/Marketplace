@@ -176,6 +176,10 @@ export class ProductService {
     return this.http.get<string[]>(`${baseUrl}/products/categories`);
   }
 
+  getFirm(): Observable<string[]> {
+    return this.http.get<string[]>(`${baseUrl}/products/firms`);
+  }
+
   getFilter(): Filter {
     return new Filter(
       this.activatedRoute.snapshot.queryParamMap.get('category') || 'all',

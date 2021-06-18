@@ -24,17 +24,19 @@ export class UpdateProductComponent implements OnInit{
   });
   submitted = false;
 
-  categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
-  inStock: string[] = ["true", "false", "null"];
+  categoryName: string[]= [""];
+  inStock: string[] = ["true", "false"];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
   status: string[] = ["true", "false"];
+  firmName: string[]=[""];
 
   loading = false;
 
   updated = false;
 
   response: any;
-
+  responseCategory: any;
+  responseFirm: any;
   image: string = '';
 
   ngOnInit(){
@@ -44,12 +46,35 @@ export class UpdateProductComponent implements OnInit{
         this.response = response;
         console.log(this.response);
         this.formCreation();
+
+        this.firm()
+        this.category();
       })
+
+
 
   }
 
   public setImage(imageName: string){
     this.image = imageName;
+  }
+
+  public category(){
+    this.accountService.getCategories()
+      .subscribe((categ) =>{
+        this.responseCategory = categ;
+        console.log(this.responseCategory);
+        this.categoryName = this.responseCategory;
+      })
+  }
+
+  public firm(){
+    this.accountService.getFirm()
+      .subscribe((firm) =>{
+        this.responseFirm = firm;
+        console.log(this.responseFirm);
+        this.firmName = this.responseFirm;
+      })
   }
 
   constructor(
@@ -68,6 +93,7 @@ export class UpdateProductComponent implements OnInit{
         unit: [this.response.unit, Validators.required],
         discount: [this.response.discount, [Validators.min(1), Validators.required]],
         inStock: [String(this.response.inStock), Validators.required],
+        status: ['', Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
         description: [this.response.description, Validators.required],
       },

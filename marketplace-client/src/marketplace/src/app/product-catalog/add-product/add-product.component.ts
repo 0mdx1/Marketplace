@@ -17,7 +17,7 @@ import {AccountService} from "../../_services/account.service";
   styleUrls: ['./add-product.component.css'],
 
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit{
   form: FormGroup;
 
   submitted = false;
@@ -28,15 +28,18 @@ export class AddProductComponent {
   inStockStatus: string[] = ["true", "false"];
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
   status: string[] = ["true", "false"];
+  firmName: string[]=[""];
 
   loading = false;
   registered = false;
   image: string = '';
 
+  responseCategory: any;
+  responseFirm: any;
+
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
-     private productService: ProductService,
+     private accountService: ProductService,
   ) {
   this.form = this.formBuilder.group(
       {
@@ -54,12 +57,35 @@ export class AddProductComponent {
     );
   }
 
+  ngOnInit() {
+    this.firm();
+    this.category()
+  }
+
   get getForm(): { [p: string]: AbstractControl } {
     return this.form.controls;
   }
 
   public setImage(imageName: string){
     this.image = imageName;
+  }
+
+  public category(){
+    this.accountService.getCategories()
+      .subscribe((categ) =>{
+        this.responseCategory = categ;
+        console.log(this.responseCategory);
+        this.categoryName = this.responseCategory;
+      })
+  }
+
+  public firm(){
+    this.accountService.getFirm()
+      .subscribe((firm) =>{
+        this.responseFirm = firm;
+        console.log(this.responseFirm);
+        this.firmName = this.responseFirm;
+      })
   }
 
 
@@ -83,6 +109,8 @@ export class AddProductComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
+      console.log(this.form.value);
+      console.log("dont work");
       return;
     }
     this.loading = true;
@@ -90,14 +118,13 @@ export class AddProductComponent {
     let observable = null;
     let product = this.mapToProduct(this.form.value);
     product.image = this.image;
-    observable = this.productService.AddProduct(
+    observable = this.accountService.AddProduct(
       product
     );
 
     observable.pipe(first()).subscribe({
 
             next: () => {
-              console.log("Role mistake");
         this.loading = false;
         this.registered = true;
       }

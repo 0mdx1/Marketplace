@@ -48,6 +48,8 @@ public class GoodsServiceImpl implements GoodsService {
         Good good = this.findById(id); // pull the good object if exists
         String oldImage = good.getImage();
         String newImage = goodDto.getImage();
+        //log.info(oldImage);
+        //log.info(newImage);
         if(!newImage.isEmpty() && !oldImage.isEmpty() && !oldImage.equals(newImage)){
             log.info("Deleting old image");
             mediaService.delete(oldImage);
