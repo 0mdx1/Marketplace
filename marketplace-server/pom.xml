@@ -58,13 +58,6 @@
     		<version>1.12.8</version>
 		</dependency>
 
-
-		<!--<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.931</version>
-		</dependency> -->
-
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -173,3 +166,4 @@
 		</plugins>
 	</build>
 </project>
+ 
