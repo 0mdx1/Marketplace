@@ -80,6 +80,17 @@
               </div>
 
               <div class="form-group col-6">
+                <label>Active</label>
+                <select class="form-control" formControlName="status">
+                  <ng-container>
+                    <option *ngFor="let status of status" [ngValue]="status">
+                      {{status}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+
+              <div class="form-group col-6">
                 <label>Category*</label>
                 <select class="form-control" formControlName="categoryName">
                   <ng-container *ngIf="response">
@@ -90,8 +101,10 @@
                 </select>
               </div>
 
+
               <div class="form-group col-6">
-                <input type="file" formControlName="image" >
+                <label>Add image</label>
+                <input type="file" formControlName="image" class="image" >
               </div>
 
               <div class="form-group col-12">
@@ -129,4 +142,5 @@
       </div>
     </div>
   </div>
+
 </div>

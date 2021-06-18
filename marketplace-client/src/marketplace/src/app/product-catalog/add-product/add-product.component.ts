@@ -6,10 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../_services/product.service';
-import { validateBirthday } from '../../_helpers/validators.service';
 import { first } from 'rxjs/operators';
 import { Role } from '../../_models/role';
-import { StaffMember } from '../../_models/staff-member';
 import { Product } from '../../_models/products/product';
 import {AccountService} from "../../_services/account.service";
 
@@ -27,8 +25,9 @@ export class AddProductComponent {
   roles: Role[] = [Role.Courier, Role.ProductManager];
 
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
-  inStockStatus: string[] = ["true", "false", "null"];
+  inStockStatus: string[] = ["true", "false"];
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
+  status: string[] = ["true", "false"];
 
   loading = false;
   registered = false;
@@ -47,6 +46,7 @@ export class AddProductComponent {
         unit: ['', Validators.required],
         discount: ['', [Validators.min(1), Validators.required]],
         inStock: ['', Validators.required],
+        status: ['', Validators.required],
         categoryName: ['', Validators.required],
         description: ['', Validators.required],
       },
@@ -69,6 +69,7 @@ export class AddProductComponent {
       image: "",
       discount: o.discount,
       inStock: o.inStock,
+      status: o.status,
       categoryName: o.categoryName,
       description: o.description,
     };

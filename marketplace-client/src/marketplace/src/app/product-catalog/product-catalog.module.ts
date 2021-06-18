@@ -11,7 +11,8 @@ import {ProductCardComponent} from "./product-card/product-card.component";
 import {AddProductComponent} from "./add-product/add-product.component";
 import {UpdateProductComponent} from "./update-product/update-product.component";
 import {ReactiveFormsModule} from "@angular/forms";
-
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import {ReactiveFormsModule} from "@angular/forms";
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ProductCatalogRoutingModule
+    ProductCatalogRoutingModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
   ]
 })
 export class ProductCatalogModule { }

@@ -1,14 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Role} from "../../_models/role";
-import {SystemAccountService} from "../../_services/system-account.service";
 import {ProductService} from "../../_services/product.service";
-import {validateBirthday} from "../../_helpers/validators.service";
-import {StaffMember} from "../../_models/staff-member";
 import { Product } from '../../_models/products/product';
 
-import {first} from "rxjs/operators";
+import {first, map, startWith} from "rxjs/operators";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'update-product',
@@ -22,11 +19,21 @@ export class UpdateProductComponent implements OnInit{
   form = new FormGroup({
     name: new FormControl('')
   });
+
+  myControl = new FormControl();
   submitted = false;
 
+  categories: string[] = [];
+
+  products: Product[] = [];
+  categorySubscription!: Subscription;
+
+
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
-  inStock: string[] = ["true", "false", "null"];
+  inStock: string[] = ["true", "false"];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
+  status: string[] = ["true", "false"]
+
 
   loading = false;
 
@@ -37,6 +44,7 @@ export class UpdateProductComponent implements OnInit{
 
 
   ngOnInit(){
+
     //.subscribe((response) => {
       this.accountService.getProductInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
@@ -47,7 +55,16 @@ export class UpdateProductComponent implements OnInit{
 
   }
 
+  private getCategories() {
+    this.categorySubscription = this.service
+      .getCategories()
+      .subscribe((results: string[]) => {
+        this.categories = results;
+      });
+  }
+
   constructor(
+    private service: ProductService,
     private formBuilder: FormBuilder,
     private accountService: ProductService,
     private route: ActivatedRoute,
@@ -63,6 +80,7 @@ export class UpdateProductComponent implements OnInit{
         unit: [this.response.unit, Validators.required],
         discount: [this.response.discount, [Validators.min(1), Validators.required]],
         inStock: [String(this.response.inStock), Validators.required],
+        status: [String(this.response.status), Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
         description: [this.response.description, Validators.required],
       },
@@ -84,6 +102,7 @@ export class UpdateProductComponent implements OnInit{
       image: "",
       discount: o.discount,
       inStock: o.inStock,
+      status: o.status,
       categoryName: o.categoryName,
       description: o.description,
     };
