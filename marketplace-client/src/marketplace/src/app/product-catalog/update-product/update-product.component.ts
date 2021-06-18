@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Role} from "../../_models/role";
+import {SystemAccountService} from "../../_services/system-account.service";
 import {ProductService} from "../../_services/product.service";
+import {validateBirthday} from "../../_helpers/validators.service";
+import {StaffMember} from "../../_models/staff-member";
 import { Product } from '../../_models/products/product';
 
-import {first, map, startWith} from "rxjs/operators";
-import {Observable, Subscription} from "rxjs";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'update-product',
@@ -22,10 +25,9 @@ export class UpdateProductComponent implements OnInit{
   submitted = false;
 
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
-  inStock: string[] = ["true", "false"];
+  inStock: string[] = ["true", "false", "null"];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
-  status: string[] = ["true", "false"]
-
+  status: string[] = ["true", "false"];
 
   loading = false;
 
@@ -33,16 +35,16 @@ export class UpdateProductComponent implements OnInit{
 
   response: any;
 
-
+  image: string = '';
 
   ngOnInit(){
     //.subscribe((response) => {
-      this.accountService.getProductInfo(this.route.snapshot.params.id)
-        .subscribe((response) => {
-          this.response = response;
-          console.log(this.response);
-          this.formCreation();
-        })
+    this.accountService.getProductInfo(this.route.snapshot.params.id)
+      .subscribe((response) => {
+        this.response = response;
+        console.log(this.response);
+        this.formCreation();
+      })
 
   }
 
@@ -50,16 +52,7 @@ export class UpdateProductComponent implements OnInit{
     this.image = imageName;
   }
 
-  private getCategories() {
-    this.categorySubscription = this.service
-      .getCategories()
-      .subscribe((results: string[]) => {
-        this.categories = results;
-      });
-  }
-
   constructor(
-    private service: ProductService,
     private formBuilder: FormBuilder,
     private accountService: ProductService,
     private route: ActivatedRoute,
@@ -75,7 +68,6 @@ export class UpdateProductComponent implements OnInit{
         unit: [this.response.unit, Validators.required],
         discount: [this.response.discount, [Validators.min(1), Validators.required]],
         inStock: [String(this.response.inStock), Validators.required],
-        status: [String(this.response.status), Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
         description: [this.response.description, Validators.required],
       },
@@ -94,10 +86,10 @@ export class UpdateProductComponent implements OnInit{
       quantity: o.quantity,
       price: o.price,
       unit: o.unit,
+      status: o.status,
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
-      status: o.status,
       categoryName: o.categoryName,
       description: o.description,
     };
@@ -114,8 +106,8 @@ export class UpdateProductComponent implements OnInit{
     let product = this.mapToProduct(this.form.value);
     product.image = this.image;
     observable = this.accountService.updateProduct(
-        product, (this.route.snapshot.params.id)
-      );
+      product, (this.route.snapshot.params.id)
+    );
 
     console.log(this.mapToProduct(this.form.value))
 
