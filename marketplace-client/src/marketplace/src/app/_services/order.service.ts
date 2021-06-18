@@ -40,7 +40,7 @@ export class OrderService {
     );
   }
 
-  private getOrderId(): string {
+  private getOrderId(): string | null {
     return this.activatedRoute.snapshot.params['orderId'];
   }
 
@@ -60,5 +60,19 @@ export class OrderService {
 
   public getCourier(): Observable<User> {
     return this.http.get<User>(`${baseUrl}/orders/userinfo`);
+  }
+
+  public getUserOrder(): Observable<CourierOrder> {
+    let pathParts = this.router.url.split('/');
+    return this.http.get<CourierOrder>(
+      baseUrl + '/orders/' + pathParts[pathParts.length - 1]
+    );
+  }
+
+  public getCourierInfo(): Observable<User> {
+    let pathParts = this.router.url.split('/');
+    return this.http.get<User>(
+      baseUrl + '/orders/' + pathParts[pathParts.length - 1] + '/courierinfo'
+    );
   }
 }

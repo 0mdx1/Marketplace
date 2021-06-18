@@ -29,7 +29,7 @@ const routes: Routes = [
         children: [
           { path: 'incoming', component: UserOrdersComponent },
           { path: 'history', component: UserOrdersComponent },
-          { path: ':id', component: OrderDetailsComponent },
+          { path: ':orderId', component: OrderDetailsComponent },
         ],
       },
     ],

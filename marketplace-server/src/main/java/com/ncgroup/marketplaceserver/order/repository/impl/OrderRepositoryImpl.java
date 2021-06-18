@@ -111,7 +111,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 		SqlParameterSource orderParams = new MapSqlParameterSource()
 				.addValue("person_id", order.getUser().getId())
 				.addValue("courier_id", order.getCourier().getUser().getId())
-				.addValue("delivery_time", order.getDelieveryTime())
+				.addValue("delivery_time", order.getDeliveryTime())
 				.addValue("address", order.getAddress())
 				.addValue("status", order.getStatus().toString())
 				.addValue("comment", order.getComment())
