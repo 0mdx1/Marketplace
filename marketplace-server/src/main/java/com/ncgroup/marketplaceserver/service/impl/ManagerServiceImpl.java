@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.MessagingException;
+
 @Slf4j
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -69,7 +71,12 @@ public class ManagerServiceImpl implements ManagerService {
                 .role(Role.ROLE_PRODUCT_MANAGER)
                 .isEnabled(isEnabled)
                 .build();
-        String authlink = emailSenderService.sendSimpleEmailPasswordCreation(email);
+        String authlink = null;
+        try {
+            authlink = emailSenderService.sendSimpleEmailPasswordCreation(email, name);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
         user.setAuthLink(authlink);
         user = userRepository.save(user);
         log.info("New manager registered");
