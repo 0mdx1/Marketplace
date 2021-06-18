@@ -101,9 +101,6 @@
                     <option *ngFor="let status of status" [ngValue]="status">
                       {{status}}
                     </option>
-                    <div *ngIf="submitted && getForm.status.errors" class="invalid-feedback">
-                      <div *ngIf="getForm.status.errors.required">Price is required</div>
-                    </div>
                   </ng-container>
                 </select>
               </div>
