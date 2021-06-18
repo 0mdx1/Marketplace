@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.order.repository.impl;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,6 +67,15 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Value("${order.total-pages}")
 	private String findTotalPages;
 	
+	@Value("${order.find-user-orders}")
+	private String findUserOrders;
+	
+	@Value("${order.find-user-history}")
+	private String findUserHistory;
+	
+	@Value("${order.courier-info}")
+	private String findCourierInfoQuery;
+	
 	
 	@Autowired
 	public OrderRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -101,7 +111,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 		SqlParameterSource orderParams = new MapSqlParameterSource()
 				.addValue("person_id", order.getUser().getId())
 				.addValue("courier_id", order.getCourier().getUser().getId())
-				.addValue("delivery_time", order.getDelieveryTime())
+				.addValue("delivery_time", order.getDeliveryTime())
 				.addValue("address", order.getAddress())
 				.addValue("status", order.getStatus().toString())
 				.addValue("comment", order.getComment())
@@ -161,6 +171,33 @@ public class OrderRepositoryImpl implements OrderRepository {
 	@Override
 	public int getAvailableCouriersNum() {
 		return jdbcTemplate.queryForObject(selectAvalblCouriersNum, Integer.class);
+	}
+	
+	@Override
+	public List<Order> getUserIncomingOrders(String email) {
+		return jdbcTemplate.query(findUserOrders, new OrderRowMapper(), new Object[] {email})
+				.stream().map(order -> {
+					log.info("Before set items "+order.toString());
+					order.setItems(getOrderItems(order.getId()));
+					log.info("After set items "+order.toString());
+					return order;
+				}).collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<Order> getUserHistoryOrders(String email) {
+		return jdbcTemplate.query(findUserHistory, new OrderRowMapper(), new Object[] {email})
+				.stream().map(order -> {
+					order.setItems(getOrderItems(order.getId()));
+					return order;
+				}).collect(Collectors.toList());
+	}
+	
+	@Override
+	public UserDisplayInfoDto findCourierForOrder(long orderId) {
+		List<UserDisplayInfoDto> couriers = jdbcTemplate
+				.query(findCourierInfoQuery, new UserDisplayInfoRowMapper(), new Object[] {orderId});
+		return couriers.isEmpty() ? null : couriers.get(0);
 	}
 	
 	private List<OrderItem> getOrderItems(long orderId) {

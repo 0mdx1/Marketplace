@@ -8,6 +8,8 @@ import { SearchComponent } from './search/search.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ProductComponent } from './product/product.component';
 import {ProductCardComponent} from "./product-card/product-card.component";
+import {NgxSliderModule} from "@angular-slider/ngx-slider";
+import {FormsModule} from "@angular/forms";
 import {AddProductComponent} from "./add-product/add-product.component";
 import {UpdateProductComponent} from "./update-product/update-product.component";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -28,6 +30,9 @@ import {FileUploadingModule} from "../file-uploading/file-uploading.module";
   ],
     imports: [
         CommonModule,
+        ProductCatalogRoutingModule,
+        NgxSliderModule,
+        FormsModule,
         ReactiveFormsModule,
         ProductCatalogRoutingModule,
         FileUploadingModule

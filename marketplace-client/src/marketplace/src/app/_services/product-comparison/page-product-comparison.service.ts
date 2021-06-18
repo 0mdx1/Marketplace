@@ -10,7 +10,7 @@ export class PageProductComparisonService implements ProductComparisonService{
   constructor() {}
 
   addProduct(product: Product): void {
-    if(this.products.indexOf(product) == -1){
+    if(this.products.find(newProduct => product.id===newProduct.id) == undefined){
       this.products.push(product);
     }
   }

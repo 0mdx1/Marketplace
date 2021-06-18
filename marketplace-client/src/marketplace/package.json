@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-slider/ngx-slider": "^2.0.3",
     "@angular/animations": "~11.2.12",
     "@angular/cdk": "^11.2.12",
     "@angular/common": "~11.2.12",
@@ -24,6 +25,8 @@
     "@angular/router": "~11.2.12",
     "@auth0/angular-jwt": "latest",
     "@ng-bootstrap/ng-bootstrap": "9.1.2",
+    "angular-slider": "^0.2.3",
+    "angularjs-slider": "^7.0.0",
     "jwt-decode": "^3.1.2",
     "ngx-spinner": "^11.0.1",
     "ngx-toastr": "^14.0.0",

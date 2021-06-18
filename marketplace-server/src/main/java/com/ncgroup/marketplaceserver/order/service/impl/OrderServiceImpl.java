@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,19 +55,13 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	@Transactional
 	public Map<String, Object> getCourierOrders(String token, int page) {
-		token = token.split(" ")[1];
-		String email = jwtProvider.getSubject(token); //courier email
+		String email = getTokenEmail(token); //courier email
 		long courierId = userService.findUserByEmail(email).getId();
-		List<Order> orders = orderRepo.getOrders(courierId, page-1);
-		List<OrderReadDto> ordersDto = new LinkedList<>();
-		for(Order order : orders) {
-			ordersDto.add(OrderReadDto.convertToDto(order));
-		}
+		List<OrderReadDto> ordersDto = orderRepo.getOrders(courierId, page-1)
+				.stream().map(OrderReadDto::convertToDto).collect(Collectors.toList());
 		
 		int totalPages = orderRepo.getTotalPages(courierId);
-		
 		Map<String, Object> result = new HashMap<>();
-
         result.put("orders", ordersDto);
         result.put("page", page);
         result.put("totalPages", totalPages % 10 == 0 ? totalPages / 10 : totalPages / 10 + 1);
@@ -76,8 +71,7 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public OrderReadDto getOrder(long id) {
 		Order order = orderRepo.getOrder(id);
-		if(order == null) return null;
-		return OrderReadDto.convertToDto(order);
+		return order == null ? null : OrderReadDto.convertToDto(order);
 	}
 
 	@Override
@@ -85,8 +79,8 @@ public class OrderServiceImpl implements OrderService{
 	public OrderReadDto addOrder(OrderPostDto orderDto, String token)  {
 		Order order = OrderPostDto.toOrder(orderDto);
 		if(token != null) {
-			token = token.split(" ")[1];
-			order.getUser().setId(userService.findUserByEmail(jwtProvider.getSubject(token)).getId());
+			String email = getTokenEmail(token); //user email
+			order.getUser().setId(userService.findUserByEmail(email).getId());
 		} else {
 			long userId = userService.addUserWithoutCredentials(
 					order.getUser().getName(), order.getUser().getSurname(), order.getUser().getPhone()).getId();
@@ -165,9 +159,33 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	public UserDisplayInfoDto getUserInfoForOrder(String token) {
 		if(token == null) return null;
-		token = token.split(" ")[1];
-		String email = jwtProvider.getSubject(token); 
+		String email = getTokenEmail(token); 
 		return orderRepo.findUserForOrder(email);
+	}
+	
+	@Override
+	@Transactional
+	public List<OrderReadDto> getUserOrders(String token) {
+		if(token == null) {
+			return null;
+		}
+		return orderRepo.getUserIncomingOrders(getTokenEmail(token))
+				.stream().map(OrderReadDto::convertToDto).collect(Collectors.toList());
+	}
+	
+	@Override
+	@Transactional
+	public List<OrderReadDto> getUserHistory(String token){
+		if(token == null) {
+			return null;
+		}
+		return orderRepo.getUserHistoryOrders(getTokenEmail(token))
+				.stream().map(OrderReadDto::convertToDto).collect(Collectors.toList());
+	}
+	
+	@Override
+	public UserDisplayInfoDto getCourierInfoForOrder(long id) {
+		return orderRepo.findCourierForOrder(id);
 	}
 	
 	private float calculateSum(long goodId, int quantity) {
@@ -178,7 +196,10 @@ public class OrderServiceImpl implements OrderService{
 			return 0;
 		}
 	}
-
+	
+	private String getTokenEmail(String token) {
+		return token == null ? null : jwtProvider.getSubject(token.split(" ")[1]);
+	}
 	
 
 }

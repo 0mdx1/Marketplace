@@ -1,0 +1,8 @@
+.form-control{
+  border: 1px solid #007dc3;
+}
+
+.form-group {
+  padding-bottom: 25px;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
