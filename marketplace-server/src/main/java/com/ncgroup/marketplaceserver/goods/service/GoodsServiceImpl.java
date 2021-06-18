@@ -1,4 +1,3 @@
-
 package com.ncgroup.marketplaceserver.goods.service;
 
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
@@ -43,7 +42,7 @@ public class GoodsServiceImpl implements GoodsService {
         Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
         Good good = new Good();
         good.setProperties(goodDto, goodId);
-        good.setImage(mediaService.getResourceUrl(good.getImage()));
+        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         return good;
     }
 
@@ -87,9 +86,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         StringBuilder flexibleQuery = new StringBuilder
                 ("SELECT goods.id, product.name AS product_name, " +
-                "firm.name AS firm_name, category.name AS category_name, unit, " +
-                " goods.quantity, goods.price, goods.discount, goods.in_stock," +
-                " goods.description, goods.image ");
+                        "firm.name AS firm_name, category.name AS category_name, unit, " +
+                        " goods.quantity, goods.price, goods.discount, goods.in_stock," +
+                        " goods.description, goods.image ");
 
         StringBuilder fromQuery = new StringBuilder("FROM goods INNER JOIN " +
                 "product ON goods.prod_id = product.id " +
@@ -125,8 +124,8 @@ public class GoodsServiceImpl implements GoodsService {
         if (counter > 0) {
             fromQuery.append(" WHERE").append(concatenator.get(0));
             for (int i = 1; i < counter; i++) {
-            	log.info(concatenator.get(i));
-            	fromQuery.append(" AND").append(concatenator.get(i));
+                log.info(concatenator.get(i));
+                fromQuery.append(" AND").append(concatenator.get(i));
             }
         }
 
@@ -135,18 +134,18 @@ public class GoodsServiceImpl implements GoodsService {
 
         if (sortBy != null) {
             if(sortBy.equals("price")) {
-            	fromQuery.append(" ORDER BY goods.price");
+                fromQuery.append(" ORDER BY goods.price");
             } else if (sortBy.equals("name")) {
-            	fromQuery.append(" ORDER BY product.name");
+                fromQuery.append(" ORDER BY product.name");
             }
         } else {
-        	fromQuery.append(" ORDER BY product.name");
+            fromQuery.append(" ORDER BY product.name");
         }
 
         if (sortDirection != null) {
-        	fromQuery.append(" ").append(sortDirection.toUpperCase());
+            fromQuery.append(" ").append(sortDirection.toUpperCase());
         } else {
-        	fromQuery.append(" DESC");
+            fromQuery.append(" DESC");
         }
 
         flexibleQuery.append(fromQuery);
@@ -206,9 +205,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<String> getFirms() throws NotFoundException {
         return repository.getFirms();
     }
-    
+
     @Override
     public void updateQuantity(long id, int qunatity) {
-    	repository.editQuantity(id, qunatity);
+        repository.editQuantity(id, qunatity);
     }
 }
