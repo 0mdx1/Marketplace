@@ -23,6 +23,7 @@ import { ProductComparisonComponent } from './product-catalog/product-comparison
 import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import {AlertComponent} from './_components/alert/alert.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
     imports: [
@@ -37,6 +38,7 @@ import {AlertComponent} from './_components/alert/alert.component';
         NoopAnimationsModule,
         NgxSpinnerModule,
         FormsModule,
+        NgxSliderModule,
     ],
     declarations: [
         AppComponent,

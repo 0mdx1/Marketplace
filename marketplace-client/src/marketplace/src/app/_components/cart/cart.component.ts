@@ -41,6 +41,7 @@ export class CartComponent implements OnInit {
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
+    if (cartItem.quantity < 0) cartItem.quantity = - cartItem.quantity;
     return cartItem.quantity*this.getPrice(cartItem);
   }
 

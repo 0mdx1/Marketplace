@@ -55,7 +55,13 @@
   color: inherit;
   margin-right: 20px;
   margin-left: 20px;
-  font-size: 70%;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.bot-header-content a:hover {
+  border-bottom: 2px solid #007dc3;
+  padding-bottom: 3px;
 }
 
 .bot-header-content {
@@ -94,7 +100,8 @@
 
 .compare-icon {
   display: inline-block;
-  margin-right: 40px;
+  margin-right: 25px;
+  cursor: pointer;
 }
 
 .number-circle {
@@ -109,15 +116,31 @@
   font: 10px Arial, sans-serif;
 }
 
-.cart-btn {
-  width: 100px;
+.cart-circle {
+  display: inline-block;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  padding-top: 4px;
   background-color: #007dc3;
+  text-align: center;
+  font: 10px Arial, sans-serif;
+}
+
+.cart-btn {
+  background-color: #fff;
   border-radius: 25px;
-  color:#fff;
+  border: 1px solid #007dc3;
+  color:#007dc3;
   border: none;
-  font-size: 70%;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  font-size: 14px;
+  padding: 5px 15px;
+  outline: none;
+}
+
+.cart-btn:hover {
+  box-shadow: 0 0 6pt 2pt #7fc5ee;
 }
 
 .fa-shopping-cart {

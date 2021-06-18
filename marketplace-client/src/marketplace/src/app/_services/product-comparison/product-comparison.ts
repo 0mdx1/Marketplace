@@ -10,4 +10,5 @@ export interface ProductComparisonService {
   removeProduct(product: Product): void
 
   getProducts(): Product[]
+
 }
