@@ -91,6 +91,8 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${product.insert}")
     private String productInsert;
+    @Value("${product.edit-category}")
+    private String editProductCategory;
     public Long createProduct(String goodName, Long categoryId) {
         Optional<Long> productId = findByName
                 (goodName, "productName", findProductByName);
@@ -101,7 +103,12 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("categoryId", categoryId);
             namedParameterJdbcTemplate.update(productInsert, productParameters, productHolder);
             productId = Optional.of(productHolder.getKey().longValue());
+            return productId.get();
         }
+        SqlParameterSource categoryParameters = new MapSqlParameterSource()
+                .addValue("categoryId", categoryId)
+                .addValue("id", productId.get());
+        namedParameterJdbcTemplate.update(editProductCategory, categoryParameters);
         return productId.get();
     }
 
@@ -149,7 +156,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("image", goodDto.getImage())
                     .addValue("unit", goodDto.getUnit().toString())
                     .addValue("productId", productId)
-                    .addValue("firmId", firmId);
+                    .addValue("firmId", firmId)
+                    .addValue("status", goodDto.isStatus());
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
             return keyHolder.getKey().longValue();
         }
@@ -177,7 +185,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .addValue("inStock", goodDto.isInStock())
                 .addValue("image", goodDto.getImage())
                 .addValue("unit", goodDto.getUnit().toString())
-                .addValue("description", goodDto.getDescription());
+                .addValue("description", goodDto.getDescription())
+                .addValue("status", goodDto.isStatus());
         namedParameterJdbcTemplate.update(updateProduct, parameters);
     }
 
@@ -266,6 +275,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .inStock(rs.getBoolean("in_stock"))
                 .description(rs.getString("description"))
                 .image(rs.getString("image"))
+                .status(rs.getBoolean("status"))
                 .build();
     }
 }
