@@ -6,11 +6,9 @@
 
         <div class="card-body">
           <h4 class="card-title">
-            {{order.user? order.user.name : 'order.user.name'}} {{order.user ? order.user.surname :
-            'order.user.surname'}}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Phone: {{order.user ? order.user.phone : 'order.user.phone'}}</h6>
-
-          <h6 class="card-subtitle mb-2 text-muted">Comment: {{order.comment ? order.comment : 'order.comment'}}</h6>
+            {{order.user?.name}} {{order.user?.surname}}</h4>
+          <h6 class="card-subtitle mb-2 text-muted">Phone: {{order.user?.phone}}</h6>
+          <h6 class="card-subtitle mb-2 text-muted">Comment: {{order.comment}}</h6>
           <div class="col mb-3">
             <div class="e-panel card">
               <div class="card-body">
