@@ -1,0 +1,19 @@
+<div class="card text-center">
+  <div class="card-header">
+    <ul class="nav nav-tabs card-header-tabs">
+      <li class="nav-item">
+        <a class="nav-link"
+        routerLink="incoming"
+        [ngClass]="{'active': isUrlActive('incoming') }">Incoming orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+        routerLink="history"
+        [ngClass]="{'active': isUrlActive('history')}">Order history</a>
+      </li>
+    </ul>
+  </div>
+  <div class="card-body">
+    <router-outlet></router-outlet>
+  </div>
+</div>

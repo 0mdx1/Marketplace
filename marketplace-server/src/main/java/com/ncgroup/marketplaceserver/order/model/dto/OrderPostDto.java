@@ -49,7 +49,7 @@ public class OrderPostDto {
 						.phone(orderDto.getPhone())
 						.build()
 						)
-				.delieveryTime(orderDto.getDeliveryTime())
+				.deliveryTime(orderDto.getDeliveryTime())
 				.address(orderDto.getAddress())
 				.status(OrderStatus.SUBMITTED)
 				.comment(orderDto.getComment())

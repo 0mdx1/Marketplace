@@ -13,6 +13,9 @@ import { LoginFormComponent } from './_components/login.form.component';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { PasswordFormComponent } from './_components/password.form.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UserOrdersComponent } from './user-orders/user-orders/user-orders.component';
+import { OrderDetailsComponent } from './user-orders/order-details/order-details.component';
+import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.component';
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule],
@@ -27,6 +30,9 @@ import { ProfileComponent } from './profile/profile.component';
     CreatePasswordComponent,
     PasswordFormComponent,
     ProfileComponent,
+    UserOrdersComponent,
+    OrderDetailsComponent,
+    OrderLayoutComponent,
   ],
   providers: [PasswordFormComponent],
 })

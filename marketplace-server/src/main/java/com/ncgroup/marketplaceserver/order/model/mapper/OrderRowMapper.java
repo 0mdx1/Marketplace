@@ -37,7 +37,7 @@ public class OrderRowMapper implements RowMapper<Order> {
 									.status(rs.getBoolean("courier.status"))
 									.build()
 							)*/
-				.delieveryTime(rs.getObject("delivery_time", LocalDateTime.class))
+				.deliveryTime(rs.getObject("delivery_time", LocalDateTime.class))
 				.address(rs.getString("address"))
 				.status(OrderStatus.valueOf(rs.getString("status")))
 				.comment(rs.getString("comment"))
