@@ -73,7 +73,7 @@ export class UpdateInfoComponent implements OnInit {
         name: [this.response.name, Validators.required],
         surname: [this.response.surname, Validators.required],
         phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
-        birthday: [''],
+        birthday: [this.response.birthday],
         status: [this.response.status, Validators.required],
       },
       {
@@ -95,6 +95,7 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   private mapToStaffMember(o: any): StaffMember {
+    console.log(o);
     return {
       id: -1,
       name: o.name,

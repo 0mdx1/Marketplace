@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -25,6 +26,8 @@ public class UserDto {
 	@NotBlank(message = "Surname is mandatory")
     private String surname;
     private String phone;
+    @JsonProperty("birthday")
+    @JsonAlias("dateOfBirth")
     private LocalDate birthday;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
