@@ -77,6 +77,9 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Value("${couriers-managers.all}")
 	private String couriersManagersQuery;
+
+	@Value("${user.update-by-email}")
+	private String updateRoleUser;
 	
 	
 	
@@ -144,6 +147,17 @@ public class UserRepositoryImpl implements UserRepository {
 	public void updatePassword(String email, String password) {
 		Object[] params = {password, email};
 		jdbcTemplate.update(updatePasswordQuery, params);
+	}
+
+	@Override
+	public void updateUserByEmail(User user, String email) {
+		SqlParameterSource params = new MapSqlParameterSource()
+				.addValue("name", user.getName())
+				.addValue("surname", user.getSurname())
+				.addValue("phone", user.getPhone())
+				.addValue("birthday", user.getBirthday())
+				.addValue("email", email);
+		namedParameterJdbcTemplate.update(updateRoleUser, params);
 	}
 
 	@Override

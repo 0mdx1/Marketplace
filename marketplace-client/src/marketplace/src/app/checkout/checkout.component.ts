@@ -31,7 +31,6 @@ export class CheckoutComponent implements OnInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private checkoutService: Checkout,
-    private browserCart: BrowserCart,
     private errorHandler: HttpErrorHandlerService,
     private router: Router
   ) {
@@ -61,7 +60,7 @@ export class CheckoutComponent implements OnInit {
         this.freeCouriers = true;
         let splittedData: string[][] = [];
         data.forEach(elem => splittedData.push(elem.split('T')));
-        
+
 
         let prevDate = '';
         let arrtimes = [];
@@ -169,7 +168,7 @@ export class CheckoutComponent implements OnInit {
       discountSum: this.getTotalPrice(this.items) - this.getTotalDiscount(this.items),
       items: mappedItems,
     }
-    
+
     this.checkoutService.sendOrderDetails(receiveObj)
       .pipe(
         catchError(err => {
@@ -179,7 +178,7 @@ export class CheckoutComponent implements OnInit {
       .subscribe(
         () => {
           this.submitted = false;
-          this.browserCart.empty();
+          this.cartService.getCart().empty();
           this.items = [];
           console.log("Succes!")
         },
@@ -192,7 +191,7 @@ export class CheckoutComponent implements OnInit {
 
   hideBanner() {
     this.isVisibleBanner = false;
-  } 
+  }
 
   getDeliveryTimes(): boolean {
     for(let i = 0; i < this.delivery.length; i++) {
