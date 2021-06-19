@@ -5,7 +5,7 @@
         <div class="product-card card-body m-4">
           <div class="row d-flex h-100">
             <img *ngIf="product.discount" src="assets/sale.svg" class="sale-icon">
-            <img *ngIf="product.image" class="card-img col-12 col-md-4 mr-5"
+            <img *ngIf="product.image" class="card-img col-12 col-md-4 mr-5" src="{{product.image}}"
                  alt="Product">
             <img *ngIf="!product.image" src="assets/product.svg" class="col-12 col-md-4 mr-5">
             <div class="col d-row-flex align-self-center">
