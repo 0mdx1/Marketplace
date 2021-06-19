@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-		String authlink = emailSenderService.sendSimpleEmailValidate(email);
+		String authlink = emailSenderService.sendSimpleEmailValidate(email, name);
 		user.setAuthLink(authlink);		
 		user = userRepository.save(user);
         
@@ -219,8 +219,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			log.info(email);			
 			throw new EmailNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, email));
 		}
-		
-		String auth_link = emailSenderService.sendSimpleEmailPasswordRecovery(email);
+		String auth_link = emailSenderService.sendSimpleEmailPasswordRecovery(email, user.getName());
 		user.setAuthLink(auth_link);
 		userRepository.updateAuthLink(email, auth_link);
 	}

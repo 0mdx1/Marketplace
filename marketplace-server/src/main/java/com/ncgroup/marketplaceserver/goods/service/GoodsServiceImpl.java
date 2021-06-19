@@ -1,4 +1,3 @@
-
 package com.ncgroup.marketplaceserver.goods.service;
 
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
@@ -86,6 +85,7 @@ public class GoodsServiceImpl implements GoodsService {
         int counter = 0;
         List<String> concatenator = new ArrayList<>();
 
+
         StringBuilder fromQuery = new StringBuilder("FROM goods INNER JOIN " +
                 "product ON goods.prod_id = product.id " +
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
@@ -116,29 +116,31 @@ public class GoodsServiceImpl implements GoodsService {
         if (counter > 0) {
             fromQuery.append(" WHERE").append(concatenator.get(0));
             for (int i = 1; i < counter; i++) {
-            	log.info(concatenator.get(i));
-            	fromQuery.append(" AND").append(concatenator.get(i));
+                log.info(concatenator.get(i));
+                fromQuery.append(" AND").append(concatenator.get(i));
             }
         }
+
         
         log.info("SELECT COUNT(*) " + fromQuery);
         int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery);
-        
+
         if (sortBy != null) {
             if(sortBy.equals("price")) {
-            	fromQuery.append(" ORDER BY goods.price");
+                fromQuery.append(" ORDER BY goods.price");
             } else if (sortBy.equals("name")) {
-            	fromQuery.append(" ORDER BY product.name");
+                fromQuery.append(" ORDER BY product.name");
             }
         } else {
-        	fromQuery.append(" ORDER BY product.name");
+            fromQuery.append(" ORDER BY product.name");
         }
 
         if (sortDirection != null) {
-        	fromQuery.append(" ").append(sortDirection.toUpperCase());
+            fromQuery.append(" ").append(sortDirection.toUpperCase());
         } else {
-        	fromQuery.append(" DESC");
+            fromQuery.append(" DESC");
         }
+
 
         StringBuilder flexibleQuery = new StringBuilder
                 ("SELECT goods.id, product.name AS product_name, status, " +
@@ -146,11 +148,12 @@ public class GoodsServiceImpl implements GoodsService {
                         " goods.quantity, goods.price, goods.discount, goods.in_stock," +
                         " goods.description, goods.image ");
 
+
         flexibleQuery.append(fromQuery);
-        
+
         log.info(fromQuery.toString());
         log.info(flexibleQuery.toString());
-        
+
 
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
@@ -191,9 +194,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<String> getFirms() throws NotFoundException {
         return repository.getFirms();
     }
-    
+
     @Override
     public void updateQuantity(long id, int qunatity) {
-    	repository.editQuantity(id, qunatity);
+        repository.editQuantity(id, qunatity);
     }
 }

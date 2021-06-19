@@ -6,10 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../_services/product.service';
-import { validateBirthday } from '../../_helpers/validators.service';
 import { first } from 'rxjs/operators';
 import { Role } from '../../_models/role';
-import { StaffMember } from '../../_models/staff-member';
 import { Product } from '../../_models/products/product';
 import {AccountService} from "../../_services/account.service";
 
@@ -19,7 +17,7 @@ import {AccountService} from "../../_services/account.service";
   styleUrls: ['./add-product.component.css'],
 
 })
-export class AddProductComponent {
+export class AddProductComponent implements OnInit{
   form: FormGroup;
 
   submitted = false;
@@ -27,17 +25,21 @@ export class AddProductComponent {
   roles: Role[] = [Role.Courier, Role.ProductManager];
 
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
-  inStockStatus: string[] = ["true", "false", "null"];
+  inStockStatus: string[] = ["true", "false"];
   categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
+  status: string[] = ["true", "false"];
+  firmName: string[]=[""];
 
   loading = false;
   registered = false;
   image: string = '';
 
+  responseCategory: any;
+  responseFirm: any;
+
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
-     private productService: ProductService,
+     private accountService: ProductService,
   ) {
   this.form = this.formBuilder.group(
       {
@@ -48,10 +50,16 @@ export class AddProductComponent {
         unit: ['', Validators.required],
         discount: ['', [Validators.min(1), Validators.required]],
         inStock: ['', Validators.required],
+        status: ['', Validators.required],
         categoryName: ['', Validators.required],
         description: ['', Validators.required],
       },
     );
+  }
+
+  ngOnInit() {
+    this.firm();
+    this.category()
   }
 
   get getForm(): { [p: string]: AbstractControl } {
@@ -60,6 +68,24 @@ export class AddProductComponent {
 
   public setImage(imageName: string){
     this.image = imageName;
+  }
+
+  public category(){
+    this.accountService.getCategories()
+      .subscribe((categ) =>{
+        this.responseCategory = categ;
+        console.log(this.responseCategory);
+        this.categoryName = this.responseCategory;
+      })
+  }
+
+  public firm(){
+    this.accountService.getFirm()
+      .subscribe((firm) =>{
+        this.responseFirm = firm;
+        console.log(this.responseFirm);
+        this.firmName = this.responseFirm;
+      })
   }
 
 
@@ -74,6 +100,7 @@ export class AddProductComponent {
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
+      status: o.status,
       categoryName: o.categoryName,
       description: o.description,
     };
@@ -82,6 +109,8 @@ export class AddProductComponent {
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
+      console.log(this.form.value);
+      console.log("dont work");
       return;
     }
     this.loading = true;
@@ -89,14 +118,13 @@ export class AddProductComponent {
     let observable = null;
     let product = this.mapToProduct(this.form.value);
     product.image = this.image;
-    observable = this.productService.AddProduct(
+    observable = this.accountService.AddProduct(
       product
     );
 
     observable.pipe(first()).subscribe({
 
             next: () => {
-              console.log("Role mistake");
         this.loading = false;
         this.registered = true;
       }

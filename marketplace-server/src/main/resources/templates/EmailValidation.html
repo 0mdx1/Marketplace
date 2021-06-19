@@ -29,7 +29,7 @@
             -webkit-text-size-adjust: none; }
 
         a {
-            color: #71bc37;
+            color: #007dc3;
             text-decoration: none; }
 
         .text-center {
@@ -44,8 +44,8 @@
         .button {
             display: inline-block;
             color: white;
-            background: #71bc37;
-            border: solid #71bc37;
+            background: #007dc3;
+            border: solid #007dc3;
             border-width: 10px 20px 8px;
             font-weight: bold;
             border-radius: 4px; }
@@ -84,7 +84,7 @@
             border-collapse: collapse; }
         .container .masthead {
             padding: 80px 0;
-            background: #71bc37;
+            background: #007dc3;
             color: white; }
         .container .masthead h1 {
             margin: 0 auto !important;
@@ -116,15 +116,13 @@
                 <tr>
                     <td align="center" class="masthead">
 
-                        <h1>Welcome to our shop!</h1>
+                        <h1>Welcome to Cracker shop!</h1>
 
                     </td>
                 </tr>
                 <tr>
                     <td class="content">
-
-                        <h2>Hi, new user!</h2>
-
+                            <h2 th:text="'Hi, ' + ${EmailParam.getName()}"></h2>
                         <p th:text="${EmailParam.getMess()}"></p>
 
                         <table>

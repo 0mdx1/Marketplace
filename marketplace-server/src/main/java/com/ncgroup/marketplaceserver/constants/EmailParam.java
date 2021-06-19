@@ -11,6 +11,7 @@ public class EmailParam {
     private String mess ;
     private String token = generateToken();
     private String link ;
+    private String name ;
 
 
 
@@ -24,6 +25,8 @@ public class EmailParam {
 
     public void setToken(String token) { this.token = token; }
 
+    public void setName(String name) { this.name = name; }
+
     public String getLink() {
         return link;
     }
@@ -34,6 +37,10 @@ public class EmailParam {
 
     public String getToken() {
         return token;
+    }
+
+    public String getName() {
+        return name;
     }
 
 
