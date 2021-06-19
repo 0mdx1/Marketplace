@@ -2,15 +2,13 @@
   <div class="row">
     <div class="col-12 ">
       <div class="card">
-        <img class="card-img"
-             alt="Product">
 
         <div class="card-body">
           <h4 class="card-title">
             {{order.user?.name}} {{order.user?.surname}}</h4>
           <h6 class="card-subtitle mb-2 text-muted">Phone: {{order.user?.phone}}</h6>
           <button type="button" (click) = "changeStatus()" class="btn btn-danger mt-3">
-            <i class="fas fa-shopping-cart"></i> Change Status
+            <i class="fas fa-shopping-cart"></i> Current Status: {{order.status}}
           </button>
           <h6 class="card-subtitle mb-2 text-muted">Comment: {{order.comment}}</h6>
           <div class="col mb-3">

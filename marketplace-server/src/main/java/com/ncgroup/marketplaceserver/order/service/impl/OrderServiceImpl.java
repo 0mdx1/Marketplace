@@ -128,7 +128,7 @@ public class OrderServiceImpl implements OrderService{
 		List<LocalDateTime> freeSlots = new LinkedList<LocalDateTime>();
 		List<LocalDateTime> busySlots = orderRepo.findFreeSlots();
 		LocalDateTime endDay = LocalDateTime.now();
-		while(endDay.isBefore(LocalDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
+		while (endDay.isBefore(LocalDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
 			//endDay = endDay.withHour(endDay.getHour()+1).withMinute(0);
 			while(endDay.getHour() <= 18) {
 				endDay = endDay.withHour(endDay.getHour()+1).withMinute(0).withSecond(0).withNano(0);
@@ -146,7 +146,7 @@ public class OrderServiceImpl implements OrderService{
 	@Transactional
 	public OrderStatus modifyStatus(long id) {
 		Order order = orderRepo.getOrder(id);
-		if(order.getStatus().equals(OrderStatus.SUBMITTED)) {
+		if (order.getStatus().equals(OrderStatus.SUBMITTED)) {
 			orderRepo.modifyStatus(id, OrderStatus.IN_DELIVERY);
 			return OrderStatus.IN_DELIVERY;
 		} else if (order.getStatus().equals(OrderStatus.IN_DELIVERY)) {

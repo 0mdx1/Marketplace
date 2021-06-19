@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductService } from '../../_services/product.service';
-import { first } from 'rxjs/operators';
-import { Role } from '../../_models/role';
-import { Product } from '../../_models/products/product';
+import {ProductService} from '../../_services/product.service';
+import {first} from 'rxjs/operators';
+import {Role} from '../../_models/role';
+import {Product} from '../../_models/products/product';
 import {AccountService} from "../../_services/account.service";
 
 @Component({
@@ -17,7 +17,7 @@ import {AccountService} from "../../_services/account.service";
   styleUrls: ['./add-product.component.css'],
 
 })
-export class AddProductComponent implements OnInit{
+export class AddProductComponent implements OnInit {
   form: FormGroup;
 
   submitted = false;
@@ -26,9 +26,9 @@ export class AddProductComponent implements OnInit{
 
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
   inStockStatus: string[] = ["true", "false"];
-  categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
+  categoryName: string[] = ["fruits", "vegetables", "meat", "drinks", "water"];
   status: string[] = ["true", "false"];
-  firmName: string[]=[""];
+  firmName: string[] = [""];
 
   loading = false;
   registered = false;
@@ -39,9 +39,9 @@ export class AddProductComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-     private accountService: ProductService,
+    private accountService: ProductService,
   ) {
-  this.form = this.formBuilder.group(
+    this.form = this.formBuilder.group(
       {
         goodName: ['', Validators.required],
         firmName: ['', Validators.required],
@@ -66,22 +66,22 @@ export class AddProductComponent implements OnInit{
     return this.form.controls;
   }
 
-  public setImage(imageName: string){
+  public setImage(imageName: string) {
     this.image = imageName;
   }
 
-  public category(){
+  public category() {
     this.accountService.getCategories()
-      .subscribe((categ) =>{
+      .subscribe((categ) => {
         this.responseCategory = categ;
         console.log(this.responseCategory);
         this.categoryName = this.responseCategory;
       })
   }
 
-  public firm(){
+  public firm() {
     this.accountService.getFirm()
-      .subscribe((firm) =>{
+      .subscribe((firm) => {
         this.responseFirm = firm;
         console.log(this.responseFirm);
         this.firmName = this.responseFirm;
@@ -124,7 +124,7 @@ export class AddProductComponent implements OnInit{
 
     observable.pipe(first()).subscribe({
 
-            next: () => {
+      next: () => {
         this.loading = false;
         this.registered = true;
       }
