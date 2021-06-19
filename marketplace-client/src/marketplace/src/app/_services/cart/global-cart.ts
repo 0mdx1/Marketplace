@@ -27,14 +27,17 @@ export class GlobalCart implements Cart, OnDestroy{
     private http: HttpClient,
     private auth: AuthService
   ) {
+  }
+
+  public startPolling(): void {
     if(this.alowedToSendRequests()) {
       this.init().subscribe(() => {});
     }
     this.subscription = interval(10000)
       .subscribe(() => {
-        if(this.alowedToSendRequests()) {
+        if (this.alowedToSendRequests()) {
           this.init().subscribe(() => {
-            if(!document.hidden){
+            if (!document.hidden) {
               console.log("polling...");
               this.getShoppingCart()
                 .subscribe({
@@ -49,7 +52,13 @@ export class GlobalCart implements Cart, OnDestroy{
             }
           })
         }
-    });
+      });
+  }
+
+  public stopPolling(): void{
+    if(this.subscription!==null) {
+      this.subscription.unsubscribe();
+    }
   }
 
   private getShoppingCart() {
@@ -57,9 +66,7 @@ export class GlobalCart implements Cart, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    if(this.subscription!==null) {
-      this.subscription.unsubscribe();
-    }
+    this.stopPolling();
   }
 
   private init(): Observable<any>{
