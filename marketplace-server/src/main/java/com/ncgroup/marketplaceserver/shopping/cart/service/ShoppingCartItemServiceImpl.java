@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.shopping.cart.service;
 
+import com.ncgroup.marketplaceserver.file.service.MediaService;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.service.UserService;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
@@ -20,11 +21,12 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
 
     private ShoppingCartItemRepository repository;
     private UserService userService;
+    private MediaService mediaService;
 
-    @Autowired
-    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository repository, UserService userService) {
+    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository repository, UserService userService, MediaService mediaService) {
         this.repository = repository;
         this.userService = userService;
+        this.mediaService = mediaService;
     }
 
     @Override
@@ -67,6 +69,8 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
     @Override
     public ShoppingCartItemReadDto get(long id) throws NotFoundException{
         ShoppingCartItem shoppingCartItem = getById(id);
+        String imageUrl = this.mediaService.getCloudStorage().getResourceUrl(shoppingCartItem.getGoods().getImage());
+        shoppingCartItem.getGoods().setImage(imageUrl);
         return new ShoppingCartItemReadDto(shoppingCartItem);
     }
 
@@ -82,7 +86,14 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService{
     @Override
     public List<ShoppingCartItemReadDto> getAll() {
         User user = userService.getCurrentUser();
-        return repository.findAllByUser(user).stream().map(ShoppingCartItemReadDto::new).collect(Collectors.toList());
+        return repository.findAllByUser(user)
+                .stream()
+                .peek(item->{
+                    String imageUrl = this.mediaService.getCloudStorage().getResourceUrl(item.getGoods().getImage());
+                    item.getGoods().setImage(imageUrl);
+                })
+                .map(ShoppingCartItemReadDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

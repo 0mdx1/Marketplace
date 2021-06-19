@@ -1,27 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "../../_services/cart/cart.service";
 import {CartItem} from "../../_models/cart-item.model";
 import {CartValidatorService} from "../../_services/cart/cart-validator.service";
 import {catchError} from "rxjs/operators";
 import {HttpErrorHandlerService} from "../../_services/http-error-handler.service";
 import {Router} from "@angular/router";
+import {PageEvent, PageMediatorService} from "../../_services/page-mediator.service";
 
 @Component({
   selector: 'mg-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss'],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   items: CartItem[] = [];
   constructor(
     private cartService: CartService,
     private cartValidatorService: CartValidatorService,
     private errorHandler: HttpErrorHandlerService,
+    private mediator: PageMediatorService,
     private router: Router
   ){}
 
   ngOnInit() {
+    this.mediator.notify(this,PageEvent.PageArrive);
     this.items = this.cartService.getCart().getItems();
+  }
+
+  ngOnDestroy() {
+    this.mediator.notify(this,PageEvent.PageLeave);
   }
 
   increaseQuantityByOne(cartItem: CartItem): void {

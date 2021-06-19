@@ -39,8 +39,7 @@ export class AddProductComponent implements OnInit{
 
   responseCategory: any;
   responseFirm: any;
-
-
+  
   constructor(
     private formBuilder: FormBuilder,
      private accountService: ProductService,
@@ -118,6 +117,8 @@ export class AddProductComponent implements OnInit{
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
+      console.log(this.form.value);
+      console.log("dont work");
       return;
     }
     this.loading = true;

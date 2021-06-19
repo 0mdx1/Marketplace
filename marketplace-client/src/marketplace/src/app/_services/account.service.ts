@@ -71,6 +71,10 @@ export class AccountService {
     return this.http.post(`${baseUrl}/setnewpassword`, body);
   }
 
+  updateUser(user: object): Observable<any> {
+    return this.http.patch(`${baseUrl}/updateUserRole`, user);
+  }
+
   getUser(): Observable<User> {
     return this.http.get(`${baseUrl}/userinfo`);
   }
