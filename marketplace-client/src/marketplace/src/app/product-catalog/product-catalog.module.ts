@@ -15,6 +15,7 @@ import {UpdateProductComponent} from "./update-product/update-product.component"
 import {ReactiveFormsModule} from "@angular/forms";
 import {AppModule} from "../app.module";
 import {FileUploadingModule} from "../file-uploading/file-uploading.module";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {FileUploadingModule} from "../file-uploading/file-uploading.module";
         FormsModule,
         ReactiveFormsModule,
         ProductCatalogRoutingModule,
-        FileUploadingModule
+        FileUploadingModule,
+      HttpClientModule,
     ]
 })
 export class ProductCatalogModule { }

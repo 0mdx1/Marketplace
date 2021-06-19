@@ -13,7 +13,7 @@ export class ProductCardComponent {
   @Input() product: Product
 
   constructor(private cartService: CartService) {
-    this.product = new Product(0, '', '', 0, 0, '', 0, false,false, '', '', '');
+    this.product = new Product(0, '', '', 0, 0, '', 0, false,false, '', '', '', '');
   }
 
   addToCart() {

@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit {
     private comparisonService: ProductComparisonService,
   ) {}
 
-  product: Product = new Product(0, '', '', 0, 0, '', 0, false, false, '', '', '');
+  product: Product = new Product(0, '', '', 0, 0, '', 0, false, false, '', '', '','');
   comparison: boolean = false;
 
   ngOnInit(): void {
