@@ -2,6 +2,7 @@
 <div class="card">
   <img *ngIf="product.discount" src="assets/sale.svg" class="sale-icon">
   <img *ngIf="!product.image" src="assets/product.svg" class="card-img-top" alt="Good image">
+  <img *ngIf="product.image" src="{{product.image}}" class="card-img-top" alt="Good image">
   <div class="product-info card-body text-center">
     <a routerLink="{{product.id}}">{{product.goodName}}</a>
     <div class="price-block">

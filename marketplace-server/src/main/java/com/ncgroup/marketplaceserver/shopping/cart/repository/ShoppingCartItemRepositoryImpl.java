@@ -125,6 +125,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
                 .goodName(rs.getString("product_name"))
                 .firmName(rs.getString("firm_name"))
                 .price(rs.getDouble("price"))
+                .image(rs.getString("image"))
                 .discount(rs.getByte("discount"))
                 .inStock(rs.getBoolean("in_stock"))
                 .description(rs.getString("description"))
