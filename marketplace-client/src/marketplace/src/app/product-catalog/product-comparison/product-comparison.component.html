@@ -7,7 +7,8 @@
     <div *ngFor="let product of products" class="col product-card mb-5">
       <div class="card">
         <button class="btn remove-btn" (click)="removeProduct(product)"><i class="fas fa-times-circle"></i></button>
-        <img class="card-img-top mx-auto" src="assets/product.svg" alt="Card image cap">
+        <img *ngIf="!product.image" src="assets/product.svg" class="card-img-top mx-auto" alt="Good image">
+        <img *ngIf="product.image" src="{{product.image}}" class="card-img-top mx-auto" alt="Good image">
         <div class="card-body pb-2">
           <a routerLink="../{{product.id}}" class="card-title mb-0" >{{product.goodName}}</a>
           <p class="card-subtitle text-muted">{{product.firmName}}</p>
