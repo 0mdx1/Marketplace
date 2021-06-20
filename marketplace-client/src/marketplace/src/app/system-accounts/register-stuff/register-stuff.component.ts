@@ -63,7 +63,7 @@ export class RegisterStuffComponent {
         surname: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
-        birthday: [''],
+        birthday: ['', Validators.required],
         role: ['', Validators.required],
         status: ['', Validators.required],
       },

@@ -47,7 +47,6 @@ export class UpdateInfoComponent implements OnInit {
         .getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
           this.formCreation();
         });
     } else if (this.route.snapshot.params.role.localeCompare(2)) {
@@ -55,7 +54,6 @@ export class UpdateInfoComponent implements OnInit {
         .getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
           this.formCreation();
         });
     }
