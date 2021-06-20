@@ -9,6 +9,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.ncgroup.marketplaceserver.captcha.service.CaptchaService;
+import com.ncgroup.marketplaceserver.exception.domain.CaptchaNotValidException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -31,10 +34,12 @@ import com.ncgroup.marketplaceserver.service.UserService;
 
 @RequestMapping("/api")
 @RestController
+@Slf4j
 public class UserController  {
     private AuthenticationManager authenticationManager;
     private UserService userService;
     private JwtProvider jwtProvider;
+    private CaptchaService captchaService;
     
     @Value("${url.confirm-account.redirect}")
     private String redirectConfirmAccountUrl;
@@ -44,13 +49,17 @@ public class UserController  {
 
     @Value("${url.create-password.redirect}")
     private String redirectCreatePasswordUrl;
+
+    @Value("${security.max-failed-auth}")
+    private int maxFailedAuth;
     
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider) {
+    public UserController(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider, CaptchaService captchaService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtProvider = jwtProvider;
+        this.captchaService = captchaService;
     }
     
     @GetMapping("/userinfo")
@@ -63,14 +72,14 @@ public class UserController  {
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user) {
-    	/*try {
-    	authenticate(user.getEmail(), user.getPassword());
-    	} catch (Throwable e) {
-			e.printStackTrace();	
-    	}*/
-    	authenticate(user.getEmail(), user.getPassword());
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user,@RequestHeader("captcha-response") String captchaResponse) {
         User loginUser = userService.findUserByEmail(user.getEmail());
+        int failedAuth = loginUser.getFailedAuth();
+        log.info(failedAuth+"");
+        if(failedAuth>=maxFailedAuth&&!captchaService.validateCaptcha(captchaResponse)){
+            throw new CaptchaNotValidException("Captcha is not valid");
+        }
+        authenticate(user.getEmail(), user.getPassword());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         return new ResponseEntity<>(UserDto.convertToDto(loginUser), jwtHeader, OK);

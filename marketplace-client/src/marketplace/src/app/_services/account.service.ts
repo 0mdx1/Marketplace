@@ -36,12 +36,16 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string): Observable<HttpResponse<User>> {
+  login(email: string, password: string, captchaResponse: string): Observable<HttpResponse<User>> {
+    let httpHeaders = new HttpHeaders({'captcha-response': (captchaResponse ? captchaResponse : " ")});
     return this.http
       .post<User>(
         `${baseUrl}/login`,
         { email, password },
-        { observe: 'response' }
+        {
+          headers : httpHeaders,
+          observe: 'response'
+        }
       )
       .pipe(
         tap((res) => this.setToken(res)),
