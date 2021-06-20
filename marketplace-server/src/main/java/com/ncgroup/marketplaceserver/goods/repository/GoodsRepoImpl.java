@@ -143,8 +143,6 @@ public class GoodsRepoImpl implements GoodsRepository {
         if (!goodId.isPresent()) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-//            log.info(String.valueOf(goodDto.getDiscount()));
-
             SqlParameterSource goodParameters = new MapSqlParameterSource()
                     .addValue("goodQuantity", goodDto.getQuantity())
                     .addValue("goodPrice", goodDto.getPrice())
@@ -159,7 +157,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("date", goodDto.getShippingDate());
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
             return keyHolder.getKey().longValue();
-        } else if (!goodDto.isStatus()) {
+        } else if (!getStatus(goodId.get())) {
             editGood(goodDto, goodId.get());
             return goodId.get();
         }
@@ -167,6 +165,16 @@ public class GoodsRepoImpl implements GoodsRepository {
                 ("Such good already exists! If you want to modify an existing good," +
                         " please go to the list of goods, select good and click edit.");
     }
+
+    @Value("${good.check-status}")
+    private String getStatus;
+    public Boolean getStatus(Long goodId) {
+        SqlParameterSource goodParameter = new MapSqlParameterSource()
+                .addValue("goodId", goodId);
+            return namedParameterJdbcTemplate
+                    .queryForObject(getStatus, goodParameter, Boolean.class);
+    }
+
 
     @Value("${product.update}")
     private String updateProduct;
