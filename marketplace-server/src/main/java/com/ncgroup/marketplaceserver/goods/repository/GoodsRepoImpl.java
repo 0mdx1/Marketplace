@@ -90,8 +90,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${product.insert}")
     private String productInsert;
-    @Value("${product.edit-category}")
-    private String editProductCategory;
+
     public Long createProduct(String goodName, Long categoryId) {
         Optional<Long> productId = findByName
                 (goodName, "productName", findProductByName);
@@ -102,12 +101,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("categoryId", categoryId);
             namedParameterJdbcTemplate.update(productInsert, productParameters, productHolder);
             productId = Optional.of(productHolder.getKey().longValue());
-            return productId.get();
         }
-        SqlParameterSource categoryParameters = new MapSqlParameterSource()
-                .addValue("categoryId", categoryId)
-                .addValue("id", productId.get());
-        namedParameterJdbcTemplate.update(editProductCategory, categoryParameters);
         return productId.get();
     }
 
@@ -175,11 +169,18 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${product.update}")
     private String updateProduct;
+    @Value("${product.edit-category}")
+    private String editProductCategory;
     @Override
     public void editGood(GoodDto goodDto, Long id) {
         Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
         Long categoryId = createCategory(goodDto.getCategoryName().toLowerCase());
         Long productId = createProduct(goodDto.getGoodName().toLowerCase(), categoryId);
+
+        SqlParameterSource categoryParameters = new MapSqlParameterSource()
+                .addValue("categoryId", categoryId)
+                .addValue("id", productId);
+        namedParameterJdbcTemplate.update(editProductCategory, categoryParameters);
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id) // for search purpose
