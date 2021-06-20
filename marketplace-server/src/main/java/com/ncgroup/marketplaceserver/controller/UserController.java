@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.ncgroup.marketplaceserver.captcha.service.CaptchaService;
-import com.ncgroup.marketplaceserver.exception.basic.ForbiddenException;
+import com.ncgroup.marketplaceserver.exception.domain.CaptchaNotValidException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ import com.ncgroup.marketplaceserver.service.UserService;
 
 @RequestMapping("/api")
 @RestController
+@Slf4j
 public class UserController  {
     private AuthenticationManager authenticationManager;
     private UserService userService;
@@ -47,6 +49,9 @@ public class UserController  {
 
     @Value("${url.create-password.redirect}")
     private String redirectCreatePasswordUrl;
+
+    @Value("${security.max-failed-auth}")
+    private int maxFailedAuth;
     
 
     @Autowired
@@ -68,11 +73,13 @@ public class UserController  {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user,@RequestHeader("captcha-response") String captchaResponse) {
-        if(!captchaService.validateCaptcha(captchaResponse)){
-            throw new ForbiddenException("Captcha is not valid");
-        }
-    	authenticate(user.getEmail(), user.getPassword());
         User loginUser = userService.findUserByEmail(user.getEmail());
+        int failedAuth = loginUser.getFailedAuth();
+        log.info(failedAuth+"");
+        if(failedAuth>=maxFailedAuth&&!captchaService.validateCaptcha(captchaResponse)){
+            throw new CaptchaNotValidException("Captcha is not valid");
+        }
+        authenticate(user.getEmail(), user.getPassword());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
         return new ResponseEntity<>(UserDto.convertToDto(loginUser), jwtHeader, OK);

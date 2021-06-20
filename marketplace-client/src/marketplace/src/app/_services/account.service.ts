@@ -37,7 +37,7 @@ export class AccountService {
   }
 
   login(email: string, password: string, captchaResponse: string): Observable<HttpResponse<User>> {
-    let httpHeaders = new HttpHeaders({'captcha-response': captchaResponse});
+    let httpHeaders = new HttpHeaders({'captcha-response': (captchaResponse ? captchaResponse : " ")});
     return this.http
       .post<User>(
         `${baseUrl}/login`,
