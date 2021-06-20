@@ -15,35 +15,37 @@
           </div>
         </div>
         <div class="col mb-3">
-          <div class="e-panel card">
-            <div class="card-body">
-              <div class="e-table">
-                <div class="table-responsive table-lg mt-3">
-                  <table class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
+          <div class="e-panel">
+            <div *ngIf="users && users.length > 0" class="e-table">
+              <div class="table-responsive table-lg mt-3">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
 
                         <th class="max-width">Name</th>
                         <th class="max-width">Surname</th>
                         <th class="max-width">Phone</th>
                         <th class="max-width">Email</th>
 
-                      </tr>
-                    </thead>
-                    <tbody>
+                    </tr>
+                  </thead>
+                  <tbody>
                       <tr *ngFor="let courier of users" (click)="changeInfo(courier.id, courier.role)" class="pointer">
                         <td class="text-nowrap align-middle">{{courier.name}}</td>
                         <td class="text-nowrap align-middle">{{courier.surname}}</td>
                         <td class="text-nowrap align-middle">{{courier.phone}}</td>
                         <td class="text-nowrap align-middle">{{courier.email}}</td>
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <app-pagination (results)="users = page.getUsers()" #page></app-pagination>
+                  </tbody>
+                </table>
               </div>
+
             </div>
           </div>
+          <div *ngIf="users?.length === 0"  class="alert alert-primary text-center" role="alert">
+              Nothing was found
+          </div>
+          <app-pagination (results)="users = page.getUsers()" #page></app-pagination>
         </div>
       </div>
     </div>

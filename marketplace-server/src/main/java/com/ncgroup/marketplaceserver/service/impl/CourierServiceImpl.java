@@ -125,8 +125,7 @@ public class CourierServiceImpl implements CourierService {
         Courier courier = courierRepository.getByid(id);
         User courierUser = courier.getUser();
         courierUser.setStatus(calculateStatus(courierUser.isEnabled(), courier.isStatus()));
-        return courierUser;
-    }
+        return courierUser;    }
 
     private String calculateStatus(boolean isEnabled, boolean isStatus) {
         String status = StatusConstants.TERMINATED;

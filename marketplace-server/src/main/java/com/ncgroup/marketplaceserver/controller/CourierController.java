@@ -13,6 +13,9 @@ import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +28,7 @@ import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 
 @RequestMapping("/api/courier")
 @RestController
+@Slf4j
 public class CourierController  {
     private AuthenticationManager authenticationManager;
     private CourierService courierService;
@@ -47,6 +51,7 @@ public class CourierController  {
 
     @PostMapping()
     public ResponseEntity<UserDto> create (@Valid @RequestBody CourierDto courier){
+    	log.info(courier.toString());
         UserDto newCourier = courierService.save(
                 courier.getName(), courier.getSurname(), courier.getEmail(),
                 courier.getPhone(), courier.getBirthday(), courier.getStatus());
@@ -54,8 +59,8 @@ public class CourierController  {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable int id) {
-        return new ResponseEntity<>(courierService.getById(id), OK);
+    public ResponseEntity<UserDto> findById(@PathVariable int id) {
+        return new ResponseEntity<>(UserDto.convertToDto(courierService.getById(id)), OK);
     }
 
 

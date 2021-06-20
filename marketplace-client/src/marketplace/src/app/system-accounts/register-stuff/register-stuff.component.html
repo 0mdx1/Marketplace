@@ -43,11 +43,14 @@
                 </div>
               </div>
               <div class="form-group col-6">
-                <label>Date of birth</label>
+                <label>Date of birth*</label>
                 <input type="date" formControlName="birthday" class="form-control"
                   [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }" />
                 <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
-                  <div *ngIf="getForm.birthday.hasError('InvalidDate')">Invalid date</div>
+                  <div *ngIf="getForm.birthday.hasError('InvalidDate')">Must be at least 18 y.o.</div>
+                </div>
+                <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.birthday.errors.required">Birthday is required</div>
                 </div>
               </div>
             </div>

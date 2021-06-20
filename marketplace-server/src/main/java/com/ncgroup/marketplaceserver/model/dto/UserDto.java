@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -34,6 +35,17 @@ public class UserDto {
     private String password;
     private Role role;
     private String status;
+    
+    @JsonProperty(value = "dateOfBirth")
+    public LocalDate getBirthday() {
+    	return birthday;
+    }
+    
+    @JsonProperty(value = "birthday")
+    @JsonAlias(value = "dateOfBirth")
+    public void setBirthday(LocalDate birthday) {
+    	this.birthday = birthday;
+    }
     
     public static UserDto convertToDto(User user) {
     	return UserDto.builder()

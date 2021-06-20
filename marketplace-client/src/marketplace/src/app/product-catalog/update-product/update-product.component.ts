@@ -1,14 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Role} from "../../_models/role";
-import {SystemAccountService} from "../../_services/system-account.service";
 import {ProductService} from "../../_services/product.service";
-import {validateBirthday} from "../../_helpers/validators.service";
-import {StaffMember} from "../../_models/staff-member";
 import { Product } from '../../_models/products/product';
 
 import {first} from "rxjs/operators";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'update-product',
@@ -22,16 +19,16 @@ export class UpdateProductComponent implements OnInit{
   form = new FormGroup({
     name: new FormControl('')
   });
-  submitted = false;
+
+  subscriptions: Subscription = new Subscription();
 
   categoryName: string[]= [""];
-  inStock: string[] = ["true", "false"];
+  firmName: string[]=[""];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
   status: string[] = ["true", "false"];
-  firmName: string[]=[""];
 
+  submitted = false;
   loading = false;
-
   updated = false;
 
   response: any;
@@ -40,41 +37,36 @@ export class UpdateProductComponent implements OnInit{
   image: string = '';
 
   ngOnInit(){
-    //.subscribe((response) => {
-    this.accountService.getProductInfo(this.route.snapshot.params.id)
+    this.subscriptions.add(this.accountService.getProductInfo(this.route.snapshot.params.id)
       .subscribe((response) => {
         this.response = response;
-        console.log(this.response);
         this.formCreation();
-
         this.firm()
         this.category();
-      })
-
-
-
+      }));
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   public setImage(imageName: string){
     this.image = imageName;
   }
 
-  public category(){
-    this.accountService.getCategories()
+  private category(){
+    this.subscriptions.add( this.accountService.getCategories()
       .subscribe((categ) =>{
         this.responseCategory = categ;
-        console.log(this.responseCategory);
         this.categoryName = this.responseCategory;
-      })
+      }));
   }
 
-  public firm(){
-    this.accountService.getFirm()
+  private firm(){
+    this.subscriptions.add( this.accountService.getFirm()
       .subscribe((firm) =>{
         this.responseFirm = firm;
-        console.log(this.responseFirm);
         this.firmName = this.responseFirm;
-      })
+      }));
   }
 
   constructor(
@@ -116,6 +108,7 @@ export class UpdateProductComponent implements OnInit{
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
+      shippingDate: this.response.shippingDate,
       categoryName: o.categoryName,
       description: o.description,
     };
@@ -134,8 +127,6 @@ export class UpdateProductComponent implements OnInit{
     observable = this.accountService.updateProduct(
       product, (this.route.snapshot.params.id)
     );
-
-    console.log(this.mapToProduct(this.form.value))
 
     observable.pipe(first()).subscribe({
       next: () => {

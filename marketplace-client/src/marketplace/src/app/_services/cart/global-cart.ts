@@ -31,28 +31,32 @@ export class GlobalCart implements Cart, OnDestroy{
 
   public startPolling(): void {
     if(this.alowedToSendRequests()) {
-      this.init().subscribe(() => {});
+      this.updateItems();
     }
     this.subscription = interval(10000)
       .subscribe(() => {
         if (this.alowedToSendRequests()) {
-          this.init().subscribe(() => {
-            if (!document.hidden) {
-              console.log("polling...");
-              this.getShoppingCart()
-                .subscribe({
-                  next: items => {
-                    if (JSON.stringify(items) !== JSON.stringify(this.cart.getItems())) {
-                      console.log("changes detected. updating...")
-                      this.cart.setItems(items);
-                    }
-                  },
-                  error: e => console.log(e)
-                })
-            }
-          })
+          this.updateItems();
         }
       });
+  }
+
+  private updateItems() {
+    this.init().subscribe(() => {
+      if (!document.hidden) {
+        console.log("polling...");
+        this.getShoppingCart()
+          .subscribe({
+            next: items => {
+              if (JSON.stringify(items) !== JSON.stringify(this.cart.getItems())) {
+                console.log("changes detected. updating...")
+                this.cart.setItems(items);
+              }
+            },
+            error: e => console.log(e)
+          })
+      }
+    })
   }
 
   public stopPolling(): void{

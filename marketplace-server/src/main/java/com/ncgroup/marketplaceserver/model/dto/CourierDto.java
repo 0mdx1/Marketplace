@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ncgroup.marketplaceserver.model.Courier;
@@ -27,6 +28,8 @@ public class CourierDto {
     @NotBlank(message = "Surname is mandatory")
     private String surname;
     private String phone;
+    @JsonProperty("dateOfBirth")
+    @JsonAlias("birthday")
     private LocalDate birthday;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")

@@ -9,7 +9,8 @@ import { ProductService } from '../../_services/product.service';
 import { first } from 'rxjs/operators';
 import { Role } from '../../_models/role';
 import { Product } from '../../_models/products/product';
-import {AccountService} from "../../_services/account.service";
+import {formatDate} from '@angular/common';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-product',
@@ -20,15 +21,17 @@ import {AccountService} from "../../_services/account.service";
 export class AddProductComponent implements OnInit{
   form: FormGroup;
 
+  subscriptions: Subscription = new Subscription();
+
+  d = Date().toLocaleString();
+
+
+
   submitted = false;
-
-  roles: Role[] = [Role.Courier, Role.ProductManager];
-
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
-  inStockStatus: string[] = ["true", "false"];
-  categoryName: string[]= ["fruits", "vegetables", "meat", "drinks", "water"];
   status: string[] = ["true", "false"];
   firmName: string[]=[""];
+  categoryName: string[]= [""];
 
   loading = false;
   registered = false;
@@ -36,10 +39,11 @@ export class AddProductComponent implements OnInit{
 
   responseCategory: any;
   responseFirm: any;
-
+  
   constructor(
     private formBuilder: FormBuilder,
      private accountService: ProductService,
+
   ) {
   this.form = this.formBuilder.group(
       {
@@ -48,9 +52,10 @@ export class AddProductComponent implements OnInit{
         quantity: ['', [Validators.min(1), Validators.required]],
         price: ['', [Validators.min(1), Validators.required]],
         unit: ['', Validators.required],
-        discount: ['', [Validators.min(1), Validators.required]],
+        discount: ['', Validators.min(0)],
         inStock: ['', Validators.required],
         status: ['', Validators.required],
+        shippingDate: ['', Validators.required],
         categoryName: ['', Validators.required],
         description: ['', Validators.required],
       },
@@ -58,8 +63,12 @@ export class AddProductComponent implements OnInit{
   }
 
   ngOnInit() {
+    console.log("date" + this.d);
     this.firm();
     this.category()
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   get getForm(): { [p: string]: AbstractControl } {
@@ -71,21 +80,19 @@ export class AddProductComponent implements OnInit{
   }
 
   public category(){
-    this.accountService.getCategories()
+    this.subscriptions.add(this.accountService.getCategories()
       .subscribe((categ) =>{
         this.responseCategory = categ;
-        console.log(this.responseCategory);
         this.categoryName = this.responseCategory;
-      })
+      }));
   }
 
   public firm(){
-    this.accountService.getFirm()
+    this.subscriptions.add(this.accountService.getFirm()
       .subscribe((firm) =>{
         this.responseFirm = firm;
-        console.log(this.responseFirm);
         this.firmName = this.responseFirm;
-      })
+      }));
   }
 
 
@@ -101,6 +108,7 @@ export class AddProductComponent implements OnInit{
       discount: o.discount,
       inStock: o.inStock,
       status: o.status,
+      shippingDate: o.shippingDate,
       categoryName: o.categoryName,
       description: o.description,
     };
@@ -123,7 +131,6 @@ export class AddProductComponent implements OnInit{
     );
 
     observable.pipe(first()).subscribe({
-
             next: () => {
         this.loading = false;
         this.registered = true;

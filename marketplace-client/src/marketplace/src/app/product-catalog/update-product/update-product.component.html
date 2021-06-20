@@ -19,14 +19,18 @@
 
               <div class="form-group col-6">
                 <label>Firm Name*</label>
-                <input type="text" list="firms" class="form-control" formControlName="firmName"/>
+                <input type="text" list="firms" class="form-control" formControlName="firmName"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.firmName.errors }"/>
                 <datalist id="firms">
-                  <ng-container *ngIf="response">
+                  <ng-container >
                     <option *ngFor="let firm of firmName" [ngValue]="firm">
                       {{firm}}
                     </option>
                   </ng-container>
                 </datalist>
+                <div *ngIf="submitted && getForm.firmName.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.firmName.errors.required">Firm name is required</div>
+                </div>
               </div>
 
             </div>
@@ -35,7 +39,7 @@
 
               <div class="form-group col-6">
                 <label>Quantity*</label>
-                <input type="number" formControlName="quantity" class="form-control"
+                <input type="number" formControlName="quantity" class="form-control" min="0"
                        [ngClass]="{ 'is-invalid': submitted && getForm.quantity.errors }" />
                 <div *ngIf="submitted && getForm.quantity.errors" class="invalid-feedback">
                   <div *ngIf="getForm.quantity.errors.required">Quantity is required</div>
@@ -44,7 +48,7 @@
 
               <div class="form-group col-6">
                 <label>Price*</label>
-                <input type="number" formControlName="price" class="form-control"
+                <input type="number" formControlName="price" class="form-control" min="0"
                        [ngClass]="{ 'is-invalid': submitted && getForm.price.errors }" />
                 <div *ngIf="submitted && getForm.price.errors" class="invalid-feedback">
                   <div *ngIf="getForm.price.errors.required">Quantity is required</div>
@@ -64,43 +68,45 @@
 
               <div class="form-group col-6">
                 <label>Discount</label>
-                <input type="number" formControlName="discount" class="form-control"
+                <input type="number" formControlName="discount" class="form-control" min="0"
                        [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }" />
                 <div *ngIf="submitted && getForm.discount.errors" class="invalid-feedback">
-                  <div *ngIf="getForm.discount.errors.required">Price is required</div>
+                  <div *ngIf="getForm.discount.errors.required">Discount is required</div>
                 </div>
               </div>
 
               <div class="form-group col-6">
-                <label>In Stock*</label>
+                <label>In Stock</label>
                 <select class="form-control" formControlName="inStock">
-                  <ng-container *ngIf="response">
-                    <option *ngFor="let status of inStock" [ngValue]="status">
-                      {{status}}
-                    </option>
+                  <ng-container >
+                    <option Value="true">In stock</option>
+                    <option Value="false">Not available</option>
                   </ng-container>
                 </select>
               </div>
 
               <div class="form-group col-6">
                 <label>Category*</label>
-                <input type="text" list="categories" class="form-control" formControlName="categoryName"/>
-                <datalist id="categories">
-                  <ng-container *ngIf="response">
-                    <option *ngFor="let category of categoryName" [ngValue]="category">
-                      {{category}}
+                <input type="text" list="cars" class="form-control" formControlName="categoryName"
+                       [ngClass]="{ 'is-invalid': submitted && getForm.categoryName.errors }"/>
+                <datalist id="cars">
+                  <ng-container>
+                    <option *ngFor="let status of categoryName" [ngValue]="status">
+                      {{status}}
                     </option>
                   </ng-container>
                 </datalist>
+                <div *ngIf="submitted && getForm.categoryName.errors" class="invalid-feedback">
+                  <div *ngIf="getForm.categoryName.errors.required">Category name is required</div>
+                </div>
               </div>
 
               <div class="form-group col-6">
                 <label>Active</label>
                 <select class="form-control" formControlName="status">
                   <ng-container>
-                    <option *ngFor="let status of status" [ngValue]="status">
-                      {{status}}
-                    </option>
+                    <option Value="true" >Active</option>
+                    <option Value="false" >Not Active</option>
                   </ng-container>
                 </select>
               </div>

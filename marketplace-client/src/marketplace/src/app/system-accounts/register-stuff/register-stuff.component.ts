@@ -24,8 +24,8 @@ export class RegisterStuffComponent {
   roles: Role[] = [Role.Courier, Role.ProductManager];
 
   roleNames: Record<string, string> = {
-    [Role.Courier]: "Courier",
-    [Role.ProductManager]: "Product manager",
+    [Role.Courier]: 'Courier',
+    [Role.ProductManager]: 'Product manager',
   };
 
   courierStatuses: string[] = ['active', 'inactive', 'terminated'];
@@ -63,7 +63,7 @@ export class RegisterStuffComponent {
         surname: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
-        birthday: [''],
+        birthday: ['', Validators.required],
         role: ['', Validators.required],
         status: ['', Validators.required],
       },
@@ -79,7 +79,7 @@ export class RegisterStuffComponent {
       name: o.name,
       surname: o.surname,
       email: o.email,
-      dateOfBirth: o.dateOfBirth,
+      dateOfBirth: o.birthday,
       phone: o.phone,
       role: o.role,
       status: o.status,
