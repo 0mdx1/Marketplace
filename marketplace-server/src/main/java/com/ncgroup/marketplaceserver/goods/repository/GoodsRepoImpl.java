@@ -21,6 +21,7 @@ import org.webjars.NotFoundException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +46,6 @@ public class GoodsRepoImpl implements GoodsRepository {
     private String findCategoryByName;
     @Value("${fake-product.find-by-name}")
     private String findProductByName;
-    @Value("${good.update-price}")
-    private String editProductQunatity;
 
     public Optional<Long> findByName(String name, String paramName, String sqlQuery) {
         SqlParameterSource parameter = new MapSqlParameterSource()
@@ -116,10 +115,11 @@ public class GoodsRepoImpl implements GoodsRepository {
     // TODO: add shipping date here
     @Value("${good.find-by-firmId-productId}")
     private String findGood;
-    public Optional<Long> findGood(Long firmId, Long productId) {
+    public Optional<Long> findGood(Long firmId, Long productId, LocalDateTime date) {
         SqlParameterSource goodParameters = new MapSqlParameterSource()
                 .addValue("firmId", firmId)
-                .addValue("productId", productId);
+                .addValue("productId", productId)
+                .addValue("date", date);
         try {
             return Optional.ofNullable(namedParameterJdbcTemplate
                     .queryForObject(findGood, goodParameters, Long.class));
@@ -144,9 +144,12 @@ public class GoodsRepoImpl implements GoodsRepository {
          * product and shipping date are equal
          */
 
-        Optional<Long> goodId = findGood(firmId, productId);
+        Optional<Long> goodId = findGood(firmId, productId, goodDto.getShippingDate());
         if (!goodId.isPresent()) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
+
+//            log.info(String.valueOf(goodDto.getDiscount()));
+
             SqlParameterSource goodParameters = new MapSqlParameterSource()
                     .addValue("goodQuantity", goodDto.getQuantity())
                     .addValue("goodPrice", goodDto.getPrice())
@@ -157,13 +160,16 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("unit", goodDto.getUnit().toString())
                     .addValue("productId", productId)
                     .addValue("firmId", firmId)
-                    .addValue("status", goodDto.isStatus());
+                    .addValue("status", goodDto.isStatus())
+                    .addValue("date", goodDto.getShippingDate());
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
             return keyHolder.getKey().longValue();
+        } else if (!goodDto.isStatus()) {
+            editGood(goodDto, goodId.get());
+            return goodId.get();
         }
         throw new GoodAlreadyExistsException
-                ("Such good already exists! " +
-                        "If you want to modify an existing good," +
+                ("Such good already exists! If you want to modify an existing good," +
                         " please go to the list of goods, select good and click edit.");
     }
 
@@ -186,7 +192,8 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .addValue("image", goodDto.getImage())
                 .addValue("unit", goodDto.getUnit().toString())
                 .addValue("description", goodDto.getDescription())
-                .addValue("status", goodDto.isStatus());
+                .addValue("status", goodDto.isStatus())
+                .addValue("date", goodDto.getShippingDate());
         namedParameterJdbcTemplate.update(updateProduct, parameters);
     }
 
@@ -219,13 +226,10 @@ public class GoodsRepoImpl implements GoodsRepository {
         }
     }
 
-
     @Override
     public List<Good> display(String query) {
-        return namedParameterJdbcTemplate.query(
-                query,
-                this::mapRow
-        );
+        return namedParameterJdbcTemplate
+                .query(query, this::mapRow);
     }
 
     @Value("${categories.get}")
@@ -251,19 +255,11 @@ public class GoodsRepoImpl implements GoodsRepository {
         return res;
     }
 
-    @Override
-    public void editQuantity(long id, int quantity) {
-    	SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id) 
-                .addValue("quantity", quantity);
-        namedParameterJdbcTemplate.update(editProductQunatity, parameters);
-    }
-
     private Good mapRow(ResultSet rs, int rowNum) throws SQLException {
         return Good.builder()
                 .id(rs.getLong("id"))
 
-                //.shippingDate(rs.getObject("shipping_date", LocalDate.class))
+                .shippingDate(rs.getObject("shipping_date", LocalDateTime.class))
 
                 .unit(Unit.valueOf(rs.getString("unit")))
                 .quantity(rs.getInt("quantity"))
@@ -277,5 +273,15 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .image(rs.getString("image"))
                 .status(rs.getBoolean("status"))
                 .build();
+    }
+
+    @Value("${good.update-price}")
+    private String editProductQunatity;
+    @Override
+    public void editQuantity(long id, int quantity) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("quantity", quantity);
+        namedParameterJdbcTemplate.update(editProductQunatity, parameters);
     }
 }

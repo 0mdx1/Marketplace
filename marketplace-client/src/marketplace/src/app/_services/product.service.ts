@@ -204,7 +204,7 @@ export class ProductService {
     if (maxPrice > MAX_PRICE || maxPrice < MIN_PRICE + 1) {
       maxPrice = MAX_PRICE;
     }
-    console.log(maxPrice);
+    //console.log(maxPrice);
     return maxPrice;
   }
 

@@ -6,10 +6,10 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ProductService } from '../../_services/product.service';
-import { first } from 'rxjs/operators';
-import { Role } from '../../_models/role';
-import { Product } from '../../_models/products/product';
+import {ProductService} from '../../_services/product.service';
+import {first} from 'rxjs/operators';
+import {Role} from '../../_models/role';
+import {Product} from '../../_models/products/product';
 import {formatDate} from '@angular/common';
 import {Subscription} from "rxjs";
 
@@ -27,14 +27,12 @@ export class AddProductComponent implements OnInit {
 
   d = Date().toLocaleString();
 
-
-
   submitted = false;
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
 
   status: string[] = ["true", "false"];
-  firmName: string[]=[""];
-  categoryName: string[]= [""];
+  firmName: string[] = [""];
+  categoryName: string[] = [""];
 
 
   loading = false;
@@ -46,10 +44,7 @@ export class AddProductComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-
-     private accountService: ProductService,
-
-
+    private accountService: ProductService,
   ) {
     this.form = this.formBuilder.group(
       {
@@ -73,6 +68,7 @@ export class AddProductComponent implements OnInit {
     this.firm();
     this.category()
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -86,9 +82,9 @@ export class AddProductComponent implements OnInit {
   }
 
 
-  public category(){
+  public category() {
     this.subscriptions.add(this.accountService.getCategories()
-      .subscribe((categ) =>{
+      .subscribe((categ) => {
 
         this.responseCategory = categ;
         this.categoryName = this.responseCategory;
@@ -96,9 +92,9 @@ export class AddProductComponent implements OnInit {
   }
 
 
-  public firm(){
+  public firm() {
     this.subscriptions.add(this.accountService.getFirm()
-      .subscribe((firm) =>{
+      .subscribe((firm) => {
 
         this.responseFirm = firm;
         this.firmName = this.responseFirm;
@@ -141,9 +137,7 @@ export class AddProductComponent implements OnInit {
     );
 
     observable.pipe(first()).subscribe({
-
-            next: () => {
-
+      next: () => {
         this.loading = false;
         this.registered = true;
       }

@@ -32,8 +32,8 @@ public class GoodDto {
 
     private String image;
 
-//    @Past
-//    private LocalDateTime shippingDate;
+    @Past
+    private LocalDateTime shippingDate;
 
     private boolean inStock;
     private String description;

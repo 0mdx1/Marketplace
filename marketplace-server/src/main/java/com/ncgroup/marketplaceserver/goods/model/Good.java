@@ -33,7 +33,7 @@ public class Good {
 
     private double discount;
 
-//    private LocalDateTime shippingDate;
+    private LocalDateTime shippingDate;
 
     private boolean inStock;
     private String description;
@@ -54,7 +54,7 @@ public class Good {
 //    , MediaService mediaService
     public void setProperties(GoodDto goodDto, Long id) {
         this.setId(id);
-//       this.setShippingDate(goodDto.getShippingDate());
+        this.setShippingDate(goodDto.getShippingDate());
         this.setUnit(goodDto.getUnit());
         this.setGoodName(goodDto.getGoodName().toLowerCase());
         this.setFirmName(goodDto.getFirmName().toLowerCase());
