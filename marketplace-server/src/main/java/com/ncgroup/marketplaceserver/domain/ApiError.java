@@ -17,6 +17,7 @@ public class ApiError {
     private LocalDateTime timestamp;
     private String message;
     private String debugMessage;
+    private String errorType;
     private List<ApiSubError> subErrors;
 
     private ApiError() {
@@ -42,7 +43,7 @@ public class ApiError {
         subErrors.add(subError);
     }
 
-    private void addValidationError( String field, Object rejectedValue, String message) {
+    public void addValidationError( String field, Object rejectedValue, String message) {
         addSubError(new ApiValidationError( field, rejectedValue, message));
     }
 

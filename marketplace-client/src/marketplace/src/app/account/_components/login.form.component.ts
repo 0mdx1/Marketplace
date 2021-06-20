@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AccountService} from '../../_services/account.service';
+import {environment} from "../../../environments/environment";
+import {ApiError} from "../../_models/ApiError";
+import {RecaptchaComponent} from "ng-recaptcha";
+
+
 
 @Component({
     selector: 'app-login-form',
@@ -16,6 +21,10 @@ export class LoginFormComponent {
   // icons
   loading = false;
   showPassword = false;
+  readonly siteKey = `${environment.captchaKey}`;
+  @ViewChild(RecaptchaComponent) recaptcha!: RecaptchaComponent;
+  captchaResponse: string = "";
+  showCaptcha: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,6 +40,10 @@ export class LoginFormComponent {
 
   get getForm(): { [p: string]: AbstractControl } { return this.form.controls; }
 
+  resolvedCaptcha(captchaResponse: string){
+    this.captchaResponse = captchaResponse;
+  }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
@@ -38,16 +51,22 @@ export class LoginFormComponent {
     }
     this.loading = true;
     this.form.disable();
-    this.accountService.login(this.getForm.email.value, this.getForm.password.value)
+    this.accountService.login(this.getForm.email.value, this.getForm.password.value,this.captchaResponse)
       .subscribe({
         next: () => {
+          console.log("send request");
           this.router.navigateByUrl('/home');
           this.submitted = false;
           this.loading = false;
           this.form.enable();
         },
           error: error => {
-          console.log('Error: ' + error);
+          this.recaptcha.reset();
+          console.log(error)
+          let apiError = error.error as ApiError;
+          if(apiError!=null && apiError.errorType=='CAPTCHA_VALIDATION_ERROR'){
+            this.showCaptcha=true;
+          }
           this.loading = false;
           const passwordField = this.form.get('password');
           this.form.enable();
