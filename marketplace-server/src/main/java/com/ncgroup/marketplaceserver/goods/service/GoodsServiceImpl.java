@@ -7,21 +7,24 @@ import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
 import com.ncgroup.marketplaceserver.goods.repository.GoodsRepository;
 
-
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 @Slf4j
+@PropertySource("classpath:application.properties")
 public class GoodsServiceImpl implements GoodsService {
 
-    static final Integer PAGE_CAPACITY = 12;
+
+    @Value("${page.capacity}")
+    private Integer PAGE_CAPACITY;
 
     private GoodsRepository repository;
     private MediaService mediaService;
@@ -34,11 +37,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
-//        log.info("" + goodDto.getShippingDate());
         String newImage = goodDto.getImage();
         if (!newImage.isEmpty()){
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
+
         Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
         Good good = new Good();
         good.setProperties(goodDto, goodId);
@@ -117,14 +120,12 @@ public class GoodsServiceImpl implements GoodsService {
         if (counter > 0) {
             fromQuery.append(" WHERE").append(concatenator.get(0));
             for (int i = 1; i < counter; i++) {
-//                log.info(concatenator.get(i));
                 fromQuery.append(" AND").append(concatenator.get(i));
             }
         }
 
         fromQuery.append(" AND status = true");
-        
-//        log.info("SELECT COUNT(*) " + fromQuery);
+
         int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery);
 
         if (sortBy != null) {
@@ -160,18 +161,15 @@ public class GoodsServiceImpl implements GoodsService {
 
         flexibleQuery.append(fromQuery);
 
-//        log.info(fromQuery.toString());
-//        log.info(flexibleQuery.toString());
-
 
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
 
         if (page != null) {
-            flexibleQuery.append(" LIMIT " + PAGE_CAPACITY + " OFFSET ")
+            flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY).append(" OFFSET ")
                     .append((page - 1) * PAGE_CAPACITY);
         } else {
-            flexibleQuery.append(" LIMIT " + PAGE_CAPACITY);
+            flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY);
             page = 1;
         }
 
