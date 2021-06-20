@@ -1,10 +1,12 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Product } from 'src/app/_models/products/product';
 import { CartService } from 'src/app/_services/cart/cart.service';
 import { ProductService } from 'src/app/_services/product.service';
-import {LimitedProductComparisonService} from "../../_services/product-comparison/limited-product-comparison.service";
-import {ProductComparisonService} from "../../_services/product-comparison/product-comparison";
-import {AuthService} from "../../_auth/auth.service";
+import { LimitedProductComparisonService } from '../../_services/product-comparison/limited-product-comparison.service';
+import { ProductComparisonService } from '../../_services/product-comparison/product-comparison';
+import { AuthService } from '../../_auth/auth.service';
+import { AlertService } from 'src/app/_services/alert.service';
+import { AlertType } from 'src/app/_models/alert';
 
 @Component({
   selector: 'app-product',
@@ -14,15 +16,30 @@ import {AuthService} from "../../_auth/auth.service";
 export class ProductComponent implements OnInit {
   constructor(
     private service: ProductService,
-    private authService : AuthService,
+    private authService: AuthService,
     private cartService: CartService,
     @Inject(LimitedProductComparisonService)
     private comparisonService: ProductComparisonService,
+    private alertService: AlertService
   ) {}
 
-  product: Product = new Product(-1, '', '', 0, 0, '', 0, false, false, '', '', '', '');
+  product: Product = new Product(
+    -1,
+    '',
+    '',
+    0,
+    0,
+    '',
+    0,
+    false,
+    false,
+    '',
+    '',
+    '',
+    ''
+  );
   comparison: boolean = false;
-  role: string | null = "ROLE_USER";
+  role: string | null = 'ROLE_USER';
 
   ngOnInit(): void {
     this.service.getProduct().subscribe((result: Product) => {
@@ -33,8 +50,8 @@ export class ProductComponent implements OnInit {
   }
 
   addToCart() {
-    console.log(this.product);
     this.cartService.addProduct(this.product);
+    this.alertService.addAlert('Added to cart', AlertType.Success);
   }
 
   addToComparison() {
@@ -42,7 +59,11 @@ export class ProductComponent implements OnInit {
     this.comparisonService.addProduct(this.product);
   }
 
-  inComparison():boolean {
-    return this.comparisonService.getProducts().find(product => product.id==this.product.id)!=undefined;
+  inComparison(): boolean {
+    return (
+      this.comparisonService
+        .getProducts()
+        .find((product) => product.id == this.product.id) != undefined
+    );
   }
 }
