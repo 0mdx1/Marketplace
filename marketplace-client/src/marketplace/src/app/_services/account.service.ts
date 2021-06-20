@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, shareReplay, tap } from 'rxjs/operators';
 
@@ -36,12 +36,16 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string): Observable<HttpResponse<User>> {
+  login(email: string, password: string, captchaResponse: string): Observable<HttpResponse<User>> {
+    let httpHeaders = new HttpHeaders({'captcha-response': captchaResponse});
     return this.http
       .post<User>(
         `${baseUrl}/login`,
         { email, password },
-        { observe: 'response' }
+        {
+          headers : httpHeaders,
+          observe: 'response'
+        }
       )
       .pipe(
         tap((res) => this.setToken(res)),

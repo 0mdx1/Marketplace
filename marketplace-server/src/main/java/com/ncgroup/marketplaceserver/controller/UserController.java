@@ -9,6 +9,8 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.ncgroup.marketplaceserver.captcha.service.CaptchaService;
+import com.ncgroup.marketplaceserver.exception.basic.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,7 @@ public class UserController  {
     private AuthenticationManager authenticationManager;
     private UserService userService;
     private JwtProvider jwtProvider;
+    private CaptchaService captchaService;
     
     @Value("${url.confirm-account.redirect}")
     private String redirectConfirmAccountUrl;
@@ -47,10 +50,11 @@ public class UserController  {
     
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider) {
+    public UserController(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider, CaptchaService captchaService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtProvider = jwtProvider;
+        this.captchaService = captchaService;
     }
     
     @GetMapping("/userinfo")
@@ -63,12 +67,10 @@ public class UserController  {
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user) {
-    	/*try {
-    	authenticate(user.getEmail(), user.getPassword());
-    	} catch (Throwable e) {
-			e.printStackTrace();	
-    	}*/
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user,@RequestHeader("captcha-response") String captchaResponse) {
+        if(!captchaService.validateCaptcha(captchaResponse)){
+            throw new ForbiddenException("Captcha is not valid");
+        }
     	authenticate(user.getEmail(), user.getPassword());
         User loginUser = userService.findUserByEmail(user.getEmail());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);

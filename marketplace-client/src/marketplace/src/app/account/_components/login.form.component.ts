@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AccountService} from '../../_services/account.service';
+import {environment} from "../../../environments/environment";
+
+
 
 @Component({
     selector: 'app-login-form',
@@ -16,6 +19,8 @@ export class LoginFormComponent {
   // icons
   loading = false;
   showPassword = false;
+  readonly siteKey = `${environment.captchaKey}`;
+  captchaResponse: string = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,6 +36,10 @@ export class LoginFormComponent {
 
   get getForm(): { [p: string]: AbstractControl } { return this.form.controls; }
 
+  resolvedCaptcha(captchaResponse: string){
+    this.captchaResponse = captchaResponse;
+  }
+
   onSubmit(): void {
     this.submitted = true;
     if (this.form.invalid) {
@@ -38,7 +47,7 @@ export class LoginFormComponent {
     }
     this.loading = true;
     this.form.disable();
-    this.accountService.login(this.getForm.email.value, this.getForm.password.value)
+    this.accountService.login(this.getForm.email.value, this.getForm.password.value,this.captchaResponse)
       .subscribe({
         next: () => {
           this.router.navigateByUrl('/home');
