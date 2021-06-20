@@ -1,3 +1,27 @@
-.image{
-  margin-top: 4px;
+.form-group span {
+  color: #007dc3;
+}
+
+.unit-option {
+  text-transform: lowercase;
+}
+
+.unit-select {
+  text-transform: lowercase;
+}
+
+.back-btn {
+  color: #007dc3;
+  border: 1px solid #007dc3;
+  font-size: 17px;
+}
+
+.save-btn {
+  background-color: #007dc3;
+  color: #FFFFFF;
+  font-size: 17px;
+}
+
+.save-btn:hover {
+  box-shadow: 0 0 6pt 3pt #7fc5ee;
 }

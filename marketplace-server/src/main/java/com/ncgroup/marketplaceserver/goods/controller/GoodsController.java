@@ -75,6 +75,11 @@ public class GoodsController {
         return new ResponseEntity<>(service.getCategories(), HttpStatus.OK);
     }
 
+    @GetMapping("/price-range/{category}")
+    public ResponseEntity<List<Double>> getPriceRange( @PathVariable("category") String category) throws NotFoundException {
+        return new ResponseEntity<>(service.getPriceRange(category), HttpStatus.OK);
+    }
+
     @GetMapping("/firms")
     public ResponseEntity<List<String>> getFirms() throws NotFoundException {
         return new ResponseEntity<>(service.getFirms(), HttpStatus.OK);

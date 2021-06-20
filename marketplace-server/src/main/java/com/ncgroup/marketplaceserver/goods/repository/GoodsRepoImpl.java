@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 @PropertySource("classpath:database/productQueries.properties")
 @Repository
@@ -242,6 +243,64 @@ public class GoodsRepoImpl implements GoodsRepository {
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;
+    }
+
+    @Value("${maxPrice.get}")
+    String getMaxPrice;
+    @Override
+    public Double getMaxPrice(String category) throws NotFoundException {
+        SqlParameterSource parameter = new MapSqlParameterSource().addValue("category", category);
+        Double max;
+        try {
+            max = namedParameterJdbcTemplate.queryForObject(getMaxPrice, parameter, Double.class);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return max;
+    }
+
+    @Value("${minPrice.get}")
+    String getMinPrice;
+    @Override
+    public Double getMinPrice(String category) throws NotFoundException {
+        SqlParameterSource parameter = new MapSqlParameterSource().addValue("category", category);
+        Double min;
+        try {
+            min = namedParameterJdbcTemplate.queryForObject(getMinPrice, parameter, Double.class);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return min;
+    }
+
+    @Value("${totalMaxPrice.get}")
+    String getTotalMaxPrice;
+    @Override
+    public Double getTotalMaxPrice() throws NotFoundException {
+        Double max;
+        try {
+            max = jdbcTemplate.queryForObject(getTotalMaxPrice, Double.class);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return max;
+    }
+
+    @Value("${totalMinPrice.get}")
+    String getTotalMinPrice;
+    @Override
+    public Double getTotalMinPrice() throws NotFoundException {
+        Double min;
+        try {
+            min = jdbcTemplate.queryForObject(getTotalMinPrice, Double.class);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return min;
     }
 
     @Value("${firms.get}")

@@ -1,5 +1,5 @@
 <div class="form-group">
-  <div>
+  <div class="mb-4">
     <img *ngIf="imageUrl==''&&!isLoading" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" style="width:250px;height:250px;">
     <img *ngIf="isLoading" src="https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" style="width:250px;height:250px;">
     <img *ngIf="imageUrl!=''&&!isLoading" src="{{imageUrl}}" style="width:250px;height:250px;">

@@ -11,7 +11,9 @@ export class AlertService {
   constructor() { }
 
   public addAlert(message: String, type: AlertType): void{
-    this.alerts.push(new Alert(message,type));
+    const alert = new Alert(message,type);
+    this.alerts.push(alert);
+    setTimeout(() => this.removeAlert(alert),1500);
   }
 
   public removeAlert(alert: Alert): void{

@@ -7,3 +7,6 @@
   z-index:9999;
   border-radius:0px
 }
+.alert  {
+  box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.5);
+}

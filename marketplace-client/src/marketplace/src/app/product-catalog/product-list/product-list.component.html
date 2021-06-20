@@ -6,13 +6,16 @@
           <div class="card">
             <div class="card-body">
                <app-search (results)="products = search.getProducts()" #search> </app-search>
-               <app-filter [sort]="sort"  [direction]="direction" (results)="products = filter.getProducts()"  #filter></app-filter>
+               <app-filter [(sort)]="sort"  [(direction)]="direction" (results)="products = filter.getProducts()"  #filter></app-filter>
             </div>
           </div>
         </div>
         <div class="col mb-3">
           <div class="e-panel card">
-            <div class="dropdown">
+            <div class="row d-flex flex-sm-row justify-content-between">
+            <button routerLink="/products/add" class="btn btn-default btn-add" *ngIf="role=='ROLE_ADMIN' || role=='ROLE_PRODUCT_MANAGER'">
+              + Add product</button>
+            <div class="dropdown self-align-right">
               <button (click)="setDirection()" class="ascending-btn default-btn">
                 <i *ngIf="direction=='DESC'" class="fas fa-angle-double-down"></i>
                 <i *ngIf="direction=='ASC'" class="fas fa-angle-double-up"></i>
@@ -26,8 +29,9 @@
                 <button (click)="setSort('price')" class="dropdown-item" value="price" type="button">Price</button>
               </div>
             </div>
+            </div>
             <div class="row row-cols-1 row-cols-md-3 g-4 list" >
-                      <app-product-card *ngFor="let product of products" [product]="product">
+                      <app-product-card *ngFor="let product of products" [role]="role" [product]="product">
                       </app-product-card>
             </div>
           </div>

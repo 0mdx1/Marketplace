@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: 'create-password', component: CreatePasswordComponent },
       { path: 'confirmed', component: ConfirmedComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'update-account', component: UpdateAccount},
+      { path: 'profile/edit', component: UpdateAccount},
 
       {
         path: 'orders',

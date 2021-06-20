@@ -6,6 +6,8 @@ import { Product } from '../../_models/products/product';
 
 import {first} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
+import {AlertType} from "../../_models/alert";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   selector: 'update-product',
@@ -25,6 +27,9 @@ export class UpdateProductComponent implements OnInit{
   categoryName: string[]= [""];
   firmName: string[]=[""];
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
+  id: number = -1;
+
+  goodName: string|null = null;
   status: string[] = ["true", "false"];
 
   submitted = false;
@@ -73,9 +78,13 @@ export class UpdateProductComponent implements OnInit{
     private formBuilder: FormBuilder,
     private accountService: ProductService,
     private route: ActivatedRoute,
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   formCreation(){
+    this.goodName = this.response.goodName;
+    this.id = this.response.id;
     this.form = this.formBuilder.group(
       {
         goodName: [this.response.goodName, Validators.required],
@@ -83,7 +92,7 @@ export class UpdateProductComponent implements OnInit{
         quantity: [this.response.quantity, [Validators.min(1), Validators.required]],
         price: [this.response.price, [Validators.min(1), Validators.required]],
         unit: [this.response.unit, Validators.required],
-        discount: [this.response.discount, [Validators.min(1), Validators.required]],
+        discount: [this.response.discount, Validators.min(0)],
         inStock: [String(this.response.inStock), Validators.required],
         status: [String(this.response.status), Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
@@ -119,6 +128,7 @@ export class UpdateProductComponent implements OnInit{
     if (this.form.invalid) {
       return;
     }
+    this.form.disable();
     this.loading = true;
     let observable = null;
 
@@ -129,12 +139,17 @@ export class UpdateProductComponent implements OnInit{
     );
 
     observable.pipe(first()).subscribe({
-      next: () => {
+      next: (res) => {
         this.loading = false;
         this.updated = true;
+        this.router.navigateByUrl('/products/'+res.id);
+        this.alertService.addAlert("Product was successfully updated!", AlertType.Success);
       },
+      error: (err) => {
+        console.log(err);
+        this.form.enable();
+      }
     });
   }
-
 
 }

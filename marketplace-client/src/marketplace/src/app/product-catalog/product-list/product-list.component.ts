@@ -1,19 +1,23 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {  Component, Input, OnInit } from '@angular/core';
 import { Product } from 'src/app/_models/products/product';
+import {AuthService} from "../../_auth/auth.service";
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit{
   @Input() products: Product[] = [];
   direction: string = "ASC";
   sort: string = "name";
+  role: string | null = null;
 
+  constructor(private authService: AuthService) {
+
+  }
   ngOnInit(){
-    this.direction = "ASC";
-    this.sort="name";
+    this.role = this.authService.getRole();
   }
 
   setDirection():void{
