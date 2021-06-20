@@ -91,8 +91,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${product.insert}")
     private String productInsert;
-    @Value("${product.edit-category}")
-    private String editProductCategory;
+
     public Long createProduct(String goodName, Long categoryId) {
         Optional<Long> productId = findByName
                 (goodName, "productName", findProductByName);
@@ -103,12 +102,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("categoryId", categoryId);
             namedParameterJdbcTemplate.update(productInsert, productParameters, productHolder);
             productId = Optional.of(productHolder.getKey().longValue());
-            return productId.get();
         }
-        SqlParameterSource categoryParameters = new MapSqlParameterSource()
-                .addValue("categoryId", categoryId)
-                .addValue("id", productId.get());
-        namedParameterJdbcTemplate.update(editProductCategory, categoryParameters);
         return productId.get();
     }
 
@@ -149,8 +143,6 @@ public class GoodsRepoImpl implements GoodsRepository {
         if (!goodId.isPresent()) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
-//            log.info(String.valueOf(goodDto.getDiscount()));
-
             SqlParameterSource goodParameters = new MapSqlParameterSource()
                     .addValue("goodQuantity", goodDto.getQuantity())
                     .addValue("goodPrice", goodDto.getPrice())
@@ -165,7 +157,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("date", goodDto.getShippingDate());
             namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
             return keyHolder.getKey().longValue();
-        } else if (!goodDto.isStatus()) {
+        } else if (!getStatus(goodId.get())) {
             editGood(goodDto, goodId.get());
             return goodId.get();
         }
@@ -174,13 +166,30 @@ public class GoodsRepoImpl implements GoodsRepository {
                         " please go to the list of goods, select good and click edit.");
     }
 
+    @Value("${good.check-status}")
+    private String getStatus;
+    public Boolean getStatus(Long goodId) {
+        SqlParameterSource goodParameter = new MapSqlParameterSource()
+                .addValue("goodId", goodId);
+            return namedParameterJdbcTemplate
+                    .queryForObject(getStatus, goodParameter, Boolean.class);
+    }
+
+
     @Value("${product.update}")
     private String updateProduct;
+    @Value("${product.edit-category}")
+    private String editProductCategory;
     @Override
     public void editGood(GoodDto goodDto, Long id) {
         Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
         Long categoryId = createCategory(goodDto.getCategoryName().toLowerCase());
         Long productId = createProduct(goodDto.getGoodName().toLowerCase(), categoryId);
+
+        SqlParameterSource categoryParameters = new MapSqlParameterSource()
+                .addValue("categoryId", categoryId)
+                .addValue("id", productId);
+        namedParameterJdbcTemplate.update(editProductCategory, categoryParameters);
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id) // for search purpose
