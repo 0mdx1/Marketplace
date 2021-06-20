@@ -18,6 +18,8 @@ import com.ncgroup.marketplaceserver.service.CourierService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +42,7 @@ import javax.mail.MessagingException;
 @Slf4j
 @Service
 @Qualifier("userDetailsService")
+@PropertySource("classpath:application.properties")
 public class CourierServiceImpl implements CourierService {
 
     private CourierRepository courierRepository;
@@ -50,6 +53,9 @@ public class CourierServiceImpl implements CourierService {
     private EmailSenderService emailSenderService;
 
     private final int LINK_VALID_TIME_HOUR = 24;
+
+    @Value("${page.capacity}")
+    private Integer PAGE_SIZE;
 
     @Autowired
     public CourierServiceImpl(CourierRepository courierRepository,
@@ -199,7 +205,7 @@ public class CourierServiceImpl implements CourierService {
 
         result.put("users", couriers);
         result.put("currentPage", page);
-        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
+        result.put("pageNum", allPages % PAGE_SIZE == 0 ? allPages / PAGE_SIZE : allPages / PAGE_SIZE + 1);
 
         return result;
     }

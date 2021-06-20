@@ -6,6 +6,7 @@ import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-@PropertySource("classpath:database/queries.properties")
+@PropertySources({
+        @PropertySource("classpath:database/queries.properties"),
+        @PropertySource("classpath:application.properties")
+})
 public class ManagerRepositoryImpl implements ManagerRepository {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -41,6 +45,9 @@ public class ManagerRepositoryImpl implements ManagerRepository {
 
     @Value("${manager.find-by-name-surname-all}")
     private String filterNameQueryAll;
+
+    @Value("${page.capacity}")
+    private Integer PAGE_SIZE;
 
     @Autowired
     ManagerRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -80,7 +87,8 @@ public class ManagerRepositoryImpl implements ManagerRepository {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search)
                 .addValue("status", status)
-                .addValue("page", page);
+                .addValue("page", page)
+                .addValue("pageSize", PAGE_SIZE);
         return namedParameterJdbcTemplate.query(filterNameQuery, params, new UserRowMapper());
     }
 
@@ -103,7 +111,8 @@ public class ManagerRepositoryImpl implements ManagerRepository {
     public List<User> getByNameSurnameAll(String search, int page) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search)
-                .addValue("page", page);
+                .addValue("page", page)
+                .addValue("pageSize", PAGE_SIZE);
         return namedParameterJdbcTemplate.query(filterNameQueryAll, params, new UserRowMapper());
     }
 

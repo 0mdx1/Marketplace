@@ -12,6 +12,8 @@ import com.ncgroup.marketplaceserver.service.ManagerService;
 import com.ncgroup.marketplaceserver.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,12 +33,15 @@ import javax.mail.MessagingException;
 
 @Slf4j
 @Service
+@PropertySource("classpath:application.properties")
 public class ManagerServiceImpl implements ManagerService {
     private ManagerRepository managerRepository;
     private EmailSenderService emailSenderService;
     private UserService userService;
     private UserRepository userRepository;
 
+    @Value("${page.capacity}")
+    private Integer PAGE_SIZE;
 
     @Autowired
     ManagerServiceImpl(ManagerRepository managerRepository, EmailSenderService emailSenderService,
@@ -128,7 +133,7 @@ public class ManagerServiceImpl implements ManagerService {
 
         result.put("users", managers);
         result.put("currentPage", page);
-        result.put("pageNum", allPages % 10 == 0 ? allPages / 10 : allPages / 10 + 1);
+        result.put("pageNum", allPages % PAGE_SIZE == 0 ? allPages / PAGE_SIZE : allPages / PAGE_SIZE + 1);
 
         return result;
     }
