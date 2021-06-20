@@ -26,8 +26,6 @@ public class UserDto {
 	@NotBlank(message = "Surname is mandatory")
     private String surname;
     private String phone;
-    @JsonProperty("birthday")
-    @JsonAlias("dateOfBirth")
     private LocalDate birthday;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
@@ -37,6 +35,17 @@ public class UserDto {
     private String password;
     private Role role;
     private String status;
+    
+    @JsonProperty(value = "dateOfBirth")
+    public LocalDate getBirthday() {
+    	return birthday;
+    }
+    
+    @JsonProperty(value = "birthday")
+    @JsonAlias(value = "dateOfBirth")
+    public void setBirthday(LocalDate birthday) {
+    	this.birthday = birthday;
+    }
     
     public static UserDto convertToDto(User user) {
     	return UserDto.builder()

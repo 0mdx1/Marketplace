@@ -28,8 +28,8 @@ public class CourierDto {
     @NotBlank(message = "Surname is mandatory")
     private String surname;
     private String phone;
-    @JsonProperty("birthday")
-    @JsonAlias("dateOfBirth")
+    @JsonProperty("dateOfBirth")
+    @JsonAlias("birthday")
     private LocalDate birthday;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")

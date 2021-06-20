@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,8 @@ public class User {
     private String name;
     private String surname;
     private String phone;
+    @JsonProperty("birthday")
+    @JsonAlias("dateOfBirth")
     private LocalDate birthday;
     private String email;
     

@@ -59,8 +59,8 @@ public class CourierController  {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable int id) {
-        return new ResponseEntity<>(courierService.getById(id), OK);
+    public ResponseEntity<UserDto> findById(@PathVariable int id) {
+        return new ResponseEntity<>(UserDto.convertToDto(courierService.getById(id)), OK);
     }
 
 
