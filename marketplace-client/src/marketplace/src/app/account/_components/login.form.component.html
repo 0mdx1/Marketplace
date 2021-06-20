@@ -31,6 +31,12 @@
       </div>
     </div>
   </div>
+  <div [hidden]="!showCaptcha" class="form-group">
+    <re-captcha
+      (resolved)="resolvedCaptcha($event)"
+      siteKey="{{siteKey}}"
+    ></re-captcha>
+  </div>
   <div class="form-row link-div">
     <div class="form-group col">
       <button [disabled]="loading" type="submit" class="btn btn-primary">

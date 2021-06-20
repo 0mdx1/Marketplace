@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RecaptchaModule } from "ng-recaptcha";
 
 import { AccountRoutingModule } from './account-routing.module';
 import { RegisterComponent } from './register/register.component';
@@ -20,7 +21,7 @@ import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.co
 
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule],
+  imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule,RecaptchaModule],
   declarations: [
     LayoutComponent,
     RegisterComponent,
