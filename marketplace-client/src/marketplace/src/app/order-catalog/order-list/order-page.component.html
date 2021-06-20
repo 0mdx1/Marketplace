@@ -12,7 +12,6 @@
                     <thead>
                     <tr>
 
-                      <th class="max-width">Order Id</th>
                       <th class="max-width">Name</th>
                       <th class="max-width">Surname</th>
                       <th class="max-width">Address</th>
@@ -27,7 +26,6 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let order of orderPage.orders" routerLink = "{{order.id}}" class="pointer">
-                      <td class="text-nowrap align-middle">{{order.id}}</td>
                       <td class="text-nowrap align-middle">{{order.user?.name}}</td>
                       <td class="text-nowrap align-middle">{{order.user?.surname}}</td>
                       <td class="text-nowrap align-middle">{{order.address}}</td>

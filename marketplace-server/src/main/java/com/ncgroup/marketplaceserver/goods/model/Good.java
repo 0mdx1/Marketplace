@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -32,7 +33,7 @@ public class Good {
 
     private double discount;
 
-    //private LocalDate shippingDate;
+    private LocalDateTime shippingDate;
 
     private boolean inStock;
     private String description;
@@ -53,7 +54,7 @@ public class Good {
 //    , MediaService mediaService
     public void setProperties(GoodDto goodDto, Long id) {
         this.setId(id);
-       //this.setShippingDate(goodDto.getShippingDate());
+        this.setShippingDate(goodDto.getShippingDate());
         this.setUnit(goodDto.getUnit());
         this.setGoodName(goodDto.getGoodName().toLowerCase());
         this.setFirmName(goodDto.getFirmName().toLowerCase());

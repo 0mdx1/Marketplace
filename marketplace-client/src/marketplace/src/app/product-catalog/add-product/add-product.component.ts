@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductService } from '../../_services/product.service';
-import { first } from 'rxjs/operators';
-import { Role } from '../../_models/role';
-import { Product } from '../../_models/products/product';
+
+import {ProductService} from '../../_services/product.service';
+import {first} from 'rxjs/operators';
+import {Role} from '../../_models/role';
+import {Product} from '../../_models/products/product';
 import {formatDate} from '@angular/common';
 import {Subscription} from "rxjs";
+
 
 @Component({
   selector: 'app-product',
@@ -18,20 +20,20 @@ import {Subscription} from "rxjs";
   styleUrls: ['./add-product.component.css'],
 
 })
-export class AddProductComponent implements OnInit{
+export class AddProductComponent implements OnInit {
   form: FormGroup;
 
   subscriptions: Subscription = new Subscription();
 
   d = Date().toLocaleString();
 
-
-
   submitted = false;
   unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
+
   status: string[] = ["true", "false"];
-  firmName: string[]=[""];
-  categoryName: string[]= [""];
+  firmName: string[] = [""];
+  categoryName: string[] = [""];
+
 
   loading = false;
   registered = false;
@@ -39,13 +41,12 @@ export class AddProductComponent implements OnInit{
 
   responseCategory: any;
   responseFirm: any;
-  
+
   constructor(
     private formBuilder: FormBuilder,
-     private accountService: ProductService,
-
+    private accountService: ProductService,
   ) {
-  this.form = this.formBuilder.group(
+    this.form = this.formBuilder.group(
       {
         goodName: ['', Validators.required],
         firmName: ['', Validators.required],
@@ -67,6 +68,7 @@ export class AddProductComponent implements OnInit{
     this.firm();
     this.category()
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
@@ -75,21 +77,25 @@ export class AddProductComponent implements OnInit{
     return this.form.controls;
   }
 
-  public setImage(imageName: string){
+  public setImage(imageName: string) {
     this.image = imageName;
   }
 
-  public category(){
+
+  public category() {
     this.subscriptions.add(this.accountService.getCategories()
-      .subscribe((categ) =>{
+      .subscribe((categ) => {
+
         this.responseCategory = categ;
         this.categoryName = this.responseCategory;
       }));
   }
 
-  public firm(){
+
+  public firm() {
     this.subscriptions.add(this.accountService.getFirm()
-      .subscribe((firm) =>{
+      .subscribe((firm) => {
+
         this.responseFirm = firm;
         this.firmName = this.responseFirm;
       }));
@@ -131,7 +137,7 @@ export class AddProductComponent implements OnInit{
     );
 
     observable.pipe(first()).subscribe({
-            next: () => {
+      next: () => {
         this.loading = false;
         this.registered = true;
       }

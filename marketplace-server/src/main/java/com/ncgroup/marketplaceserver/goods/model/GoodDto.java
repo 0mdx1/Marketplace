@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -24,14 +26,14 @@ public class GoodDto {
     @Min(0)
     private double price;
     private Unit unit;
-    @Min(1)
+    @Min(0)
     @Max(99)
     private double discount;
 
     private String image;
 
-//    @Past
-//    private String shippingDate;
+    @Past
+    private LocalDateTime shippingDate;
 
     private boolean inStock;
     private String description;

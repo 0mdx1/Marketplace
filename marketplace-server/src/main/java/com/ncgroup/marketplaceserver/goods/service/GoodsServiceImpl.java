@@ -21,7 +21,7 @@ import java.util.*;
 @Slf4j
 public class GoodsServiceImpl implements GoodsService {
 
-    static final Integer PAGE_CAPACITY = 10;
+    static final Integer PAGE_CAPACITY = 12;
 
     private GoodsRepository repository;
     private MediaService mediaService;
@@ -34,8 +34,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
+//        log.info("" + goodDto.getShippingDate());
         String newImage = goodDto.getImage();
-        if(!newImage.isEmpty()){
+        if (!newImage.isEmpty()){
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
         Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
@@ -91,7 +92,7 @@ public class GoodsServiceImpl implements GoodsService {
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
                 "INNER JOIN category ON category.id = product.category_id");
 
-        log.info("Name " + name);;
+//        log.info("Name " + name);;
         if (name != null) {
             concatenator.add(" product.name LIKE '%" + name.toLowerCase() + "%'");
             counter++;
@@ -116,25 +117,33 @@ public class GoodsServiceImpl implements GoodsService {
         if (counter > 0) {
             fromQuery.append(" WHERE").append(concatenator.get(0));
             for (int i = 1; i < counter; i++) {
-                log.info(concatenator.get(i));
+//                log.info(concatenator.get(i));
                 fromQuery.append(" AND").append(concatenator.get(i));
             }
         }
 
+        fromQuery.append(" AND status = true");
         
-        log.info("SELECT COUNT(*) " + fromQuery);
+//        log.info("SELECT COUNT(*) " + fromQuery);
         int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery);
 
         if (sortBy != null) {
-            if(sortBy.equals("price")) {
-                fromQuery.append(" ORDER BY goods.price");
-            } else if (sortBy.equals("name")) {
-                fromQuery.append(" ORDER BY product.name");
+            switch (sortBy) {
+                case "price":
+                    fromQuery.append(" ORDER BY goods.price");
+                    break;
+                case "name":
+                    fromQuery.append(" ORDER BY product.name");
+                    break;
+                case "date":
+                    fromQuery.append(" ORDER BY shipping_date");
+                    break;
             }
         } else {
             fromQuery.append(" ORDER BY product.name");
         }
 
+        log.info("DIRECTION " + sortDirection);
         if (sortDirection != null) {
             fromQuery.append(" ").append(sortDirection.toUpperCase());
         } else {
@@ -143,7 +152,7 @@ public class GoodsServiceImpl implements GoodsService {
 
 
         StringBuilder flexibleQuery = new StringBuilder
-                ("SELECT goods.id, product.name AS product_name, status, " +
+                ("SELECT goods.id, product.name AS product_name, status, shipping_date, " +
                         "firm.name AS firm_name, category.name AS category_name, unit, " +
                         " goods.quantity, goods.price, goods.discount, goods.in_stock," +
                         " goods.description, goods.image ");
@@ -151,8 +160,8 @@ public class GoodsServiceImpl implements GoodsService {
 
         flexibleQuery.append(fromQuery);
 
-        log.info(fromQuery.toString());
-        log.info(flexibleQuery.toString());
+//        log.info(fromQuery.toString());
+//        log.info(flexibleQuery.toString());
 
 
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
@@ -196,7 +205,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void updateQuantity(long id, int qunatity) {
-        repository.editQuantity(id, qunatity);
+    public void updateQuantity(long id, int quantity) {
+        repository.editQuantity(id, quantity);
     }
 }

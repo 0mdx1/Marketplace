@@ -1,17 +1,17 @@
-DROP TABLE IF EXISTS order_goods CASCADE;
-DROP TABLE IF EXISTS order_details CASCADE;
-DROP TABLE IF EXISTS courier CASCADE;
-DROP TABLE IF EXISTS person CASCADE;
-DROP TABLE IF EXISTS credentials CASCADE;
-DROP TABLE IF EXISTS role CASCADE;
-DROP TABLE IF EXISTS shopping_cart_item CASCADE;
-DROP TABLE IF EXISTS goods CASCADE;
-DROP TABLE IF EXISTS firm CASCADE;
-DROP TABLE IF EXISTS product CASCADE;
-DROP TABLE IF EXISTS category CASCADE;
+DROP TABLE IF EXISTS order_goods;
+DROP TABLE IF EXISTS order_details;
+DROP TABLE IF EXISTS courier;
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS credentials;
+DROP TABLE IF EXISTS role;
+DROP TABLE IF EXISTS shopping_cart_item;
+DROP TABLE IF EXISTS goods;
+DROP TABLE IF EXISTS firm;
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS category;
 
-DROP TYPE IF EXISTS delivery_status CASCADE;
-DROP TYPE IF EXISTS unit_type CASCADE;
+DROP TYPE IF EXISTS delivery_status;
+DROP TYPE IF EXISTS unit_type;
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS goods
     price         DECIMAL(12, 2),
     unit          unit_type,
     discount      DECIMAL(12, 2),
-    shipping_date TIMESTAMP,
+    shipping_date TIMESTAMP WITHOUT TIME ZONE,
     in_stock      BOOLEAN,
     status        BOOLEAN,
     image         varchar(100),

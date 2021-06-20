@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CourierOrder } from '../_models/order-info/courier-order';
 import { environment } from '../../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,13 +41,15 @@ export class OrderService {
   }
 
   private getOrderId(): string | null {
-    return this.activatedRoute.snapshot.params['orderId'];
+    // console.log(this.activatedRoute.snapshot.paramMap.get('id'));
+    // return this.activatedRoute.snapshot.queryParams.id;
+    let arr = this.router.url.split('/');
+    return arr[arr.length - 1];
   }
 
   public changeStatus(): Observable<Status> {
-    return this.http.get<Status>(
-      baseUrl + '/orders/' + this.getOrderId() + '/status'
-    );
+    return this.http.post<Status>(
+      baseUrl + '/orders/' + this.getOrderId() + '/status', null);
   }
 
   //User order history
