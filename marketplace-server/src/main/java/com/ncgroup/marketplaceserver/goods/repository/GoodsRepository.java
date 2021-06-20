@@ -15,6 +15,10 @@ public interface GoodsRepository {
     List<Good> display(String query);
     int countGoods(String query);
     List<String> getCategories();
+    Double getMaxPrice(String category);
+    Double getMinPrice(String category);
+    Double getTotalMaxPrice();
+    Double getTotalMinPrice();
     List<String> getFirms();
 
 

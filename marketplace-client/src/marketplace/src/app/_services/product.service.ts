@@ -175,6 +175,10 @@ export class ProductService {
     return this.http.get<string[]>(`${baseUrl}/products/categories`);
   }
 
+  getPriceRange(category:string): Observable<number[]> {
+    return this.http.get<number[]>(`${baseUrl}/products/price-range/`+category);
+  }
+
   getFirm(): Observable<string[]> {
     return this.http.get<string[]>(`${baseUrl}/products/firms`);
   }
@@ -230,15 +234,16 @@ export class ProductService {
     return !str || /^\s*$/.test(str);
   }
 
-  AddProduct(account: Product): Observable<any> {
-    return this.http.post(`${baseUrl}/products`, account);
+  AddProduct(product: Product): Observable<Product> {
+    console.log(product);
+    return this.http.post<Product>(`${baseUrl}/products`, product);
   }
 
   getProductInfo(id: number) {
     return this.http.get(`${baseUrl}/products/` + id);
   }
 
-  updateProduct(account: Product, id: number): Observable<any> {
-    return this.http.put(`${baseUrl}/products/` + id, account);
+  updateProduct(product: Product, id: number): Observable<Product> {
+    return this.http.put<Product>(`${baseUrl}/products/` + id, product);
   }
 }

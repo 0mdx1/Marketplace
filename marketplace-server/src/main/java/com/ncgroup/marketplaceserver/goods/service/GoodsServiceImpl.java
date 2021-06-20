@@ -200,6 +200,19 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public List<Double> getPriceRange(String category) throws NotFoundException {
+        ArrayList<Double> priceRange = new ArrayList<>();
+        if(category.equals("all")){
+            priceRange.add(repository.getTotalMinPrice());
+            priceRange.add(repository.getTotalMaxPrice());
+            return priceRange;
+        }
+        priceRange.add(repository.getMinPrice(category));
+        priceRange.add(repository.getMaxPrice(category));
+        return priceRange;
+    }
+
+    @Override
     public List<String> getFirms() throws NotFoundException {
         return repository.getFirms();
     }

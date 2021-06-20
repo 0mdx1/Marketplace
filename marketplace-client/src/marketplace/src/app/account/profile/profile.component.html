@@ -1,54 +1,63 @@
-<div class="container">
-  <div *ngIf="user"  id="full-pers-info">
-    <h2 class="text-left mb-0">{{user.name}} {{user.surname}}</h2>
+<div class="container mb-5">
+  <div *ngIf="user" id="full-pers-info">
+    <h2 class="text-left mb-0">{{user.name}} {{user.surname}} <a routerLink="edit">
+      <i *ngIf="user.role=='ROLE_USER' || user.role=='ROLE_ADMIN'" class="fas fa-edit float-right pt-2"></i>
+    </a></h2>
     <h3 *ngIf="user.role=='ROLE_USER'" class="text-left text-muted">Customer</h3>
+    <h3 *ngIf="user.role=='ROLE_ADMIN'" class="text-left text-muted">Admin</h3>
+    <h3 *ngIf="user.role=='ROLE_COURIER'" class="text-left text-muted">Courier</h3>
+    <h3 *ngIf="user.role=='ROLE_PRODUCT_MANAGER'" class="text-left text-muted">Product Manager</h3>
     <div class="accordion">
-      <div class="card">
-        <div class="card-header">
-            <button class="btn btn-block text-left" (click)="showHideInfo()" type="button" data-toggle="collapse"
-                    data-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
-              Personal information
-              <i *ngIf="!collapsedInfo" class="fas fa-angle-down text-muted float-right"></i>
-              <i *ngIf="collapsedInfo" class="fas fa-angle-up text-muted float-right"></i>
-            </button>
-        </div>
-        <div id="collapseInfo" class="collapse show">
+      <div class="card mb-4 border">
+        <button class="btn text-left" (click)="showHideInfo()" type="button" data-toggle="collapse"
+                aria-expanded="true" aria-controls="collapseInfo">
+          Personal information
+          <i *ngIf="!collapsedInfo" class="fas fa-angle-down text-muted float-right"></i>
+          <i *ngIf="collapsedInfo" class="fas fa-angle-up text-muted float-right"></i>
+        </button>
+        <div id="collapseInfo" class="collapse" [ngClass]="{'show': collapsedInfo}">
           <div class="card-body">
-            <div class ="pers">
-              <h3 class = "note">Surname:</h3>
-              <h4 class = "info-text">{{user.surname}}</h4>
+            <div class="pers">
+              <h3 class="note">Surname:</h3>
+              <h4 class="info-text">{{user.surname}}</h4>
             </div>
-            <div  class ="pers">
-              <h3 class = "note">Name:</h3>
-              <h4 class = "info-text">{{user.name}}</h4>
+            <div class="pers">
+              <h3 class="note">Name:</h3>
+              <h4 class="info-text">{{user.name}}</h4>
             </div>
-            <div class ="pers">
-              <h3 class = "note mb-0">Date of birthday:</h3>
-              <h4 *ngIf="!user.dateOfBirth" class = "info-text">--</h4>
-              <h4 *ngIf="user.dateOfBirth" class = "info-text">{{user.dateOfBirth}}</h4>
+            <div class="row pl-3 pr-3 d-flex flex-sm-row">
+              <div class="pers col-sm-5 col-12 pl-0">
+                <h3 class="note">Phone:</h3>
+                <h4 *ngIf="user.phone" class="info-text">{{user.phone}}</h4>
+                <h4 *ngIf="!user.phone" class="info-text">--</h4>
+              </div>
+              <div class="pers col-sm-6 col-12 offset-0 offset-sm-1 pl-0">
+                <h3 class="note mb-0">Date of birthday:</h3>
+                <h4 *ngIf="!user.dateOfBirth" class="info-text">--</h4>
+                <h4 *ngIf="user.dateOfBirth" class="info-text">{{user.dateOfBirth}}</h4>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-header">
-            <button class="btn btn-block text-left collapsed" (click)="showHideContact()" type="button"
-                    data-toggle="collapse" data-target="#collapseContact" aria-expanded="false" aria-controls="collapseContact">
-              Contact information
-              <i *ngIf="!collapsedContact" class="fas fa-angle-down text-muted float-right"></i>
-              <i *ngIf="collapsedContact" class="fas fa-angle-up text-muted float-right"></i>
-            </button>
-        </div>
-        <div id="collapseContact" class="collapse show">
+      <div class="card border">
+        <button class="btn text-left collapsed" (click)="showHideContact()" type="button"
+                data-toggle="collapse" aria-expanded="false" aria-controls="collapseContact">
+          Account
+          <i *ngIf="!collapsedContact" class="fas fa-angle-down text-muted float-right"></i>
+          <i *ngIf="collapsedContact" class="fas fa-angle-up text-muted float-right"></i>
+        </button>
+        <div id="collapseContact" class="collapse" [ngClass]="{'show': collapsedContact}">
           <div class="card-body">
-            <div class ="pers">
-              <h3 class = "note">Phone:</h3>
-              <h4 *ngIf="user.phone" class = "info-text">{{user.phone}}</h4>
-              <h4 *ngIf="!user.phone" class = "info-text">--</h4>
+            <div class="pers">
+              <h3 class="note">Mail:</h3>
+              <h4 class="info-text">{{user.email}}</h4>
             </div>
-            <div class ="pers">
-              <h3 class = "note">Mail:</h3>
-              <h4 class = "info-text">{{user.email}}</h4>
+            <div class="row justify-content-between d-flex flex-sm-row pl-3">
+              <button [disabled]="loading" *ngIf="!changedPassword" (click)="changePassword()" class="btn btn-primary ml-0 password-btn">Change password
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span></button>
+              <button *ngIf="changedPassword" class="btn btn-primary ml-0 changed-btn" disabled>Check your e-mail to confirm reset</button>
+              <button class="btn btn-default logout-btn ml-0" (click)="logout()">Logout</button>
             </div>
           </div>
         </div>

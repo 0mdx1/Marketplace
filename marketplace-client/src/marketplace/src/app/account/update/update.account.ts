@@ -2,17 +2,30 @@ import { Component, OnInit } from "@angular/core";
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { User } from "src/app/_models/user";
 import { AccountService } from "src/app/_services/account.service";
+import {Router} from "@angular/router";
+import {first} from "rxjs/operators";
+import {AlertType} from "../../_models/alert";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
-  templateUrl: './update.account.html'
+  templateUrl: './update.account.html',
+  styleUrls: ['./update.account.component.css'],
 })
 export class UpdateAccount implements OnInit {
 
   updateForm: FormGroup;
   user: User = {};
-  is_visible: boolean = true;
 
-  constructor(private formBuilder: FormBuilder, private accountService: AccountService) {
+  collapsedInfo: boolean = true;
+  collapsedContact: boolean = false;
+
+  loading: boolean = false;
+  changedPassword: boolean = false;
+
+  constructor(private formBuilder: FormBuilder,
+              private accountService: AccountService,
+              private router: Router,
+              private alertService: AlertService) {
     this.updateForm = this.formBuilder.group({
       name: [''],
       surname: [''],
@@ -42,16 +55,49 @@ export class UpdateAccount implements OnInit {
       phone: this.updateForm.value['phone'],
       birthday: this.updateForm.value['birthday']
     }
-    
-    this.accountService.updateUser(body).subscribe(
-      data => {
-        console.log('Success ' + data);
-        this.is_visible = false;
+
+    this.accountService.updateUser(body).subscribe({
+      next: () => {
+        this.router.navigate(['/accounts/profile']);
+        console.log("Profile updated");
+        this.alertService.addAlert("Profile was successfully updated!", AlertType.Success);
       },
-      error => console.log(error)
-    )
-    
-    
+      error: error => {
+        console.log("Error has occurred during updating profile");
+        this.alertService.addAlert("Error has occurred during updating", AlertType.Danger);
+      }
+    });
+  }
+
+  showHideInfo():void {
+    this.collapsedInfo = !this.collapsedInfo;
+  }
+
+  showHideContact():void {
+    this.collapsedContact = !this.collapsedContact;
+  }
+
+  logout(): void {
+    this.accountService.logout();
+  }
+
+  changePassword(): void {
+    this.loading = true;
+    if(this.user && this.user.email) {
+      this.accountService.resetPassword('{"email" : "' + this.user.email + '"}')
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            console.log('Password reset');
+            this.loading = false;
+            this.changedPassword = true;
+          },
+          error: error => {
+            console.log(error);
+            this.loading = false;
+          }
+        });
+    }
   }
 
 }

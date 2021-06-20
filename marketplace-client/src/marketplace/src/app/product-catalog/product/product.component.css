@@ -55,3 +55,13 @@
   font-size: 20px;
   color: rgb(123, 123, 123);
 }
+
+.btn-edit {
+  color: #007dc3;
+  border: 1px solid #007dc3;
+}
+
+.btn-edit:hover {
+  color: #FFFFFF;
+  background-color: #007dc3;
+}

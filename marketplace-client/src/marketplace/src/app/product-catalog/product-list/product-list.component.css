@@ -4,11 +4,13 @@
 
 .dropdown {
   margin-top: 10px;
+  margin-left: 48px;
 }
 
 .dropdown .btn{
-  color: #fff;
-  background-color: #007dc3;
+  color: #007dc3;
+  background-color: #FFFFFF;
+  border: 1px solid #007dc3;
   float: right;
   margin-right: 15px;
   margin-top: 10px;
@@ -33,4 +35,19 @@
 .ascending-btn:focus {
   border: none;
   outline: none;
+}
+
+.btn-add {
+  background-color: #007dc3;
+  color: #FFFFFF;
+  float: right;
+  margin-top: 20px;
+  font-size: 15px;
+  height: 40px;
+  padding: 6px 12px;
+  margin-left: 48px;
+}
+
+.btn-add:hover {
+  box-shadow: 0 0 6pt 3pt #7fc5ee;
 }

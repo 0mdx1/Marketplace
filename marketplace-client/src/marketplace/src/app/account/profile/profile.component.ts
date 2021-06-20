@@ -4,7 +4,7 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 import { AccountService } from '../../_services/account.service';
 import { StaffMember } from '../../_models/staff-member';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import {first, switchMap} from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
 import { Subscription } from 'rxjs';
 
@@ -19,7 +19,10 @@ export class ProfileComponent implements OnInit {
   birthday: string = '-';
 
   collapsedInfo: boolean = true;
-  collapsedContact: boolean = true;
+  collapsedContact: boolean = false;
+
+  loading: boolean = false;
+  changedPassword: boolean = false;
 
   constructor(
     private accountService: AccountService,
@@ -59,5 +62,28 @@ export class ProfileComponent implements OnInit {
 
   showHideContact(): void {
     this.collapsedContact = !this.collapsedContact;
+  }
+
+  logout(): void {
+    this.accountService.logout();
+  }
+
+  changePassword(): void {
+    this.loading = true;
+    if(this.user && this.user.email) {
+      this.accountService.resetPassword('{"email" : "' + this.user.email + '"}')
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            console.log('Password reset');
+            this.loading = false;
+            this.changedPassword = true;
+          },
+          error: error => {
+            console.log(error);
+            this.loading = false;
+          }
+        });
+    }
   }
 }

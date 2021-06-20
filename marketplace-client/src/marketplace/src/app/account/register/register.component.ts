@@ -19,10 +19,10 @@ import {
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  form: FormGroup;
+
+  form!: FormGroup;
   submitted = false;
 
-  // icons
   loading = false;
   showPassword = false;
   showConfirmPassword = false;
@@ -32,6 +32,10 @@ export class RegisterComponent {
     private formBuilder: FormBuilder,
     private accountService: AccountService
   ) {
+    this.buildForm();
+  }
+
+  buildForm(): void {
     this.form = this.formBuilder.group(
       {
         name: ['', Validators.required],
@@ -66,10 +70,10 @@ export class RegisterComponent {
 
   onSubmit(): void {
     this.submitted = true;
-    this.form.disable();
     if (this.form.invalid) {
       return;
     }
+    this.form.disable();
     this.loading = true;
     this.accountService
       .register(this.form.value)

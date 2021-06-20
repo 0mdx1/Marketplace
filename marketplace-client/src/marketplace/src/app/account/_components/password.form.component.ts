@@ -55,6 +55,7 @@ export class PasswordFormComponent {
               console.log('Password reset');
               this.loading = false;
               this.onClick.emit('reseted');
+              this.form.enable();
             },
             error: (error: any) => {
               console.log(error);

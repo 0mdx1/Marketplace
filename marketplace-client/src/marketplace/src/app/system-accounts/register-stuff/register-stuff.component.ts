@@ -92,7 +92,7 @@ export class RegisterStuffComponent {
       return;
     }
     this.loading = true;
-
+    this.form.disable();
     let observable = null;
     if (this.courierRoleSelected()) {
       observable = this.accountService.registerCourier(
@@ -109,12 +109,14 @@ export class RegisterStuffComponent {
       next: () => {
         this.loading = false;
         this.registered = true;
+        this.form.enable();
       },
       error: (error) => {
         if (error.error.message === 'Email  already exists') {
           this.getForm.email.setErrors({ EmailAlreadyExists: true });
         }
         this.loading = false;
+        this.form.enable();
       },
     });
   }
