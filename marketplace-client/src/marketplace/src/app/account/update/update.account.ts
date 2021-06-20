@@ -10,6 +10,7 @@ export class UpdateAccount implements OnInit {
 
   updateForm: FormGroup;
   user: User = {};
+  is_visible: boolean = true;
 
   constructor(private formBuilder: FormBuilder, private accountService: AccountService) {
     this.updateForm = this.formBuilder.group({
@@ -43,7 +44,10 @@ export class UpdateAccount implements OnInit {
     }
     
     this.accountService.updateUser(body).subscribe(
-      data => console.log('Success ' + data),
+      data => {
+        console.log('Success ' + data);
+        this.is_visible = false;
+      },
       error => console.log(error)
     )
     

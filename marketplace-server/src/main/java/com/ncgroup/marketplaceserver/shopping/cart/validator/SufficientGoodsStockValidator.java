@@ -44,6 +44,13 @@ public class SufficientGoodsStockValidator implements ConstraintValidator<Suffic
             return false;
         }
         Good goods = goodsOpt.get();
+        if(!goods.isStatus()){
+            constraintValidatorContext
+                    .buildConstraintViolationWithTemplate(goods.getGoodName()+" is not available")
+                    .addPropertyNode("item")
+                    .addConstraintViolation();
+            return false;
+        }
         if(!goods.isInStock()){
             constraintValidatorContext
                     .buildConstraintViolationWithTemplate(goods.getGoodName()+" is out of stock")

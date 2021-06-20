@@ -10,7 +10,7 @@ import {ProductComparisonComponent} from "./product-comparison/product-compariso
 
 const routes: Routes = [
   {
-    path: 'add-product',
+    path: 'add',
     component: AddProductComponent,
     canActivate: [RoleGuardService],
     data: { roles: [Role.ProductManager,Role.Admin] }
@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: ':id', component: ProductComponent },
   {
-    path: 'update-product/:id',
+    path: 'update/:id',
     component: UpdateProductComponent,
     canActivate: [RoleGuardService],
     data: { roles: [Role.ProductManager,Role.Admin] }
