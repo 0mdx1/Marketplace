@@ -16,6 +16,7 @@ import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -30,7 +31,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Repository
-@PropertySource("classpath:database/queries.properties")
+@PropertySources({
+        @PropertySource("classpath:database/queries.properties"),
+        @PropertySource("classpath:application.properties")
+})
 public class CourierRepositoryImpl implements CourierRepository {
 
     private JdbcTemplate jdbcTemplate;
@@ -62,6 +66,9 @@ public class CourierRepositoryImpl implements CourierRepository {
 
     @Value("${courier.number-of-rows-all}")
     private String selectNumberOfRowsAll;
+
+    @Value("${page.capacity}")
+    private Integer PAGE_SIZE;
 
 
     @Autowired
@@ -116,7 +123,8 @@ public class CourierRepositoryImpl implements CourierRepository {
                 .addValue("search", search)
                 .addValue("is_enabled", is_enabled)
                 .addValue("is_active", is_active)
-                .addValue("page", page);
+                .addValue("page", page)
+                .addValue("pageSize", PAGE_SIZE);
         return namedParameterJdbcTemplate.query(filterNameQuery, params, new CourierRowMapper());
     }
 
@@ -124,7 +132,8 @@ public class CourierRepositoryImpl implements CourierRepository {
     public List<Courier> getByNameSurnameAll(String search, int page) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search)
-                .addValue("page", page);
+                .addValue("page", page)
+                .addValue("pageSize", PAGE_SIZE);
         return namedParameterJdbcTemplate.query(filterNameQueryAll, params, new CourierRowMapper());
     }
 

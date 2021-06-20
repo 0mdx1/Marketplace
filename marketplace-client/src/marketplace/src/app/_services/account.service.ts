@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {catchError, shareReplay, tap} from 'rxjs/operators';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
 import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
 import { StaffMember } from '../_models/staff-member';
-import {Account} from "../_models/account";
-import {AuthService} from "../_auth/auth.service";
+import { Account } from '../_models/account';
+import { AuthService } from '../_auth/auth.service';
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -24,10 +24,9 @@ export class AccountService {
     private authService: AuthService
   ) {
     const account = authService.getAccount();
-    if(account){
+    if (account) {
       this.accountSubject = new BehaviorSubject<Account>(account);
-    }
-    else{
+    } else {
       this.accountSubject = new BehaviorSubject<Account>(new Account());
     }
     this.account = this.accountSubject.asObservable();
@@ -38,10 +37,16 @@ export class AccountService {
   }
 
   login(email: string, password: string): Observable<HttpResponse<User>> {
-    return this.http.post<User>(`${baseUrl}/login`, {email, password},
-      {observe: 'response'}).pipe(
-        tap(res => this.setToken(res)),
-        shareReplay());
+    return this.http
+      .post<User>(
+        `${baseUrl}/login`,
+        { email, password },
+        { observe: 'response' }
+      )
+      .pipe(
+        tap((res) => this.setToken(res)),
+        shareReplay()
+      );
   }
 
   logout(): void {
@@ -85,9 +90,8 @@ export class AccountService {
       localStorage.setItem('token', token);
     }
     const account = this.authService.getAccount();
-    if(account){
+    if (account) {
       this.accountSubject.next(account);
     }
   }
-
 }

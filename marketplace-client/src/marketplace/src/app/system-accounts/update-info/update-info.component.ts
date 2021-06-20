@@ -47,7 +47,6 @@ export class UpdateInfoComponent implements OnInit {
         .getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
           this.formCreation();
         });
     } else if (this.route.snapshot.params.role.localeCompare(2)) {
@@ -55,7 +54,6 @@ export class UpdateInfoComponent implements OnInit {
         .getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
           this.formCreation();
         });
     }
@@ -73,7 +71,7 @@ export class UpdateInfoComponent implements OnInit {
         name: [this.response.name, Validators.required],
         surname: [this.response.surname, Validators.required],
         phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
-        birthday: [''],
+        birthday: [this.response.dateOfBirth, Validators.required],
         status: [this.response.status, Validators.required],
       },
       {
@@ -100,7 +98,7 @@ export class UpdateInfoComponent implements OnInit {
       name: o.name,
       surname: o.surname,
       email: this.response.email,
-      dateOfBirth: o.dateOfBirth,
+      dateOfBirth: o.birthday,
       phone: o.phone,
       role: this.response.role,
       status: o.status,
