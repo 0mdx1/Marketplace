@@ -1,5 +1,7 @@
 package com.ncgroup.marketplaceserver.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import lombok.Data;
@@ -14,6 +16,8 @@ public class CourierUpdateDto {
     @NotBlank(message = "Surname is mandatory")
     private String surname;
     private String phone;
+    @JsonProperty("birthday")
+    @JsonAlias("dateOfBirth")
     private LocalDate birthday;
     private String status;
 

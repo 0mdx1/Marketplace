@@ -32,9 +32,9 @@ public class ManagerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable int id) {
+    public ResponseEntity<UserDto> findById(@PathVariable int id) {
         User manager = managerService.getById(id);
-        return new ResponseEntity<>(manager, OK);
+        return new ResponseEntity<>(UserDto.convertToDto(manager), OK);
     }
 
     @PatchMapping("/{id}")

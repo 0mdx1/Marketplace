@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  user?: User;
+  user: User = {};
   subscription!: Subscription;
   birthday: string = '-';
 
@@ -53,11 +53,11 @@ export class ProfileComponent implements OnInit {
     this.birthday = this.response.birthday;*/
   }
 
-  showHideInfo():void {
+  showHideInfo(): void {
     this.collapsedInfo = !this.collapsedInfo;
   }
 
-  showHideContact():void {
+  showHideContact(): void {
     this.collapsedContact = !this.collapsedContact;
   }
 }
