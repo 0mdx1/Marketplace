@@ -1,37 +1,36 @@
 package com.ncgroup.marketplaceserver.security.config;
 
-import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.repository.CourierRepository;
-import com.ncgroup.marketplaceserver.repository.UserRepository;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import com.ncgroup.marketplaceserver.model.Role;
+import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.repository.CourierRepository;
+import com.ncgroup.marketplaceserver.repository.UserRepository;
 
 @Configuration
-public class DefaultUserConfiguration extends UserConfiguration{
-
-    @Value("${default-user.name}")
+public class DefaultCourierConfiguration extends UserConfiguration {
+	@Value("${default-courier.name}")
     private String name;
 
-    @Value("${default-user.surname}")
+    @Value("${default-courier.surname}")
     private String surname;
 
-    @Value("${default-user.phone}")
+    @Value("${default-courier.phone}")
     private String phone;
 
-    @Value("${default-user.email}")
+    @Value("${default-courier.email}")
     private String email;
 
-    @Value("${default-user.password}")
+    @Value("${default-courier.password}")
     private String password;
 
     @Autowired
-    public DefaultUserConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
+    public DefaultCourierConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, 
     		CourierRepository courierRepository) {
         super(passwordEncoder, userRepository, courierRepository);
     }
@@ -45,7 +44,7 @@ public class DefaultUserConfiguration extends UserConfiguration{
                 .birthday(LocalDate.now())
                 .email(email)
                 .password(password)
-                .role(Role.ROLE_USER)
+                .role(Role.ROLE_COURIER)
                 .isEnabled(true)
                 .build();
     }

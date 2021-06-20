@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.security.config;
 
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.repository.CourierRepository;
 import com.ncgroup.marketplaceserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +31,9 @@ public class DefaultAdminConfiguration extends UserConfiguration{
     private String password;
 
     @Autowired
-    public DefaultAdminConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
-        super(passwordEncoder, userRepository);
+    public DefaultAdminConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
+    		CourierRepository courierRepository) {
+        super(passwordEncoder, userRepository, courierRepository);
     }
 
     protected User getUser() {
