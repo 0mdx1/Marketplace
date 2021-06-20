@@ -9,7 +9,6 @@
           <th class="max-width">Address</th>
           <th class="max-width">Phone Number</th>
           <th class="max-width">Total Sum</th>
-          <th class="max-width">Discount Sum</th>
           <th class="max-width">Delivery Time</th>
           <th class="max-width">Disturb</th>
           <th class="max-width">Status</th>
@@ -22,10 +21,12 @@
           <td class="text-nowrap align-middle">{{order.user ? order.user.surname : ''}}</td>
           <td class="text-nowrap align-middle">{{order.address}}</td>
           <td class="text-nowrap align-middle">{{order.user ? order.user.phone : ''}}</td>
-          <td class="text-nowrap align-middle">{{order.totalSum}}</td>
-          <td class="text-nowrap align-middle">{{order.discountSum}}</td>
+          <td class="text-nowrap align-middle">{{order.totalSum | currency: 'USD'}}</td>
           <td class="text-nowrap align-middle">{{order.deliveryTime}}</td>
-          <td class="text-nowrap align-middle">{{order.disturb}}</td>
+          <td class="text-nowrap align-middle">
+            <span *ngIf="order.disturb">Yes</span>
+            <span *ngIf="!order.disturb">No</span>
+          </td>
           <td class="text-nowrap align-middle">{{order.status}}</td>
 
         </tr>

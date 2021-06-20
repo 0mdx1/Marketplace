@@ -35,10 +35,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     )
       .pipe(
         map((e: any) => e.target.value),
-        //filter((text:string) => text.length>0),
         debounceTime(250),
         map((query: string) => {
-          console.log(query);
           const obs = this.service.getSearchedProducts(query, this.init);
           this.init = false;
           return obs;
@@ -47,7 +45,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (results: ProductDto) => {
-          //this.results.emit(results.users);
           this.products = results.result_set;
           this.results.emit();
         },

@@ -5,8 +5,8 @@
 
         <div class="col mb-3">
           <div class="e-panel card">
-            <div class="card-body">
-              <div class="e-table">
+
+              <div *ngIf="orderPage.orders" class="e-table">
                 <div class="table-responsive table-lg mt-3">
                   <table class="table table-bordered table-hover">
                     <thead>
@@ -43,7 +43,10 @@
                 </div>
                 <app-pagination-order (notification)="orderPage = page.orderPage" #page></app-pagination-order>
               </div>
-            </div>
+
+          </div>
+          <div *ngIf="orderPage.orders?.length === 0" class="alert alert-primary mt-5 text-center" role="alert">
+            There are no orders for you
           </div>
         </div>
       </div>

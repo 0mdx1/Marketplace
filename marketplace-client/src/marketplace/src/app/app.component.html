@@ -27,6 +27,7 @@
         <a routerLink="products">STORE</a>
         <a *ngIf="account.role=='ROLE_ADMIN'" routerLink="sysaccounts">MANAGE</a>
         <a *ngIf="account.role=='ROLE_USER'" routerLink="accounts/orders/incoming">ORDERS</a>
+        <a *ngIf="account.role=='ROLE_COURIER'" routerLink="orders">ORDERS</a>
         <a *ngIf="account.email" routerLink="accounts/profile">PROFILE</a>
       </div>
     </div>

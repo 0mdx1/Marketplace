@@ -4,19 +4,28 @@
       <div class="card">
 
         <div class="card-body">
-          <h4 class="card-title">
-            {{order.user?.name}} {{order.user?.surname}}</h4>
-          <h6 class="card-subtitle mb-2 text-muted">Phone: {{order.user?.phone}}</h6>
-          <button type="button" (click) = "changeStatus()" class="btn btn-danger mt-3">
-            <i class="fas fa-shopping-cart"></i> Current Status: {{order.status}}
+          <h2 class="card-title">
+            {{order.user?.name}} {{order.user?.surname}}</h2>
+          <p class="mb-2 text-muted">Phone: {{order.user?.phone}}</p>
+          <p class="mb-2 text-muted">Address: {{order.address}}</p>
+          <p class="mb-2 text-muted">Delivery time: {{order.deliveryTime.replace("T", " ")}}</p>
+          <p class="mb-2 text-muted">Disturb:
+            <span *ngIf="order.disturb">Yes</span>
+            <span *ngIf="!order.disturb">No</span>
+          </p>
+          <p *ngIf="order.comment" class="mb-2 text-muted">Comment: {{order.comment}}</p>
+          <p class="mt-4 mb-2">Total sum: {{order.totalSum | currency: 'USD'}}</p>
+          <p class="mb-2 ">Discount sum: {{(order.totalSum-order.totalSum*order.discountSum/100).toFixed(2)
+            | currency: 'USD'}}</p>
+          <button type="button" (click) = "changeStatus()" class="btn btn-primary mt-3">
+             Current Status: {{order.status}}
           </button>
-          <h6 class="card-subtitle mb-2 text-muted">Comment: {{order.comment}}</h6>
-          <div class="col mb-3">
-            <div class="e-panel card">
-              <div class="card-body">
+          <div class="col mb-2">
+            <div class="e-panel ">
+
                 <div class="e-table">
-                  <div class="table-responsive table-lg mt-3">
-                    <table class="table table-bordered table-hover">
+                  <div class="table-responsive table-lg mt-2">
+                    <table class="table table-bordered">
                       <thead>
                       <tr>
 
@@ -37,7 +46,7 @@
                   </div>
 
                 </div>
-              </div>
+
             </div>
           </div>
 
