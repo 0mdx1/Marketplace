@@ -6,7 +6,7 @@
         <div class="col mb-3">
           <div class="e-panel card">
 
-              <div *ngIf="orderPage.orders" class="e-table">
+              <div *ngIf="orderPage.orders && orderPage.orders.length > 0" class="e-table">
                 <div class="table-responsive table-lg mt-3">
                   <table class="table table-bordered table-hover">
                     <thead>
