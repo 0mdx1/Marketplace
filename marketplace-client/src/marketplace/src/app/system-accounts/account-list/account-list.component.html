@@ -5,28 +5,24 @@
         <div class="col-12 col-lg-3 mb-3">
           <div class="card">
             <div class="card-body">
-              <div class="text-center px-xl-3">
-                <button class="btn btn-success" type="button" (click)="createUser()">Create new account</button>
-              </div>
               <app-search (results)="users = search.getUsers()" #search> </app-search>
               <app-filter (results)="users = filter.getUsers()" [statusList]="getStatusList()" #filter>
               </app-filter>
             </div>
           </div>
         </div>
-        <div class="col mb-3">
-          <div class="e-panel">
+        <div class="col mb-3 card">
+          <div class="e-panel mt-4 mx-3">
+            <button class="btn btn-default btn-add" type="button" (click)="createUser()">+ Add staff</button>
             <div *ngIf="users && users.length > 0" class="e-table">
               <div class="table-responsive table-lg mt-3">
                 <table class="table table-bordered table-hover">
                   <thead>
                     <tr>
-
                         <th class="max-width">Name</th>
                         <th class="max-width">Surname</th>
                         <th class="max-width">Phone</th>
                         <th class="max-width">Email</th>
-
                     </tr>
                   </thead>
                   <tbody>

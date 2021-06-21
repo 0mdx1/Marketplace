@@ -12,7 +12,7 @@ import { ProductService } from '../../_services/product.service';
 import { Product } from '../../_models/products/product';
 
 import { first } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
 import {ApiError} from "../../_models/ApiError";

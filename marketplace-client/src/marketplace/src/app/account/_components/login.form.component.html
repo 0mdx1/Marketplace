@@ -39,7 +39,7 @@
   </div>
   <div class="form-row link-div">
     <div class="form-group col">
-      <button [disabled]="loading" type="submit" class="btn btn-primary">
+      <button [disabled]="loading || (showCaptcha && !captchaResponse)" type="submit" class="btn btn-primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Login
       </button>

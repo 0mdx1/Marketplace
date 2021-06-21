@@ -1,5 +1,5 @@
 <div>
-  <label>Status:</label>
+  <h2>Status:</h2>
   <div *ngFor="let status of statusList" class="px-2">
     <div class="custom-control custom-radio">
       <input type="radio"
@@ -11,6 +11,13 @@
             (change)="onChange($event)">
       <label class="custom-control-label" for={{status}}>{{status}}</label>
     </div>
+  </div>
+  <h2>Type:</h2>
+  <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{type}}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+    <button  *ngFor="let type of typeList" (click)="setType(type)" class="dropdown-item" value="type" type="button">{{type}}</button>
   </div>
 </div>
 

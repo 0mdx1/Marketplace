@@ -1,3 +1,8 @@
+h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
 .form-control{
   border: 1px solid #007dc3;
 }

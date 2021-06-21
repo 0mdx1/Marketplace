@@ -110,26 +110,13 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-6" >
-                    <label>Status<span>*</span></label>
-                    <select class="form-control" id="status" formControlName="status"
-                            [ngClass]="{ 'is-invalid': submitted && getForm.status.errors }">>
-                      <ng-container>
-                        <option Value="true" >Active</option>
-                        <option Value="false" selected="selected" >Not Active</option>
-                      </ng-container>
-                    </select>
-                    <div *ngIf="submitted && getForm.status.errors" class="invalid-feedback">
-                      <div *ngIf="getForm.status.errors.required">Status is required</div>
-                    </div>
-                  </div>
-
                   <div class="form-group col-6">
                     <label>Shipping date<span>*</span></label>
                     <input type="datetime-local" formControlName="shippingDate" class="form-control"  min="{{d}}" max="3018-07-14T00:00"
                            [ngClass]="{ 'is-invalid': submitted && getForm.shippingDate.errors }" />
                     <div *ngIf="submitted && getForm.shippingDate.errors" class="invalid-feedback">
-                      <div *ngIf="getForm.shippingDate.hasError('InvalidDate')">Invalid date</div>
+                      <div *ngIf="getForm.shippingDate.errors.required">Shipping date is required</div>
+                      <div *ngIf="getForm.shippingDate.hasError('InvalidDate')">Shipping date must be past</div>
                     </div>
                   </div>
 

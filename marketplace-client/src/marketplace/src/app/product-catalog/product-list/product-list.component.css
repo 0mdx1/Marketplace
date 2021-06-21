@@ -7,9 +7,9 @@
   margin-left: 48px;
 }
 
-.dropdown .btn{
+.dropdown .btn {
   color: #007dc3;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: 1px solid #007dc3;
   float: right;
   margin-right: 15px;
@@ -17,10 +17,11 @@
   text-transform: capitalize;
 }
 
-.dropdown h2{
+.dropdown h2 {
   float: right;
   margin-right: 15px;
   margin-top: 12px;
+  font-size: 18px;
 }
 
 .ascending-btn {
@@ -28,7 +29,7 @@
   margin-right: 35px;
   margin-top: 17px;
   color: #007dc3;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: none;
 }
 
@@ -39,8 +40,7 @@
 
 .btn-add {
   background-color: #007dc3;
-  color: #FFFFFF;
-  float: right;
+  color: #ffffff;
   margin-top: 20px;
   font-size: 15px;
   height: 40px;

@@ -1,36 +1,38 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators,} from '@angular/forms';
-import {ProductService} from '../../_services/product.service';
-import {first} from 'rxjs/operators';
-import {Product} from '../../_models/products/product';
-import {AccountService} from "../../_services/account.service";
-import {Router} from "@angular/router";
-import {Subscription} from "rxjs";
-import {AlertService} from "../../_services/alert.service";
-import {AlertType} from "../../_models/alert";
+import { Component, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ProductService } from '../../_services/product.service';
+import { first } from 'rxjs/operators';
+import { Product } from '../../_models/products/product';
+import { AccountService } from '../../_services/account.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AlertService } from '../../_services/alert.service';
+import { AlertType } from '../../_models/alert';
+import { validateShippingDate } from 'src/app/_helpers/validators.service';
 
 @Component({
   selector: 'app-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css'],
-
 })
-export class AddProductComponent implements OnInit{
+export class AddProductComponent implements OnInit {
   form: FormGroup;
 
   subscriptions: Subscription = new Subscription();
 
   d = Date().toLocaleString();
 
-
-
   submitted = false;
-  unit: string[] = ["KILOGRAM", "ITEM", "LITRE"];
-  status: string[] = ["true", "false"];
-  firmName: string[]=[""];
-  categoryName: string[]= [""];
+  unit: string[] = ['KILOGRAM', 'ITEM', 'LITRE'];
+  firmName: string[] = [''];
+  categoryName: string[] = [''];
 
-  goodName: string = "New product";
+  goodName: string = '';
 
   loading = false;
   registered = false;
@@ -55,17 +57,19 @@ export class AddProductComponent implements OnInit{
         unit: ['', Validators.required],
         discount: ['', Validators.min(0)],
         inStock: ['', Validators.required],
-        status: ['', Validators.required],
         shippingDate: ['', Validators.required],
         categoryName: ['', Validators.required],
         description: ['', Validators.required],
       },
+      {
+        validator: [validateShippingDate],
+      }
     );
   }
 
   ngOnInit() {
     this.firm();
-    this.category()
+    this.category();
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
@@ -79,22 +83,23 @@ export class AddProductComponent implements OnInit{
     this.image = imageName;
   }
 
-  public category(){
-    this.subscriptions.add(this.productService.getCategories()
-      .subscribe((categ) =>{
+  public category() {
+    this.subscriptions.add(
+      this.productService.getCategories().subscribe((categ) => {
         this.responseCategory = categ;
         this.categoryName = this.responseCategory;
-      }));
+      })
+    );
   }
 
-  public firm(){
-    this.subscriptions.add(this.productService.getFirm()
-      .subscribe((firm) =>{
+  public firm() {
+    this.subscriptions.add(
+      this.productService.getFirm().subscribe((firm) => {
         this.responseFirm = firm;
         this.firmName = this.responseFirm;
-      }));
+      })
+    );
   }
-
 
   private mapToProduct(o: any): Product {
     return {
@@ -107,7 +112,7 @@ export class AddProductComponent implements OnInit{
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
-      status: o.status,
+      status: true,
       shippingDate: o.shippingDate,
       categoryName: o.categoryName,
       description: o.description,
@@ -123,20 +128,27 @@ export class AddProductComponent implements OnInit{
     this.loading = true;
     let product = this.mapToProduct(this.form.value);
     product.image = this.image;
-    this.productService.AddProduct(product)
+    this.productService
+      .AddProduct(product)
       .pipe(first())
       .subscribe({
         next: (res) => {
           this.router.navigateByUrl('/products/' + res.id);
           this.loading = false;
           this.registered = true;
-          this.alertService.addAlert("Product was successfully added!", AlertType.Success);
+          this.alertService.addAlert(
+            'Product was successfully added!',
+            AlertType.Success
+          );
         },
         error: (error) => {
           this.form.enable();
           this.loading = false;
-          this.alertService.addAlert("Error has occurred during creation", AlertType.Danger);
-        }
+          this.alertService.addAlert(
+            'Error has occurred during creation',
+            AlertType.Danger
+          );
+        },
       });
   }
 }

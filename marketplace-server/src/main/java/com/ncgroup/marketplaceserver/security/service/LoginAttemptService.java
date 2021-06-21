@@ -43,6 +43,11 @@ public class LoginAttemptService {
 	}
 	
 	public boolean hasExceededMaxAttempts(long userId) {
-		return userRepository.findById(userId).getFailedAuth() >= MAX_ATTEMPTS_NUMBER;
+		User user = userRepository.findById(userId);
+		if(user.getLastFailedAuth() != null &&
+				user.getLastFailedAuth().isBefore(LocalDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
+			return false;
+		}
+		return user.getFailedAuth() >= MAX_ATTEMPTS_NUMBER;
 	}
 }

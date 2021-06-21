@@ -122,20 +122,4 @@ export class FilterComponent implements OnInit {
   getProducts(): Product[] {
     return this.products;
   }
-
-  /*isPriceAsc(): boolean {
-    return this.filters.sort === 'price' && this.filters.direction === 'ASC';
-  }
-
-  isPriceDesc(): boolean {
-    return this.filters.sort === 'price' && this.filters.direction === 'DESC';
-  }
-
-  isNameAsc(): boolean {
-    return this.filters.sort === 'name' && this.filters.direction === 'ASC';
-  }
-
-  isNameDesc(): boolean {
-    return this.filters.sort === 'name' && this.filters.direction === 'DESC';
-  }*/
 }
