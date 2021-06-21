@@ -64,7 +64,6 @@ export class AddProductComponent implements OnInit{
   }
 
   ngOnInit() {
-    console.log("date" + this.d);
     this.firm();
     this.category()
   }
@@ -128,14 +127,12 @@ export class AddProductComponent implements OnInit{
       .pipe(first())
       .subscribe({
         next: (res) => {
-          console.log("Product added");
           this.router.navigateByUrl('/products/' + res.id);
           this.loading = false;
           this.registered = true;
           this.alertService.addAlert("Product was successfully added!", AlertType.Success);
         },
         error: (error) => {
-          console.log(error);
           this.form.enable();
           this.loading = false;
           this.alertService.addAlert("Error has occurred during creation", AlertType.Danger);

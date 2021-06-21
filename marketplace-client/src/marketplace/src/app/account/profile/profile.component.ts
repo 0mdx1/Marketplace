@@ -7,6 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import {first, switchMap} from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
 import { Subscription } from 'rxjs';
+import {ApiError} from "../../_models/ApiError";
+import {AlertType} from "../../_models/alert";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   selector: 'app-courier',
@@ -26,7 +29,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -40,7 +44,6 @@ export class ProfileComponent implements OnInit {
       this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
         })
 
     }
@@ -49,7 +52,6 @@ export class ProfileComponent implements OnInit {
       this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
-          console.log(this.response);
         })
     }
     if (this.response.birthday == !null)
@@ -75,12 +77,14 @@ export class ProfileComponent implements OnInit {
         .pipe(first())
         .subscribe({
           next: () => {
-            console.log('Password reset');
             this.loading = false;
             this.changedPassword = true;
           },
           error: error => {
-            console.log(error);
+            let apiError = error.error as ApiError;
+            if(apiError){
+              this.alertService.addAlert(apiError.message,AlertType.Danger);
+            }
             this.loading = false;
           }
         });

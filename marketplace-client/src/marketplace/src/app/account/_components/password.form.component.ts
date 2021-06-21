@@ -1,9 +1,12 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from '../../_services/account.service';
 import {first} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {validateConfirmPassword, validatePassword} from '../../_helpers/validators.service';
+import {AlertService} from "../../_services/alert.service";
+import {ApiError} from "../../_models/ApiError";
+import {AlertType} from "../../_models/alert";
 
 @Component({
   selector: 'app-password-form',
@@ -26,6 +29,7 @@ export class PasswordFormComponent {
     private formBuilder: FormBuilder,
     private accountService: AccountService,
     private route: ActivatedRoute,
+    private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -46,20 +50,21 @@ export class PasswordFormComponent {
     this.form.disable();
     this.route.queryParamMap.subscribe(params => {
       const id = params.get('link');
-      console.log(id);
       if (id) {
         this.accountService.setNewPassword(id, this.form.get('password')?.value)
           .pipe(first())
           .subscribe({
             next: () => {
-              console.log('Password reset');
               this.loading = false;
               this.onClick.emit('reseted');
               this.form.enable();
             },
             error: (error: any) => {
-              console.log(error);
               this.loading = false;
+              let apiError = error.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
               this.form.enable();
             }
           });

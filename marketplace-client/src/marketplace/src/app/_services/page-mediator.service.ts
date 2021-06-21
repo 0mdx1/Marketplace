@@ -12,11 +12,9 @@ export class PageMediatorService {
   notify(sender: any, event: PageEvent): void{
     if(sender instanceof CartComponent){
       if(event==PageEvent.PageArrive){
-        console.log("Arrive to the cart page");
         this.cart.startPolling();
       }
       if(event==PageEvent.PageLeave){
-        console.log("Leave from the cart page");
         this.cart.stopPolling();
       }
     }

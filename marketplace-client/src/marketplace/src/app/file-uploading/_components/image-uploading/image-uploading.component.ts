@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Observable} from "rxjs";
 import {FileService} from "../../../_services/file.service";
+import {ApiError} from "../../../_models/ApiError";
+import {AlertType} from "../../../_models/alert";
+import {AlertService} from "../../../_services/alert.service";
 
 @Component({
   selector: 'app-image-uploading',
@@ -15,7 +18,7 @@ export class ImageUploadingComponent implements OnChanges{
 
   public isLoading: boolean = false;
 
-  constructor(private fileService: FileService) {}
+  constructor(private fileService: FileService, private alertService: AlertService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.imageFilenameEvent.emit(this.getFilename(changes.imageUrl.currentValue))
@@ -36,11 +39,13 @@ export class ImageUploadingComponent implements OnChanges{
           this.isLoading=false;
           this.imageUrl = fileMetadata.resourceUrl;
           this.imageFilenameEvent.emit(fileMetadata.filename)
-          console.log(fileMetadata);
         },
         error: e=>{
           this.isLoading=false;
-          console.log(e)
+          let apiError = e.error as ApiError;
+          if(apiError){
+            this.alertService.addAlert(apiError.message,AlertType.Danger);
+          }
         }
       });
     }

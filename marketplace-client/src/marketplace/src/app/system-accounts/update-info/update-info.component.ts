@@ -124,12 +124,10 @@ export class UpdateInfoComponent implements OnInit {
         this.route.snapshot.params.id
       );
     } else {
-      console.log('Role mistake');
       this.form.enable();
       return;
     }
 
-    console.log(this.mapToStaffMember(this.form.value));
 
     observable.pipe(first()).subscribe({
       next: () => {
