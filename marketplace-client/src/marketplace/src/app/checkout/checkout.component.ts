@@ -180,7 +180,6 @@ export class CheckoutComponent implements OnInit {
           this.submitted = false;
           this.cartService.getCart().empty();
           this.items = [];
-          console.log("Succes!")
         },
         (msg) => {
           this.router.navigateByUrl('/cart')

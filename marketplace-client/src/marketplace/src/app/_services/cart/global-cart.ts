@@ -10,6 +10,9 @@ import {BrowserCart} from "./browser-cart";
 import {environment} from "../../../environments/environment";
 import {switchMap} from "rxjs/operators";
 import {Role} from "../../_models/role";
+import {AlertService} from "../alert.service";
+import {ApiError} from "../../_models/ApiError";
+import {AlertType} from "../../_models/alert";
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -25,7 +28,8 @@ export class GlobalCart implements Cart, OnDestroy{
   constructor(
     @Inject(BrowserCart)private cart: Cart,
     private http: HttpClient,
-    private auth: AuthService
+    private auth: AuthService,
+    private alertService: AlertService
   ) {
   }
 
@@ -44,16 +48,13 @@ export class GlobalCart implements Cart, OnDestroy{
   private updateItems() {
     this.init().subscribe(() => {
       if (!document.hidden) {
-        console.log("polling...");
         this.getShoppingCart()
           .subscribe({
             next: items => {
               if (JSON.stringify(items) !== JSON.stringify(this.cart.getItems())) {
-                console.log("changes detected. updating...")
                 this.cart.setItems(items);
               }
-            },
-            error: e => console.log(e)
+            }
           })
       }
     })
@@ -77,10 +78,8 @@ export class GlobalCart implements Cart, OnDestroy{
     if(!this.initialized){
       this.initialized = true;
       if(this.cart.getItems().length>0){
-        console.log("initializing with items from browser cart");
         return this.putShoppingCart(this.cart.getItems());
       }
-      console.log("initializing with items from cloud cart");
       return this.getShoppingCart()
         .pipe(switchMap(items => {
           this.cart.setItems(items);
@@ -99,7 +98,12 @@ export class GlobalCart implements Cart, OnDestroy{
     if(this.alowedToSendRequests()){
       this.init().subscribe(()=>{
         this.putShoppingCartItem(item)
-          .subscribe({error: e=>console.log(e)});
+          .subscribe({error: e=>{
+              let apiError = e.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
+          }});
       })
     }
   }
@@ -109,7 +113,12 @@ export class GlobalCart implements Cart, OnDestroy{
     if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.deleteShoppingCart()
-          .subscribe({error: e => console.log(e)});
+          .subscribe({error: e => {
+              let apiError = e.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
+            }});
       })
     }
   }
@@ -127,7 +136,12 @@ export class GlobalCart implements Cart, OnDestroy{
     if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.deleteShoppingCartItem(item)
-          .subscribe({error: e => console.log(e)});
+          .subscribe({error: e => {
+              let apiError = e.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
+            }});
       })
     }
   }
@@ -140,8 +154,12 @@ export class GlobalCart implements Cart, OnDestroy{
       this.init().subscribe(()=>{
         this.putShoppingCart(items)
           .subscribe({
-            complete: ()=>(console.log("completed")),
-            error: e=>console.log(e)
+            error: e=>{
+              let apiError = e.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
+            }
           });
       })
     }
@@ -152,7 +170,12 @@ export class GlobalCart implements Cart, OnDestroy{
     if(this.alowedToSendRequests()) {
       this.init().subscribe(()=>{
         this.patchShoppingCartItem(item)
-          .subscribe({error: e => console.log(e)});
+          .subscribe({error: e => {
+              let apiError = e.error as ApiError;
+              if(apiError){
+                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              }
+            }});
       })
     }
   }

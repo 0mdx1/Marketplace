@@ -45,7 +45,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         switchAll()
       )
       .subscribe((results: UserDto) => {
-        console.log('emit search');
         //this.results.emit(results.users);
         this.users = results.users;
         this.results.emit();

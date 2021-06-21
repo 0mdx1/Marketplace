@@ -41,7 +41,6 @@ export class OrderService {
   }
 
   private getOrderId(): string | null {
-    // console.log(this.activatedRoute.snapshot.paramMap.get('id'));
     // return this.activatedRoute.snapshot.queryParams.id;
     let arr = this.router.url.split('/');
     return arr[arr.length - 1];

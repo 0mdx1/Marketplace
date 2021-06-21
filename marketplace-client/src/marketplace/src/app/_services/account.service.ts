@@ -72,7 +72,6 @@ export class AccountService {
   }
 
   resetPassword(email: string): Observable<any> {
-    console.log(email);
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post(`${baseUrl}/reset-password`, email, {headers:header});
   }

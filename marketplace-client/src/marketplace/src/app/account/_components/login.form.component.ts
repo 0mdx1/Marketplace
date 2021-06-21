@@ -54,7 +54,6 @@ export class LoginFormComponent {
     this.accountService.login(this.getForm.email.value, this.getForm.password.value,this.captchaResponse)
       .subscribe({
         next: () => {
-          console.log("send request");
           this.router.navigateByUrl('/home');
           this.submitted = false;
           this.loading = false;
@@ -62,7 +61,6 @@ export class LoginFormComponent {
         },
           error: error => {
           this.recaptcha.reset();
-          console.log(error)
           let apiError = error.error as ApiError;
           if(apiError!=null && apiError.errorType=='CAPTCHA_VALIDATION_ERROR'){
             this.showCaptcha=true;
