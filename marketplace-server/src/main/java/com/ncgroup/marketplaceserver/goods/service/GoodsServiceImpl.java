@@ -56,8 +56,8 @@ public class GoodsServiceImpl implements GoodsService {
         String newImage = goodDto.getImage();
         if (!newImage.isEmpty()) {
             String oldImage = good.getImage();
-            goodDto.setImage(this.mediaService.confirmUpload(newImage));
             if (!oldImage.isEmpty() && !oldImage.equals(newImage)) {
+                goodDto.setImage(this.mediaService.confirmUpload(newImage));
                 log.info("Deleting old image");
                 mediaService.delete(oldImage);
             }
