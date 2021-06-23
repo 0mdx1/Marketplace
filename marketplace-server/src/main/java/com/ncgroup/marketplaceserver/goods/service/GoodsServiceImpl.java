@@ -22,12 +22,11 @@ import java.util.*;
 @PropertySource("classpath:application.properties")
 public class GoodsServiceImpl implements GoodsService {
 
-
     @Value("${page.capacity}")
     private Integer PAGE_CAPACITY;
 
-    private GoodsRepository repository;
-    private MediaService mediaService;
+    private final GoodsRepository repository;
+    private final MediaService mediaService;
 
     @Autowired
     public GoodsServiceImpl(GoodsRepository repository, MediaService mediaService) {
@@ -38,7 +37,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
         String newImage = goodDto.getImage();
-        if (!newImage.isEmpty()){
+        if (!newImage.isEmpty()) {
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
 
@@ -54,11 +53,11 @@ public class GoodsServiceImpl implements GoodsService {
         Good good = this.findById(id); // pull the good object if exists
 
         String newImage = goodDto.getImage();
+
         if (!newImage.isEmpty()) {
             String oldImage = good.getImage();
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
             if (!oldImage.isEmpty() && !oldImage.equals(newImage)) {
-                log.info("Deleting old image");
                 mediaService.delete(oldImage);
             }
         }
@@ -97,7 +96,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 //        log.info("Name " + name);;
         if (name != null) {
-            concatenator.add(" product.name LIKE '%" + name.toLowerCase() + "%'");
+            concatenator.add
+                    (" product.name LIKE '%" + name.toLowerCase() + "%' OR product.name LIKE '" + name.toLowerCase() + "%'");
             counter++;
         }
 
@@ -115,7 +115,6 @@ public class GoodsServiceImpl implements GoodsService {
             concatenator.add(" price - price*discount/100 <= " + maxPrice);
             counter++;
         }
-
 
         if (counter > 0) {
             fromQuery.append(" WHERE").append(concatenator.get(0));
@@ -144,7 +143,7 @@ public class GoodsServiceImpl implements GoodsService {
             fromQuery.append(" ORDER BY product.name");
         }
 
-        log.info("DIRECTION " + sortDirection);
+
         if (sortDirection != null) {
             fromQuery.append(" ").append(sortDirection.toUpperCase());
         } else {
@@ -200,7 +199,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Double> getPriceRange(String category) throws NotFoundException {
         ArrayList<Double> priceRange = new ArrayList<>();
-        if(category.equals("all")){
+        if (category.equals("all")){
             priceRange.add(repository.getTotalMinPrice());
             priceRange.add(repository.getTotalMaxPrice());
             return priceRange;

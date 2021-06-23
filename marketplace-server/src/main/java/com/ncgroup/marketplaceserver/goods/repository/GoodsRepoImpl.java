@@ -31,8 +31,8 @@ import java.util.OptionalDouble;
 @Slf4j
 public class GoodsRepoImpl implements GoodsRepository {
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public GoodsRepoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate,
@@ -107,7 +107,6 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
 
-    // TODO: add shipping date here
     @Value("${good.find-by-firmId-productId}")
     private String findGood;
     public Optional<Long> findGood(Long firmId, Long productId, LocalDateTime date) {
@@ -128,7 +127,6 @@ public class GoodsRepoImpl implements GoodsRepository {
     @Override
     public Long createGood(GoodDto goodDto)
             throws GoodAlreadyExistsException {
-        // TODO: make changes with status, shipping date and unit fields
 
         Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
         Long categoryId = createCategory(goodDto.getCategoryName().toLowerCase());
@@ -214,7 +212,6 @@ public class GoodsRepoImpl implements GoodsRepository {
         SqlParameterSource productParameter = new MapSqlParameterSource()
                 .addValue("goodId", id);
         Good good;
-        // TODO: QUESTION: specification + Optional.ofNullable()
         try {
             good = namedParameterJdbcTemplate
                     .queryForObject(findGoodById, productParameter, this::mapRow);
@@ -226,7 +223,6 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
 
-    //TODO: WHAT TO DO?
     public int countGoods(String query) {
         try {
             return jdbcTemplate.queryForObject(query, Integer.class);

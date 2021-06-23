@@ -20,17 +20,13 @@ import java.util.Map;
 @RequestMapping("/api/products")
 public class GoodsController {
 
-    private GoodsService service;
+    private final GoodsService service;
 
     @Autowired
     public GoodsController(GoodsService service) {
         this.service = service;
     }
 
-    /**
-     * create a product and return it just in case we need id/creationTime
-     * on the client side
-     */
     @PostMapping
     public ResponseEntity<Good> createProduct(@Valid @RequestBody GoodDto goodDto)
             throws GoodAlreadyExistsException {
@@ -44,11 +40,6 @@ public class GoodsController {
         return new ResponseEntity<>(service.edit(goodDto, id), HttpStatus.OK);
     }
 
-    /**
-     * displaying products with respect to filter,
-     * sorting and page number if they are given,
-     * otherwise just show the first page of all products (unsorted)
-     */
     @GetMapping
     public ResponseEntity<Map<String, Object>> display(
             @RequestParam(value = "search", required = false)
