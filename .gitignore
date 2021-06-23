@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 ./marketplace-server/bin
+./node_modules
 node_modules/
 
 ### STS ###

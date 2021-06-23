@@ -15,7 +15,6 @@ export class AuthInterceptor implements HttpInterceptor {
     //   });
     // }
     // req = this.addAuthenticationToken(req);
-    console.log(req);
     const token = req.headers.get('Authorization');
     if (token) {
       localStorage.setItem('token', token);

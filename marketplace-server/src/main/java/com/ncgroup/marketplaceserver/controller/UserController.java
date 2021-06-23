@@ -29,6 +29,7 @@ import com.ncgroup.marketplaceserver.model.dto.ResetPasswordDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.security.constants.JwtConstants;
 import com.ncgroup.marketplaceserver.security.model.UserPrincipal;
+import com.ncgroup.marketplaceserver.security.service.LoginAttemptService;
 import com.ncgroup.marketplaceserver.security.util.JwtProvider;
 import com.ncgroup.marketplaceserver.service.UserService;
 
@@ -40,6 +41,7 @@ public class UserController  {
     private UserService userService;
     private JwtProvider jwtProvider;
     private CaptchaService captchaService;
+    private LoginAttemptService loginAttemptService;
     
     @Value("${url.confirm-account.redirect}")
     private String redirectConfirmAccountUrl;
@@ -50,16 +52,17 @@ public class UserController  {
     @Value("${url.create-password.redirect}")
     private String redirectCreatePasswordUrl;
 
-    @Value("${security.max-failed-auth}")
-    private int maxFailedAuth;
     
 
     @Autowired
-    public UserController(AuthenticationManager authenticationManager, UserService userService, JwtProvider jwtProvider, CaptchaService captchaService) {
+    public UserController(AuthenticationManager authenticationManager,
+    		UserService userService, JwtProvider jwtProvider, CaptchaService captchaService,
+    		LoginAttemptService loginAttemptService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtProvider = jwtProvider;
         this.captchaService = captchaService;
+        this.loginAttemptService = loginAttemptService;
     }
     
     @GetMapping("/userinfo")
@@ -72,11 +75,10 @@ public class UserController  {
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user,@RequestHeader("captcha-response") String captchaResponse) {
+    public ResponseEntity<UserDto> login(@Valid @RequestBody LoginUserDto user,
+    		@RequestHeader("captcha-response") String captchaResponse) {
         User loginUser = userService.findUserByEmail(user.getEmail());
-        int failedAuth = loginUser.getFailedAuth();
-        log.info(failedAuth+"");
-        if(failedAuth>=maxFailedAuth&&!captchaService.validateCaptcha(captchaResponse)){
+        if(loginAttemptService.hasExceededMaxAttempts(loginUser.getId()) && !captchaService.validateCaptcha(captchaResponse)){
             throw new CaptchaNotValidException("Captcha is not valid");
         }
         authenticate(user.getEmail(), user.getPassword());

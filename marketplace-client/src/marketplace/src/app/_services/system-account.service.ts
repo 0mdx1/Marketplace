@@ -131,6 +131,25 @@ export class SystemAccountService {
     this.router.navigate([currentUrl]);
   }
 
+  changeType(type: string) {
+    let currentUrl = this.router.url.split('?')[0];
+    if (!currentUrl.includes(type)) {
+      if (type === 'managers') {
+        currentUrl = currentUrl.replace('couriers', type);
+      } else {
+        currentUrl = currentUrl.replace('managers', type);
+      }
+      this.router.navigateByUrl(currentUrl);
+    }
+  }
+
+  getType(): string {
+    if (this.router.url.includes('managers')) {
+      return 'managers';
+    }
+    return 'couriers';
+  }
+
   getStatusList(): string[] {
     let statusList = [this.ALL, this.ACTIVE, this.TERMINATED];
     if (this.router.url.includes('couriers')) {
@@ -177,13 +196,3 @@ export class SystemAccountService {
     this.router.navigate([currentUrl]);
   }
 }
-/*{
-    "dateOfBirth": "undefined",
-    "email": "dwf6h@vmani.com",
-    "id": 3,
-    "name": "Artem",
-    "phone": "+380934460974",
-    "role": "ROLE_PRODUCT_MANAGER",
-    "status": "inactive",
-    "surname": "Krivoruchenko"
-}*/

@@ -15,25 +15,14 @@ const baseUrl = `${environment.apiUrl}`;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private accountSubject: BehaviorSubject<User>;
-  public account: Observable<User>;
+  public account: Observable<User> = new Observable<User>();
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private authService: AuthService
   ) {
-    const account = authService.getAccount();
-    if (account) {
-      this.accountSubject = new BehaviorSubject<Account>(account);
-    } else {
-      this.accountSubject = new BehaviorSubject<Account>(new Account());
-    }
-    this.account = this.accountSubject.asObservable();
-  }
-
-  public get accountValue(): User {
-    return this.accountSubject.value;
+    this.account = this.authService.accountSubject.asObservable();
   }
 
   login(email: string, password: string, captchaResponse: string): Observable<HttpResponse<User>> {
@@ -54,8 +43,7 @@ export class AccountService {
   }
 
   logout(): void {
-    this.accountSubject.next({} as any);
-    localStorage.clear();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
@@ -72,7 +60,6 @@ export class AccountService {
   }
 
   resetPassword(email: string): Observable<any> {
-    console.log(email);
     const header = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post(`${baseUrl}/reset-password`, email, {headers:header});
   }
@@ -90,14 +77,8 @@ export class AccountService {
     return this.http.get(`${baseUrl}/userinfo`);
   }
 
-  setToken(authResult: any): void {
+  setToken(authResult: HttpResponse<User>): void {
     const token = authResult.headers.get('Authorization');
-    if (token) {
-      localStorage.setItem('token', token);
-    }
-    const account = this.authService.getAccount();
-    if (account) {
-      this.accountSubject.next(account);
-    }
+    if(token) this.authService.setToken(token);
   }
 }

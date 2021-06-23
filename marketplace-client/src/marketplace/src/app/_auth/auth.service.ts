@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import Token from '../_models/jwt';
 import {Role} from '../_models/role';
@@ -6,6 +6,7 @@ import decode from 'jwt-decode';
 
 import jwtDecode from "jwt-decode";
 import {Account} from "../_models/account";
+import {BehaviorSubject, Observable} from "rxjs";
 
 
 @Injectable({
@@ -13,7 +14,11 @@ import {Account} from "../_models/account";
 })
 export class AuthService {
 
-  constructor(public jwtHelper: JwtHelperService) {}
+  accountSubject: BehaviorSubject<Account> = new BehaviorSubject(new Account());
+
+  constructor(public jwtHelper: JwtHelperService) {
+    this.getAccount();
+  }
 
   public isAuthenticated(): boolean {
     const token: string | null = localStorage.getItem('token');
@@ -29,12 +34,14 @@ export class AuthService {
       return false;
     }
     const decodedToken = decode<Token>(token);
-    console.log(decodedToken.authorities[0]+ " " + expectedRole);
     return decodedToken.authorities[0] ==  expectedRole;
   }
 
   public isExpired(token: string): boolean {
-    if (this.jwtHelper.isTokenExpired(token)) { localStorage.removeItem('token'); }
+    if (
+      this.jwtHelper.isTokenExpired(token)) { localStorage.removeItem('token');
+      this.accountSubject.next(new Account());
+    }
     return this.jwtHelper.isTokenExpired(token);
   }
 
@@ -46,14 +53,12 @@ export class AuthService {
     return decode<Token>(token).authorities[0];
   }
 
-  public getAccount(): Account | null {
+  public getAccount(){
     const token: string  | null = localStorage.getItem('token');
-    if (!token){
-      return null;
+    if (token){
+      const decodedToken = decode<Token>(token);
+      this.accountSubject.next(new Account(decodedToken.sub, decodedToken.authorities[0]));
     }
-    const decodedToken = decode<Token>(token);
-    const account = new Account(decodedToken.sub, decodedToken.authorities[0]);
-    return account;
   }
 
   public getMail(): string | null {
@@ -65,4 +70,19 @@ export class AuthService {
     }
     return null;
   }
+
+  public setToken(token:string): void {
+    if (token) {
+      localStorage.setItem('token', token);
+      const decodedToken = decode<Token>(token);
+      const account = new Account(decodedToken.sub, decodedToken.authorities[0]);
+      this.accountSubject.next(account);
+    }
+  }
+
+  public logout(): void {
+    this.accountSubject.next(new Account());
+    localStorage.clear();
+  }
+
 }

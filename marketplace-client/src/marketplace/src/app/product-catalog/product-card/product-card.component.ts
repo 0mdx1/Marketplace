@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { AlertType } from 'src/app/_models/alert';
 import { Product } from 'src/app/_models/products/product';
 import { AlertService } from 'src/app/_services/alert.service';
-import { ProductService } from 'src/app/_services/product.service';
 import { CartService } from '../../_services/cart/cart.service';
 
 @Component({

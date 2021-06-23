@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {first} from "rxjs/operators";
 import {AlertType} from "../../_models/alert";
 import {AlertService} from "../../_services/alert.service";
+import {ApiError} from "../../_models/ApiError";
 
 @Component({
   templateUrl: './update.account.html',
@@ -59,12 +60,14 @@ export class UpdateAccount implements OnInit {
     this.accountService.updateUser(body).subscribe({
       next: () => {
         this.router.navigate(['/accounts/profile']);
-        console.log("Profile updated");
         this.alertService.addAlert("Profile was successfully updated!", AlertType.Success);
       },
       error: error => {
-        console.log("Error has occurred during updating profile");
-        this.alertService.addAlert("Error has occurred during updating", AlertType.Danger);
+        let apiError = error.error as ApiError;
+        if(apiError){
+          this.alertService.addAlert(apiError.message,AlertType.Danger);
+        }
+        //this.alertService.addAlert("Error has occurred during updating", AlertType.Danger);
       }
     });
   }
@@ -88,12 +91,14 @@ export class UpdateAccount implements OnInit {
         .pipe(first())
         .subscribe({
           next: () => {
-            console.log('Password reset');
             this.loading = false;
             this.changedPassword = true;
           },
           error: error => {
-            console.log(error);
+            let apiError = error.error as ApiError;
+            if(apiError){
+              this.alertService.addAlert(apiError.message,AlertType.Danger);
+            }
             this.loading = false;
           }
         });

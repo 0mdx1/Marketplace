@@ -84,7 +84,7 @@
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Register
               </button>
-              <a routerLink="/" href="" class="btn btn-link">Cancel</a>
+              <a routerLink="/sysaccounts" class="btn btn-link">Cancel</a>
             </div>
           </form>
         </div>
@@ -92,10 +92,11 @@
           <h3 class="text-center">
             Account was created successfully
           </h3>
-          <div class="form-group col text-right">
+          <div class="form-group col ">
             <a (click) = "createAnotherUser()"
             routerLink="/sysaccounts/register-stuff"
-            class="btn btn-link">Create another account</a>
+            class="btn btn-link text-right">Create another account</a>
+            <a routerLink="/sysaccounts" class="btn btn-link text-left">Back to staff table</a>
           </div>
         </div>
       </div>

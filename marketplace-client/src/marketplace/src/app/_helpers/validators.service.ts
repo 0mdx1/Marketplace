@@ -1,5 +1,4 @@
 import { AbstractControl } from '@angular/forms';
-//import * as moment from 'moment';
 
 export function validateBirthday(control: AbstractControl): void {
   const ALLOWED_AGE_YEARS = 18;
@@ -29,6 +28,16 @@ export function validateBirthday(control: AbstractControl): void {
   ) {
     //person will be 18 y.o. this year, this month but at least in a day
     birthday?.setErrors({ InvalidDate: true });
+  }
+}
+
+export function validateShippingDate(control: AbstractControl): void {
+  const shippingDate = control.get('shippingDate');
+  let shippDate = new Date(
+    shippingDate?.value.replace('T', ' ').replace(/-/g, '/')
+  );
+  if (new Date().getTime() - shippDate.getTime() < 0) {
+    shippingDate?.setErrors({ InvalidDate: true });
   }
 }
 

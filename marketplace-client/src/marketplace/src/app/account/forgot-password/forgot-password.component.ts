@@ -3,6 +3,9 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 import { first } from 'rxjs/operators';
 
 import { AccountService} from '../../_services/account.service';
+import {ApiError} from "../../_models/ApiError";
+import {AlertType} from "../../_models/alert";
+import {AlertService} from "../../_services/alert.service";
 
 @Component({
   templateUrl: 'forgot-password.component.html' ,
@@ -17,6 +20,7 @@ export class ForgotPasswordComponent{
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
+    private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
@@ -48,7 +52,10 @@ export class ForgotPasswordComponent{
           this.sent = true;
         },
         error: error => {
-          console.log(error);
+          let apiError = error.error as ApiError;
+          if(apiError){
+            this.alertService.addAlert(apiError.message,AlertType.Danger);
+          }
           if (error.error.status === 401){
             this.getForm.email.setErrors({EmailDoesNotExist : true});
           }

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ncgroup.marketplaceserver.captcha.service.CaptchaService;
 import com.ncgroup.marketplaceserver.constants.EmailParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.CaptchaNotValidException;
 import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
 import com.ncgroup.marketplaceserver.exception.domain.EmailNotFoundException;
 import com.ncgroup.marketplaceserver.exception.domain.PasswordNotValidException;
@@ -46,6 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private LoginAttemptService loginAttemptService;
 	private EmailSenderService emailSenderService;
 	private JwtProvider jwtProvider;
+	private CaptchaService captchaService;
 	
 	private final int LINK_VALID_TIME_HOUR = 24;
 
@@ -55,12 +58,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 						   BCryptPasswordEncoder passwordEncoder, 
 			               LoginAttemptService loginAttemptService,
 			               EmailSenderService emailSenderService,
-			               JwtProvider jwtProvider) {
+			               JwtProvider jwtProvider,
+			               CaptchaService captchaService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.loginAttemptService = loginAttemptService;
 		this.emailSenderService = emailSenderService;
 		this.jwtProvider = jwtProvider;
+		this.captchaService = captchaService;
 	}
 
 	@Override
@@ -70,7 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throw new UsernameNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, username));
 		}
 
-		validateLoginAttempt(user);
+		//validateLoginAttempt(user);
 		UserPrincipal userPrincipal = new UserPrincipal(user);
 		return userPrincipal;
 
@@ -215,8 +220,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public void resetPassword(String email) throws EmailNotFoundException, MessagingException {
 		User user = userRepository.findByEmail(email);
-		if(user == null) {
-			log.info(email);			
+		if(user == null) {		
 			throw new EmailNotFoundException(MessageFormat.format(ExceptionMessage.USERNAME_NOT_FOUND, email));
 		}
 		String auth_link = emailSenderService.sendSimpleEmailPasswordRecovery(email, user.getName());
@@ -264,15 +268,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 	
 	
-	private void validateLoginAttempt(User user) {
-		/*if(loginAttemptService.hasExceededMaxAttempts(user.getId())) {
-
-			//TODO captcha
+	/*private void validateLoginAttempt(User user) {
+		if(loginAttemptService.hasExceededMaxAttempts(user.getId())) {
+			log.info("Captcha");
+			throw new CaptchaNotValidException("Captcha is not valid");
 		} else {
 			loginAttemptService.successfullLogin(user.getEmail());
-		}*/
-		loginAttemptService.successfullLogin(user.getEmail());
-	}
+		}
+		//loginAttemptService.successfullLogin(user.getEmail());
+	}*/
 	
 	//Checks wheather link exists and non-expired
 	private User validateAuthLink(String link) {
