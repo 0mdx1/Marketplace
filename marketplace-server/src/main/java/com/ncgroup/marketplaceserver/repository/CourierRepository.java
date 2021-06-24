@@ -20,9 +20,9 @@ public interface CourierRepository {
 
     List<Courier> getByNameSurnameAll(String search, int page);
 
-    int getNumberOfRows(String search, boolean is_enabled, boolean is_active);
+    Integer getNumberOfRows(String search, boolean is_enabled, boolean is_active);
 
-    int getNumberOfRowsAll(String search);
+    Integer getNumberOfRowsAll(String search);
 
 
 }
