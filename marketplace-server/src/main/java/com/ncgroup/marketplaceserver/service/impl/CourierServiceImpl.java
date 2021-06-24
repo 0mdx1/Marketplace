@@ -152,41 +152,32 @@ public class CourierServiceImpl implements CourierService {
 
     @Override
     public Map<String, Object> getByNameSurname(String filter, String search, int page) {
-        boolean is_enabled;
-        boolean is_active = false;
-
         List<Courier> courierList = null;
         int allPages = 0;
-        courierList = courierRepository.getByNameSurnameAll(search, (page - 1) * PAGE_SIZE);
-        allPages = courierRepository.getNumberOfRowsAll(search);
 
         if (StatusConstants.ACTIVE.equals(filter)) {
-            is_active = true;
-            is_enabled = true;
             courierList = courierRepository
-                    .getByNameSurname(search, is_enabled, is_active, (page - 1) * PAGE_SIZE);
-            allPages = courierRepository.getNumberOfRows(search, is_enabled, is_active);
+                    .getByNameSurname(search, true, true, (page - 1) * PAGE_SIZE);
+            allPages = courierRepository.getNumberOfRows(search, true, true);
         } else if (StatusConstants.INACTIVE.equals(filter)) {
-            is_enabled = true;
             courierList = courierRepository
-                    .getByNameSurname(search, is_enabled, is_active, (page - 1) * PAGE_SIZE);
-            allPages = courierRepository.getNumberOfRows(search, is_enabled, is_active);
+                    .getByNameSurname(search, true, false, (page - 1) * PAGE_SIZE);
+            allPages = courierRepository.getNumberOfRows(search, true, false);
         } else if (StatusConstants.TERMINATED.equals(filter)) {
-            is_enabled = false;
             courierList = courierRepository
-                    .getByNameSurname(search, is_enabled, is_active, (page - 1) * PAGE_SIZE);
-            allPages = courierRepository.getNumberOfRows(search, is_enabled, is_active);
+                    .getByNameSurname(search, false, false, (page - 1) * PAGE_SIZE);
+            allPages = courierRepository.getNumberOfRows(search, false, false);
+        }else {
+            courierList = courierRepository.getByNameSurnameAll(search, (page - 1) * PAGE_SIZE);
+            allPages = courierRepository.getNumberOfRowsAll(search);
         }
-
         List<User> couriers = calculateStatusForCollection(courierList);
 
         Map<String, Object> result = new HashMap<>();
-
         result.put("users", couriers);
         result.put("currentPage", page);
         result.put("pageNum",
                 allPages % PAGE_SIZE == 0 ? allPages / PAGE_SIZE : allPages / PAGE_SIZE + 1);
-
         return result;
     }
 
