@@ -1,8 +1,10 @@
 package com.ncgroup.marketplaceserver.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ncgroup.marketplaceserver.domain.ApiError;
 import com.ncgroup.marketplaceserver.domain.HttpResponse;
 
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -22,13 +24,14 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception)
             throws IOException {
 
-        HttpResponse httpResponse = new HttpResponse(UNAUTHORIZED.value(), UNAUTHORIZED,
-        		UNAUTHORIZED.getReasonPhrase().toUpperCase(), "Access Denied");
+        ApiError apiError = new ApiError(ExceptionType.ACCESS_DENIED,"Access denied");
+//        HttpResponse httpResponse = new HttpResponse(UNAUTHORIZED.value(), UNAUTHORIZED,
+//        		UNAUTHORIZED.getReasonPhrase().toUpperCase(), "Access Denied");
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(UNAUTHORIZED.value());
         OutputStream outputStream = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(outputStream, httpResponse);
+        mapper.writeValue(outputStream, apiError);
         outputStream.flush();
     }
 }

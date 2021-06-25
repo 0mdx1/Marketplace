@@ -19,9 +19,7 @@ export class HttpErrorHandlerService {
 
   public displayValidationError(error: HttpErrorResponse){
     let apiError: ApiError = <ApiError>error.error;
-    apiError.subErrors.forEach((subError: any)=>{
-      this.alertService.addAlert(this.capitalizeFirstLetter(subError.message) ,AlertType.Danger);
-    },this)
+    this.alertService.addAlert(this.capitalizeFirstLetter(apiError.message) ,AlertType.Danger);
     return throwError(error);
   }
 

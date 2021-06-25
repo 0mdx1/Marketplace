@@ -8,12 +8,12 @@ public class ApiError {
 
     private String type;
     private String message;
-    private Instant dateTime;
+    private Instant timestamp;
 
     public ApiError(String type, String message) {
         this.type = type;
         this.message = message;
-        this.dateTime = Instant.now();
+        this.timestamp = Instant.now();
     }
 
     //    private HttpStatus status;

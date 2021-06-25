@@ -50,11 +50,6 @@ export class CheckoutComponent implements OnInit {
     this.items = this.cartService.getCart().getItems();
     this.getAuthUserInfo();
     this.checkoutService.getDeliveryTime()
-    .pipe(
-      catchError(err => {
-        return this.errorHandler.displayValidationError(err);
-      })
-    )
     .subscribe(
       data => {
         this.freeCouriers = true;
@@ -170,11 +165,6 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.checkoutService.sendOrderDetails(receiveObj)
-      .pipe(
-        catchError(err => {
-          return this.errorHandler.displayValidationError(err);
-        })
-      )
       .subscribe(
         () => {
           this.submitted = false;

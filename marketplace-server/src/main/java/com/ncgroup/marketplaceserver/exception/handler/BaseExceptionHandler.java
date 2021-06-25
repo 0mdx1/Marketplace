@@ -10,6 +10,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -95,6 +98,12 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.UNSUPPORTED_MEDIA_TYPE,request);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request){
+        HttpHeaders headers = new HttpHeaders();
+        ApiError apiError = new ApiError(ExceptionType.BAD_CREDENTIALS,ex.getMessage());
+        return this.handleExceptionInternal(ex, apiError, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
         HttpHeaders headers = new HttpHeaders();
