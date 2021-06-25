@@ -16,7 +16,7 @@ export class PageCart implements Cart {
   addItem(item: CartItem): void {
     let index = this.getArrayIndex(item.goods.id);
     if(index!==-1){
-      throw new Error("Illegal state: cart cannot contain items with same product id"); //how to create new error type
+      throw new Error("Illegal state: cart cannot contain items with same product id");
     }
     this.cart.push(item);
   }
@@ -26,7 +26,6 @@ export class PageCart implements Cart {
     items.forEach(item => {
       this.cart.push(item);
     })
-    // on push strategy for component
   }
 
   getItem(productId: number): CartItem | null {

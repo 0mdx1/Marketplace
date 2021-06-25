@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS order_details
     id 				SERIAL,
     person_id 		INTEGER NOT NULL,
     courier_id 		INTEGER NOT NULL,
-    delivery_time 	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    delivery_time 	TIMESTAMP WITH TIME ZONE NULL,
     address 		VARCHAR(200),
     status 			DELIVERY_STATUS NOT NULL,
     comment 		TEXT,

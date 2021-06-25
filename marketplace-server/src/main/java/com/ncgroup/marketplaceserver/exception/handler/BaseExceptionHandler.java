@@ -1,21 +1,15 @@
 package com.ncgroup.marketplaceserver.exception.handler;
 
 import com.ncgroup.marketplaceserver.domain.ApiError;
-import com.ncgroup.marketplaceserver.exception.constants.ExceptionType;
-import com.ncgroup.marketplaceserver.exception.annotation.ApiErrorMetadata;
+import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
+import com.ncgroup.marketplaceserver.exception.domain.CaptchaNotValidException;
+import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 
-import com.ncgroup.marketplaceserver.file.UnsupportedContentTypeException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -28,92 +22,42 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex,
-            Object body,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request
-    ) {
-        if(body==null){
-            ApiError apiError = new ApiError(ExceptionType.INTERNAL_ERROR,ex.getMessage());
-            return new ResponseEntity<>(apiError,headers,status);
-        }
-        return new ResponseEntity<>(body,headers,status);
-    }
+    private final static String FIELD_VALIDATION_ERROR = "FIELD_VALIDATION_ERROR";
+    private final static String CAPTCHA_VALIDATION_ERROR = "CAPTCHA_VALIDATION_ERROR";
+    private final static String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
 
-    @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
-            HttpMediaTypeNotSupportedException ex,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request
-    ) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(ex.getContentType());
-        builder.append(" media type is not supported. Supported media types are ");
-        ex.getSupportedMediaTypes().forEach(t -> builder.append(t).append(", "));
-        String message = builder.substring(0, builder.length() - 2);
-        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA,message);
-        return this.handleExceptionInternal(ex,apiError,headers,status,request);
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request
-    ) {
-        String message = this.generateMessageForFieldError(ex.getBindingResult().getFieldErrors().get(0));
-        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED,message);
-        return this.handleExceptionInternal(ex,apiError,headers,status,request);
-    }
-
-    private String generateMessageForFieldError(FieldError fieldError){
-        return String.format("Validation failed for %s=%s. %s",
-                fieldError.getField(),
-                fieldError.getRejectedValue(),
-                fieldError.getDefaultMessage());
+    @ExceptionHandler(NotFoundException.class)
+    protected ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request){
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage(),ex);
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        String message = ex.getConstraintViolations().iterator().next().getMessage();
-        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED,message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+    protected ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        apiError.setMessage("Validation error");
+        apiError.setErrorType(FIELD_VALIDATION_ERROR);
+        apiError.addValidationErrors(ex.getConstraintViolations());
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
+    }
+    
+    @ExceptionHandler(NoCouriersException.class)
+    protected ResponseEntity<Object> handleNoCouriersException(Exception ex, WebRequest request){
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,ex.getMessage(),ex);
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
-    @ExceptionHandler(UnsupportedContentTypeException.class)
-    public ResponseEntity<Object> handleUnsupportedContentTypeException(UnsupportedContentTypeException ex, WebRequest request) {
-        HttpHeaders headers = new HttpHeaders();
-        StringBuilder builder = new StringBuilder();
-        builder.append(ex.getContentType());
-        builder.append(" content type is not supported. Supported content types for a file are ");
-        ex.getSupportedContentTypes().forEach(t -> builder.append(t).append(", "));
-        String message = builder.substring(0, builder.length() - 2);
-        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA,message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.UNSUPPORTED_MEDIA_TYPE,request);
+    @ExceptionHandler(CaptchaNotValidException.class)
+    protected ResponseEntity<Object> handleCaptchaNotValidException(CaptchaNotValidException ex, WebRequest request){
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,ex.getMessage(),ex);
+        apiError.setErrorType(CAPTCHA_VALIDATION_ERROR);
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request){
-        HttpHeaders headers = new HttpHeaders();
-        ApiError apiError = new ApiError(ExceptionType.BAD_CREDENTIALS,ex.getMessage());
-        return this.handleExceptionInternal(ex, apiError, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
-    }
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
-        HttpHeaders headers = new HttpHeaders();
-        Class<?> clazz = ex.getClass();
-        if (clazz.isAnnotationPresent(ApiErrorMetadata.class)) {
-            String type = clazz.getAnnotation(ApiErrorMetadata.class).type();
-            HttpStatus status = clazz.getAnnotation(ApiErrorMetadata.class).status();
-            ApiError apiError = new ApiError(type,ex.getMessage());
-            return this.handleExceptionInternal(ex,apiError,headers,status,request);
-        }
-        return this.handleExceptionInternal(ex, null, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
+    protected ResponseEntity<Object> handleInternalException(Exception ex, WebRequest request){
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage(),ex);
+        apiError.setErrorType(INTERNAL_SERVER_ERROR);
+        return super.handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
 }

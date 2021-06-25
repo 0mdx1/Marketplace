@@ -2,7 +2,8 @@ package com.ncgroup.marketplaceserver.order.model.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -37,7 +38,8 @@ public class OrderRowMapper implements RowMapper<Order> {
 									.status(rs.getBoolean("courier.status"))
 									.build()
 							)*/
-				.deliveryTime(rs.getObject("delivery_time", LocalDateTime.class))
+				.deliveryTime(OffsetDateTime.parse(rs.getString("delivery_time"), 
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssx")))
 				.address(rs.getString("address"))
 				.status(OrderStatus.valueOf(rs.getString("status")))
 				.comment(rs.getString("comment"))
