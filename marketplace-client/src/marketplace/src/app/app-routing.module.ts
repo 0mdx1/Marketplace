@@ -65,11 +65,11 @@ const routes: Routes = [
     path: 'checkout',
     component: CheckoutComponent,
   },
-  {
+  /*{
     path: '**',
     pathMatch: 'full',
     redirectTo: 'home',
-  },
+  },*/
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -12,6 +12,8 @@ import { UpdateAccount } from './update/update.account';
 import { UserOrdersComponent } from './user-orders/user-orders/user-orders.component';
 import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.component';
 import { OrderDetailsComponent } from './user-orders/order-details/order-details.component';
+import { Role } from '../_models/role';
+import { RoleGuardService } from '../_auth/auth.guard.role.service';
 
 const routes: Routes = [
   {
@@ -22,8 +24,22 @@ const routes: Routes = [
       { path: 'reset-password', component: ResetPasswordComponent },
       { path: 'create-password', component: CreatePasswordComponent },
       { path: 'confirmed', component: ConfirmedComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'profile/edit', component: UpdateAccount},
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [RoleGuardService],
+        data: {
+          roles: [Role.User, Role.Admin, Role.Courier, Role.ProductManager],
+        },
+      },
+      {
+        path: 'profile/edit',
+        component: UpdateAccount,
+        canActivate: [RoleGuardService],
+        data: {
+          roles: [Role.User, Role.Admin],
+        },
+      },
 
       {
         path: 'orders',
@@ -33,10 +49,15 @@ const routes: Routes = [
           { path: 'history', component: UserOrdersComponent },
           { path: ':orderId', component: OrderDetailsComponent },
         ],
+        canActivate: [RoleGuardService],
+        data: {
+          roles: [Role.User],
+        },
       },
     ],
     path: '',
     component: LayoutComponent,
+    redirectTo: '/home',
   },
 ];
 
