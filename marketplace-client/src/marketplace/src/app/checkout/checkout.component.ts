@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { AuthService } from "../_auth/auth.service";
 import { CartItem } from "../_models/cart-item.model";
 import { User } from "../_models/user";
-import { BrowserCart } from "../_services/cart/browser-cart";
+import { BrowserCart } from "../_services/cart/browser/browser-cart";
 import { CartService } from "../_services/cart/cart.service";
 import { Checkout } from "../_services/checkout/checkout.service";
 import {catchError} from "rxjs/operators";
