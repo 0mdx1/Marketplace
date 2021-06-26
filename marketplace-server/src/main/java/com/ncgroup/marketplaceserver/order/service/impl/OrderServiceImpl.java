@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.order.service.impl;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -121,16 +121,18 @@ public class OrderServiceImpl implements OrderService{
 	}
 	
 	@Override
-	public List<LocalDateTime> getFreeSlots() {
+	public List<OffsetDateTime> getFreeSlots() {
 		if(orderRepo.getAvailableCouriersNum() < 1) {
 			throw new NoCouriersException("Sorry, there are no available couriers");
 		}
-		List<LocalDateTime> freeSlots = new LinkedList<LocalDateTime>();
-		List<LocalDateTime> busySlots = orderRepo.findFreeSlots();
-		LocalDateTime endDay = LocalDateTime.now();
-		while (endDay.isBefore(LocalDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
+		List<OffsetDateTime> freeSlots = new LinkedList<>();
+		List<OffsetDateTime> busySlots = orderRepo.findBusySlots();
+		log.info(busySlots.toString());
+		OffsetDateTime endDay = OffsetDateTime.now();
+		while (endDay.isBefore(OffsetDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
 			//endDay = endDay.withHour(endDay.getHour()+1).withMinute(0);
 			while(endDay.getHour() <= 18) {
+				log.info("End day: " + endDay.toString());
 				endDay = endDay.withHour(endDay.getHour()+1).withMinute(0).withSecond(0).withNano(0);
 				if(!busySlots.contains(endDay)) {
 					freeSlots.add(endDay);

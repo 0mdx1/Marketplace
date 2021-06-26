@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.order.repository;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
@@ -15,8 +15,8 @@ public interface OrderRepository {
 	Order saveOrderDetails(Order order);
 	OrderItem saveOrderGood(OrderItem item, long orderId);
 	void modifyStatus(long id, OrderStatus status);
-	List<LocalDateTime> findFreeSlots();
-	long getFreeCourierId(LocalDateTime timeSlot);
+	List<OffsetDateTime> findBusySlots();
+	long getFreeCourierId(OffsetDateTime timeSlot);
 	UserDisplayInfoDto findUserForOrder(String email);
 	UserDisplayInfoDto findCourierForOrder(long orderId);
 	int getTotalPages(long courierId);
