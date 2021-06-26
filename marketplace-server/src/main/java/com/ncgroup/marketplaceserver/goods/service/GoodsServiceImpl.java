@@ -77,13 +77,14 @@ public class GoodsServiceImpl implements GoodsService {
 
     private Good findById(long id) throws NotFoundException{
         Optional<Good> goodOptional = repository.findById(id);
-        return goodOptional.orElseThrow(() -> new NotFoundException("Product with " + id + " not found."));
+        return goodOptional
+                .orElseThrow(() -> new NotFoundException
+                        ("Product with " + id + " not found."));
     }
 
     @Override
     public Map<String, Object> display
-            (String name, String category, String minPrice, String maxPrice,
-             String sortBy, String sortDirection, Integer page) throws NotFoundException {
+            (Map<String, String> params) throws NotFoundException {
 
         int counter = 0;
         List<String> concatenator = new ArrayList<>();
@@ -94,25 +95,24 @@ public class GoodsServiceImpl implements GoodsService {
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
                 "INNER JOIN category ON category.id = product.category_id");
 
-//        log.info("Name " + name);;
-        if (name != null) {
+        if (params.get("search") != null) {
             concatenator.add
-                    (" product.name LIKE '%" + name.toLowerCase() + "%' OR product.name LIKE '" + name.toLowerCase() + "%'");
+                    (" product.name LIKE '%:name%'");
             counter++;
         }
 
-        if (category != null && !category.equals("all")) {
-            concatenator.add(" category.name = " + "'" + category + "'");
+        if (params.get("category") != null && !params.get("category").equals("all")) {
+            concatenator.add(" category.name = ':category'");
             counter++;
         }
 
-        if (minPrice != null) {
-            concatenator.add(" price - price*discount/100 >= " + minPrice);
+        if (params.get("minPrice") != null) {
+            concatenator.add(" price - price*discount/100 >= :minPrice");
             counter++;
         }
 
-        if (maxPrice != null) {
-            concatenator.add(" price - price*discount/100 <= " + maxPrice);
+        if (params.get("maxPrice") != null) {
+            concatenator.add(" price - price*discount/100 <= :maxPrice");
             counter++;
         }
 
@@ -125,10 +125,13 @@ public class GoodsServiceImpl implements GoodsService {
 
         fromQuery.append(" AND status = true");
 
-        int numOfGoods = repository.countGoods("SELECT COUNT(*) " + fromQuery);
+        int numOfGoods = repository
+                .countGoods("SELECT COUNT(*) " + fromQuery, params);
 
-        if (sortBy != null) {
-            switch (sortBy) {
+
+        //what if sort = dfvdfv
+        if (params.get("sort") != null) {
+            switch (params.get("sort")) {
                 case "price":
                     fromQuery.append(" ORDER BY goods.price");
                     break;
@@ -144,8 +147,8 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
 
-        if (sortDirection != null) {
-            fromQuery.append(" ").append(sortDirection.toUpperCase());
+        if (params.get("direction") != null) {
+            fromQuery.append(" :sortDirection");
         } else {
             fromQuery.append(" DESC");
         }
@@ -164,27 +167,30 @@ public class GoodsServiceImpl implements GoodsService {
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
 
-        if (page != null) {
-            flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY).append(" OFFSET ")
-                    .append((page - 1) * PAGE_CAPACITY);
+//        Object page = params.get("page");
+
+        if (params.get("page") != null) {
+            flexibleQuery.append(" LIMIT ").append(":PAGE_CAPACITY").append(" OFFSET ")
+                    .append(":page - 1) * :PAGE_CAPACITY");
         } else {
             flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY);
-            page = 1;
+            params.replace("page", String.valueOf(1));
         }
 
-        List<Good> res = repository.display(flexibleQuery.toString());
+        List<Good> res = repository.display(flexibleQuery.toString(), params);
         if (res.isEmpty()) {
             throw new NotFoundException
                     ("Sorry, but there are no products corresponding to your criteria.");
         }
 
         for (Good good : res) {
-            good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
+            good.setImage(mediaService
+                    .getCloudStorage()
+                    .getResourceUrl(good.getImage()));
         }
 
-
         Map<String, Object> response = new HashMap<>();
-        response.put("current", page);
+        response.put("current", params.get("page"));
         response.put("total", numOfPages);
         response.put("result_set", res);
 

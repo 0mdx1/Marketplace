@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,13 +53,20 @@ public class GoodsController {
                     String maxPrice,
             @RequestParam(value = "sort", required = false)
                     String sortBy,
-            @RequestParam(value = "direction", required = false) // ASC or DESC
+            @RequestParam(value = "direction", required = false)
                     String sortDirection,
             @RequestParam(value = "page", required = false)
-                    Integer page) throws NotFoundException {
-        return new ResponseEntity<>(
-                service.display(name, category, minPrice, maxPrice, sortBy,
-                                sortDirection, page), HttpStatus.OK);
+                    String page) throws NotFoundException {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("search", name);
+        params.put("category", category);
+        params.put("minPrice", minPrice);
+        params.put("maxPrice", maxPrice);
+        params.put("sort", sortBy);
+        params.put("direction", sortDirection);
+        params.put("page", page);
+        return new ResponseEntity<>(service.display(params), HttpStatus.OK);
     }
 
     @GetMapping("/categories")
@@ -67,7 +75,7 @@ public class GoodsController {
     }
 
     @GetMapping("/price-range/{category}")
-    public ResponseEntity<List<Double>> getPriceRange( @PathVariable("category") String category) throws NotFoundException {
+    public ResponseEntity<List<Double>> getPriceRange(@PathVariable("category") String category) throws NotFoundException {
         return new ResponseEntity<>(service.getPriceRange(category), HttpStatus.OK);
     }
 

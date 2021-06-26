@@ -22,9 +22,7 @@ import org.webjars.NotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import java.util.*;
 
 @PropertySource("classpath:database/productQueries.properties")
 @Repository
@@ -61,6 +59,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${firm.insert}")
     private String firmInsert;
+
     public Long createFirm(String firmName) {
         Optional<Long> firmId = findByName
                 (firmName, "firmName", findFirmByName);
@@ -76,6 +75,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${category.insert}")
     private String categoryInsert;
+
     public Long createCategory(String categoryName) {
         Optional<Long> categoryId = findByName
                 (categoryName, "categoryName", findCategoryByName);
@@ -109,6 +109,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${good.find-by-firmId-productId}")
     private String findGood;
+
     public Optional<Long> findGood(Long firmId, Long productId, LocalDateTime date) {
         SqlParameterSource goodParameters = new MapSqlParameterSource()
                 .addValue("firmId", firmId)
@@ -124,6 +125,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${good.insert}")
     private String goodInsert;
+
     @Override
     public Long createGood(GoodDto goodDto)
             throws GoodAlreadyExistsException {
@@ -166,11 +168,12 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${good.check-status}")
     private String getStatus;
+
     public Boolean getStatus(Long goodId) {
         SqlParameterSource goodParameter = new MapSqlParameterSource()
                 .addValue("goodId", goodId);
-            return namedParameterJdbcTemplate
-                    .queryForObject(getStatus, goodParameter, Boolean.class);
+        return namedParameterJdbcTemplate
+                .queryForObject(getStatus, goodParameter, Boolean.class);
     }
 
 
@@ -178,6 +181,7 @@ public class GoodsRepoImpl implements GoodsRepository {
     private String updateProduct;
     @Value("${product.edit-category}")
     private String editProductCategory;
+
     @Override
     public void editGood(GoodDto goodDto, Long id) {
         Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
@@ -207,6 +211,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${good.find-by-id}")
     private String findGoodById;
+
     @Override
     public Optional<Good> findById(long id) {
         SqlParameterSource productParameter = new MapSqlParameterSource()
@@ -215,35 +220,44 @@ public class GoodsRepoImpl implements GoodsRepository {
         try {
             good = namedParameterJdbcTemplate
                     .queryForObject(findGoodById, productParameter, this::mapRow);
-        }
-        catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
         return Optional.ofNullable(good);
     }
 
 
-    public int countGoods(String query) {
-        try {
-            return jdbcTemplate.queryForObject(query, Integer.class);
-        }
-        catch (NullPointerException e) {
-            return 0;
-        }
+    public Integer countGoods(String query, Map<String, String> params) {
+        SqlParameterSource countParams = new MapSqlParameterSource()
+                .addValue("name", params.get("search"))
+                .addValue("category", params.get("category"))
+                .addValue("minPrice", params.get("minPrice"))
+                .addValue("maxPrice", params.get("maxPrice"));
+        return namedParameterJdbcTemplate
+                .queryForObject(query, countParams, Integer.class);
     }
 
     @Override
-    public List<Good> display(String query) {
+    public List<Good> display(String preparedQuery, Map<String, String> params) {
+        SqlParameterSource displayParams = new MapSqlParameterSource()
+                .addValue("name", params.get("search"))
+                .addValue("category", params.get("category"))
+                .addValue("minPrice", params.get("minPrice"))
+                .addValue("maxPrice", params.get("maxPrice"))
+                .addValue("sortDirection", params.get("direction"))
+                .addValue("page", params.get("page"));
         return namedParameterJdbcTemplate
-                .query(query, this::mapRow);
+                .query(preparedQuery, displayParams, this::mapRow);
     }
 
     @Value("${categories.get}")
     String getCategories;
+
     @Override
     public List<String> getCategories() throws NotFoundException {
         List<String> res = jdbcTemplate
-                .query(getCategories, (resultSet, i) -> resultSet.getString("name"));
+                .query(getCategories,
+                        (resultSet, i) -> resultSet.getString("name"));
         if (res.isEmpty())
             throw new NotFoundException("Sorry, but there are no categories yet.");
         return res;
@@ -251,14 +265,16 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${maxPrice.get}")
     String getMaxPrice;
+
     @Override
     public Double getMaxPrice(String category) throws NotFoundException {
-        SqlParameterSource parameter = new MapSqlParameterSource().addValue("category", category);
+        SqlParameterSource parameter = new MapSqlParameterSource()
+                .addValue("category", category);
         Double max;
         try {
-            max = namedParameterJdbcTemplate.queryForObject(getMaxPrice, parameter, Double.class);
-        }
-        catch (EmptyResultDataAccessException e) {
+            max = namedParameterJdbcTemplate
+                    .queryForObject(getMaxPrice, parameter, Double.class);
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return max;
@@ -266,14 +282,16 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${minPrice.get}")
     String getMinPrice;
+
     @Override
     public Double getMinPrice(String category) throws NotFoundException {
-        SqlParameterSource parameter = new MapSqlParameterSource().addValue("category", category);
+        SqlParameterSource parameter = new MapSqlParameterSource()
+                .addValue("category", category);
         Double min;
         try {
-            min = namedParameterJdbcTemplate.queryForObject(getMinPrice, parameter, Double.class);
-        }
-        catch (EmptyResultDataAccessException e) {
+            min = namedParameterJdbcTemplate
+                    .queryForObject(getMinPrice, parameter, Double.class);
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return min;
@@ -281,13 +299,13 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${totalMaxPrice.get}")
     String getTotalMaxPrice;
+
     @Override
     public Double getTotalMaxPrice() throws NotFoundException {
         Double max;
         try {
             max = jdbcTemplate.queryForObject(getTotalMaxPrice, Double.class);
-        }
-        catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return max;
@@ -295,13 +313,13 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${totalMinPrice.get}")
     String getTotalMinPrice;
+
     @Override
     public Double getTotalMinPrice() throws NotFoundException {
         Double min;
         try {
             min = jdbcTemplate.queryForObject(getTotalMinPrice, Double.class);
-        }
-        catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return min;
@@ -309,6 +327,7 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Value("${firms.get}")
     String getFirms;
+
     @Override
     public List<String> getFirms() {
         List<String> res = jdbcTemplate
@@ -340,12 +359,13 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
     @Value("${good.update-price}")
-    private String editProductQunatity;
+    private String editProductQuantity;
+
     @Override
     public void editQuantity(long id, int quantity) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id)
                 .addValue("quantity", quantity);
-        namedParameterJdbcTemplate.update(editProductQunatity, parameters);
+        namedParameterJdbcTemplate.update(editProductQuantity, parameters);
     }
 }
