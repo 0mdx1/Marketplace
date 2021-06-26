@@ -4,6 +4,7 @@ import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
+import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public interface GoodsService {
     Good find(long id) throws NotFoundException;
 
     Map<String, Object> display
-            (Map<String, String> params) throws NotFoundException;
+            (SearchParamsDto params) throws NotFoundException;
 
     List<String> getCategories() throws NotFoundException;
     List<Double> getPriceRange(String category) throws NotFoundException;

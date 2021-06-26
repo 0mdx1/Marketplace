@@ -5,6 +5,7 @@ import com.ncgroup.marketplaceserver.file.service.MediaService;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
+import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
 import com.ncgroup.marketplaceserver.goods.repository.GoodsRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Map<String, Object> display
-            (Map<String, String> params) throws NotFoundException {
+            (SearchParamsDto params) throws NotFoundException {
 
         int counter = 0;
         List<String> concatenator = new ArrayList<>();
@@ -95,23 +96,23 @@ public class GoodsServiceImpl implements GoodsService {
                 "INNER JOIN firm ON goods.firm_id = firm.id " +
                 "INNER JOIN category ON category.id = product.category_id");
 
-        if (params.get("search") != null) {
+        if (params.getName() != null) {
             concatenator.add
                     (" product.name LIKE '%:name%'");
             counter++;
         }
 
-        if (params.get("category") != null && !params.get("category").equals("all")) {
+        if (params.getCategory() != null && !params.getCategory().equals("all")) {
             concatenator.add(" category.name = ':category'");
             counter++;
         }
 
-        if (params.get("minPrice") != null) {
+        if (params.getMinPrice() != null) {
             concatenator.add(" price - price*discount/100 >= :minPrice");
             counter++;
         }
 
-        if (params.get("maxPrice") != null) {
+        if (params.getMaxPrice() != null) {
             concatenator.add(" price - price*discount/100 <= :maxPrice");
             counter++;
         }
@@ -130,8 +131,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 
         //what if sort = dfvdfv
-        if (params.get("sort") != null) {
-            switch (params.get("sort")) {
+        if (params.getSort() != null) {
+            switch (params.getSort()) {
                 case "price":
                     fromQuery.append(" ORDER BY goods.price");
                     break;
@@ -147,7 +148,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
 
-        if (params.get("direction") != null) {
+        if (params.getDirection() != null) {
             fromQuery.append(" :sortDirection");
         } else {
             fromQuery.append(" DESC");
@@ -167,14 +168,12 @@ public class GoodsServiceImpl implements GoodsService {
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
 
-//        Object page = params.get("page");
-
-        if (params.get("page") != null) {
+        if (params.getPage() != null) {
             flexibleQuery.append(" LIMIT ").append(":PAGE_CAPACITY").append(" OFFSET ")
-                    .append(":page - 1) * :PAGE_CAPACITY");
+                    .append("(:page - 1) * :PAGE_CAPACITY");
         } else {
             flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY);
-            params.replace("page", String.valueOf(1));
+            params.setPage(1);
         }
 
         List<Good> res = repository.display(flexibleQuery.toString(), params);
@@ -190,7 +189,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         Map<String, Object> response = new HashMap<>();
-        response.put("current", params.get("page"));
+        response.put("current", params.getPage());
         response.put("total", numOfPages);
         response.put("result_set", res);
 
@@ -204,7 +203,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Double> getPriceRange(String category) throws NotFoundException {
-        ArrayList<Double> priceRange = new ArrayList<>();
+        ArrayList<Double> priceRange = new ArrayList<>(2);
         if (category.equals("all")){
             priceRange.add(repository.getTotalMinPrice());
             priceRange.add(repository.getTotalMaxPrice());

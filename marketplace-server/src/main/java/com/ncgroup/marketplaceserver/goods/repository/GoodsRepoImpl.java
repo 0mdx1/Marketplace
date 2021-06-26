@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.goods.repository;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
+import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
 import com.ncgroup.marketplaceserver.goods.model.Unit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class GoodsRepoImpl implements GoodsRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    @Value("${page.capacity}")
+    private Integer PAGE_CAPACITY;
 
     @Value("${firm.find-by-name}")
     private String findFirmByName;
@@ -227,25 +231,26 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
 
-    public Integer countGoods(String query, Map<String, String> params) {
+    public Integer countGoods(String query, SearchParamsDto params) {
         SqlParameterSource countParams = new MapSqlParameterSource()
-                .addValue("name", params.get("search"))
-                .addValue("category", params.get("category"))
-                .addValue("minPrice", params.get("minPrice"))
-                .addValue("maxPrice", params.get("maxPrice"));
+                .addValue("name", params.getName())
+                .addValue("category", params.getCategory())
+                .addValue("minPrice", params.getMinPrice())
+                .addValue("maxPrice", params.getMaxPrice());
         return namedParameterJdbcTemplate
                 .queryForObject(query, countParams, Integer.class);
     }
 
     @Override
-    public List<Good> display(String preparedQuery, Map<String, String> params) {
+    public List<Good> display(String preparedQuery, SearchParamsDto params) {
         SqlParameterSource displayParams = new MapSqlParameterSource()
-                .addValue("name", params.get("search"))
-                .addValue("category", params.get("category"))
-                .addValue("minPrice", params.get("minPrice"))
-                .addValue("maxPrice", params.get("maxPrice"))
-                .addValue("sortDirection", params.get("direction"))
-                .addValue("page", params.get("page"));
+                .addValue("name", params.getName())
+                .addValue("category", params.getCategory())
+                .addValue("minPrice", params.getMinPrice())
+                .addValue("maxPrice", params.getMaxPrice())
+                .addValue("sortDirection", params.getDirection())
+                .addValue("page", params.getPage())
+                .addValue("PAGE_CAPACITY", PAGE_CAPACITY);
         return namedParameterJdbcTemplate
                 .query(preparedQuery, displayParams, this::mapRow);
     }

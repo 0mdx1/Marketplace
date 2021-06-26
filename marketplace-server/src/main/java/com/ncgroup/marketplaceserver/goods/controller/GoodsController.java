@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.goods.controller;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
+import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,24 +48,20 @@ public class GoodsController {
             @RequestParam(value = "category", required = false)
                     String category,
             @RequestParam(value = "minPrice", required = false)
-                    String minPrice,
+                    Double minPrice,
             @RequestParam(value = "maxPrice", required = false)
-                    String maxPrice,
+                    Double maxPrice,
             @RequestParam(value = "sort", required = false)
                     String sortBy,
             @RequestParam(value = "direction", required = false)
                     String sortDirection,
             @RequestParam(value = "page", required = false)
-                    String page) throws NotFoundException {
+                    Integer page) throws NotFoundException {
 
-        Map<String, String> params = new HashMap<>();
-        params.put("search", name);
-        params.put("category", category);
-        params.put("minPrice", minPrice);
-        params.put("maxPrice", maxPrice);
-        params.put("sort", sortBy);
-        params.put("direction", sortDirection);
-        params.put("page", page);
+        SearchParamsDto params = new SearchParamsDto(
+                name, category, minPrice, maxPrice, sortBy, sortDirection, page
+        );
+
         return new ResponseEntity<>(service.display(params), HttpStatus.OK);
     }
 
