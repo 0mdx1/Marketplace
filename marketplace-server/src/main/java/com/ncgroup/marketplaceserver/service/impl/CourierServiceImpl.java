@@ -95,7 +95,7 @@ public class CourierServiceImpl implements CourierService {
         try {
             authlink = emailSenderService.sendSimpleEmailPasswordCreation(email, name);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         courier.getUser().setAuthLink(authlink);
         User user = userRepository.save(courier.getUser());

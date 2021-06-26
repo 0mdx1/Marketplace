@@ -76,7 +76,7 @@ public class ManagerServiceImpl implements ManagerService {
         try {
             authlink = emailSenderService.sendSimpleEmailPasswordCreation(email, name);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         user.setAuthLink(authlink);
         user = userRepository.save(user);
