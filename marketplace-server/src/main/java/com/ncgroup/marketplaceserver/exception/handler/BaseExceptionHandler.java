@@ -10,9 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,7 +35,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request
     ) {
         if(body==null){
-            ApiError apiError = new ApiError(ExceptionType.INTERNAL_ERROR,ex.getMessage());
+            ApiError apiError = new ApiError(ExceptionType.UNEXPECTED_ERROR,"Unexpected error occurred");
             return new ResponseEntity<>(apiError,headers,status);
         }
         return new ResponseEntity<>(body,headers,status);

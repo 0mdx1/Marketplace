@@ -9,7 +9,7 @@ public final class ExceptionType {
     public static final String PASSWORD_INVALID = "validation-password-1";
     public static final String NO_COURIERS = "resource-courier-1";
     public static final String USER_NOT_FOUND = "resource-user-1";
-    public static final String INTERNAL_ERROR = "general-0";
+    public static final String UNEXPECTED_ERROR = "general-0";
     public static final String UNSUPPORTED_MEDIA = "general-1";
     public static final String VALIDATION_FAILED = "general-2";
     public static final String RESOURCE_NOT_FOUND = "general-3";
