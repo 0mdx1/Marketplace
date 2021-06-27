@@ -138,7 +138,7 @@ public class CourierRepositoryImpl implements CourierRepository {
     }
 
     @Override
-    public int getNumberOfRows(String search, boolean is_enabled, boolean is_active) {
+    public Integer getNumberOfRows(String search, boolean is_enabled, boolean is_active) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search)
                 .addValue("is_enabled", is_enabled)
@@ -147,7 +147,7 @@ public class CourierRepositoryImpl implements CourierRepository {
     }
 
     @Override
-    public int getNumberOfRowsAll(String search) {
+    public Integer getNumberOfRowsAll(String search) {
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("search", search);
         return namedParameterJdbcTemplate.queryForObject(selectNumberOfRowsAll, params, Integer.class);
