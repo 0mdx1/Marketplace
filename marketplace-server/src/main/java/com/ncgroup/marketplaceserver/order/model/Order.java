@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.order.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.ncgroup.marketplaceserver.model.Courier;
@@ -19,7 +19,7 @@ public class Order {
 	private long id;
 	private Courier courier;
 	private User user;
-	private LocalDateTime deliveryTime;
+	private OffsetDateTime deliveryTime;
 	private String address;
 	private OrderStatus status;
 	private String comment;
