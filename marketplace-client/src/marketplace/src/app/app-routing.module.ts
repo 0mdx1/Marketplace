@@ -66,11 +66,11 @@ const routes: Routes = [
     canActivate: [RoleGuardService],
     data: { roles: [Role.AnonymousUser, Role.User] },
   },
-  /*{
+  {
     path: '**',
     pathMatch: 'full',
     redirectTo: 'home',
-  },*/
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
