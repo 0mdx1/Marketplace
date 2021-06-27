@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderPage } from '../_models/order-info/order-page';
 import { Status } from '../_models/status';
 import { User } from '../_models/user';
+import { map } from 'rxjs/operators';
 
 const baseUrl = `${environment.apiUrl}`; // Is it ok?
 
@@ -31,12 +32,28 @@ export class OrderService {
 
     return this.http.get<OrderPage>(baseUrl + '/orders', {
       params: new HttpParams().set('page', page.toString()),
-    });
+    })
+      .pipe(
+        map((orderPage: OrderPage) => {
+          orderPage.orders = orderPage.orders
+            .map((order: CourierOrder) => {
+              order.deliveryTime = new Date(order.deliveryTime)
+              return order;
+            });
+          return orderPage;
+        })
+      );
   }
 
   public getOrder(): Observable<CourierOrder> {
     return this.http.get<CourierOrder>(
       baseUrl + '/orders/' + this.getOrderId()
+    )
+      .pipe(
+        map((order: CourierOrder) => {
+          order.deliveryTime = new Date(order.deliveryTime);
+          return order;
+      })
     );
   }
 
@@ -54,9 +71,25 @@ export class OrderService {
   //User order history
   public getOrdersForUser(): Observable<CourierOrder[]> {
     if (this.router.url.includes('history')) {
-      return this.http.get<CourierOrder[]>(`${baseUrl}/orders/history`);
+      return this.http.get<CourierOrder[]>(`${baseUrl}/orders/history`)
+        .pipe(
+          map((orders: CourierOrder[]) => {
+            return orders.map((order: CourierOrder) => {
+              order.deliveryTime = new Date(order.deliveryTime);
+              return order;
+            })
+          })
+        );
     }
-    return this.http.get<CourierOrder[]>(`${baseUrl}/orders/incoming`);
+    return this.http.get<CourierOrder[]>(`${baseUrl}/orders/incoming`)
+      .pipe(
+        map((orders: CourierOrder[]) => {
+          return orders.map((order: CourierOrder) => {
+            order.deliveryTime = new Date(order.deliveryTime);
+            return order;
+          })
+        })
+      );
   }
 
   public getCourier(): Observable<User> {
@@ -67,6 +100,12 @@ export class OrderService {
     let pathParts = this.router.url.split('/');
     return this.http.get<CourierOrder>(
       baseUrl + '/orders/' + pathParts[pathParts.length - 1]
+    )
+    .pipe(
+        map((order: CourierOrder) => {
+          order.deliveryTime = new Date(order.deliveryTime);
+          return order;
+      })
     );
   }
 

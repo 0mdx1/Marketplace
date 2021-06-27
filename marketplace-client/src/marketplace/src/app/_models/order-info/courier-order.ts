@@ -6,7 +6,7 @@ import { OrderProductInfo } from './orderProductInfo';
 export class CourierOrder {
   id: number = 0;
   user: UserDisplayInfo | null = null;
-  deliveryTime: string = ''; // not number
+  deliveryTime: Date = new Date(0); // not number
   status: Status | null = null;
   comment: string = '';
   disturb: boolean = false;

@@ -21,11 +21,14 @@ export class ImageUploadingComponent implements OnChanges{
   constructor(private fileService: FileService, private alertService: AlertService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.imageFilenameEvent.emit(this.getFilename(changes.imageUrl.currentValue))
+    let filename = this.getFilename(changes.imageUrl.currentValue);
+    console.log(filename);
+    this.imageFilenameEvent.emit(filename)
   }
 
   private getFilename(url:string): string {
-    return <string>url.split('/').pop();
+    return (url.match(/\S+\/(\S+\/\S+)$/)||[]).pop()||"";
+    //return <string>url.split('/').pop();
   }
 
   // @ts-ignore

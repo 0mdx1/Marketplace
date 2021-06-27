@@ -9,7 +9,6 @@ import { CartComponent } from './_components/cart/cart.component';
 import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
 import { CheckoutComponent } from './checkout/checkout.component';
-import { ProfileComponent } from './account/profile/profile.component';
 
 const accountModule = () =>
   import('./account/account.module').then((x) => x.AccountModule);
@@ -39,14 +38,12 @@ const routes: Routes = [
     canActivate: [RoleGuardService],
     data: { roles: [Role.User, Role.AnonymousUser] },
   },
-  {
+  /*{
     path: 'image-uploading',
     component: ImageUploadingComponent,
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent,
-  },
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.Admin, Role.ProductManager] },
+  },*/
   {
     path: 'sysaccounts',
     loadChildren: systemAccountModule,
@@ -60,10 +57,14 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: orderCatalogModule,
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.Courier] },
   },
   {
     path: 'checkout',
     component: CheckoutComponent,
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.AnonymousUser, Role.User] },
   },
   {
     path: '**',

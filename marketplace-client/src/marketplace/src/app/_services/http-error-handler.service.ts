@@ -4,7 +4,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Alert, AlertType} from "../_models/alert";
 import {ErrorObserver, throwError} from "rxjs";
 import {ApiError} from "../_models/ApiError";
-import {BrowserCart} from "./cart/browser-cart";
+import {BrowserCart} from "./cart/browser/browser-cart";
 import {toTitleCase} from "codelyzer/util/utils";
 
 @Injectable({

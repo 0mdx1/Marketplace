@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.order.model.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class OrderReadDto {
 	private long id;
 	private UserDisplayInfoDto user;
-	private LocalDateTime deliveryTime;
+	private OffsetDateTime deliveryTime;
 	private String address;
 	private OrderStatus status;
 	private String comment;
