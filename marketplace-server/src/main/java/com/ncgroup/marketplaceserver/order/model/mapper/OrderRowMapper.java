@@ -45,7 +45,6 @@ public class OrderRowMapper implements RowMapper<Order> {
 				.comment(rs.getString("comment"))
 				.disturb(rs.getBoolean("disturb"))
 				.totalSum(rs.getFloat("total_sum"))
-				.discountSum(rs.getFloat("discount_sum"))
 				.build();
 		return order;
 	}
