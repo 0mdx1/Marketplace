@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RecaptchaModule } from "ng-recaptcha";
+import { RecaptchaModule } from 'ng-recaptcha';
 
 import { AccountRoutingModule } from './account-routing.module';
 import { RegisterComponent } from './register/register.component';
@@ -15,13 +15,14 @@ import { CreatePasswordComponent } from './create-password/create-password.compo
 import { PasswordFormComponent } from './_components/password.form.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UpdateAccount } from './update/update.account';
-import { UserOrdersComponent } from './user-orders/user-orders/user-orders.component';
-import { OrderDetailsComponent } from './user-orders/order-details/order-details.component';
-import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.component';
-
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, AccountRoutingModule,RecaptchaModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    AccountRoutingModule,
+    RecaptchaModule,
+  ],
   declarations: [
     LayoutComponent,
     RegisterComponent,
@@ -34,9 +35,6 @@ import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.co
     PasswordFormComponent,
     ProfileComponent,
     UpdateAccount,
-    UserOrdersComponent,
-    OrderDetailsComponent,
-    OrderLayoutComponent,
   ],
   providers: [PasswordFormComponent],
 })

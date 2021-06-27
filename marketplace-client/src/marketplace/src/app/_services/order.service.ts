@@ -30,31 +30,30 @@ export class OrderService {
       },
     });
 
-    return this.http.get<OrderPage>(baseUrl + '/orders', {
-      params: new HttpParams().set('page', page.toString()),
-    })
+    return this.http
+      .get<OrderPage>(baseUrl + '/orders', {
+        params: new HttpParams().set('page', page.toString()),
+      })
       .pipe(
         map((orderPage: OrderPage) => {
-          orderPage.orders = orderPage.orders
-            .map((order: CourierOrder) => {
-              order.deliveryTime = new Date(order.deliveryTime)
-              return order;
-            });
+          orderPage.orders = orderPage.orders.map((order: CourierOrder) => {
+            order.deliveryTime = new Date(order.deliveryTime);
+            return order;
+          });
           return orderPage;
         })
       );
   }
 
   public getOrder(): Observable<CourierOrder> {
-    return this.http.get<CourierOrder>(
-      baseUrl + '/orders/' + this.getOrderId()
-    )
+    return this.http
+      .get<CourierOrder>(baseUrl + '/orders/' + this.getOrderId())
       .pipe(
         map((order: CourierOrder) => {
           order.deliveryTime = new Date(order.deliveryTime);
           return order;
-      })
-    );
+        })
+      );
   }
 
   private getOrderId(): string | null {
@@ -65,31 +64,31 @@ export class OrderService {
 
   public changeStatus(): Observable<Status> {
     return this.http.post<Status>(
-      baseUrl + '/orders/' + this.getOrderId() + '/status', null);
+      baseUrl + '/orders/' + this.getOrderId() + '/status',
+      null
+    );
   }
 
   //User order history
   public getOrdersForUser(): Observable<CourierOrder[]> {
-    if (this.router.url.includes('history')) {
-      return this.http.get<CourierOrder[]>(`${baseUrl}/orders/history`)
-        .pipe(
-          map((orders: CourierOrder[]) => {
-            return orders.map((order: CourierOrder) => {
-              order.deliveryTime = new Date(order.deliveryTime);
-              return order;
-            })
-          })
-        );
-    }
-    return this.http.get<CourierOrder[]>(`${baseUrl}/orders/incoming`)
-      .pipe(
+    if (this.router.url.includes('previous')) {
+      return this.http.get<CourierOrder[]>(`${baseUrl}/orders/history`).pipe(
         map((orders: CourierOrder[]) => {
           return orders.map((order: CourierOrder) => {
             order.deliveryTime = new Date(order.deliveryTime);
             return order;
-          })
+          });
         })
       );
+    }
+    return this.http.get<CourierOrder[]>(`${baseUrl}/orders/incoming`).pipe(
+      map((orders: CourierOrder[]) => {
+        return orders.map((order: CourierOrder) => {
+          order.deliveryTime = new Date(order.deliveryTime);
+          return order;
+        });
+      })
+    );
   }
 
   public getCourier(): Observable<User> {
@@ -98,15 +97,14 @@ export class OrderService {
 
   public getUserOrder(): Observable<CourierOrder> {
     let pathParts = this.router.url.split('/');
-    return this.http.get<CourierOrder>(
-      baseUrl + '/orders/' + pathParts[pathParts.length - 1]
-    )
-    .pipe(
+    return this.http
+      .get<CourierOrder>(baseUrl + '/orders/' + pathParts[pathParts.length - 1])
+      .pipe(
         map((order: CourierOrder) => {
           order.deliveryTime = new Date(order.deliveryTime);
           return order;
-      })
-    );
+        })
+      );
   }
 
   public getCourierInfo(): Observable<User> {

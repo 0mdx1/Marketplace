@@ -9,6 +9,7 @@ import { CartComponent } from './_components/cart/cart.component';
 import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { OrderHistoryModule } from './order-history/order-history.module';
 
 const accountModule = () =>
   import('./account/account.module').then((x) => x.AccountModule);
@@ -22,6 +23,10 @@ const productCatalogModule = () =>
   );
 const orderCatalogModule = () =>
   import('./order-catalog/order.module').then((x) => x.OrderModule);
+const orderHistoryModule = () =>
+  import('./order-history/order-history.module').then(
+    (x) => x.OrderHistoryModule
+  );
 
 const routes: Routes = [
   {
@@ -38,12 +43,6 @@ const routes: Routes = [
     canActivate: [RoleGuardService],
     data: { roles: [Role.User, Role.AnonymousUser] },
   },
-  /*{
-    path: 'image-uploading',
-    component: ImageUploadingComponent,
-    canActivate: [RoleGuardService],
-    data: { roles: [Role.Admin, Role.ProductManager] },
-  },*/
   {
     path: 'sysaccounts',
     loadChildren: systemAccountModule,
@@ -65,6 +64,12 @@ const routes: Routes = [
     component: CheckoutComponent,
     canActivate: [RoleGuardService],
     data: { roles: [Role.AnonymousUser, Role.User] },
+  },
+  {
+    path: 'order-history',
+    loadChildren: orderHistoryModule,
+    canActivate: [RoleGuardService],
+    data: { roles: [Role.User] },
   },
   {
     path: '**',
