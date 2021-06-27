@@ -1,7 +1,5 @@
 package com.ncgroup.marketplaceserver.order.model.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 import com.ncgroup.marketplaceserver.goods.model.Unit;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
