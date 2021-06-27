@@ -3,7 +3,7 @@ package com.ncgroup.marketplaceserver.goods.repository;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
-import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
+import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 
 import java.util.*;
 
@@ -12,8 +12,8 @@ public interface GoodsRepository {
     void editGood(GoodDto good, Long id);
 
     Optional<Good> findById(long id);
-    List<Good> display(String query, SearchParamsDto params);
-    Integer countGoods(String query, SearchParamsDto params);
+    List<Good> display(String query, RequestParams params);
+    Integer countGoods(String query, RequestParams params);
 
     List<String> getCategories();
     List<String> getFirms();

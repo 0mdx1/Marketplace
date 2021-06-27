@@ -3,21 +3,25 @@ package com.ncgroup.marketplaceserver.goods.controller;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
-import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
+import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("/api/products")
 public class GoodsController {
 
@@ -48,17 +52,22 @@ public class GoodsController {
             @RequestParam(value = "category", required = false)
                     String category,
             @RequestParam(value = "minPrice", required = false)
+            @PositiveOrZero
                     Double minPrice,
             @RequestParam(value = "maxPrice", required = false)
+            @Positive
                     Double maxPrice,
             @RequestParam(value = "sort", required = false)
+                    //price, date, name
                     String sortBy,
             @RequestParam(value = "direction", required = false)
+                    //Desc, Asc
                     String sortDirection,
             @RequestParam(value = "page", required = false)
+            @Positive
                     Integer page) throws NotFoundException {
 
-        SearchParamsDto params = new SearchParamsDto(
+        RequestParams params = new RequestParams(
                 name, category, minPrice, maxPrice, sortBy, sortDirection, page
         );
 

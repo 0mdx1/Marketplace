@@ -3,7 +3,7 @@ package com.ncgroup.marketplaceserver.goods.repository;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
-import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
+import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import com.ncgroup.marketplaceserver.goods.model.Unit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,7 +231,7 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
 
-    public Integer countGoods(String query, SearchParamsDto params) {
+    public Integer countGoods(String query, RequestParams params) {
         SqlParameterSource countParams = new MapSqlParameterSource()
                 .addValue("name", params.getName())
                 .addValue("category", params.getCategory())
@@ -242,15 +242,18 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
     @Override
-    public List<Good> display(String preparedQuery, SearchParamsDto params) {
+    public List<Good> display(String preparedQuery, RequestParams params) {
+        log.info(preparedQuery);
+
         SqlParameterSource displayParams = new MapSqlParameterSource()
-                .addValue("name", params.getName())
+                .addValue("name", "%" + params.getName() + "%")
                 .addValue("category", params.getCategory())
                 .addValue("minPrice", params.getMinPrice())
                 .addValue("maxPrice", params.getMaxPrice())
-                .addValue("sortDirection", params.getDirection())
                 .addValue("page", params.getPage())
                 .addValue("PAGE_CAPACITY", PAGE_CAPACITY);
+        log.info(params.toString());
+        log.info(displayParams.toString());
         return namedParameterJdbcTemplate
                 .query(preparedQuery, displayParams, this::mapRow);
     }

@@ -2,12 +2,11 @@ package com.ncgroup.marketplaceserver.goods.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class SearchParamsDto {
+public class RequestParams {
+
     String name;
     String category;
     Double minPrice;

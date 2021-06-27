@@ -5,7 +5,7 @@ import com.ncgroup.marketplaceserver.file.service.MediaService;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
-import com.ncgroup.marketplaceserver.goods.model.SearchParamsDto;
+import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import com.ncgroup.marketplaceserver.goods.repository.GoodsRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +76,7 @@ public class GoodsServiceImpl implements GoodsService {
         return good;
     }
 
-    private Good findById(long id) throws NotFoundException{
+    private Good findById(long id) throws NotFoundException {
         Optional<Good> goodOptional = repository.findById(id);
         return goodOptional
                 .orElseThrow(() -> new NotFoundException
@@ -85,7 +85,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Map<String, Object> display
-            (SearchParamsDto params) throws NotFoundException {
+            (RequestParams params) throws NotFoundException {
 
         int counter = 0;
         List<String> concatenator = new ArrayList<>();
@@ -98,7 +98,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         if (params.getName() != null) {
             concatenator.add
-                    (" product.name LIKE '%:name%'");
+                    (" product.name LIKE :name");
             counter++;
         }
 
@@ -129,27 +129,24 @@ public class GoodsServiceImpl implements GoodsService {
         int numOfGoods = repository
                 .countGoods("SELECT COUNT(*) " + fromQuery, params);
 
-
-        //what if sort = dfvdfv
         if (params.getSort() != null) {
             switch (params.getSort()) {
                 case "price":
                     fromQuery.append(" ORDER BY goods.price");
                     break;
-                case "name":
-                    fromQuery.append(" ORDER BY product.name");
-                    break;
                 case "date":
                     fromQuery.append(" ORDER BY shipping_date");
                     break;
+                case "name":
+                    fromQuery.append(" ORDER BY product.name");
             }
         } else {
             fromQuery.append(" ORDER BY product.name");
         }
 
 
-        if (params.getDirection() != null) {
-            fromQuery.append(" :sortDirection");
+        if (params.getDirection() != null && params.getDirection().equals("ASC")) {
+            fromQuery.append(" ASC");
         } else {
             fromQuery.append(" DESC");
         }
@@ -177,6 +174,11 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         List<Good> res = repository.display(flexibleQuery.toString(), params);
+
+        for(Good result : res) {
+            log.info(String.valueOf(result));
+        }
+
         if (res.isEmpty()) {
             throw new NotFoundException
                     ("Sorry, but there are no products corresponding to your criteria.");
@@ -204,7 +206,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Double> getPriceRange(String category) throws NotFoundException {
         ArrayList<Double> priceRange = new ArrayList<>(2);
-        if (category.equals("all")){
+        if (category.equals("all")) {
             priceRange.add(repository.getTotalMinPrice());
             priceRange.add(repository.getTotalMaxPrice());
             return priceRange;
