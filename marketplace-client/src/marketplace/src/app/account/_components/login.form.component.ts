@@ -5,8 +5,7 @@ import {AccountService} from '../../_services/account.service';
 import {environment} from "../../../environments/environment";
 import {ApiError} from "../../_models/ApiError";
 import {RecaptchaComponent} from "ng-recaptcha";
-import {AlertService} from "../../_services/alert.service";
-import {AlertType} from "../../_models/alert";
+
 
 
 @Component({
@@ -32,7 +31,6 @@ export class LoginFormComponent {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -61,18 +59,16 @@ export class LoginFormComponent {
           this.loading = false;
           this.form.enable();
         },
-          error: (error: ApiError) => {
-            this.loading = false;
-            this.recaptcha.reset();
-            this.form.enable();
-            if(error.type == "validation-captcha-1"){
-              this.alertService.addAlert("Pass captcha check",AlertType.Danger);
-              this.showCaptcha=true;
-            }
-            if(error.type == "auth-3"){
-              const passwordField = this.form.get('password');
-              if (passwordField) { passwordField.setErrors({IncorrectPassword: true}); }
-            }
+          error: error => {
+          this.recaptcha.reset();
+          let apiError = error.error as ApiError;
+          if(apiError!=null && apiError.errorType=='CAPTCHA_VALIDATION_ERROR'){
+            this.showCaptcha=true;
+          }
+          this.loading = false;
+          const passwordField = this.form.get('password');
+          this.form.enable();
+          if (passwordField) { passwordField.setErrors({IncorrectPassword: true}); }
         }
       });
   }
