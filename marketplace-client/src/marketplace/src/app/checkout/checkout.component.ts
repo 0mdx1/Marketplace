@@ -1,13 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "../_auth/auth.service";
-import { CartItem } from "../_models/cart-item.model";
-import { User } from "../_models/user";
-import { CartService } from "../_services/cart/cart.service";
-import { Checkout } from "../_services/checkout/checkout.service";
-import {catchError} from "rxjs/operators";
-import {HttpErrorHandlerService} from "../_services/http-error-handler.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from '../_auth/auth.service';
+import { CartItem } from '../_models/cart-item.model';
+import { User } from '../_models/user';
+import { CartService } from '../_services/cart/cart.service';
+import { Checkout } from '../_services/checkout/checkout.service';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mg-checkout',
@@ -25,7 +31,6 @@ export class CheckoutComponent implements OnInit {
   allDeliveryDates: Date[] = [];
   deliveryTimes: Date[] = [];
 
-  //deliveryTimes: string[] = [];
   freeCouriers = false;
 
   constructor(
@@ -59,7 +64,6 @@ export class CheckoutComponent implements OnInit {
         })
       )
       .subscribe((data) => {
-        console.log(data);
         this.freeCouriers = true;
         this.allDeliveryDates = data;
         var prevDate = this.dateToString(new Date(0));
@@ -87,10 +91,11 @@ export class CheckoutComponent implements OnInit {
     var prevDate = new Date(0);
     var distinctDates = [];
     for (let i = 0; i < this.allDeliveryDates.length; i++) {
-      if (prevDate.getFullYear() !== this.allDeliveryDates[i].getFullYear() ||
+      if (
+        prevDate.getFullYear() !== this.allDeliveryDates[i].getFullYear() ||
         prevDate.getMonth() !== this.allDeliveryDates[i].getMonth() ||
-        prevDate.getDate() !== this.allDeliveryDates[i].getDate()) {
-
+        prevDate.getDate() !== this.allDeliveryDates[i].getDate()
+      ) {
         distinctDates.push(this.allDeliveryDates[i]);
         prevDate = this.allDeliveryDates[i];
       }
@@ -215,18 +220,18 @@ export class CheckoutComponent implements OnInit {
     this.deliveryTimes = [];
     var chosenDate = new Date(this.orderDetailsForm.value['deliveryDay']);
     for (let i = 0; i < this.allDeliveryDates.length; i++) {
-      if (this.allDeliveryDates[i].getFullYear() === chosenDate.getFullYear() &&
-      this.allDeliveryDates[i].getMonth() === chosenDate.getMonth() &&
-        this.allDeliveryDates[i].getDate() === chosenDate.getDate()) {
+      if (
+        this.allDeliveryDates[i].getFullYear() === chosenDate.getFullYear() &&
+        this.allDeliveryDates[i].getMonth() === chosenDate.getMonth() &&
+        this.allDeliveryDates[i].getDate() === chosenDate.getDate()
+      ) {
         this.deliveryTimes.push(this.allDeliveryDates[i]);
-
       }
     }
     return true;
   }
 
   private dateToString(date: Date): string {
-
     return (
       '' +
       date.getFullYear() +
