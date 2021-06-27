@@ -1,21 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from '../_auth/auth.service';
-import { CartItem } from '../_models/cart-item.model';
-import { User } from '../_models/user';
-import { BrowserCart } from '../_services/cart/browser-cart';
-import { CartService } from '../_services/cart/cart.service';
-import { Checkout } from '../_services/checkout/checkout.service';
-import { catchError } from 'rxjs/operators';
-import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
-import { Router } from '@angular/router';
-import { variable } from '@angular/compiler/src/output/output_ast';
+import { Component, OnInit } from "@angular/core";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { AuthService } from "../_auth/auth.service";
+import { CartItem } from "../_models/cart-item.model";
+import { User } from "../_models/user";
+import { CartService } from "../_services/cart/cart.service";
+import { Checkout } from "../_services/checkout/checkout.service";
+import {catchError} from "rxjs/operators";
+import {HttpErrorHandlerService} from "../_services/http-error-handler.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'mg-checkout',
