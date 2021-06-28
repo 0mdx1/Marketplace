@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -11,12 +12,14 @@ import { CartItem } from '../_models/cart-item.model';
 import { User } from '../_models/user';
 import { CartService } from '../_services/cart/cart.service';
 import { Checkout } from '../_services/checkout/checkout.service';
+
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
 import { Router } from '@angular/router';
 
+
 @Component({
-  selector: 'mg-checkout',
+  selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
@@ -27,6 +30,7 @@ export class CheckoutComponent implements OnInit {
   submitted = false;
   authUser: User = {};
   isVisibleBanner = true;
+
 
   allDeliveryDates: Date[] = [];
   deliveryTimes: Date[] = [];
@@ -65,6 +69,7 @@ export class CheckoutComponent implements OnInit {
       )
       .subscribe((data) => {
         this.freeCouriers = true;
+
         this.allDeliveryDates = data;
         var prevDate = this.dateToString(new Date(0));
         let arrtimes = [];
@@ -108,6 +113,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice(cartItems: CartItem[]): number {
+
     let totalPrice: number = 0;
     cartItems.forEach((cartItem) => {
       totalPrice += this.getSubtotalPrice(cartItem);
@@ -116,12 +122,14 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalDiscount(cartItem: CartItem[]): number {
+
     let totalDiscount: number = 0;
     cartItem.forEach((item) => {
       totalDiscount += item.goods.discount;
     });
     return totalDiscount;
   }
+
 
   getPrice(cartItem: CartItem): number {
     return (
@@ -161,7 +169,7 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  doOrder() {
+  doOrder(): void {
     const mappedItems: any[] = [];
     this.items.map((item) => {
       mappedItems.push({
@@ -212,7 +220,7 @@ export class CheckoutComponent implements OnInit {
       );
   }
 
-  hideBanner() {
+  hideBanner(): void {
     this.isVisibleBanner = false;
   }
 
