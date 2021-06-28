@@ -94,7 +94,7 @@
               [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }">
 
               <option></option>
-              <option *ngFor="let day of getDistinctDAays()" value="{{ day }}">
+              <option *ngFor="let day of getDistinctDays()" value="{{ day }}">
                 {{ day | date: 'mediumDate'}}
               </option>
             </select>
