@@ -98,7 +98,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         if (params.getName() != null) {
             concatenator.add
-                    (" product.name LIKE :name");
+                    (" UPPER(product.name) LIKE UPPER(:name)");
             counter++;
         }
 
