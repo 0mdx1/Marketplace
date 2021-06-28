@@ -1,21 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from '../_auth/auth.service';
-import { CartItem } from '../_models/cart-item.model';
-import { User } from '../_models/user';
-import { CartService } from '../_services/cart/cart.service';
-import { Checkout } from '../_services/checkout/checkout.service';
+import {AbstractControl, FormBuilder, FormGroup, Validators,} from '@angular/forms';
+import {AuthService} from '../_auth/auth.service';
+import {CartItem} from '../_models/cart-item.model';
+import {User} from '../_models/user';
+import {CartService} from '../_services/cart/cart.service';
+import {Checkout} from '../_services/checkout/checkout.service';
 
-import { catchError } from 'rxjs/operators';
-import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
-import { Router } from '@angular/router';
+import {catchError} from 'rxjs/operators';
+import {HttpErrorHandlerService} from '../_services/http-error-handler.service';
+import {Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AlertService} from '../_services/alert.service';
+import {AlertType} from '../_models/alert';
 
 
 @Component({
@@ -23,13 +20,14 @@ import { Router } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
   items: CartItem[] = [];
   delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
+  showOrderDetails = false;
   authUser: User = {};
-  isVisibleBanner = true;
+  @ViewChild('content') content: any;
 
 
   allDeliveryDates: Date[] = [];
@@ -43,7 +41,9 @@ export class CheckoutComponent implements OnInit {
     private formBuilder: FormBuilder,
     private checkoutService: Checkout,
     private errorHandler: HttpErrorHandlerService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
+    private alertService: AlertService
   ) {
     this.orderDetailsForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -55,6 +55,14 @@ export class CheckoutComponent implements OnInit {
       comment: [''],
       disturb: [false],
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.openModal();
+  }
+
+  openModal(): void {
+    this.modalService.open(this.content, { centered: true });
   }
 
   ngOnInit(): void {
@@ -71,40 +79,39 @@ export class CheckoutComponent implements OnInit {
         this.freeCouriers = true;
 
         this.allDeliveryDates = data;
-        var prevDate = this.dateToString(new Date(0));
+        let prevDate = this.dateToString(new Date(0));
         let arrtimes = [];
-
-        for (let i = 0; i < data.length; i++) {
-          var dateWithoutTime = this.dateToString(data[i]);
+        data.forEach(elem => {
+          const dateWithoutTime = this.dateToString(elem);
           if (dateWithoutTime !== prevDate) {
             arrtimes = [];
             prevDate = dateWithoutTime;
-            arrtimes.push(this.timeToString(data[i]));
-            let obj = {
+            arrtimes.push(this.timeToString(elem));
+            const obj = {
               date: prevDate,
               times: arrtimes,
             };
             this.delivery.push(obj);
           } else {
-            arrtimes.push(this.timeToString(data[i]));
+            arrtimes.push(this.timeToString(elem));
           }
-        }
+        });
       });
   }
 
-  getDistinctDAays() {
-    var prevDate = new Date(0);
-    var distinctDates = [];
-    for (let i = 0; i < this.allDeliveryDates.length; i++) {
+  getDistinctDays(): Date[] {
+    let prevDate = new Date(0);
+    const distinctDates: Date[] = [];
+    this.allDeliveryDates.forEach(elem => {
       if (
-        prevDate.getFullYear() !== this.allDeliveryDates[i].getFullYear() ||
-        prevDate.getMonth() !== this.allDeliveryDates[i].getMonth() ||
-        prevDate.getDate() !== this.allDeliveryDates[i].getDate()
+        prevDate.getFullYear() !== elem.getFullYear() ||
+        prevDate.getMonth() !== elem.getMonth() ||
+        prevDate.getDate() !== elem.getDate()
       ) {
-        distinctDates.push(this.allDeliveryDates[i]);
-        prevDate = this.allDeliveryDates[i];
+        distinctDates.push(elem);
+        prevDate = elem;
       }
-    }
+    });
     return distinctDates;
   }
 
@@ -113,18 +120,16 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice(cartItems: CartItem[]): number {
-
-    let totalPrice: number = 0;
-    cartItems.forEach((cartItem) => {
+    let totalPrice = 0;
+    cartItems.forEach(cartItem => {
       totalPrice += this.getSubtotalPrice(cartItem);
     });
     return totalPrice;
   }
 
   getTotalDiscount(cartItem: CartItem[]): number {
-
-    let totalDiscount: number = 0;
-    cartItem.forEach((item) => {
+    let totalDiscount = 0;
+    cartItem.forEach(item => {
       totalDiscount += item.goods.discount;
     });
     return totalDiscount;
@@ -147,6 +152,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
     if (this.isAuth()) {
       this.orderDetailsForm.patchValue({
         name: this.authUser.name,
@@ -158,14 +164,14 @@ export class CheckoutComponent implements OnInit {
     if (this.orderDetailsForm.invalid) {
       return;
     }
-    this.submitted = true;
+    this.showOrderDetails = true;
   }
 
-  private getAuthUserInfo() {
+  private getAuthUserInfo(): void {
     if (this.isAuth()) {
       this.checkoutService
         .getUser()
-        .subscribe((user: User) => (this.authUser = user));
+        .subscribe((user: User) => this.authUser = user);
     }
   }
 
@@ -188,13 +194,13 @@ export class CheckoutComponent implements OnInit {
     });
 
     const receiveObj = {
-      name: this.orderDetailsForm.value['name'],
-      surname: this.orderDetailsForm.value['surname'],
-      phone: this.orderDetailsForm.value['phone'],
-      address: this.orderDetailsForm.value['address'],
+      name: this.orderDetailsForm.value.name,
+      surname: this.orderDetailsForm.value.surname,
+      phone: this.orderDetailsForm.value.phone,
+      address: this.orderDetailsForm.value.address,
       deliveryTime: this.formDeliveryDate(),
-      comment: this.orderDetailsForm.value['comment'],
-      disturb: this.orderDetailsForm.value['disturb'],
+      comment: this.orderDetailsForm.value.comment,
+      disturb: this.orderDetailsForm.value.disturb,
       totalSum: this.getTotalPrice(this.items),
       discountSum:
         this.getTotalPrice(this.items) - this.getTotalDiscount(this.items),
@@ -213,6 +219,7 @@ export class CheckoutComponent implements OnInit {
           this.submitted = false;
           this.cartService.getCart().empty();
           this.items = [];
+          this.alertService.addAlert('Order sent!', AlertType.Success);
         },
         (msg) => {
           this.router.navigateByUrl('/cart');
@@ -220,22 +227,18 @@ export class CheckoutComponent implements OnInit {
       );
   }
 
-  hideBanner(): void {
-    this.isVisibleBanner = false;
-  }
-
   getDeliveryTimes(): boolean {
     this.deliveryTimes = [];
-    var chosenDate = new Date(this.orderDetailsForm.value['deliveryDay']);
-    for (let i = 0; i < this.allDeliveryDates.length; i++) {
+    const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
+    this.allDeliveryDates.forEach(elem => {
       if (
-        this.allDeliveryDates[i].getFullYear() === chosenDate.getFullYear() &&
-        this.allDeliveryDates[i].getMonth() === chosenDate.getMonth() &&
-        this.allDeliveryDates[i].getDate() === chosenDate.getDate()
+        elem.getFullYear() === chosenDate.getFullYear() &&
+        elem.getMonth() === chosenDate.getMonth() &&
+        elem.getDate() === chosenDate.getDate()
       ) {
-        this.deliveryTimes.push(this.allDeliveryDates[i]);
+        this.deliveryTimes.push(elem);
       }
-    }
+    });
     return true;
   }
 
@@ -255,6 +258,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   formDeliveryDate(): Date {
-    return new Date(this.orderDetailsForm.value['deliveryTime']);
+    return new Date(this.orderDetailsForm.value.deliveryTime);
   }
 }
