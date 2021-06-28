@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 
 import {
   AbstractControl,
@@ -16,6 +16,7 @@ import { Checkout } from '../_services/checkout/checkout.service';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
 import { Router } from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -23,14 +24,14 @@ import { Router } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
   items: CartItem[] = [];
   delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
   showOrderDetails = false;
   authUser: User = {};
-  isVisibleBanner = true;
+  @ViewChild('content') content: any;
 
 
   allDeliveryDates: Date[] = [];
@@ -44,7 +45,8 @@ export class CheckoutComponent implements OnInit {
     private formBuilder: FormBuilder,
     private checkoutService: Checkout,
     private errorHandler: HttpErrorHandlerService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     this.orderDetailsForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -56,6 +58,14 @@ export class CheckoutComponent implements OnInit {
       comment: [''],
       disturb: [false],
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.openModal();
+  }
+
+  openModal(): void {
+    this.modalService.open(this.content, { centered: true });
   }
 
   ngOnInit(): void {
@@ -220,10 +230,6 @@ export class CheckoutComponent implements OnInit {
           this.router.navigateByUrl('/cart');
         }
       );
-  }
-
-  hideBanner(): void {
-    this.isVisibleBanner = false;
   }
 
   getDeliveryTimes(): boolean {
