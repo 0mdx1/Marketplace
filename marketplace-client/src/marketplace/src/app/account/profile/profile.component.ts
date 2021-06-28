@@ -4,12 +4,12 @@ import { SystemAccountService } from 'src/app/_services/system-account.service';
 import { AccountService } from '../../_services/account.service';
 import { StaffMember } from '../../_models/staff-member';
 import { ActivatedRoute } from '@angular/router';
-import {first, switchMap} from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
 import { Subscription } from 'rxjs';
-import {ApiError} from "../../_models/ApiError";
-import {AlertType} from "../../_models/alert";
-import {AlertService} from "../../_services/alert.service";
+import { ApiError } from '../../_models/ApiError';
+import { AlertType } from '../../_models/alert';
+import { AlertService } from '../../_services/alert.service';
 
 @Component({
   selector: 'app-courier',
@@ -37,25 +37,6 @@ export class ProfileComponent implements OnInit {
     this.subscription = this.accountService
       .getUser()
       .subscribe((response: User) => (this.user = response));
-
-    //.subscribe((response) => {
-
-    /*if(this.route.snapshot.params.role.localeCompare(1)) {
-      this.accountService.getManagerProfileInfo(this.route.snapshot.params.id)
-        .subscribe((response) => {
-          this.response = response;
-        })
-
-    }
-
-    else if (this.route.snapshot.params.role.localeCompare(2)){
-      this.accountService.getCourierProfileInfo(this.route.snapshot.params.id)
-        .subscribe((response) => {
-          this.response = response;
-        })
-    }
-    if (this.response.birthday == !null)
-    this.birthday = this.response.birthday;*/
   }
 
   showHideInfo(): void {
@@ -72,21 +53,22 @@ export class ProfileComponent implements OnInit {
 
   changePassword(): void {
     this.loading = true;
-    if(this.user && this.user.email) {
-      this.accountService.resetPassword('{"email" : "' + this.user.email + '"}')
+    if (this.user && this.user.email) {
+      this.accountService
+        .resetPassword('{"email" : "' + this.user.email + '"}')
         .pipe(first())
         .subscribe({
           next: () => {
             this.loading = false;
             this.changedPassword = true;
           },
-          error: error => {
+          error: (error) => {
             let apiError = error.error as ApiError;
-            if(apiError){
-              this.alertService.addAlert(apiError.message,AlertType.Danger);
+            if (apiError) {
+              this.alertService.addAlert(apiError.message, AlertType.Danger);
             }
             this.loading = false;
-          }
+          },
         });
     }
   }
