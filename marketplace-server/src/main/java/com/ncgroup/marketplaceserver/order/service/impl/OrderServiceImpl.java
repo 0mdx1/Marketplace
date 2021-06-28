@@ -77,6 +77,7 @@ public class OrderServiceImpl implements OrderService{
 	@Override
 	@Transactional
 	public OrderReadDto addOrder(OrderPostDto orderDto, String token)  {
+		log.info("Add time: "+orderDto.getDeliveryTime()); 
 		Order order = OrderPostDto.toOrder(orderDto);
 		if(token != null) {
 			String email = getTokenEmail(token); //user email
