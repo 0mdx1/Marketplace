@@ -1,6 +1,6 @@
-<div class="card text-center">
-  <div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs">
+<div class="card text-center bg-white" style="border: none;">
+  <div class="card-header" style="background-color: #FFFFFF;">
+    <ul class="nav nav-tabs card-header-tabs bg-white">
       <li class="nav-item">
         <a class="nav-link"
         routerLink="incoming"
@@ -8,8 +8,8 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
-        routerLink="history"
-        [ngClass]="{'active': isUrlActive('history')}">Order history</a>
+        routerLink="previous"
+        [ngClass]="{'active': isUrlActive('previous')}">Order history</a>
       </li>
     </ul>
   </div>
