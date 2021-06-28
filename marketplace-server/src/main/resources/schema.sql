@@ -145,7 +145,6 @@ CREATE TABLE IF NOT EXISTS order_details
     comment 		TEXT,
     disturb 		BOOLEAN NOT NULL DEFAULT true,
     total_sum 		DECIMAL(12, 2),
-    discount_sum 	DECIMAL(12, 2),
 
     CONSTRAINT order_details_pk
         PRIMARY KEY (id),

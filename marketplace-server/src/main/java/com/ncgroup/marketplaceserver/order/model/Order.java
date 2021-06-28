@@ -25,7 +25,6 @@ public class Order {
 	private String comment;
 	private boolean disturb;
 	private float totalSum;
-	private float discountSum;
 	private List<OrderItem> items;
 	
 }

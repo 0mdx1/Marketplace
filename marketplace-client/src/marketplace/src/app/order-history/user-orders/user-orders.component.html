@@ -1,7 +1,7 @@
 <div *ngIf="orders.length>0" class="e-table">
   <div class="table-responsive table-lg mt-3">
     <table class="table table-bordered table-hover">
-      <thead>
+      <thead style="background-color: #70ADFE;">
         <tr>
 
           <th class="max-width">Name</th>
@@ -35,5 +35,5 @@
   </div>
 </div>
 
-<p *ngIf="orders.length===0" class="card-text">
-  There are no orders for you</p>
+<div *ngIf="orders.length===0" class="card-text">
+  There are no orders for you</div>

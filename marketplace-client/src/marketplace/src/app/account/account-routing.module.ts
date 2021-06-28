@@ -9,9 +9,6 @@ import { ConfirmedComponent } from './confirmed/confirmed.component';
 import { CreatePasswordComponent } from './create-password/create-password.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UpdateAccount } from './update/update.account';
-import { UserOrdersComponent } from './user-orders/user-orders/user-orders.component';
-import { OrderLayoutComponent } from './user-orders/order-layout/order-layout.component';
-import { OrderDetailsComponent } from './user-orders/order-details/order-details.component';
 import { Role } from '../_models/role';
 import { RoleGuardService } from '../_auth/auth.guard.role.service';
 
@@ -38,20 +35,6 @@ const routes: Routes = [
         canActivate: [RoleGuardService],
         data: {
           roles: [Role.User, Role.Admin],
-        },
-      },
-
-      {
-        path: 'orders',
-        component: OrderLayoutComponent,
-        children: [
-          { path: 'incoming', component: UserOrdersComponent },
-          { path: 'history', component: UserOrdersComponent },
-          { path: ':orderId', component: OrderDetailsComponent },
-        ],
-        canActivate: [RoleGuardService],
-        data: {
-          roles: [Role.User],
         },
       },
     ],

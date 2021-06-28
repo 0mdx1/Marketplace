@@ -5,6 +5,7 @@ import com.ncgroup.marketplaceserver.exception.constants.ExceptionType;
 import com.ncgroup.marketplaceserver.exception.annotation.ApiErrorMetadata;
 
 import com.ncgroup.marketplaceserver.file.UnsupportedContentTypeException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
@@ -76,6 +78,17 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
                 fieldError.getDefaultMessage());
     }
 
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String maxFileSize;
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Object> handleSizeLimitExceededException(MaxUploadSizeExceededException ex, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        String message = String.format("Maximum upload size of %s exceeded", maxFileSize);
+        ApiError apiError = new ApiError(ExceptionType.FILE_SIZE_EXCEEDED,message);
+        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
@@ -102,6 +115,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(ExceptionType.BAD_CREDENTIALS,ex.getMessage());
         return this.handleExceptionInternal(ex, apiError, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
+
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
         HttpHeaders headers = new HttpHeaders();
