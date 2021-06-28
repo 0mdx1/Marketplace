@@ -1,10 +1,10 @@
-import {Inject, Injectable, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, Subscription} from "rxjs";
+import {Inject, Injectable, OnDestroy} from '@angular/core';
+import {of, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {BrowserCart} from "../browser/browser-cart";
 import {Cart} from "../cart";
 import {CartHttpService} from "./cart-http.service";
-import {AuthState, AuthService} from "../../../_auth/auth.service";
+import {AuthService, AuthState} from "../../../_auth/auth.service";
 import {SendRequestStrategyService} from "./send-request-strategy.service";
 import {SendRequestStrategy} from "./send-request-strategy";
 
@@ -14,6 +14,8 @@ import {SendRequestStrategy} from "./send-request-strategy";
 export class CartInitService implements OnDestroy{
 
   private subs: Subscription[] = [];
+
+  private prevState: AuthState|null = null;
 
   constructor(
     @Inject(BrowserCart)private cart: Cart,
@@ -32,13 +34,14 @@ export class CartInitService implements OnDestroy{
   public start(): void{
     this.subs.push(
       this.authService.getAuthStateObs()
-        .subscribe((event: AuthState)=>{
-          if(event==AuthState.Authorized){
+        .subscribe((state: AuthState)=>{
+          if(state==AuthState.Authorized){
             this.init();
           }
-          if(event==AuthState.Unauthorized){
+          if(state==AuthState.Unauthorized&&this.prevState==AuthState.Authorized){
             this.cart.empty();
           }
+          this.prevState = state;
         }))
   }
 
