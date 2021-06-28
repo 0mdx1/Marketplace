@@ -35,7 +35,7 @@
       <h1 class="text-danger font-weight-bold">Sorry, there are no available couriers</h1>
     </div>
 
-    <form *ngIf="!submitted && freeCouriers" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="!showOrderDetails && freeCouriers" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
       <hr />
       <h1>Checkout form</h1>
       <hr />
@@ -46,9 +46,9 @@
             <label>Name</label>
 
             <input type="text" formControlName="name" class="form-control"
-              [ngClass]="{ 'is-invalid': getForm.name.errors }" />
+              [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
 
-            <div *ngIf="getForm.name.errors" class="invalid-feedback">
+            <div *ngIf="getForm.name.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.name.errors.required">Name is required</div>
             </div>
 
@@ -60,9 +60,9 @@
             <label>Surname</label>
 
             <input type="text" formControlName="surname" class="form-control"
-              [ngClass]="{ 'is-invalid': getForm.surname.errors }" />
+              [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
 
-            <div *ngIf="getForm.surname.errors" class="invalid-feedback">
+            <div *ngIf="getForm.surname.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.surname.errors.required">Surname is required</div>
             </div>
           </div>
@@ -73,9 +73,9 @@
             <label>Phone</label>
 
             <input type="text" formControlName="phone" class="form-control"
-              [ngClass]="{ 'is-invalid': getForm.phone.errors }" />
+              [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
 
-            <div *ngIf="getForm.phone.errors" class="invalid-feedback">
+            <div *ngIf="getForm.phone.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.phone.errors.required">Phone is required</div>
               <div *ngIf="getForm.phone.errors.pattern">Phone must be in format +380</div>
             </div>
@@ -90,7 +90,7 @@
 
 
             <select class="form-control" formControlName="deliveryDay"
-              [ngClass]="{ 'is-invalid': getForm.deliveryDay.errors }">
+              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }">
 
               <option></option>
               <option *ngFor="let day of getDistinctDAays()" value="{{ day }}">
@@ -99,7 +99,7 @@
             </select>
 
 
-            <div *ngIf="getForm.deliveryDay.errors" class="invalid-feedback">
+            <div *ngIf="getForm.deliveryDay.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.deliveryDay.errors.required">Choose delivery day</div>
             </div>
           </div>
@@ -110,14 +110,14 @@
             <label>Delivery Time</label>
 
             <select class="form-control" formControlName="deliveryTime"
-              [ngClass]="{ 'is-invalid': getForm.deliveryTime.errors }">
+              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryTime.errors }">
 
               <option></option>
               <option *ngFor="let time of deliveryTimes" value="{{ time }}">
                 {{ time | date: 'shortTime'}}
               </option>
             </select>
-            <div *ngIf="getForm.deliveryTime.errors" class="invalid-feedback">
+            <div *ngIf="getForm.deliveryTime.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.deliveryTime.errors.required">Choose delivery time</div>
             </div>
           </div>
@@ -129,9 +129,9 @@
             <label>Address</label>
 
             <input type="text" class="form-control" formControlName="address"
-              [ngClass]="{ 'is-invalid': getForm.address.errors }" />
+              [ngClass]="{ 'is-invalid': submitted && getForm.address.errors }" />
 
-            <div *ngIf="getForm.address.errors" class="invalid-feedback">
+            <div *ngIf="getForm.address.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.address.errors.required">Address is required</div>
             </div>
           </div>
@@ -165,7 +165,7 @@
       </div>
     </form>
 
-    <div *ngIf="submitted">
+    <div *ngIf="showOrderDetails">
       <h1 class="font-weight-bold mt-3">Details order:</h1>
 
       <table class="table table-bordered">

@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CartItem } from 'src/app/_models/cart-item.model';
 import { User } from 'src/app/_models/user';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
@@ -28,7 +27,7 @@ export class Checkout {
         map((data: Date[]) => {
           return data.map((date: Date) => {
             return new Date(date);
-          })
+          });
       })
     );
   }

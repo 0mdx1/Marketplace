@@ -28,6 +28,7 @@ export class CheckoutComponent implements OnInit {
   delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
+  showOrderDetails = false;
   authUser: User = {};
   isVisibleBanner = true;
 
@@ -147,6 +148,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.submitted = true;
     if (this.isAuth()) {
       this.orderDetailsForm.patchValue({
         name: this.authUser.name,
@@ -158,7 +160,7 @@ export class CheckoutComponent implements OnInit {
     if (this.orderDetailsForm.invalid) {
       return;
     }
-    this.submitted = true;
+    this.showOrderDetails = true;
   }
 
   private getAuthUserInfo() {
