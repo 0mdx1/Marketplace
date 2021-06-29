@@ -6,6 +6,7 @@ import {catchError} from "rxjs/operators";
 import {HttpErrorHandlerService} from "../../_services/http-error-handler.service";
 import {Router} from "@angular/router";
 import {PageEvent, PageMediatorService} from "../../_services/page-mediator.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'mg-cart',
@@ -22,6 +23,8 @@ export class CartComponent implements OnInit, OnDestroy {
     private router: Router
   ){}
 
+  subscriptions: Subscription = new Subscription();
+
   ngOnInit() {
     this.mediator.notify(this,PageEvent.PageArrive);
     this.items = this.cartService.getCart().getItems();
@@ -29,6 +32,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.mediator.notify(this,PageEvent.PageLeave);
+    this.subscriptions.unsubscribe();
   }
 
   increaseQuantityByOne(cartItem: CartItem): void {
@@ -65,7 +69,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   checkout() {
-      this.cartValidatorService.validate(this.items)
+    this.subscriptions.add(this.cartValidatorService.validate(this.items)
         .pipe(
           catchError(err => {
             return this.errorHandler.displayValidationError(err);
@@ -73,6 +77,6 @@ export class CartComponent implements OnInit, OnDestroy {
         )
         .subscribe(()=>{
           this.router.navigateByUrl('/checkout')
-        })
+        }))
   }
 }

@@ -10,6 +10,7 @@ import { validateBirthday } from '../../_helpers/validators.service';
 import { first } from 'rxjs/operators';
 import { Role } from '../../_models/role';
 import { StaffMember } from '../../_models/staff-member';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-register-stuff',
@@ -36,6 +37,7 @@ export class RegisterStuffComponent {
   showPassword = false;
   showConfirmPassword = false;
   registered = false;
+  subscriptions: Subscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -105,7 +107,7 @@ export class RegisterStuffComponent {
     } else {
       return;
     }
-    observable.pipe(first()).subscribe({
+    this.subscriptions.add(observable.pipe(first()).subscribe({
       next: () => {
         this.loading = false;
         this.registered = true;
@@ -118,7 +120,11 @@ export class RegisterStuffComponent {
         this.loading = false;
         this.form.enable();
       },
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   createAnotherUser() {

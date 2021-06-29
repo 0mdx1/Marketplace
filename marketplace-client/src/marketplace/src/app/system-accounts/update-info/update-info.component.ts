@@ -14,6 +14,7 @@ import { validateBirthday } from '../../_helpers/validators.service';
 import { StaffMember } from '../../_models/staff-member';
 
 import { first } from 'rxjs/operators';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'update-info',
@@ -25,6 +26,8 @@ export class UpdateInfoComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(''),
   });
+
+  subscriptions: Subscription = new Subscription();
 
   submitted = false;
 
@@ -43,19 +46,19 @@ export class UpdateInfoComponent implements OnInit {
   ngOnInit() {
     //.subscribe((response) => {
     if (this.route.snapshot.params.role.localeCompare(1)) {
-      this.accountService
+      this.subscriptions.add(this.accountService
         .getManagerProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           this.formCreation();
-        });
+        }));
     } else if (this.route.snapshot.params.role.localeCompare(2)) {
-      this.accountService
+      this.subscriptions.add(this.accountService
         .getCourierProfileInfo(this.route.snapshot.params.id)
         .subscribe((response) => {
           this.response = response;
           this.formCreation();
-        });
+        }));
     }
   }
 
@@ -129,12 +132,12 @@ export class UpdateInfoComponent implements OnInit {
     }
 
 
-    observable.pipe(first()).subscribe({
+    this.subscriptions.add(observable.pipe(first()).subscribe({
       next: () => {
         this.loading = false;
         this.updated = true;
         this.form.enable();
       },
-    });
+    }));
   }
 }

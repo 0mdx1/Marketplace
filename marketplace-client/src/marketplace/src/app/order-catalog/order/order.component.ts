@@ -17,6 +17,7 @@ export class OrderComponent implements OnInit {
   order: CourierOrder = new CourierOrder(); // is it ok?
   subscription!: Subscription;
 
+
   changeStatus() {
     this.service.changeStatus()
       .subscribe((response: Status) => {

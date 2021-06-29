@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {FileService} from "../../../_services/file.service";
 import {ApiError} from "../../../_models/ApiError";
 import {AlertType} from "../../../_models/alert";
@@ -18,12 +18,18 @@ export class ImageUploadingComponent implements OnChanges{
 
   public isLoading: boolean = false;
 
+  subscriptions: Subscription = new Subscription();
+
   constructor(private fileService: FileService, private alertService: AlertService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     let filename = this.getFilename(changes.imageUrl.currentValue);
     console.log(filename);
     this.imageFilenameEvent.emit(filename)
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   private getFilename(url:string): string {
@@ -37,7 +43,8 @@ export class ImageUploadingComponent implements OnChanges{
     let fileToUpload = files.item(0);
     if (fileToUpload) {
       this.isLoading = true;
-      this.fileService.upload(fileToUpload).subscribe({
+      this.subscriptions.add(
+        this.fileService.upload(fileToUpload).subscribe({
         next: fileMetadata => {
           this.isLoading=false;
           this.imageUrl = fileMetadata.resourceUrl;
@@ -50,7 +57,7 @@ export class ImageUploadingComponent implements OnChanges{
             this.alertService.addAlert(apiError.message,AlertType.Danger);
           }
         }
-      });
+      }));
     }
   }
 
