@@ -17,7 +17,7 @@ public class MarketplaceServerApplication {
     
     @PostConstruct
     public void init(){
-        TimeZone.setDefault(TimeZone.getTimeZone("IST"));
+        TimeZone.setDefault(TimeZone.getTimeZone("EET")); 
     }
 
 }

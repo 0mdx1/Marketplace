@@ -33,7 +33,7 @@ export class ProductComponent implements OnInit {
     0,
     false,
     false,
-    '',
+    new Date(0),
     '',
     '',
     ''

@@ -15,7 +15,7 @@ import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
-import {ApiError} from "../../_models/ApiError";
+import { ApiError } from '../../_models/ApiError';
 
 @Component({
   selector: 'update-product',
@@ -128,7 +128,7 @@ export class UpdateProductComponent implements OnInit {
       image: o.image,
       discount: o.discount,
       inStock: o.inStock,
-      shippingDate: this.response.shippingDate,
+      shippingDate: new Date(this.response.shippingDate),
       categoryName: o.categoryName,
       description: o.description,
     };
@@ -162,8 +162,8 @@ export class UpdateProductComponent implements OnInit {
       },
       error: (err) => {
         let apiError = err.error as ApiError;
-        if(apiError){
-          this.alertService.addAlert(apiError.message,AlertType.Danger);
+        if (apiError) {
+          this.alertService.addAlert(apiError.message, AlertType.Danger);
         }
         this.form.enable();
       },

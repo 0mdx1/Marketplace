@@ -17,7 +17,6 @@ import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -30,7 +29,6 @@ export class CheckoutComponent implements OnInit {
   submitted = false;
   authUser: User = {};
   isVisibleBanner = true;
-
 
   allDeliveryDates: Date[] = [];
   deliveryTimes: Date[] = [];
@@ -113,7 +111,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice(cartItems: CartItem[]): number {
-
     let totalPrice: number = 0;
     cartItems.forEach((cartItem) => {
       totalPrice += this.getSubtotalPrice(cartItem);
@@ -122,14 +119,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalDiscount(cartItem: CartItem[]): number {
-
     let totalDiscount: number = 0;
     cartItem.forEach((item) => {
       totalDiscount += item.goods.discount;
     });
     return totalDiscount;
   }
-
 
   getPrice(cartItem: CartItem): number {
     return (

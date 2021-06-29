@@ -37,6 +37,7 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request
     ) {
         if(body==null){
+        	ex.printStackTrace();
             ApiError apiError = new ApiError(ExceptionType.UNEXPECTED_ERROR,"Unexpected error occurred");
             return new ResponseEntity<>(apiError,headers,status);
         }
