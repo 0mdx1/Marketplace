@@ -1,19 +1,23 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 
-import {AbstractControl, FormBuilder, FormGroup, Validators,} from '@angular/forms';
-import {AuthService} from '../_auth/auth.service';
-import {CartItem} from '../_models/cart-item.model';
-import {User} from '../_models/user';
-import {CartService} from '../_services/cart/cart.service';
-import {Checkout} from '../_services/checkout/checkout.service';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from '../_auth/auth.service';
+import { CartItem } from '../_models/cart-item.model';
+import { User } from '../_models/user';
+import { CartService } from '../_services/cart/cart.service';
+import { Checkout } from '../_services/checkout/checkout.service';
 
-import {catchError} from 'rxjs/operators';
-import {HttpErrorHandlerService} from '../_services/http-error-handler.service';
-import {Router} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AlertService} from '../_services/alert.service';
-import {AlertType} from '../_models/alert';
-
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AlertService } from '../_services/alert.service';
+import { AlertType } from '../_models/alert';
 
 @Component({
   selector: 'app-checkout',
@@ -28,7 +32,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   showOrderDetails = false;
   authUser: User = {};
   @ViewChild('content') content: any;
-
 
   allDeliveryDates: Date[] = [];
   deliveryTimes: Date[] = [];
@@ -81,7 +84,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this.allDeliveryDates = data;
         let prevDate = this.dateToString(new Date(0));
         let arrtimes = [];
-        data.forEach(elem => {
+        data.forEach((elem) => {
           const dateWithoutTime = this.dateToString(elem);
           if (dateWithoutTime !== prevDate) {
             arrtimes = [];
@@ -102,7 +105,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   getDistinctDays(): Date[] {
     let prevDate = new Date(0);
     const distinctDates: Date[] = [];
-    this.allDeliveryDates.forEach(elem => {
+    this.allDeliveryDates.forEach((elem) => {
       if (
         prevDate.getFullYear() !== elem.getFullYear() ||
         prevDate.getMonth() !== elem.getMonth() ||
@@ -121,7 +124,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   getTotalPrice(cartItems: CartItem[]): number {
     let totalPrice = 0;
-    cartItems.forEach(cartItem => {
+    cartItems.forEach((cartItem) => {
       totalPrice += this.getSubtotalPrice(cartItem);
     });
     return totalPrice;
@@ -129,12 +132,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   getTotalDiscount(cartItem: CartItem[]): number {
     let totalDiscount = 0;
-    cartItem.forEach(item => {
+    cartItem.forEach((item) => {
       totalDiscount += item.goods.discount;
     });
     return totalDiscount;
   }
-
 
   getPrice(cartItem: CartItem): number {
     return (
@@ -171,7 +173,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     if (this.isAuth()) {
       this.checkoutService
         .getUser()
-        .subscribe((user: User) => this.authUser = user);
+        .subscribe((user: User) => (this.authUser = user));
     }
   }
 
@@ -230,7 +232,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   getDeliveryTimes(): boolean {
     this.deliveryTimes = [];
     const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
-    this.allDeliveryDates.forEach(elem => {
+    this.allDeliveryDates.forEach((elem) => {
       if (
         elem.getFullYear() === chosenDate.getFullYear() &&
         elem.getMonth() === chosenDate.getMonth() &&

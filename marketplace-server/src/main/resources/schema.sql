@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS goods
     price         DECIMAL(12, 2),
     unit          unit_type,
     discount      DECIMAL(12, 2),
-    shipping_date TIMESTAMP WITHOUT TIME ZONE,
+    shipping_date TIMESTAMP WITH TIME ZONE,
     in_stock      BOOLEAN,
     status        BOOLEAN,
     image         varchar(100),
