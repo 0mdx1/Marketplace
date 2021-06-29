@@ -79,6 +79,8 @@ input[type=number]::-webkit-outer-spin-button {
   .card-img-top {
     max-width: 100px;
     min-width: 30px;
+    height: 100px;
+    object-fit: contain;
   }
 
   .cart-table{

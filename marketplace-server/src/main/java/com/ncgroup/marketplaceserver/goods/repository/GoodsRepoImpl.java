@@ -22,6 +22,7 @@ import org.webjars.NotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -110,7 +111,7 @@ public class GoodsRepoImpl implements GoodsRepository {
     // TODO: add shipping date here
     @Value("${good.find-by-firmId-productId}")
     private String findGood;
-    public Optional<Long> findGood(Long firmId, Long productId, LocalDateTime date) {
+    public Optional<Long> findGood(Long firmId, Long productId, OffsetDateTime date) {
         SqlParameterSource goodParameters = new MapSqlParameterSource()
                 .addValue("firmId", firmId)
                 .addValue("productId", productId)
@@ -324,10 +325,12 @@ public class GoodsRepoImpl implements GoodsRepository {
     }
 
     private Good mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return Good.builder()
+    	log.info(rs.getObject("shipping_date", OffsetDateTime.class).toString());
+    	return Good.builder()
                 .id(rs.getLong("id"))
 
-                .shippingDate(rs.getObject("shipping_date", LocalDateTime.class))
+                .shippingDate(rs.getObject("shipping_date", OffsetDateTime.class)
+                		.withOffsetSameInstant(OffsetDateTime.now().getOffset()))
 
                 .unit(Unit.valueOf(rs.getString("unit")))
                 .quantity(rs.getInt("quantity"))

@@ -117,8 +117,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 				.addValue("status", order.getStatus().toString())
 				.addValue("comment", order.getComment())
 				.addValue("disturb", order.isDisturb())
-				.addValue("total_sum",  order.getTotalSum())
-				.addValue("discount_sum", order.getDiscountSum());
+				.addValue("total_sum",  order.getTotalSum());
 		namedParameterJdbcTemplate.update(insertOrderQuery, orderParams, orderHolder);
 		order.setId(orderHolder.getKey().longValue());
 		return order;

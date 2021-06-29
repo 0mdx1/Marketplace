@@ -48,7 +48,6 @@ public class OrderReadDto {
 				.comment(order.getComment())
 				.disturb(order.isDisturb())
 				.totalSum(order.getTotalSum())
-				.discountSum(order.getDiscountSum())
 				.build();
 		List<OrderItemReadDto> items = new LinkedList<>();
 		for(OrderItem item : order.getItems()) {

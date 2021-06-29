@@ -20,7 +20,7 @@ export class ProductCardComponent {
     0,
     false,
     false,
-    '',
+    new Date(0),
     '',
     '',
     ''

@@ -1,5 +1,6 @@
 package com.ncgroup.marketplaceserver.file.controller;
 
+import com.ncgroup.marketplaceserver.file.UnsupportedContentTypeException;
 import com.ncgroup.marketplaceserver.file.model.dto.FileMetadataReadDto;
 import com.ncgroup.marketplaceserver.file.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class MediaController {
         path = "/",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<FileMetadataReadDto> upload(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<FileMetadataReadDto> upload(@RequestParam("file") MultipartFile file) throws UnsupportedContentTypeException {
         String filename = mediaService.upload(file);
         return new ResponseEntity<>(
                 new FileMetadataReadDto(

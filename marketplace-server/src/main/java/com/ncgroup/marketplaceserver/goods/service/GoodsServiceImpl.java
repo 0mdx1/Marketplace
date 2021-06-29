@@ -38,7 +38,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
         String newImage = goodDto.getImage();
-        if (!newImage.isEmpty()){
+        if (newImage!=null&&!newImage.isEmpty()){
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
 
@@ -54,7 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
         Good good = this.findById(id); // pull the good object if exists
 
         String newImage = goodDto.getImage();
-        if (!newImage.isEmpty()) {
+        if (newImage!=null&&!newImage.isEmpty()) {
             String oldImage = good.getImage();
             if (!oldImage.isEmpty() && !oldImage.equals(newImage)) {
                 goodDto.setImage(this.mediaService.confirmUpload(newImage));

@@ -55,7 +55,6 @@ public class OrderPostDto {
 				.comment(orderDto.getComment())
 				.disturb(orderDto.isDisturb())
 				.totalSum(orderDto.getTotalSum())
-				.discountSum(orderDto.getDiscountSum())
 				.build();
 		log.info(order.toString()); 
 		List<OrderItem> orderItems = new LinkedList<>();
