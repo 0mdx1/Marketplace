@@ -185,6 +185,7 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("status", goodDto.isStatus())
                     .addValue("date", goodDto.getShippingDate());
             namedParameterJdbcTemplate.update(insertGoodOldId, goodParameters);
+            return oldId;
         }
 
         throw new GoodAlreadyExistsException
