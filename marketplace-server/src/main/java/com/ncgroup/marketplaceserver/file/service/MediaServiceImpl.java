@@ -1,6 +1,8 @@
 package com.ncgroup.marketplaceserver.file.service;
 
+import com.ncgroup.marketplaceserver.file.UnsupportedContentTypeException;
 import com.ncgroup.marketplaceserver.file.storage.CloudStorage;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +18,9 @@ import static org.springframework.util.StringUtils.getFilename;
 public class MediaServiceImpl implements MediaService{
 
     private CloudStorage cloudStorage;
-    private static final List<String> allowedTypes = Arrays.asList(
+    private static final List<ContentType> allowedTypes = Arrays.asList(IMAGE_PNG, IMAGE_GIF, IMAGE_JPEG);
+    private static final List<String> allowedTypesAsString = Arrays.asList(
             IMAGE_PNG.getMimeType(),
-            IMAGE_BMP.getMimeType(),
             IMAGE_GIF.getMimeType(),
             IMAGE_JPEG.getMimeType()
     );
@@ -29,12 +31,15 @@ public class MediaServiceImpl implements MediaService{
     }
 
     @Override
-    public String upload(MultipartFile file) {
+    public String upload(MultipartFile file) throws UnsupportedContentTypeException {
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
-        if (!allowedTypes.contains(file.getContentType())) {
-            throw new IllegalStateException("File uploaded is not an image");
+        if(file.getContentType()==null){
+            throw new IllegalStateException("Cannot upload file with no Content-Type");
+        }
+        if (!allowedTypesAsString.contains(file.getContentType())) {
+            throw new UnsupportedContentTypeException("File uploaded is not an image",allowedTypes,create(file.getContentType()));
         }
         String filepath = String.format("tmp/%s_%s",UUID.randomUUID(),file.getOriginalFilename());
         Map<String, String> metadata = new HashMap<>();

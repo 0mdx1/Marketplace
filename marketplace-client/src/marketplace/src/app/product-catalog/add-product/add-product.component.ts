@@ -102,6 +102,8 @@ export class AddProductComponent implements OnInit {
   }
 
   private mapToProduct(o: any): Product {
+    console.log(new Date(o.shippingDate));
+
     return {
       id: -1,
       goodName: o.goodName,
@@ -113,7 +115,7 @@ export class AddProductComponent implements OnInit {
       discount: o.discount,
       inStock: o.inStock,
       status: true,
-      shippingDate: o.shippingDate,
+      shippingDate: new Date(o.shippingDate),
       categoryName: o.categoryName,
       description: o.description,
     };

@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import {CartComponent} from "../_components/cart/cart.component";
-import {GlobalCart} from "./cart/global-cart";
+import {CartPollingService} from "./cart/global/cart-polling.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageMediatorService {
 
-  constructor(private cart: GlobalCart) { }
+  constructor(private cartPolling: CartPollingService) { }
 
   notify(sender: any, event: PageEvent): void{
     if(sender instanceof CartComponent){
       if(event==PageEvent.PageArrive){
-        this.cart.startPolling();
+        this.cartPolling.startPolling();
       }
       if(event==PageEvent.PageLeave){
-        this.cart.stopPolling();
+        this.cartPolling.stopPolling();
       }
     }
   }

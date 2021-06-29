@@ -7,6 +7,7 @@ import {ProductComparisonService} from "./_services/product-comparison/product-c
 import {LimitedProductComparisonService} from "./_services/product-comparison/limited-product-comparison.service";
 import {CartService} from "./_services/cart/cart.service";
 import {CartItem} from "./_models/cart-item.model";
+import {CartInitService} from "./_services/cart/global/cart-init.service";
 
 @Component({ selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -18,9 +19,12 @@ export class AppComponent implements OnInit{
 
   constructor(private accountService: AccountService,
               @Inject(LimitedProductComparisonService) private comparisonService: ProductComparisonService,
-              private cartService: CartService) {
+              private cartService: CartService,
+              private cartInitService: CartInitService
+  ) {
     this.account = new Account();
     this.accountService.account.subscribe(x => this.account = x);
+    this.cartInitService.start();
   }
 
   logout() {

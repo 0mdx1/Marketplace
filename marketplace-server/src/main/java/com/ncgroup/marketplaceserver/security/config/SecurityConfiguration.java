@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.security.config;
 
 import javax.servlet.Filter;
 
+import com.ncgroup.marketplaceserver.exception.filter.FilterChainExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -18,30 +19,28 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.ncgroup.marketplaceserver.security.filter.AuthorizationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer{
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	private AuthorizationFilter authorizationFilter;
-    //private JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    //private AuthenticationFilter authenticationFilter;
     private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Autowired
-    public SecurityConfiguration(AuthorizationFilter authorizationFilter,
-                                 //JwtAccessDeniedHandler jwtAccessDeniedHandler,
-                                 //AuthenticationFilter authenticationFilter,
-                                 @Qualifier("userDetailsService")UserDetailsService userDetailsService,
-                                 BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public SecurityConfiguration(
+            AuthorizationFilter authorizationFilter,
+            @Qualifier("userDetailsService")UserDetailsService userDetailsService,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            FilterChainExceptionHandler filterChainExceptionHandler
+    ) {
         this.authorizationFilter = authorizationFilter;
-        //this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        //this.authenticationFilter = authenticationFilter;
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.filterChainExceptionHandler = filterChainExceptionHandler;
     }
 
     @Override
@@ -52,10 +51,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .addFilterBefore(filterChainExceptionHandler, CorsFilter.class)
             .csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+                .antMatchers("/api/media/").hasAnyRole("ADMIN","PRODUCT_MANAGER")
                 .antMatchers("/api/shopping-cart/**")
                     .hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/api/courier/**", "api/manager/**")
@@ -72,8 +73,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
                     .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/orders/**")
                 	.hasRole("COURIER")
+                .antMatchers("/api/userinfo")
+                	.hasAnyRole("USER", "ADMIN", "COURIER", "PRODUCT_MANAGER")
                 .and()
-
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
                 //.authenticationEntryPoint(authenticationFilter)
                 //.and()
@@ -101,13 +103,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter implemen
         FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>(filter);
         registrationBean.setEnabled(false);
         return registrationBean;
-    }
-    
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
-                .allowedMethods("*");
     }
 }
 

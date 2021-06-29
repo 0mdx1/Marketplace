@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -28,7 +29,7 @@ public class Good {
 
     private double discount;
 
-    private LocalDateTime shippingDate;
+    private OffsetDateTime shippingDate;
 
     private boolean inStock;
     private String description;
