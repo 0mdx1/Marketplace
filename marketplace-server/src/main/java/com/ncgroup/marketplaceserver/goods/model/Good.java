@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 @Data
 @Builder
 @AllArgsConstructor
-@Slf4j
 public class Good {
 
     private long id;
@@ -37,12 +36,8 @@ public class Good {
     private String image;
     private boolean status;
 
-    public Good() {
+    public Good(GoodDto goodDto, Long id, MediaService mediaService) {
         this.setStatus(true);
-    }
-
-//    , MediaService mediaService
-    public void setProperties(GoodDto goodDto, Long id) {
         this.setId(id);
         this.setShippingDate(goodDto.getShippingDate());
         this.setUnit(goodDto.getUnit());
@@ -54,7 +49,26 @@ public class Good {
         this.setInStock(goodDto.isInStock());
         this.setDescription(goodDto.getDescription());
         this.setCategoryName(goodDto.getCategoryName().toLowerCase());
-        this.setImage(goodDto.getImage());
+        this.setImage(goodDto.getImage(), mediaService);
+    }
+
+    public void setImage(String image, MediaService mediaService) {
+        this.image = mediaService.getCloudStorage().getResourceUrl(image);
+    }
+
+    public void setProperties(GoodDto goodDto, Long id, MediaService mediaService) {
+        this.setId(id);
+        this.setShippingDate(goodDto.getShippingDate());
+        this.setUnit(goodDto.getUnit());
+        this.setGoodName(goodDto.getGoodName().toLowerCase());
+        this.setFirmName(goodDto.getFirmName().toLowerCase());
+        this.setQuantity(goodDto.getQuantity());
+        this.setPrice(goodDto.getPrice());
+        this.setDiscount(goodDto.getDiscount());
+        this.setInStock(goodDto.isInStock());
+        this.setDescription(goodDto.getDescription());
+        this.setCategoryName(goodDto.getCategoryName().toLowerCase());
+        this.setImage(goodDto.getImage(), mediaService);
         this.setStatus(goodDto.isStatus());
     }
 

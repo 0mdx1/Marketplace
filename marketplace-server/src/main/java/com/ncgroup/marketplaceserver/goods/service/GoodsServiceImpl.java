@@ -41,12 +41,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (!newImage.isEmpty()) {
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
-
-        Long goodId = repository.createGood(goodDto); // get the id of new good if it is new
-        Good good = new Good();
-        good.setProperties(goodDto, goodId);
-        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
-        return good;
+        return new Good(goodDto, repository.getGoodId(goodDto), mediaService);
     }
 
     @Override
@@ -62,25 +57,24 @@ public class GoodsServiceImpl implements GoodsService {
                 mediaService.delete(oldImage);
             }
         }
-        good.setProperties(goodDto, id);
-        repository.editGood(goodDto, id); // push the changed good object
-        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
 
+        repository.editGood(goodDto, id); // push the changed good object
+        good.setProperties(goodDto, id, mediaService);
         return good;
     }
 
     @Override
     public Good find(long id) throws NotFoundException {
         Good good = findById(id);
+        // fixme ???
         good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
         return good;
     }
 
     private Good findById(long id) throws NotFoundException {
         Optional<Good> goodOptional = repository.findById(id);
-        return goodOptional
-                .orElseThrow(() -> new NotFoundException
-                        ("Product with " + id + " not found."));
+        return goodOptional.orElseThrow(() ->
+                        new NotFoundException("Product with " + id + " not found."));
     }
 
     @Override
@@ -151,7 +145,6 @@ public class GoodsServiceImpl implements GoodsService {
             fromQuery.append(" DESC");
         }
 
-
         StringBuilder flexibleQuery = new StringBuilder
                 ("SELECT goods.id, product.name AS product_name, status, shipping_date, " +
                         "firm.name AS firm_name, category.name AS category_name, unit, " +
@@ -175,19 +168,14 @@ public class GoodsServiceImpl implements GoodsService {
 
         List<Good> res = repository.display(flexibleQuery.toString(), params);
 
-        for(Good result : res) {
-            log.info(String.valueOf(result));
-        }
-
         if (res.isEmpty()) {
             throw new NotFoundException
                     ("Sorry, but there are no products corresponding to your criteria.");
         }
 
         for (Good good : res) {
-            good.setImage(mediaService
-                    .getCloudStorage()
-                    .getResourceUrl(good.getImage()));
+            // fixme
+            good.setImage(good.getImage(), mediaService);
         }
 
         Map<String, Object> response = new HashMap<>();

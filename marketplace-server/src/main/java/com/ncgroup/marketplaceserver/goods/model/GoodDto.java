@@ -40,8 +40,4 @@ public class GoodDto {
     @NotEmpty
     private String categoryName;
     private boolean status;
-
-//    public void GoodDto(Good good) {
-//
-//    }
 }

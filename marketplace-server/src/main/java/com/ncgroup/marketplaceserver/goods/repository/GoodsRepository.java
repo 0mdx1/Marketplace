@@ -8,7 +8,7 @@ import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import java.util.*;
 
 public interface GoodsRepository {
-    Long createGood(GoodDto goodDto) throws GoodAlreadyExistsException;
+    Long getGoodId(GoodDto goodDto) throws GoodAlreadyExistsException;
     void editGood(GoodDto good, Long id);
 
     Optional<Good> findById(long id);

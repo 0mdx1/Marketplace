@@ -127,16 +127,18 @@ public class GoodsRepoImpl implements GoodsRepository {
         }
     }
 
-    @Value("${good.insert}")
-    private String goodInsert;
-
+    @Value("${good.insert-new-id}")
+    private String insertGoodNewId;
+    @Value("${good.insert-old-id}")
+    private String insertGoodOldId;
+    @Value("${good.delete-old-id}")
+    private String deleteGoodOldId;
     @Override
-    public Long createGood(GoodDto goodDto)
-            throws GoodAlreadyExistsException {
+    public Long getGoodId(GoodDto goodDto) throws GoodAlreadyExistsException {
 
-        Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
-        Long categoryId = createCategory(goodDto.getCategoryName().toLowerCase());
-        Long productId = createProduct(goodDto.getGoodName().toLowerCase(), categoryId);
+        Long firmId = createFirm(goodDto.getFirmName());
+        Long categoryId = createCategory(goodDto.getCategoryName());
+        Long productId = createProduct(goodDto.getGoodName(), categoryId);
 
         /**
          * goods are equal if their firm,
@@ -159,12 +161,32 @@ public class GoodsRepoImpl implements GoodsRepository {
                     .addValue("firmId", firmId)
                     .addValue("status", goodDto.isStatus())
                     .addValue("date", goodDto.getShippingDate());
-            namedParameterJdbcTemplate.update(goodInsert, goodParameters, keyHolder);
+            namedParameterJdbcTemplate.update(insertGoodNewId, goodParameters, keyHolder);
             return keyHolder.getKey().longValue();
         } else if (!getStatus(goodId.get())) {
-            editGood(goodDto, goodId.get());
-            return goodId.get();
+            // Save old id, delete good with old id, create new good with old id
+            Long oldId = goodId.get();
+
+            SqlParameterSource goodParameters = new MapSqlParameterSource()
+                    .addValue("id", oldId);
+            namedParameterJdbcTemplate.update(deleteGoodOldId, goodParameters);
+
+            goodParameters = new MapSqlParameterSource()
+                    .addValue("id", oldId)
+                    .addValue("goodQuantity", goodDto.getQuantity())
+                    .addValue("goodPrice", goodDto.getPrice())
+                    .addValue("goodDiscount", goodDto.getDiscount())
+                    .addValue("goodInStock", goodDto.isInStock())
+                    .addValue("goodDescription", goodDto.getDescription())
+                    .addValue("image", goodDto.getImage())
+                    .addValue("unit", goodDto.getUnit().toString())
+                    .addValue("productId", productId)
+                    .addValue("firmId", firmId)
+                    .addValue("status", goodDto.isStatus())
+                    .addValue("date", goodDto.getShippingDate());
+            namedParameterJdbcTemplate.update(insertGoodOldId, goodParameters);
         }
+
         throw new GoodAlreadyExistsException
                 ("Such good already exists! If you want to modify an existing good," +
                         " please go to the list of goods, select good and click edit.");
@@ -180,7 +202,6 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .queryForObject(getStatus, goodParameter, Boolean.class);
     }
 
-
     @Value("${product.update}")
     private String updateProduct;
     @Value("${product.edit-category}")
@@ -188,9 +209,9 @@ public class GoodsRepoImpl implements GoodsRepository {
 
     @Override
     public void editGood(GoodDto goodDto, Long id) {
-        Long firmId = createFirm(goodDto.getFirmName().toLowerCase());
-        Long categoryId = createCategory(goodDto.getCategoryName().toLowerCase());
-        Long productId = createProduct(goodDto.getGoodName().toLowerCase(), categoryId);
+        Long firmId = createFirm(goodDto.getFirmName());
+        Long categoryId = createCategory(goodDto.getCategoryName());
+        Long productId = createProduct(goodDto.getGoodName(), categoryId);
 
         SqlParameterSource categoryParameters = new MapSqlParameterSource()
                 .addValue("categoryId", categoryId)
