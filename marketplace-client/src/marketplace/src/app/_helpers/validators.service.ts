@@ -41,6 +41,19 @@ export function validateShippingDate(control: AbstractControl): void {
   }
 }
 
+export function validateQuantity(control: AbstractControl): void {
+  const unit = control.get('unit');
+  const quantity = control.get('quantity');
+  if (
+    unit?.value == 'ITEM' &&
+    //number is float
+    Number(quantity?.value) === quantity?.value &&
+    quantity.value % 1 !== 0
+  ) {
+    quantity.setErrors({ InvalidQuantity: true });
+  }
+}
+
 export function validateConfirmPassword(control: AbstractControl): void {
   const password = control.get('password')?.value;
   const confirmedPassword = control.get('confirmPassword')?.value;
