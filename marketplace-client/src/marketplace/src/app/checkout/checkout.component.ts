@@ -26,15 +26,15 @@ import { AlertType } from '../_models/alert';
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
   items: CartItem[] = [];
-  delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
   showOrderDetails = false;
   authUser: User = {};
+  deliveryDateTime: Date[] = [];
+  distinctDates: Date[] = [];
+  deliveryTimes: Date[] = [];
   @ViewChild('content') content: any;
 
-  allDeliveryDates: Date[] = [];
-  deliveryTimes: Date[] = [];
 
   freeCouriers = false;
 
@@ -75,42 +75,19 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       .getDeliveryTime()
       .subscribe((data) => {
         this.freeCouriers = true;
-
-        this.allDeliveryDates = data;
-        let prevDate = this.dateToString(new Date(0));
-        let arrtimes = [];
-        data.forEach((elem) => {
-          const dateWithoutTime = this.dateToString(elem);
-          if (dateWithoutTime !== prevDate) {
-            arrtimes = [];
-            prevDate = dateWithoutTime;
-            arrtimes.push(this.timeToString(elem));
-            const obj = {
-              date: prevDate,
-              times: arrtimes,
-            };
-            this.delivery.push(obj);
-          } else {
-            arrtimes.push(this.timeToString(elem));
+        this.deliveryDateTime = data;
+        let prevDate = new Date();
+        data.forEach(elem => {
+          if (
+            prevDate.getFullYear() !== elem.getFullYear() ||
+            prevDate.getMonth() !== elem.getMonth() ||
+            prevDate.getDate() !== elem.getDate()
+          ) {
+            this.distinctDates.push(elem);
+            prevDate = elem;
           }
         });
       });
-  }
-
-  getDistinctDays(): Date[] {
-    let prevDate = new Date(0);
-    const distinctDates: Date[] = [];
-    this.allDeliveryDates.forEach((elem) => {
-      if (
-        prevDate.getFullYear() !== elem.getFullYear() ||
-        prevDate.getMonth() !== elem.getMonth() ||
-        prevDate.getDate() !== elem.getDate()
-      ) {
-        distinctDates.push(elem);
-        prevDate = elem;
-      }
-    });
-    return distinctDates;
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
@@ -219,10 +196,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       );
   }
 
-  getDeliveryTimes(): boolean {
+  calculateDeliveryTimes(): void {
     this.deliveryTimes = [];
     const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
-    this.allDeliveryDates.forEach((elem) => {
+    this.deliveryDateTime.forEach((elem) => {
       if (
         elem.getFullYear() === chosenDate.getFullYear() &&
         elem.getMonth() === chosenDate.getMonth() &&
@@ -231,22 +208,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this.deliveryTimes.push(elem);
       }
     });
-    return true;
-  }
-
-  private dateToString(date: Date): string {
-    return (
-      '' +
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1) +
-      '-' +
-      date.getDate()
-    );
-  }
-
-  private timeToString(date: Date): string {
-    return '' + date.getHours() + ':' + date.getMinutes();
   }
 
   formDeliveryDate(): Date {
