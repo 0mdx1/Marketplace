@@ -25,12 +25,12 @@
     </div>
   </ng-template>
 
-  <div *ngIf="items.length === 0" class="text-center my-5">
+  <div *ngIf="!items.length" class="text-center my-5">
     <h4>Your Cart Is Empty</h4>
     <button class="btn btn-primary btn-lg mt-3" routerLink="/products">GO TO SHOP</button>
   </div>
 
-  <div *ngIf="items.length !== 0">
+  <div *ngIf="items.length">
 
     <div *ngIf="!freeCouriers" class="text-center my-5">
       <h1 class="text-danger font-weight-bold">Sorry, there are no available couriers</h1>
@@ -91,10 +91,12 @@
 
 
             <select class="form-control" formControlName="deliveryDay"
-              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }">
+              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }"
+              (click)="calculateDeliveryTimes()"
+            >
 
               <option></option>
-              <option *ngFor="let day of getDistinctDays()" value="{{ day }}">
+              <option *ngFor="let day of distinctDates" value="{{ day }}">
                 {{ day | date: 'mediumDate'}}
               </option>
             </select>
@@ -106,12 +108,13 @@
           </div>
         </div>
 
-        <div *ngIf="this.orderDetailsForm.value['deliveryDay'] !== '' && getDeliveryTimes()" class="col-md-3">
+        <div *ngIf="this.orderDetailsForm.value['deliveryDay']" class="col-md-3">
           <div class="form-group">
             <label>Delivery Time</label>
 
             <select class="form-control" formControlName="deliveryTime"
-              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryTime.errors }">
+              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryTime.errors }"
+            >
 
               <option></option>
               <option *ngFor="let time of deliveryTimes" value="{{ time }}">
@@ -227,7 +230,7 @@
 
     </div>
 
-    <div *ngIf="items.length !== 0">
+    <div *ngIf="items.length">
       <hr />
       <h1 class="font-weight-bold">Products: {{getTotalPrice(items) | currency:'USD'}}</h1>
       <hr />
