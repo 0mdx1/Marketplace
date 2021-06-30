@@ -26,15 +26,16 @@ import { AlertType } from '../_models/alert';
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
   items: CartItem[] = [];
-  delivery: Array<any> = [];
   orderDetailsForm: FormGroup;
   submitted = false;
   showOrderDetails = false;
   authUser: User = {};
+  deliveryDateTime: Date[] = [];
+  distinctDates: Date[] = [];
+  deliveryTimes: Date[] = [];
   @ViewChild('content') content: any;
 
   allDeliveryDates: Date[] = [];
-  deliveryTimes: Date[] = [];
   deliveryDistinctDays: Date[] = [];
 
   freeCouriers = false;
@@ -62,7 +63,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.openModal();
+    if (!this.isAuth()) {
+      this.openModal();
+    }
   }
 
   openModal(): void {
@@ -72,18 +75,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.items = this.cartService.getCart().getItems();
     this.getAuthUserInfo();
-    this.checkoutService
-      .getDeliveryTime()
-      .pipe(
-        catchError((err) => {
-          return this.errorHandler.displayValidationError(err);
-        })
-      )
-      .subscribe((data) => {
-        this.freeCouriers = true;
-        this.allDeliveryDates = data;
-        this.deliveryDistinctDays = this.getDistinctDays();
-      });
+    this.checkoutService.getDeliveryTime().subscribe((data) => {
+      this.freeCouriers = true;
+      this.allDeliveryDates = data;
+      this.deliveryDistinctDays = this.getDistinctDays();
+    });
   }
 
   getDistinctDays(): Date[] {
@@ -102,7 +98,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     return distinctDates;
   }
 
-  getDeliveryTimes(): boolean {
+  calculateDeliveryTimes(): boolean {
     this.deliveryTimes = [];
     const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
     this.allDeliveryDates.forEach((elem) => {
@@ -208,24 +204,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       items: mappedItems,
     };
 
-    this.checkoutService
-      .sendOrderDetails(receiveObj)
-      .pipe(
-        catchError((err) => {
-          return this.errorHandler.displayValidationError(err);
-        })
-      )
-      .subscribe(
-        () => {
-          this.submitted = false;
-          this.cartService.getCart().empty();
-          this.items = [];
-          this.alertService.addAlert('Order sent!', AlertType.Success);
-        },
-        (msg) => {
-          this.router.navigateByUrl('/cart');
-        }
-      );
+    this.checkoutService.sendOrderDetails(receiveObj).subscribe(
+      () => {
+        this.submitted = false;
+        this.cartService.getCart().empty();
+        this.items = [];
+        this.alertService.addAlert('Order sent!', AlertType.Success);
+      },
+      (msg) => {
+        this.router.navigateByUrl('/cart');
+      }
+    );
   }
 
   formDeliveryDate(): Date {
