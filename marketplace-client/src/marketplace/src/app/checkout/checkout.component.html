@@ -248,8 +248,10 @@
 
               <tr *ngFor="let cartItem of this.items" class="text-center">
                 <td class="d-flex align-items-center justify-content-around">
-                  <img *ngIf="!cartItem.goods.image" src="assets/product.svg" height="60" class="order-1">
-                  <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" height="60" class="order-1">
+                  <div class="img-container">
+                    <img *ngIf="!cartItem.goods.image" src="assets/product.svg" height="60" class="order-1">
+                    <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" height="60" class="order-1">
+                  </div>
                 </td>
 
                 <td>

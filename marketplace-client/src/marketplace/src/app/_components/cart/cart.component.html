@@ -20,8 +20,10 @@
           <tbody>
             <tr *ngFor="let cartItem of this.items">
               <td class="align-items-center text-center">
-                <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
-                <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
+                <div class="img-container">
+                  <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
+                  <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
+                </div>
               </td>
               <td class="text-center">
                 <a routerLink="../products/{{cartItem.goods.id}}" class="good-name">{{cartItem.goods.goodName}}</a>
