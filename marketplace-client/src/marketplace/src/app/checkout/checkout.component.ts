@@ -35,6 +35,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   deliveryTimes: Date[] = [];
   @ViewChild('content') content: any;
 
+  allDeliveryDates: Date[] = [];
+  deliveryDistinctDays: Date[] = [];
 
   freeCouriers = false;
 
@@ -73,23 +75,42 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.items = this.cartService.getCart().getItems();
     this.getAuthUserInfo();
-    this.checkoutService
-      .getDeliveryTime()
-      .subscribe((data) => {
-        this.freeCouriers = true;
-        this.deliveryDateTime = data;
-        let prevDate = new Date();
-        data.forEach(elem => {
-          if (
-            prevDate.getFullYear() !== elem.getFullYear() ||
-            prevDate.getMonth() !== elem.getMonth() ||
-            prevDate.getDate() !== elem.getDate()
-          ) {
-            this.distinctDates.push(elem);
-            prevDate = elem;
-          }
-        });
-      });
+    this.checkoutService.getDeliveryTime().subscribe((data) => {
+      this.freeCouriers = true;
+      this.allDeliveryDates = data;
+      this.deliveryDistinctDays = this.getDistinctDays();
+    });
+  }
+
+  getDistinctDays(): Date[] {
+    let prevDate = new Date(0);
+    const distinctDates: Date[] = [];
+    this.allDeliveryDates.forEach((elem) => {
+      if (
+        prevDate.getFullYear() !== elem.getFullYear() ||
+        prevDate.getMonth() !== elem.getMonth() ||
+        prevDate.getDate() !== elem.getDate()
+      ) {
+        distinctDates.push(elem);
+        prevDate = elem;
+      }
+    });
+    return distinctDates;
+  }
+
+  calculateDeliveryTimes(): boolean {
+    this.deliveryTimes = [];
+    const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
+    this.allDeliveryDates.forEach((elem) => {
+      if (
+        elem.getFullYear() === chosenDate.getFullYear() &&
+        elem.getMonth() === chosenDate.getMonth() &&
+        elem.getDate() === chosenDate.getDate()
+      ) {
+        this.deliveryTimes.push(elem);
+      }
+    });
+    return true;
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
@@ -183,33 +204,17 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       items: mappedItems,
     };
 
-    this.checkoutService
-      .sendOrderDetails(receiveObj)
-      .subscribe(
-        () => {
-          this.submitted = false;
-          this.cartService.getCart().empty();
-          this.items = [];
-          this.alertService.addAlert('Order sent!', AlertType.Success);
-        },
-        (msg) => {
-          this.router.navigateByUrl('/cart');
-        }
-      );
-  }
-
-  calculateDeliveryTimes(): void {
-    this.deliveryTimes = [];
-    const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
-    this.deliveryDateTime.forEach((elem) => {
-      if (
-        elem.getFullYear() === chosenDate.getFullYear() &&
-        elem.getMonth() === chosenDate.getMonth() &&
-        elem.getDate() === chosenDate.getDate()
-      ) {
-        this.deliveryTimes.push(elem);
+    this.checkoutService.sendOrderDetails(receiveObj).subscribe(
+      () => {
+        this.submitted = false;
+        this.cartService.getCart().empty();
+        this.items = [];
+        this.alertService.addAlert('Order sent!', AlertType.Success);
+      },
+      (msg) => {
+        this.router.navigateByUrl('/cart');
       }
-    });
+    );
   }
 
   formDeliveryDate(): Date {
