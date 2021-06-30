@@ -35,6 +35,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
   allDeliveryDates: Date[] = [];
   deliveryTimes: Date[] = [];
+  deliveryDistinctDays: Date[] = [];
 
   freeCouriers = false;
 
@@ -80,25 +81,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       )
       .subscribe((data) => {
         this.freeCouriers = true;
-
         this.allDeliveryDates = data;
-        let prevDate = this.dateToString(new Date(0));
-        let arrtimes = [];
-        data.forEach((elem) => {
-          const dateWithoutTime = this.dateToString(elem);
-          if (dateWithoutTime !== prevDate) {
-            arrtimes = [];
-            prevDate = dateWithoutTime;
-            arrtimes.push(this.timeToString(elem));
-            const obj = {
-              date: prevDate,
-              times: arrtimes,
-            };
-            this.delivery.push(obj);
-          } else {
-            arrtimes.push(this.timeToString(elem));
-          }
-        });
+        this.deliveryDistinctDays = this.getDistinctDays();
       });
   }
 
@@ -116,6 +100,21 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
       }
     });
     return distinctDates;
+  }
+
+  getDeliveryTimes(): boolean {
+    this.deliveryTimes = [];
+    const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
+    this.allDeliveryDates.forEach((elem) => {
+      if (
+        elem.getFullYear() === chosenDate.getFullYear() &&
+        elem.getMonth() === chosenDate.getMonth() &&
+        elem.getDate() === chosenDate.getDate()
+      ) {
+        this.deliveryTimes.push(elem);
+      }
+    });
+    return true;
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
@@ -227,36 +226,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
           this.router.navigateByUrl('/cart');
         }
       );
-  }
-
-  getDeliveryTimes(): boolean {
-    this.deliveryTimes = [];
-    const chosenDate = new Date(this.orderDetailsForm.value.deliveryDay);
-    this.allDeliveryDates.forEach((elem) => {
-      if (
-        elem.getFullYear() === chosenDate.getFullYear() &&
-        elem.getMonth() === chosenDate.getMonth() &&
-        elem.getDate() === chosenDate.getDate()
-      ) {
-        this.deliveryTimes.push(elem);
-      }
-    });
-    return true;
-  }
-
-  private dateToString(date: Date): string {
-    return (
-      '' +
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1) +
-      '-' +
-      date.getDate()
-    );
-  }
-
-  private timeToString(date: Date): string {
-    return '' + date.getHours() + ':' + date.getMinutes();
   }
 
   formDeliveryDate(): Date {

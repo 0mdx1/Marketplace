@@ -88,25 +88,22 @@
         <div class="col-md-3">
           <div class="form-group">
             <label>Delivery Day</label>
-
-
             <select class="form-control" formControlName="deliveryDay"
-              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }">
+              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }"
+              (change)="getDeliveryTimes()">
 
               <option></option>
-              <option *ngFor="let day of getDistinctDays()" value="{{ day }}">
+              <option *ngFor="let day of deliveryDistinctDays" value="{{ day }}">
                 {{ day | date: 'mediumDate'}}
               </option>
             </select>
-
-
             <div *ngIf="getForm.deliveryDay.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.deliveryDay.errors.required">Choose delivery day</div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="this.orderDetailsForm.value['deliveryDay'] !== '' && getDeliveryTimes()" class="col-md-3">
+        <div *ngIf="this.orderDetailsForm.value['deliveryDay'] !== ''" class="col-md-3">
           <div class="form-group">
             <label>Delivery Time</label>
 
