@@ -74,11 +74,12 @@
                   </div>
 
                   <div class="form-group col-6">
-                    <label>Discount</label>
+                    <label>Discount %</label>
                     <input type="number" formControlName="discount" class="form-control" min="0"
                            [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }" />
                     <div *ngIf="submitted && getForm.discount.errors" class="invalid-feedback">
                       <div *ngIf="getForm.discount.errors.min">Discount should be > 0 </div>
+                      <div *ngIf="getForm.discount.errors.max">Discount should be < 99 </div>
                     </div>
                   </div>
 

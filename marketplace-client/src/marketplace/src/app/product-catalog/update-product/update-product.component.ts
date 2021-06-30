@@ -109,7 +109,7 @@ export class UpdateProductComponent implements OnInit {
           [Validators.min(0.01), Validators.required],
         ],
         unit: [this.response.unit, Validators.required],
-        discount: [this.response.discount, Validators.min(0)],
+        discount: [this.response.discount, Validators.min(0), Validators.max(99)],
         inStock: [String(this.response.inStock), Validators.required],
         status: [String(this.response.status), Validators.required],
         categoryName: [this.response.categoryName, Validators.required],
