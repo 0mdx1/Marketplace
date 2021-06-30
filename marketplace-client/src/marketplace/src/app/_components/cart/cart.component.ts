@@ -66,13 +66,10 @@ export class CartComponent implements OnInit, OnDestroy {
 
   checkout() {
       this.cartValidatorService.validate(this.items)
-        .pipe(
-          catchError(err => {
-            return this.errorHandler.displayValidationError(err);
-          })
-        )
-        .subscribe(()=>{
-          this.router.navigateByUrl('/checkout')
+        .subscribe({
+          next: ()=>{
+            this.router.navigateByUrl('/checkout')
+          }
         })
   }
 }

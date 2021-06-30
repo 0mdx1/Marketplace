@@ -73,11 +73,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.getAuthUserInfo();
     this.checkoutService
       .getDeliveryTime()
-      .pipe(
-        catchError((err) => {
-          return this.errorHandler.displayValidationError(err);
-        })
-      )
       .subscribe((data) => {
         this.freeCouriers = true;
 
@@ -211,11 +206,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
     this.checkoutService
       .sendOrderDetails(receiveObj)
-      .pipe(
-        catchError((err) => {
-          return this.errorHandler.displayValidationError(err);
-        })
-      )
       .subscribe(
         () => {
           this.submitted = false;
