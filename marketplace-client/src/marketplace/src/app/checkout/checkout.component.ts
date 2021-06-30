@@ -61,7 +61,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.openModal();
+    if (!this.isAuth()) {
+      this.openModal();
+    }
   }
 
   openModal(): void {
