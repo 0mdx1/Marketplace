@@ -6,18 +6,19 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../_auth/auth.service';
-import { CartItem } from '../_models/cart-item.model';
-import { User } from '../_models/user';
-import { CartService } from '../_services/cart/cart.service';
-import { Checkout } from '../_services/checkout/checkout.service';
+import { AuthService } from '../../_auth/auth.service';
+import { CartItem } from '../../_models/cart-item.model';
+import { User } from '../../_models/user';
+import { CartService } from '../../_services/cart/cart.service';
+import { Checkout } from '../../_services/checkout/checkout.service';
 
-import { catchError } from 'rxjs/operators';
-import { HttpErrorHandlerService } from '../_services/http-error-handler.service';
+import { HttpErrorHandlerService } from '../../_services/http-error-handler.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AlertService } from '../_services/alert.service';
-import { AlertType } from '../_models/alert';
+import { AlertService } from '../../_services/alert.service';
+import { AlertType } from '../../_models/alert';
+import {OrderItemModel} from '../../_models/order/order-item.model';
+import {OrderModel} from '../../_models/order/order.model';
 
 @Component({
   selector: 'app-checkout',
@@ -172,45 +173,27 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   }
 
   doOrder(): void {
-    const mappedItems: any[] = [];
+    const mappedItems: OrderItemModel[] = [];
     this.items.map((item) => {
-      mappedItems.push({
-        categoryName: item.goods.categoryName,
-        description: item.goods.description,
-        discount: item.goods.discount,
-        firmName: item.goods.firmName,
-        goodName: item.goods.goodName,
-        goodsId: item.goods.id,
-        inStock: item.goods.inStock,
-        price: item.goods.price,
-        unit: item.goods.unit,
-        quantity: item.quantity,
-        addingTime: item.addingTime,
-      });
+      mappedItems.push(new OrderItemModel(item));
     });
 
-    const receiveObj = {
-      name: this.orderDetailsForm.value.name,
-      surname: this.orderDetailsForm.value.surname,
-      phone: this.orderDetailsForm.value.phone,
-      address: this.orderDetailsForm.value.address,
-      deliveryTime: this.formDeliveryDate(),
-      comment: this.orderDetailsForm.value.comment,
-      disturb: this.orderDetailsForm.value.disturb,
-      totalSum: this.getTotalPrice(this.items),
-      discountSum:
-        this.getTotalPrice(this.items) - this.getTotalDiscount(this.items),
-      items: mappedItems,
-    };
+    const order: OrderModel = new OrderModel(
+      mappedItems,
+      this.getTotalPrice(this.items),
+      this.getTotalPrice(this.items) - this.getTotalDiscount(this.items),
+      this.orderDetailsForm,
+      this.formDeliveryDate()
+    );
 
-    this.checkoutService.sendOrderDetails(receiveObj).subscribe(
+    this.checkoutService.sendOrderDetails(order).subscribe(
       () => {
         this.submitted = false;
         this.cartService.getCart().empty();
         this.items = [];
         this.alertService.addAlert('Order sent!', AlertType.Success);
       },
-      (msg) => {
+      () => {
         this.router.navigateByUrl('/cart');
       }
     );
