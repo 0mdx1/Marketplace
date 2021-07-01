@@ -107,9 +107,9 @@ public class OrderServiceImpl implements OrderService{
 				);
 		
 		order = orderRepo.saveOrderDetails(order);
-		for(OrderItem item : order.getItems()) {
+		for (OrderItem item : order.getItems()) {
 			try {
-				int oldQunatity = goodService.find(item.getGood().getId()).getQuantity();
+				double oldQunatity = goodService.find(item.getGood().getId()).getQuantity();
 				goodService.updateQuantity(item.getGood().getId(), oldQunatity-item.getQuantity());
 			} catch (NotFoundException e) {
 				log.warn(e.getMessage());

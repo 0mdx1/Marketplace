@@ -16,13 +16,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GoodDto {
-
     @NotEmpty
     private String goodName;
     @NotEmpty
     private String firmName;
-    @Min(1)
-    private int quantity;
+    @Min(0)
+    private double quantity;
     @Min(0)
     private double price;
     private Unit unit;

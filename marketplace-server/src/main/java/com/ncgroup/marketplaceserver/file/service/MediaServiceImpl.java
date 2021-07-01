@@ -49,7 +49,6 @@ public class MediaServiceImpl implements MediaService{
     }
 
     @Override
-
     public void delete(String filepath) {
         this.cloudStorage.delete(filepath);
     }

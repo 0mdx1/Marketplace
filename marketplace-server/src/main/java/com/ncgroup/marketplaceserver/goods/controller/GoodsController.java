@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.goods.controller;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
+import com.ncgroup.marketplaceserver.goods.model.ModelView;
 import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
@@ -46,7 +47,7 @@ public class GoodsController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> display(
+    public ResponseEntity<ModelView> display(
             @RequestParam(value = "search", required = false)
                     String name,
             @RequestParam(value = "category", required = false)

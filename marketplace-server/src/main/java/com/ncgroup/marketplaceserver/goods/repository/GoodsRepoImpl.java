@@ -350,6 +350,7 @@ public class GoodsRepoImpl implements GoodsRepository {
         try {
             min = jdbcTemplate.queryForObject(getTotalMinPrice, Double.class);
         } catch (EmptyResultDataAccessException e) {
+            // fixme: returning null is bad
             return null;
         }
         return min;
@@ -388,14 +389,15 @@ public class GoodsRepoImpl implements GoodsRepository {
                 .build();
     }
 
-    @Value("${good.update-price}")
+    @Value("${good.update-quantity}")
     private String editProductQuantity;
 
     @Override
-    public void editQuantity(long id, int quantity) {
+    public void editQuantity(long id, double quantity, boolean inStock) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id)
-                .addValue("quantity", quantity);
+                .addValue("quantity", quantity)
+                .addValue("inStock", inStock);
         namedParameterJdbcTemplate.update(editProductQuantity, parameters);
     }
 }

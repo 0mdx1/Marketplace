@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS goods
     firm_id       INTEGER
         CONSTRAINT fk_firm
             REFERENCES firm (id),
-    quantity      INTEGER DEFAULT 0,
+    quantity      DECIMAL(12, 2) DEFAULT 0,
     price         DECIMAL(12, 2),
     unit          unit_type,
     discount      DECIMAL(12, 2),
