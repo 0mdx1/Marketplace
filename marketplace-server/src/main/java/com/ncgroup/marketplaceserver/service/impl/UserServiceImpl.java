@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.ncgroup.marketplaceserver.captcha.service.CaptchaService;
 import com.ncgroup.marketplaceserver.constants.EmailParam;
+import com.ncgroup.marketplaceserver.exception.domain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,11 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
-import com.ncgroup.marketplaceserver.exception.domain.CaptchaNotValidException;
-import com.ncgroup.marketplaceserver.exception.domain.EmailExistException;
-import com.ncgroup.marketplaceserver.exception.domain.EmailNotFoundException;
-import com.ncgroup.marketplaceserver.exception.domain.PasswordNotValidException;
-import com.ncgroup.marketplaceserver.exception.domain.UserNotFoundException;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
@@ -148,7 +144,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	public User setNewPassword(String link, String newPassword) {
 		User user = validateAuthLink(link);
 		validatePasswordPattern(newPassword);
-		if(user == null || newPassword == null) return null;
+		if(user == null){
+			throw new LinkNotValidException("Link is invalid or expired");
+		}
 		if(user.getPassword() != null && user.getPassword().equals(newPassword)) {
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
