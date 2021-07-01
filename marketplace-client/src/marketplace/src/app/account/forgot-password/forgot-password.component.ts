@@ -1,17 +1,22 @@
 import { Component } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AccountService} from '../../_services/account.service';
-import {ApiError} from "../../_models/ApiError";
-import {AlertType} from "../../_models/alert";
-import {AlertService} from "../../_services/alert.service";
+import { AccountService } from '../../_services/account.service';
+import { ApiError } from '../../_models/ApiError';
+import { AlertType } from '../../_models/alert';
+import { AlertService } from '../../_services/alert.service';
 
 @Component({
-  templateUrl: 'forgot-password.component.html' ,
-  styleUrls: ['forgot-password.component.css']
+  templateUrl: 'forgot-password.component.html',
+  styleUrls: ['forgot-password.component.css'],
 })
-export class ForgotPasswordComponent{
+export class ForgotPasswordComponent {
   form: FormGroup;
   loading = false;
   submitted = false;
@@ -23,12 +28,14 @@ export class ForgotPasswordComponent{
     private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
   // convenience getter for easy access to form fields
-  get getForm(): { [p: string]: AbstractControl } { return this.form.controls; }
+  get getForm(): { [p: string]: AbstractControl } {
+    return this.form.controls;
+  }
 
   onSubmit(): void {
     this.submitted = true;
@@ -43,7 +50,8 @@ export class ForgotPasswordComponent{
     this.form.disable();
     this.loading = true;
     // this.alertService.clear();
-    this.accountService.resetPassword(this.form.value)
+    this.accountService
+      .resetPassword(this.form.value)
       .pipe(first())
       .subscribe({
         next: () => {
@@ -51,17 +59,18 @@ export class ForgotPasswordComponent{
           this.loading = false;
           this.sent = true;
         },
-        error: error => {
+        error: (error) => {
           let apiError = error.error as ApiError;
-          if(apiError){
-            this.alertService.addAlert(apiError.message,AlertType.Danger);
+          console.log(error);
+          if (apiError) {
+            this.alertService.addAlert(apiError.message, AlertType.Danger);
           }
-          if (error.error.status === 401){
-            this.getForm.email.setErrors({EmailDoesNotExist : true});
+          if (error.status && error.status === 401) {
+            this.getForm.email.setErrors({ EmailDoesNotExist: true });
           }
           this.loading = false;
           this.form.enable();
-        }
+        },
       });
   }
 }
