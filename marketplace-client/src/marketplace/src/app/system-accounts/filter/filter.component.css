@@ -1,0 +1,9 @@
+.dropdown {
+  margin-bottom: 20px;
+}
+
+.dropdown .btn {
+  text-transform: capitalize;
+  border: 1px solid #007dc3;
+  width: 200px;
+}

@@ -43,6 +43,8 @@
                            [ngClass]="{ 'is-invalid': submitted && getForm.quantity.errors }" />
                     <div *ngIf="submitted && getForm.quantity.errors" class="invalid-feedback">
                       <div *ngIf="getForm.quantity.errors.required">Quantity is required</div>
+                      <div *ngIf="getForm.quantity.errors.min">Quantity should be greater than zero</div>
+                      <div *ngIf="getForm.quantity.hasError('InvalidQuantity')">Quantity for unit ITEM should be an integer value</div>
                     </div>
                   </div>
 

@@ -17,9 +17,9 @@
           <li class="list-group-item"><strong>Category: </strong>{{product.categoryName}}</li>
           <li class="list-group-item"><strong>In Stock: </strong>{{product.inStock}}</li>
           <li class="list-group-item unit"><strong>Unit: </strong>{{product.unit}}</li>
-          <li class="list-group-item"><strong>Price: </strong>{{product.price}}$</li>
+          <li class="list-group-item"><strong>Price: </strong>{{product.price | currency: 'USD'}}</li>
         </ul>
-          <button class="card-link btn buy-btn" (click)="addProductToCart(product)">Add to cart</button>
+        <button class="card-link btn buy-btn" (click)="addProductToCart(product)">Add to cart</button>
       </div>
     </div>
   </div>

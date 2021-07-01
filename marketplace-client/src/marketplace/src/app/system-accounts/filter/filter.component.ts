@@ -46,8 +46,9 @@ export class FilterComponent implements OnInit, OnDestroy {
       });
   }
 
-  onChange(e: any) {
-    this.filterStatus(e.target.value, false);
+  onChange(status: string) {
+    this.activeRadioButton = status;
+    this.filterStatus(status, false);
   }
 
   private getFilter(): string {

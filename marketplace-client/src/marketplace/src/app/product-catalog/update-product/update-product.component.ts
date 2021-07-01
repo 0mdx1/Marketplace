@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
 import { ApiError } from '../../_models/ApiError';
+import { validateQuantity } from 'src/app/_helpers/validators.service';
 
 @Component({
   selector: 'update-product',
@@ -95,21 +96,29 @@ export class UpdateProductComponent implements OnInit {
   formCreation() {
     this.goodName = this.response.goodName;
     this.id = this.response.id;
-    this.form = this.formBuilder.group({
-      goodName: [this.response.goodName, Validators.required],
-      firmName: [this.response.firmName, Validators.required],
-      quantity: [
-        this.response.quantity,
-        [Validators.min(1), Validators.required],
-      ],
-      price: [this.response.price, [Validators.min(1), Validators.required]],
-      unit: [this.response.unit, Validators.required],
-      discount: [this.response.discount, Validators.min(0)],
-      inStock: [String(this.response.inStock), Validators.required],
-      status: [String(this.response.status), Validators.required],
-      categoryName: [this.response.categoryName, Validators.required],
-      description: [this.response.description, Validators.required],
-    });
+    this.form = this.formBuilder.group(
+      {
+        goodName: [this.response.goodName, Validators.required],
+        firmName: [this.response.firmName, Validators.required],
+        quantity: [
+          this.response.quantity,
+          [Validators.min(0.001), Validators.required],
+        ],
+        price: [
+          this.response.price,
+          [Validators.min(0.01), Validators.required],
+        ],
+        unit: [this.response.unit, Validators.required],
+        discount: [this.response.discount, Validators.min(0)],
+        inStock: [String(this.response.inStock), Validators.required],
+        status: [String(this.response.status), Validators.required],
+        categoryName: [this.response.categoryName, Validators.required],
+        description: [this.response.description, Validators.required],
+      },
+      {
+        validator: [validateQuantity],
+      }
+    );
   }
 
   get getForm(): { [p: string]: AbstractControl } {
