@@ -2,11 +2,10 @@ package com.ncgroup.marketplaceserver.order.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +72,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/freeslots")
-	public ResponseEntity<List<LocalDateTime>> getFreeSlots() {
+	public ResponseEntity<List<OffsetDateTime>> getFreeSlots() {
 		return new ResponseEntity<>(orderService.getFreeSlots(), HttpStatus.OK);
 	}
 	

@@ -1,17 +1,11 @@
 export class ApiError{
-  status: String;
-  errorType: String;
-  timestamp: number;
-  message: String;
-  debugMessage: String;
-  subErrors: any[];
+  type: string;
+  timestamp: string;
+  message: string;
 
-  constructor(status: String, errorType: String, timestamp: number, message: String, debugMessage: String, subErrors: any[]) {
-    this.status = status;
-    this.errorType = errorType;
+  constructor(type: string, timestamp: string, message: string) {
+    this.type = type;
     this.timestamp = timestamp;
     this.message = message;
-    this.debugMessage = debugMessage;
-    this.subErrors = subErrors;
   }
 }

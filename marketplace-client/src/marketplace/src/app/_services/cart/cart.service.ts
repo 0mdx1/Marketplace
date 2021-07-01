@@ -1,9 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
 import {CartItem} from "../../_models/cart-item.model";
 import {PageCart} from "./page-cart";
-import {GlobalCart} from "./global-cart";
+import {GlobalCart} from "./global/global-cart";
 import {Cart} from "./cart";
-import {BrowserCart} from "./browser-cart";
+import {BrowserCart} from "./browser/browser-cart";
 import {Product} from "../../_models/products/product";
 
 @Injectable({

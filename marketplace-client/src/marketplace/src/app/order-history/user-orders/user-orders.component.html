@@ -1,7 +1,7 @@
 <div *ngIf="orders.length>0" class="e-table">
   <div class="table-responsive table-lg mt-3">
     <table class="table table-bordered table-hover">
-      <thead>
+      <thead style="background-color: #70ADFE;">
         <tr>
 
           <th class="max-width">Name</th>
@@ -22,7 +22,7 @@
           <td class="text-nowrap align-middle">{{order.address}}</td>
           <td class="text-nowrap align-middle">{{order.user ? order.user.phone : ''}}</td>
           <td class="text-nowrap align-middle">{{order.totalSum | currency: 'USD'}}</td>
-          <td class="text-nowrap align-middle">{{order.deliveryTime}}</td>
+          <td class="text-nowrap align-middle">{{order.deliveryTime | date:'medium'}}</td>
           <td class="text-nowrap align-middle">
             <span *ngIf="order.disturb">Yes</span>
             <span *ngIf="!order.disturb">No</span>
@@ -35,5 +35,5 @@
   </div>
 </div>
 
-  <p  *ngIf="orders.length===0" class="card-text">
-    There are no orders for you</p>
+<div *ngIf="orders.length===0" class="card-text">
+  There are no orders for you</div>

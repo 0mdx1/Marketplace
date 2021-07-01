@@ -10,16 +10,16 @@
         <img *ngIf="!product.image" src="assets/product.svg" class="card-img-top mx-auto" alt="Good image">
         <img *ngIf="product.image" src="{{product.image}}" class="card-img-top mx-auto" alt="Good image">
         <div class="card-body pb-2">
-          <a routerLink="../{{product.id}}" class="card-title mb-0" >{{product.goodName}}</a>
-          <p class="card-subtitle text-muted">{{product.firmName}}</p>
+          <a routerLink="../{{product.id}}" class="card-title mb-0 text-truncate" >{{product.goodName}}</a>
+          <p class="card-subtitle text-muted text-truncate">{{product.firmName}}</p>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><strong>Category: </strong>{{product.categoryName}}</li>
           <li class="list-group-item"><strong>In Stock: </strong>{{product.inStock}}</li>
           <li class="list-group-item unit"><strong>Unit: </strong>{{product.unit}}</li>
-          <li class="list-group-item"><strong>Price: </strong>{{product.price}}$</li>
+          <li class="list-group-item"><strong>Price: </strong>{{product.price | currency: 'USD'}}</li>
         </ul>
-          <button class="card-link btn buy-btn" (click)="addProductToCart(product)">Buy</button>
+        <button class="card-link btn buy-btn" (click)="addProductToCart(product)">Add to cart</button>
       </div>
     </div>
   </div>

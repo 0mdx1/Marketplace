@@ -1,6 +1,6 @@
 package com.ncgroup.marketplaceserver.order.model.dto;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class OrderPostDto {
 	private String name;
 	private String surname;
 	private String phone;
-	private LocalDateTime deliveryTime;
+	private OffsetDateTime deliveryTime;
 	private String address;
 	private String comment;
 	private boolean disturb;
@@ -55,7 +55,6 @@ public class OrderPostDto {
 				.comment(orderDto.getComment())
 				.disturb(orderDto.isDisturb())
 				.totalSum(orderDto.getTotalSum())
-				.discountSum(orderDto.getDiscountSum())
 				.build();
 		log.info(order.toString()); 
 		List<OrderItem> orderItems = new LinkedList<>();

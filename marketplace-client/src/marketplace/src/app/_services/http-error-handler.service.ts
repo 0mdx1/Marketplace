@@ -4,7 +4,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Alert, AlertType} from "../_models/alert";
 import {ErrorObserver, throwError} from "rxjs";
 import {ApiError} from "../_models/ApiError";
-import {BrowserCart} from "./cart/browser-cart";
+import {BrowserCart} from "./cart/browser/browser-cart";
 import {toTitleCase} from "codelyzer/util/utils";
 
 @Injectable({
@@ -19,9 +19,7 @@ export class HttpErrorHandlerService {
 
   public displayValidationError(error: HttpErrorResponse){
     let apiError: ApiError = <ApiError>error.error;
-    apiError.subErrors.forEach((subError: any)=>{
-      this.alertService.addAlert(this.capitalizeFirstLetter(subError.message) ,AlertType.Danger);
-    },this)
+    this.alertService.addAlert(this.capitalizeFirstLetter(apiError.message) ,AlertType.Danger);
     return throwError(error);
   }
 

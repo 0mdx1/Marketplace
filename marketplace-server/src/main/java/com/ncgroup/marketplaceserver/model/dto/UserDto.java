@@ -3,12 +3,15 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.validator.Birthday;
+import com.ncgroup.marketplaceserver.model.validator.Password;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,13 +28,17 @@ public class UserDto {
     private String name;
 	@NotBlank(message = "Surname is mandatory")
     private String surname;
+	@Pattern(regexp = "^\\+380\\d{9}$")
+	@NotBlank(message = "Phone is mandatory")
     private String phone;
+	@Birthday(message = "Birthday not valid")
     private LocalDate birthday;
     @NotBlank(message = "Email is mandatory")
     @Email(message = "Email should be valid")
     private String email;
     
     @JsonProperty(access = Access.WRITE_ONLY)
+    @Password(message = "Password not valid")
     private String password;
     private Role role;
     private String status;

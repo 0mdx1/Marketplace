@@ -13,7 +13,10 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../_services/alert.service';
 import { AlertType } from '../../_models/alert';
-import { validateShippingDate } from 'src/app/_helpers/validators.service';
+import {
+  validateQuantity,
+  validateShippingDate,
+} from 'src/app/_helpers/validators.service';
 
 @Component({
   selector: 'app-product',
@@ -52,8 +55,8 @@ export class AddProductComponent implements OnInit {
       {
         goodName: ['', Validators.required],
         firmName: ['', Validators.required],
-        quantity: ['', [Validators.min(1), Validators.required]],
-        price: ['', [Validators.min(1), Validators.required]],
+        quantity: ['', [Validators.min(0.001), Validators.required]],
+        price: ['', [Validators.min(0.01), Validators.required]],
         unit: ['', Validators.required],
         discount: ['', Validators.min(0)],
         inStock: ['', Validators.required],
@@ -62,7 +65,7 @@ export class AddProductComponent implements OnInit {
         description: ['', Validators.required],
       },
       {
-        validator: [validateShippingDate],
+        validator: [validateShippingDate, validateQuantity],
       }
     );
   }
@@ -113,7 +116,7 @@ export class AddProductComponent implements OnInit {
       discount: o.discount,
       inStock: o.inStock,
       status: true,
-      shippingDate: o.shippingDate,
+      shippingDate: new Date(o.shippingDate),
       categoryName: o.categoryName,
       description: o.description,
     };

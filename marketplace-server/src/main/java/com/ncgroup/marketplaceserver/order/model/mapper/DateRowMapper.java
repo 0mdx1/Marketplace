@@ -2,15 +2,22 @@ package com.ncgroup.marketplaceserver.order.model.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class DateRowMapper implements RowMapper<LocalDateTime>{
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class DateRowMapper implements RowMapper<OffsetDateTime>{
 
 	@Override
-	public LocalDateTime mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return rs.getObject("delivery_time", LocalDateTime.class);
+	public OffsetDateTime mapRow(ResultSet rs, int rowNum) throws SQLException {
+		//return OffsetDateTime.parse(rs.getString("delivery_time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssx"));
+		return rs.getObject("delivery_time", OffsetDateTime.class).withOffsetSameInstant(OffsetDateTime.now().getOffset());
 	}
 	
 

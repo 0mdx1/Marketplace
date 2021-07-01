@@ -20,12 +20,13 @@
                 <div class="price-div">
                 <span *ngIf="product.discount!=0" class="mt-3 old-price"> {{product.price}}$</span>
                 <h4 *ngIf="product.discount!=0" class="new-price"> {{(product.price*(100-product.discount)/100).toFixed(2)}}$</h4>
-                <h4 *ngIf="product.discount==0" class="mt-4">{{product.price}}$</h4>
+                <h4 *ngIf="product.discount==0" class="mt-4">{{product.price | currency: "USD"}}</h4>
                 </div>
                 <span>/{{product.unit}}</span>
+                <h5 class="card-text mb-3 pb-2 text-muted">Shipping date: {{product.shippingDate | date:'MMM dd, YYYY, hh:mm'}}</h5>
               </div>
               <div class="buy justify-content-between float-sm-right float-center mt-auto flex-column flex-sm-row d-flex">
-                <button *ngIf="role=='ROLE_USER' || !role" type="button" (click)="addToCart()" class="btn py-2 mt-3 mt-sm-2 cart-btn"><i
+                <button *ngIf="(role=='ROLE_USER' || !role) && product.inStock" type="button" (click)="addToCart()" class="btn py-2 mt-3 mt-sm-2 cart-btn"><i
                   class="fas fa-shopping-cart"></i> Buy
                 </button>
                 <button *ngIf="comparison && (role=='ROLE_USER' || !role)" type="button" routerLink="../comparison" class="btn py-2 ml-sm-3 mt-3 mt-sm-2  compare-btn">

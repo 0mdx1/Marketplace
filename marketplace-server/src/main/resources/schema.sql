@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS goods
     price         DECIMAL(12, 2),
     unit          unit_type,
     discount      DECIMAL(12, 2),
-    shipping_date TIMESTAMP WITHOUT TIME ZONE,
+    shipping_date TIMESTAMP WITH TIME ZONE,
     in_stock      BOOLEAN,
     status        BOOLEAN,
     image         varchar(100),
@@ -139,13 +139,12 @@ CREATE TABLE IF NOT EXISTS order_details
     id 				SERIAL,
     person_id 		INTEGER NOT NULL,
     courier_id 		INTEGER NOT NULL,
-    delivery_time 	TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    delivery_time 	TIMESTAMP WITH TIME ZONE NULL,
     address 		VARCHAR(200),
     status 			DELIVERY_STATUS NOT NULL,
     comment 		TEXT,
     disturb 		BOOLEAN NOT NULL DEFAULT true,
     total_sum 		DECIMAL(12, 2),
-    discount_sum 	DECIMAL(12, 2),
 
     CONSTRAINT order_details_pk
         PRIMARY KEY (id),

@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.order.repository.impl;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -116,8 +117,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 				.addValue("status", order.getStatus().toString())
 				.addValue("comment", order.getComment())
 				.addValue("disturb", order.isDisturb())
-				.addValue("total_sum",  order.getTotalSum())
-				.addValue("discount_sum", order.getDiscountSum());
+				.addValue("total_sum",  order.getTotalSum());
 		namedParameterJdbcTemplate.update(insertOrderQuery, orderParams, orderHolder);
 		order.setId(orderHolder.getKey().longValue());
 		return order;
@@ -142,17 +142,20 @@ public class OrderRepositoryImpl implements OrderRepository {
 	}
 	
 	@Override
-	public List<LocalDateTime> findFreeSlots() {
+	public List<OffsetDateTime> findBusySlots() {
 		return jdbcTemplate.query(selectBusySlots, new DateRowMapper());
 	}
 	
 	@Override
-	public long getFreeCourierId(LocalDateTime timeSlot) {
-		log.info(timeSlot.toString().replace('T', ' ')+":00");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);
+	public long getFreeCourierId(OffsetDateTime timeSlot) {
+		log.info(timeSlot.toString());
+		//timeSlot = timeSlot.withMinute(0).withSecond(0).withNano(0);
+		timeSlot = timeSlot.withMinute(0).withSecond(0).withNano(0);
+		/*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);*/
+		Timestamp slotStamp = Timestamp.valueOf(timeSlot.toLocalDateTime());
 		return jdbcTemplate.queryForObject(
-				findFreeCourierIdQuery, Long.class, new Object[] {timeSlot.toString().replace('T', ' ')+":00"});
+				findFreeCourierIdQuery, Long.class, new Object[] {slotStamp});
 	}
 	
 	@Override

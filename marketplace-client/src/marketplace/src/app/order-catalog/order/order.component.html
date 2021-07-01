@@ -8,25 +8,23 @@
             {{order.user?.name}} {{order.user?.surname}}</h2>
           <p class="mb-2 text-muted">Phone: {{order.user?.phone}}</p>
           <p class="mb-2 text-muted">Address: {{order.address}}</p>
-          <p class="mb-2 text-muted">Delivery time: {{order.deliveryTime.replace("T", " ")}}</p>
+          <p class="mb-2 text-muted">Delivery time: {{order.deliveryTime | date:'medium'}}</p>
           <p class="mb-2 text-muted">Disturb:
             <span *ngIf="order.disturb">Yes</span>
             <span *ngIf="!order.disturb">No</span>
           </p>
           <p *ngIf="order.comment" class="mb-2 text-muted">Comment: {{order.comment}}</p>
           <p class="mt-4 mb-2">Total sum: {{order.totalSum | currency: 'USD'}}</p>
-          <p class="mb-2 ">Discount sum: {{(order.totalSum-order.totalSum*order.discountSum/100).toFixed(2)
-            | currency: 'USD'}}</p>
-          <button type="button" (click) = "changeStatus()" class="btn btn-primary mt-3">
-             Current Status: {{order.status}}
+          <button type="button" (click)="changeStatus()" class="btn btn-primary mt-3">
+            Current Status: {{order.status}}
           </button>
           <div class="col mb-2">
             <div class="e-panel ">
 
-                <div class="e-table">
-                  <div class="table-responsive table-lg mt-2">
-                    <table class="table table-bordered">
-                      <thead>
+              <div class="e-table">
+                <div class="table-responsive table-lg mt-2">
+                  <table class="table table-bordered">
+                    <thead>
                       <tr>
 
                         <th class="max-width">Product Name</th>
@@ -34,18 +32,18 @@
                         <th class="max-width">Category</th>
 
                       </tr>
-                      </thead>
-                      <tbody>
+                    </thead>
+                    <tbody>
                       <tr *ngFor="let good of order.goods" class="pointer">
                         <td class="text-nowrap align-middle">{{good.name}}</td>
                         <td class="text-nowrap align-middle">{{good.firm}}</td>
                         <td class="text-nowrap align-middle">{{good.category}}</td>
                       </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
+                    </tbody>
+                  </table>
                 </div>
+
+              </div>
 
             </div>
           </div>

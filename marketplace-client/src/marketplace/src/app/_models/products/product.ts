@@ -8,7 +8,7 @@ export class Product {
   discount: number;
   inStock: boolean;
   status: boolean;
-  shippingDate: string;
+  shippingDate: Date;
   image: string;
   description: string;
   categoryName: string;
@@ -23,7 +23,7 @@ export class Product {
     discount: number,
     inStock: boolean,
     status: boolean,
-    shippingDate: string,
+    shippingDate: Date,
     image: string,
     description: string,
     categoryName: string

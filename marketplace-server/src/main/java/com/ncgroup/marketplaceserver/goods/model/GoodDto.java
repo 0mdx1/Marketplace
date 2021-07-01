@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -32,7 +33,7 @@ public class GoodDto {
     private String image;
 
     @Past
-    private LocalDateTime shippingDate;
+    private OffsetDateTime shippingDate;
 
     private boolean inStock;
     private String description;
