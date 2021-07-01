@@ -13,7 +13,9 @@
     <p *ngIf="!product.discount" class="price"> {{product.price | currency: 'USD'}}</p>
     <p>{{product.inStock | stock }}</p>
   </div>
-    <button *ngIf="role=='ROLE_USER' || !role" type="button" (click)="addToCart()" class="cart btn btn-default"><i class="fas fa-shopping-cart"></i>
+    <button *ngIf="role=='ROLE_USER' || !role && product.inStock"
+    type="button" (click)="addToCart()"
+    class="cart btn btn-default"><i class="fas fa-shopping-cart"></i>
     </button>
   </div>
 </div>
