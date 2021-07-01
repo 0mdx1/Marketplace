@@ -38,7 +38,7 @@
 
             </div>
           </div>
-          <div *ngIf="users?.length === 0"  class="alert alert-primary text-center" role="alert">
+          <div *ngIf="users?.length === 0"  class="alert alert-primary text-center mt-2" role="alert">
               Nothing was found
           </div>
           <app-pagination (results)="users = page.getUsers()" #page></app-pagination>
