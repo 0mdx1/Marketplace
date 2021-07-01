@@ -24,11 +24,17 @@
           <div class="card-body">
             <div class="pers">
               <h3 class="note">Surname:</h3>
-              <input type="text" formControlName="surname" class="form-control" />
+              <input type="text" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid':  getForm.surname.errors }" />
+              <div *ngIf="getForm.surname.errors" class="invalid-feedback">
+                <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
+              </div>
             </div>
             <div class="pers">
               <h3 class="note">Name:</h3>
-              <input type="text" formControlName="name" class="form-control" />
+              <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid':  getForm.name.errors }" />
+              <div *ngIf="getForm.name.errors" class="invalid-feedback">
+                <div *ngIf="getForm.name.errors.required">First Name is required</div>
+              </div>
             </div>
             <div class="row pl-3 pr-3 d-flex flex-sm-row">
             <div class="pers col-sm-5 col-12 pl-0">
@@ -36,11 +42,16 @@
               <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': getForm.phone.errors }" />
               <div *ngIf="getForm.phone.errors" class="invalid-feedback">
                 <div *ngIf="getForm.phone.errors.pattern">Phone must be in format +380</div>
+                <div *ngIf="getForm.phone.errors.required">Phone is required</div>
               </div>
             </div>
             <div class="pers col-sm-6 col-12 offset-0 offset-sm-1 pl-0">
               <h3 class="note mb-0">Date of birthday:</h3>
-              <input type="date" formControlName="birthday" class="form-control" />
+              <input type="date" formControlName="birthday" class="form-control" [ngClass]="{ 'is-invalid': getForm.birthday.errors }" />
+              <div *ngIf="getForm.birthday.errors" class="invalid-feedback">
+                <div *ngIf="getForm.birthday.hasError('InvalidDate')">Must be at least 18 y.o.</div>
+                <div *ngIf="getForm.birthday.errors.required">Birthday is required</div>
+              </div>
             </div>
           </div>
           </div>

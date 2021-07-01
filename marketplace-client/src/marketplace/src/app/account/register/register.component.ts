@@ -19,7 +19,6 @@ import {
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-
   form!: FormGroup;
   submitted = false;
 
@@ -85,7 +84,7 @@ export class RegisterComponent {
           this.registered = true;
         },
         error: (error) => {
-          if (error.error.message === 'Email  already exists') {
+          if (error.message === 'Email  already exists') {
             this.getForm.email.setErrors({ EmailAlreadyExists: true });
           }
           this.loading = false;
