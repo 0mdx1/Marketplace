@@ -6,7 +6,7 @@
     <img *ngIf="product.image" src="{{product.image}}" class="card-img-top" alt="Good image">
   </div>
   <div class="product-info card-body text-center">
-    <a routerLink="{{product.id}}">{{product.goodName}}</a>
+    <a routerLink="{{product.id}}" class="text-truncate">{{product.goodName}}</a>
     <div class="price-block">
     <p *ngIf="product.discount" class="old-price"> {{product.price | currency: 'USD'}}</p>
     <p *ngIf="product.discount" class="new-price"> {{(product.price*(100-product.discount)/100).toFixed(2) | currency: 'USD'}} </p>

@@ -30,8 +30,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   submitted = false;
   showOrderDetails = false;
   authUser: User = {};
-  deliveryDateTime: Date[] = [];
-  distinctDates: Date[] = [];
   deliveryTimes: Date[] = [];
   @ViewChild('content') content: any;
 
