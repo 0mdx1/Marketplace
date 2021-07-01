@@ -7,6 +7,7 @@ import { ProductComparisonService } from '../../_services/product-comparison/pro
 import { AuthService } from '../../_auth/auth.service';
 import { AlertService } from 'src/app/_services/alert.service';
 import { AlertType } from 'src/app/_models/alert';
+import { Role } from 'src/app/_models/role';
 
 @Component({
   selector: 'app-product',
@@ -39,7 +40,7 @@ export class ProductComponent implements OnInit {
     ''
   );
   comparison: boolean = false;
-  role: string | null = 'ROLE_USER';
+  role: string | null = Role.User;
 
   ngOnInit(): void {
     this.service.getProduct().subscribe((result: Product) => {

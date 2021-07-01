@@ -8,7 +8,7 @@ import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
 import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
 import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
-import { CheckoutComponent } from './checkout/checkout.component';
+import { CheckoutComponent } from './_components/checkout/checkout.component';
 import { OrderHistoryModule } from './order-history/order-history.module';
 
 const accountModule = () =>
