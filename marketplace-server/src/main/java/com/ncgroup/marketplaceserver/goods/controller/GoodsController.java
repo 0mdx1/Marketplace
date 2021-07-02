@@ -1,9 +1,7 @@
 package com.ncgroup.marketplaceserver.goods.controller;
 
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
-import com.ncgroup.marketplaceserver.goods.model.Good;
-import com.ncgroup.marketplaceserver.goods.model.GoodDto;
-import com.ncgroup.marketplaceserver.goods.model.RequestParams;
+import com.ncgroup.marketplaceserver.goods.model.*;
 import com.ncgroup.marketplaceserver.goods.service.GoodsService;
 import com.ncgroup.marketplaceserver.exception.basic.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +44,7 @@ public class GoodsController {
     }
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> display(
+    public ResponseEntity<ModelView> display(
             @RequestParam(value = "search", required = false)
                     String name,
             @RequestParam(value = "category", required = false)
@@ -59,7 +57,7 @@ public class GoodsController {
                     Double maxPrice,
             @RequestParam(value = "sort", required = false)
                     //price, date, name
-                    String sortBy,
+                    SortCategory sortBy,
             @RequestParam(value = "direction", required = false)
                     //Desc, Asc
                     String sortDirection,
@@ -80,7 +78,8 @@ public class GoodsController {
     }
 
     @GetMapping("/price-range/{category}")
-    public ResponseEntity<List<Double>> getPriceRange(@PathVariable("category") String category) throws NotFoundException {
+    public ResponseEntity<List<Double>> getPriceRange(@PathVariable("category") String category)
+            throws NotFoundException {
         return new ResponseEntity<>(service.getPriceRange(category), HttpStatus.OK);
     }
 
