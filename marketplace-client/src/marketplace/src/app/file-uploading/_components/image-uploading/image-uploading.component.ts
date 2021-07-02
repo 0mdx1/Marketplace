@@ -18,17 +18,15 @@ export class ImageUploadingComponent implements OnChanges{
 
   public isLoading: boolean = false;
 
-  constructor(private fileService: FileService, private alertService: AlertService) {}
+  constructor(private fileService: FileService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     let filename = this.getFilename(changes.imageUrl.currentValue);
-    console.log(filename);
     this.imageFilenameEvent.emit(filename)
   }
 
   private getFilename(url:string): string {
     return (url.match(/\S+\/(\S+\/\S+)$/)||[]).pop()||"";
-    //return <string>url.split('/').pop();
   }
 
   // @ts-ignore
@@ -45,10 +43,6 @@ export class ImageUploadingComponent implements OnChanges{
         },
         error: e=>{
           this.isLoading=false;
-          let apiError = e.error as ApiError;
-          if(apiError){
-            this.alertService.addAlert(apiError.message,AlertType.Danger);
-          }
         }
       });
     }
