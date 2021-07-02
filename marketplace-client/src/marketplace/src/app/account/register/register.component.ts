@@ -42,8 +42,11 @@ export class RegisterComponent {
       {
         name: ['', [Validators.required, Validators.maxLength(50)]],
         surname: ['', [Validators.required, Validators.maxLength(50)]],
-        email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-        phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
+        email: [
+          '',
+          [Validators.required, Validators.email, Validators.maxLength(50)],
+        ],
+        phone: ['', Validators.pattern(/^\+380[0-9]{9}$/)],
         birthday: ['', Validators.required],
         password: [
           '',

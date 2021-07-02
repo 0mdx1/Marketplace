@@ -9,7 +9,6 @@ import { AuthService } from '../../_auth/auth.service';
 })
 export class ProductListComponent implements OnInit {
   @Input() products: Product[] = [];
-  @Input() loader: boolean = true;
   direction: string = 'ASC';
   sort: string = 'name';
   role: string | null = null;

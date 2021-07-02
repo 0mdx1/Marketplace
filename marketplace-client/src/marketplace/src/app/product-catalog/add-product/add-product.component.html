@@ -129,7 +129,7 @@
                     <label>Description<span>*</span></label>
                     <textarea rows= "3" type="text" formControlName="description" class="form-control"
                               [ngClass]="{ 'is-invalid': submitted && getForm.description.errors }" >
-                </textarea>
+                    </textarea>
                     <div *ngIf="submitted && getForm.description.errors" class="invalid-feedback">
                       <div *ngIf="getForm.description.errors.required">Description is required</div>
                     </div>

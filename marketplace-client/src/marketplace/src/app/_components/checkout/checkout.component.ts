@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from '../../_services/alert.service';
 import { AlertType } from '../../_models/alert';
-import {OrderItemModel} from '../../_models/order/order-item.model';
-import {OrderModel} from '../../_models/order/order.model';
+import { OrderItemModel } from '../../_models/order/order-item.model';
+import { OrderModel } from '../../_models/order/order.model';
 
 @Component({
   selector: 'app-checkout',
@@ -53,7 +53,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     this.orderDetailsForm = this.formBuilder.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
+      phone: ['', [Validators.pattern(/^\+380[0-9]{9}$/), Validators.required]],
       address: ['', Validators.required],
       deliveryDay: ['', Validators.required],
       deliveryTime: ['', Validators.required],
