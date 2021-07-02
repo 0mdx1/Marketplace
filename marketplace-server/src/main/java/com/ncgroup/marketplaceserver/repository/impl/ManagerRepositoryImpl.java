@@ -4,7 +4,6 @@ import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.mapper.UserRowMapper;
 import com.ncgroup.marketplaceserver.repository.ManagerRepository;
 
-import jdk.internal.org.jline.utils.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
