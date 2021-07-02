@@ -148,14 +148,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 	
 	@Override
 	public long getFreeCourierId(OffsetDateTime timeSlot) {
-		log.info(timeSlot.toString());
-		//timeSlot = timeSlot.withMinute(0).withSecond(0).withNano(0);
-		timeSlot = timeSlot.withMinute(0).withSecond(0).withNano(0);
-		/*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		timeSlot = LocalDateTime.parse(timeSlot.toString().replace('T', ' '), formatter);*/
-		Timestamp slotStamp = Timestamp.valueOf(timeSlot.toLocalDateTime());
 		return jdbcTemplate.queryForObject(
-				findFreeCourierIdQuery, Long.class, new Object[] {slotStamp});
+				findFreeCourierIdQuery, Long.class, new Object[] {timeSlot});
 	}
 	
 	@Override

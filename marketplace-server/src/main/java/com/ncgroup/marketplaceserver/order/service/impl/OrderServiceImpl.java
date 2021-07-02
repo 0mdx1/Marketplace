@@ -1,10 +1,8 @@
 package com.ncgroup.marketplaceserver.order.service.impl;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 import com.ncgroup.marketplaceserver.order.model.Order;
 import com.ncgroup.marketplaceserver.order.model.OrderItem;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
+import com.ncgroup.marketplaceserver.order.model.dto.OrderPageDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.repository.OrderRepository;
@@ -54,18 +53,18 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	@Transactional
-	public Map<String, Object> getCourierOrders(String token, int page) {
+	public OrderPageDto getCourierOrders(String token, int page) {
 		String email = getTokenEmail(token); //courier email
 		long courierId = userService.findUserByEmail(email).getId();
 		List<OrderReadDto> ordersDto = orderRepo.getOrders(courierId, page-1)
 				.stream().map(OrderReadDto::convertToDto).collect(Collectors.toList());
 		
 		int totalPages = orderRepo.getTotalPages(courierId);
-		Map<String, Object> result = new HashMap<>();
-        result.put("orders", ordersDto);
-        result.put("page", page);
-        result.put("totalPages", totalPages % 10 == 0 ? totalPages / 10 : totalPages / 10 + 1);
-		return result;
+		return OrderPageDto.builder()
+				.orders(ordersDto)
+				.page(page)
+				.totalPages(totalPages % 10 == 0 ? totalPages / 10 : totalPages / 10 + 1)
+				.build();
 	}
 
 	@Override
@@ -128,12 +127,9 @@ public class OrderServiceImpl implements OrderService{
 		}
 		List<OffsetDateTime> freeSlots = new LinkedList<>();
 		List<OffsetDateTime> busySlots = orderRepo.findBusySlots();
-		log.info(busySlots.toString());
 		OffsetDateTime endDay = OffsetDateTime.now();
 		while (endDay.isBefore(OffsetDateTime.now().plusWeeks(2).withMinute(0).withSecond(0).withNano(0))) {
-			//endDay = endDay.withHour(endDay.getHour()+1).withMinute(0);
 			while(endDay.getHour() <= 18) {
-				log.info("End day: " + endDay.toString());
 				endDay = endDay.withHour(endDay.getHour()+1).withMinute(0).withSecond(0).withNano(0);
 				if(!busySlots.contains(endDay)) {
 					freeSlots.add(endDay);

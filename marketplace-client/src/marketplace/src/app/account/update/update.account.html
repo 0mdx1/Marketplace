@@ -27,6 +27,8 @@
               <input type="text" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid':  getForm.surname.errors }" />
               <div *ngIf="getForm.surname.errors" class="invalid-feedback">
                 <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
+                <div *ngIf="getForm.surname.errors.maxlength">Last Name length exceeds 50 character limit</div>
+
               </div>
             </div>
             <div class="pers">
@@ -34,6 +36,8 @@
               <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid':  getForm.name.errors }" />
               <div *ngIf="getForm.name.errors" class="invalid-feedback">
                 <div *ngIf="getForm.name.errors.required">First Name is required</div>
+                <div *ngIf="getForm.name.errors.maxlength">First Name length exceeds 50 character limit</div>
+
               </div>
             </div>
             <div class="row pl-3 pr-3 d-flex flex-sm-row">

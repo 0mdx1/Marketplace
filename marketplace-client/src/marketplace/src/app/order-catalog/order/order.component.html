@@ -30,6 +30,7 @@
                         <th class="max-width">Product Name</th>
                         <th class="max-width">Firm</th>
                         <th class="max-width">Category</th>
+                        <th class="max-width">Quantity</th>
 
                       </tr>
                     </thead>
@@ -38,6 +39,7 @@
                         <td class="text-nowrap align-middle">{{good.name}}</td>
                         <td class="text-nowrap align-middle">{{good.firm}}</td>
                         <td class="text-nowrap align-middle">{{good.category}}</td>
+                        <td class="text-nowrap align-middle">{{good.quantity}} {{good.unit | unit : good.quantity}}</td>
                       </tr>
                     </tbody>
                   </table>

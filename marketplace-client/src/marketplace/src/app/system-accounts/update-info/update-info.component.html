@@ -49,12 +49,12 @@
               <div class="form-group col-6">
                 <label>Status</label>
                 <select class="form-control" formControlName="status">
-                  <ng-container >
+                  <ng-container  *ngIf="isCourier()">
                     <option *ngFor="let status of courierStatuses" [ngValue]="status">
                       {{status}}
                     </option>
                   </ng-container>
-                  <ng-container *ngIf="pmRoleSelected()">
+                  <ng-container *ngIf="isProductManager()">
                     <option *ngFor="let status of pmStatuses" [ngValue]="status">
                       {{status}}
                     </option>
