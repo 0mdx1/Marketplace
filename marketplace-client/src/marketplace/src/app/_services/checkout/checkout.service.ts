@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/_models/user';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import {OrderModel} from '../../_models/order/order.model';
 
 const baseUrl = environment.apiUrl;
 
@@ -13,7 +14,7 @@ const baseUrl = environment.apiUrl;
 export class Checkout {
   constructor(private http: HttpClient) {}
 
-  sendOrderDetails(data: any) {
+  sendOrderDetails(data: OrderModel) {
     return this.http.post(`${baseUrl}/orders`, data);
   }
 
