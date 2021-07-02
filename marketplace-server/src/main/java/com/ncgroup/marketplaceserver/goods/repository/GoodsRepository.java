@@ -23,5 +23,5 @@ public interface GoodsRepository {
     Double getTotalMaxPrice();
     Double getTotalMinPrice();
 
-    void editQuantity(long id, int quantity);
+    void editQuantity(long id, double quantity, boolean inStock);
 }

@@ -1,22 +1,24 @@
 <div class="col">
-<div class="card" [ngClass]="{'out-of-stock': !product.inStock}">
-  <img *ngIf="product.discount" src="assets/sale.svg" class="sale-icon">
-  <div class="img-container">
-    <img *ngIf="!product.image" src="assets/product.svg" class="card-img-top" alt="Good image">
-    <img *ngIf="product.image" src="{{product.image}}" class="card-img-top" alt="Good image">
+  <div class="card" [ngClass]="{'out-of-stock': !product.inStock}">
+    <img *ngIf="product.discount" src="assets/sale.svg" class="sale-icon">
+    <div class="img-container">
+      <img *ngIf="!product.image" src="assets/product.svg" class="card-img-top" alt="Good image">
+      <img *ngIf="product.image" src="{{product.image}}" class="card-img-top" alt="Good image">
+    </div>
+    <div class="product-info card-body text-center">
+      <a routerLink="{{product.id}}" class="text-truncate">{{product.goodName}}</a>
+      <div class="price-block">
+        <p *ngIf="product.discount" class="old-price"> {{product.price | currency: 'USD'}}</p>
+        <p *ngIf="product.discount"
+           class="new-price"> {{(product.price * (100 - product.discount) / 100).toFixed(2) | currency: 'USD'}} </p>
+        <p *ngIf="!product.discount" class="no-price">blank</p>
+        <p *ngIf="!product.discount"
+           class="new-price">{{product.price | currency: 'USD'}}</p>
+      </div>
+      <button *ngIf="role=='ROLE_USER' || !role && product.inStock"
+              type="button" (click)="addToCart()"
+              class="cart btn btn-default"><i class="fas fa-shopping-cart"></i>
+      </button>
+    </div>
   </div>
-  <div class="product-info card-body text-center">
-    <a routerLink="{{product.id}}" class="text-truncate">{{product.goodName}}</a>
-    <div class="price-block">
-    <p *ngIf="product.discount" class="old-price"> {{product.price | currency: 'USD'}}</p>
-    <p *ngIf="product.discount" class="new-price"> {{(product.price*(100-product.discount)/100).toFixed(2) | currency: 'USD'}} </p>
-    <p *ngIf="!product.discount" class="price"> {{product.price | currency: 'USD'}}</p>
-    <p>{{product.inStock | stock }}</p>
-  </div>
-    <button *ngIf="(role=='ROLE_USER' || !role) && product.inStock"
-    type="button" (click)="addToCart()"
-    class="cart btn btn-default"><i class="fas fa-shopping-cart"></i>
-    </button>
-  </div>
-</div>
 </div>
