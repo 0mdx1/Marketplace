@@ -85,7 +85,7 @@ export class RegisterComponent {
         },
         error: (error) => {
           if (error.message === 'Email  already exists') {
-            this.getForm.email.setErrors({ EmailAlreadyExists: true });
+            this.form.controls.email.setErrors({ EmailAlreadyExists: true });
           }
           this.loading = false;
           this.form.enable();

@@ -151,6 +151,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
 		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
+		userRepository.updateAuthLink(user.getEmail(), null);
 		return user;
 	}
 	
