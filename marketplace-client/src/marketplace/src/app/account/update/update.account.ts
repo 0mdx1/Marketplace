@@ -38,8 +38,8 @@ export class UpdateAccount implements OnInit {
   ) {
     this.updateForm = this.formBuilder.group(
       {
-        name: ['', Validators.required],
-        surname: ['', Validators.required],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
+        surname: ['', [Validators.required, Validators.maxLength(50)]],
         phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
         birthday: ['', Validators.required],
       },

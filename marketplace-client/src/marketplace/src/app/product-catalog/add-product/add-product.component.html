@@ -15,6 +15,8 @@
                            [ngClass]="{ 'is-invalid': submitted && getForm.goodName.errors }" [(ngModel)]="goodName" />
                     <div *ngIf="submitted && getForm.goodName.errors" class="invalid-feedback">
                       <div *ngIf="getForm.goodName.errors.required">Good name is required</div>
+                      <div *ngIf="getForm.goodName.errors.maxlength">Good name length exceeds 50 character limit</div>
+
                     </div>
                   </div>
 
@@ -31,6 +33,7 @@
                     </datalist>
                     <div *ngIf="submitted && getForm.firmName.errors" class="invalid-feedback">
                       <div *ngIf="getForm.firmName.errors.required">Producer name is required</div>
+                      <div *ngIf="getForm.firmName.errors.maxlength">Producer name length exceeds 50 character limit</div>
                     </div>
                   </div>
 
@@ -78,8 +81,8 @@
                     <input type="number" formControlName="discount" class="form-control" min="0"
                            [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }" />
                     <div *ngIf="submitted && getForm.discount.errors" class="invalid-feedback">
-                      <div *ngIf="getForm.discount.errors.min">Discount should be > 0 </div>
-                      <div *ngIf="getForm.discount.errors.max">Discount should be < 99 </div>
+                      <div *ngIf="getForm.discount.errors.min">Discount should be greater than zero</div>
+                      <div *ngIf="getForm.discount.errors.max">Discount should be below 99% </div>
                     </div>
                   </div>
 
