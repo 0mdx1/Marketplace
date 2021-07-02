@@ -32,7 +32,7 @@ export class PasswordFormComponent {
     private alertService: AlertService
   ) {
     this.form = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
       confirmPassword: ['', Validators.required],
     }, {
       validator: [validateConfirmPassword, validatePassword]

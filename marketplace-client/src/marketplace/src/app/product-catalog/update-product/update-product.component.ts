@@ -98,8 +98,8 @@ export class UpdateProductComponent implements OnInit {
     this.id = this.response.id;
     this.form = this.formBuilder.group(
       {
-        goodName: [this.response.goodName, Validators.required],
-        firmName: [this.response.firmName, Validators.required],
+        goodName: [this.response.goodName, [Validators.required, Validators.maxLength(50)]],
+        firmName: [this.response.firmName, [Validators.required, , Validators.maxLength(50)]],
         quantity: [
           this.response.quantity,
           [Validators.min(0.001), Validators.required],
