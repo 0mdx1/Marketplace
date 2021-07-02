@@ -27,7 +27,6 @@
       </div>
       <div *ngIf="submitted && getForm.password.errors" class="invalid-feedback">
         <div *ngIf="getForm.password.errors.required">Password is required</div>
-        <div *ngIf="getForm.password.hasError('IncorrectPassword')">Incorrect password</div>
       </div>
     </div>
   </div>
