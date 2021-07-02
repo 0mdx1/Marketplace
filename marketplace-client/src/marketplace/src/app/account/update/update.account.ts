@@ -13,6 +13,7 @@ import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
 import { ApiError } from '../../_models/ApiError';
 import { validateBirthday } from 'src/app/_helpers/validators.service';
+import { AuthService } from 'src/app/_auth/auth.service';
 
 @Component({
   templateUrl: './update.account.html',
@@ -22,22 +23,23 @@ export class UpdateAccount implements OnInit {
   updateForm: FormGroup;
   user: User = {};
 
-  collapsedInfo: boolean = true;
-  collapsedContact: boolean = false;
+  collapsedInfo = true;
+  collapsedContact = false;
 
-  loading: boolean = false;
-  changedPassword: boolean = false;
+  loading = false;
+  changedPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) {
     this.updateForm = this.formBuilder.group(
       {
-        name: ['', Validators.required],
-        surname: ['', Validators.required],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
+        surname: ['', [Validators.required, Validators.maxLength(50)]],
         phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
         birthday: ['', Validators.required],
       },
@@ -64,11 +66,15 @@ export class UpdateAccount implements OnInit {
   }
 
   onSubmit() {
+    if (this.updateForm.invalid) {
+      return;
+    }
     const body = {
-      name: this.updateForm.value['name'],
-      surname: this.updateForm.value['surname'],
-      phone: this.updateForm.value['phone'],
-      birthday: this.updateForm.value['birthday'],
+      name: this.updateForm.value.name,
+      surname: this.updateForm.value.surname,
+      phone: this.updateForm.value.phone,
+      birthday: this.updateForm.value.birthday,
+      email: this.authService.getMail()
     };
 
     this.accountService.updateUser(body).subscribe({
@@ -80,11 +86,10 @@ export class UpdateAccount implements OnInit {
         );
       },
       error: (error) => {
-        let apiError = error.error as ApiError;
+        const apiError = error.error as ApiError;
         if (apiError) {
           this.alertService.addAlert(apiError.message, AlertType.Danger);
         }
-        //this.alertService.addAlert("Error has occurred during updating", AlertType.Danger);
       },
     });
   }

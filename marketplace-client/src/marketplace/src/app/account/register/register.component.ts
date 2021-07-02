@@ -40,9 +40,9 @@ export class RegisterComponent {
   buildForm(): void {
     this.form = this.formBuilder.group(
       {
-        name: ['', Validators.required],
-        surname: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        name: ['', [Validators.required, Validators.maxLength(50)]],
+        surname: ['', [Validators.required, Validators.maxLength(50)]],
+        email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
         phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
         birthday: ['', Validators.required],
         password: [
@@ -50,7 +50,7 @@ export class RegisterComponent {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.maxLength(32),
+            Validators.maxLength(100),
           ],
         ],
         confirmPassword: ['', Validators.required],

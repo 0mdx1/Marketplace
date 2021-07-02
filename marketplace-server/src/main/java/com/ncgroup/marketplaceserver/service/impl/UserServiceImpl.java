@@ -84,11 +84,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 	@Override
-	public User updateRoleUser(User user, String token) {
-		if(token == null) return null;
-		token = token.split(" ")[1];
-		String email = jwtProvider.getSubject(token);
-		userRepository.updateUserByEmail(user, email);
+	public UserDto updateRoleUser(UserDto user, String token) {
+		userRepository.updateUserByEmail(user, user.getEmail());
 		return user;
 	}
 

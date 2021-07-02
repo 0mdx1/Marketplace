@@ -37,15 +37,12 @@ export class PasswordFormComponent {
     private route: ActivatedRoute,
     private alertService: AlertService
   ) {
-    this.form = this.formBuilder.group(
-      {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', Validators.required],
-      },
-      {
-        validator: [validateConfirmPassword, validatePassword],
-      }
-    );
+    this.form = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
+      confirmPassword: ['', Validators.required],
+    }, {
+      validator: [validateConfirmPassword, validatePassword]
+    });
   }
 
   get getForm(): { [p: string]: AbstractControl } {

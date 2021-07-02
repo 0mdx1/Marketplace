@@ -70,8 +70,7 @@ export class LoginFormComponent {
               this.showCaptcha=true;
             }
             if(error.type == "auth-3"){
-              const passwordField = this.form.get('password');
-              if (passwordField) { passwordField.setErrors({IncorrectPassword: true}); }
+              this.alertService.addAlert("Bad credentials", AlertType.Danger);
             }
         }
       });

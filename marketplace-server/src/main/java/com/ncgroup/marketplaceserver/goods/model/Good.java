@@ -22,7 +22,7 @@ public class Good {
     private long id;
     private String goodName;
     private String firmName;
-    private int quantity;
+    private double quantity;
     private double price;
 
     private Unit unit;
@@ -36,6 +36,7 @@ public class Good {
     private String categoryName;
     private String image;
     private boolean status;
+
 
     public Good(GoodDto goodDto, Long id, MediaService mediaService) {
         this.setStatus(true);

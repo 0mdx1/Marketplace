@@ -8,6 +8,7 @@ import com.ncgroup.marketplaceserver.file.UnsupportedContentTypeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,6 +88,14 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         String message = String.format("Maximum upload size of %s exceeded", maxFileSize);
         ApiError apiError = new ApiError(ExceptionType.FILE_SIZE_EXCEEDED,message);
+        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+    }
+
+    @ExceptionHandler(ConversionFailedException.class)
+    public ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+        HttpHeaders headers = new HttpHeaders();
+        String message = "Invalid sort parameter";
+        ApiError apiError = new ApiError(ExceptionType.BAD_SORT_PARAMETER, message);
         return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
     }
 
