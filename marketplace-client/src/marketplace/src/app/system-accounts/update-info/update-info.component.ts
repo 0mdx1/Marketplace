@@ -68,7 +68,7 @@ export class UpdateInfoComponent implements OnInit {
       {
         name: [this.response.name, Validators.required],
         surname: [this.response.surname, Validators.required],
-        phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
+        phone: [this.response.phone, Validators.pattern(/^\+380[0-9]{9}$/)],
         birthday: [this.response.dateOfBirth, Validators.required],
         status: [this.response.status, Validators.required],
       },

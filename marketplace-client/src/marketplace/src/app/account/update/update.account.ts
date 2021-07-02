@@ -40,7 +40,10 @@ export class UpdateAccount implements OnInit {
       {
         name: ['', [Validators.required, Validators.maxLength(50)]],
         surname: ['', [Validators.required, Validators.maxLength(50)]],
-        phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
+        phone: [
+          '',
+          [Validators.pattern(/^\+380[0-9]{9}$/), Validators.required],
+        ],
         birthday: ['', Validators.required],
       },
       {
@@ -74,7 +77,7 @@ export class UpdateAccount implements OnInit {
       surname: this.updateForm.value.surname,
       phone: this.updateForm.value.phone,
       birthday: this.updateForm.value.birthday,
-      email: this.authService.getMail()
+      email: this.authService.getMail(),
     };
 
     this.accountService.updateUser(body).subscribe({
