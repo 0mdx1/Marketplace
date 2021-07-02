@@ -40,7 +40,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
         String newImage = goodDto.getImage();
 
-        if (newImage!=null&&!newImage.isEmpty()){
+        if (newImage != null && !newImage.isEmpty()) {
 
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
@@ -53,8 +53,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         String newImage = goodDto.getImage();
 
-        if (newImage!=null&&!newImage.isEmpty()) {
-
+        if (newImage != null && !newImage.isEmpty()) {
             String oldImage = good.getImage();
             if (!oldImage.isEmpty() && !oldImage.equals(newImage)) {
                 goodDto.setImage(this.mediaService.confirmUpload(newImage));
@@ -111,19 +110,12 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         StringJoiner whereStatement = new StringJoiner(" AND ");
-        log.info(whereStatement.toString());
-        // fixme: if null
 
         if (!conditions.isEmpty()) {
             fromQuery.add("WHERE");
             for (String condition : conditions) {
                 whereStatement.add(condition);
             }
-//            fromQuery.append(" WHERE").append(conditions.get(0));
-//            for (int i = 1; i < counter; i++) {
-//                // fixme: using streams
-//                fromQuery.append(" AND").append(conditions.get(i));
-//            }
         }
 
         log.info(whereStatement.toString());
@@ -135,10 +127,10 @@ public class GoodsServiceImpl implements GoodsService {
 
         if (params.getSort() != null) {
             switch (params.getSort()) {
-                case "price":
+                case PRICE:
                     fromQuery.add("ORDER BY goods.price");
                     break;
-                case "date":
+                case DATE:
                     fromQuery.add("ORDER BY shipping_date");
                     break;
                 default:

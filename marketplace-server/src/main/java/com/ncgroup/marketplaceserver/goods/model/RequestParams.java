@@ -11,7 +11,7 @@ public class RequestParams {
     String category;
     Double minPrice;
     Double maxPrice;
-    String sort;
+    SortCategory sort;
     String direction;
     Integer page;
 }

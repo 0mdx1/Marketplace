@@ -13,12 +13,27 @@
   font-weight: bold;
 }
 
+.price-block {
+
+}
+
 .old-price {
   margin-top: 10px;
   margin-bottom: -5px;
   text-decoration: line-through;
   font-weight: normal;
   color: rgb(123, 123, 123);
+  height: 100%;
+}
+
+.no-price {
+  margin-top: 10px;
+  margin-bottom: -5px;
+  text-decoration: line-through;
+  font-weight: normal;
+  color: rgb(123, 123, 123);
+  height: 100%;
+  opacity: 0;
 }
 
 .new-price {
