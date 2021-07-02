@@ -1,21 +1,27 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AccountService} from '../../_services/account.service';
-import {first} from 'rxjs/operators';
-import {ActivatedRoute} from '@angular/router';
-import {validateConfirmPassword, validatePassword} from '../../_helpers/validators.service';
-import {AlertService} from "../../_services/alert.service";
-import {ApiError} from "../../_models/ApiError";
-import {AlertType} from "../../_models/alert";
+import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { AccountService } from '../../_services/account.service';
+import { first } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import {
+  validateConfirmPassword,
+  validatePassword,
+} from '../../_helpers/validators.service';
+import { AlertService } from '../../_services/alert.service';
+import { ApiError } from '../../_models/ApiError';
+import { AlertType } from '../../_models/alert';
 
 @Component({
   selector: 'app-password-form',
   templateUrl: './password.form.component.html',
 })
-
 export class PasswordFormComponent {
-
-  @Output() onClick  = new EventEmitter();
+  @Output() onClick = new EventEmitter();
 
   form: FormGroup;
 
@@ -39,7 +45,9 @@ export class PasswordFormComponent {
     });
   }
 
-  get getForm(): { [p: string]: AbstractControl } { return this.form.controls; }
+  get getForm(): { [p: string]: AbstractControl } {
+    return this.form.controls;
+  }
 
   onSubmit(): void {
     this.submitted = true;
@@ -48,10 +56,11 @@ export class PasswordFormComponent {
     }
     this.loading = true;
     this.form.disable();
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       const id = params.get('link');
       if (id) {
-        this.accountService.setNewPassword(id, this.form.get('password')?.value)
+        this.accountService
+          .setNewPassword(id, this.form.get('password')?.value)
           .pipe(first())
           .subscribe({
             next: () => {
@@ -61,12 +70,11 @@ export class PasswordFormComponent {
             },
             error: (error: any) => {
               this.loading = false;
-              let apiError = error.error as ApiError;
-              if(apiError){
-                this.alertService.addAlert(apiError.message,AlertType.Danger);
+              if (error) {
+                this.alertService.addAlert(error.message, AlertType.Danger);
               }
               this.form.enable();
-            }
+            },
           });
       }
     });
@@ -79,5 +87,4 @@ export class PasswordFormComponent {
   showHideConfirmPassword(): void {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
-
 }

@@ -113,9 +113,8 @@ export class UpdateAccount implements OnInit {
             this.changedPassword = true;
           },
           error: (error) => {
-            let apiError = error.error as ApiError;
-            if (apiError) {
-              this.alertService.addAlert(apiError.message, AlertType.Danger);
+            if (error) {
+              this.alertService.addAlert(error.message, AlertType.Danger);
             }
             this.loading = false;
           },

@@ -121,18 +121,6 @@ public class UserController  {
         return ResponseEntity.noContent().build();
     }
     
-/*    @GetMapping("/confirm-passreset")
-    public void confirmPassReset(@RequestParam(name = "token") String link, HttpServletResponse response) throws IOException {
-    	User user = userService.getUserByLink(link);
-    	if(user != null) {
-        	response.setStatus(HttpStatus.OK.value());
-        	response.sendRedirect(redirectResetPasswordUrl+"?id="+link);
-        } else {
-        	response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        	response.sendRedirect(redirectResetPasswordUrl);
-        }
-    }*/
-    
     
     @PostMapping("/setnewpassword")
     public ResponseEntity<UserDto> setNewPassword(@RequestBody ResetPasswordDto resetPasswordDto) {

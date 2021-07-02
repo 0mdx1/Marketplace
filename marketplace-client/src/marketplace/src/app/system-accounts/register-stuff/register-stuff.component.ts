@@ -112,7 +112,7 @@ export class RegisterStuffComponent {
         this.form.enable();
       },
       error: (error) => {
-        if (error.error.message === 'Email  already exists') {
+        if (error.message === 'Email  already exists') {
           this.getForm.email.setErrors({ EmailAlreadyExists: true });
         }
         this.loading = false;
