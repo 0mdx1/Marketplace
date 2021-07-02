@@ -13,6 +13,8 @@ import {
   validateConfirmPassword,
   validatePassword,
 } from '../../_helpers/validators.service';
+import { AlertService } from 'src/app/_services/alert.service';
+import { AlertType } from 'src/app/_models/alert';
 
 @Component({
   templateUrl: './register.component.html',
@@ -29,7 +31,8 @@ export class RegisterComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private alertService: AlertService
   ) {
     this.buildForm();
   }
@@ -84,9 +87,7 @@ export class RegisterComponent {
           this.registered = true;
         },
         error: (error) => {
-          if (error.message === 'Email  already exists') {
-            this.getForm.email.setErrors({ EmailAlreadyExists: true });
-          }
+          this.alertService.addAlert(error.message, AlertType.Danger);
           this.loading = false;
           this.form.enable();
         },

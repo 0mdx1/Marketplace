@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
 import com.ncgroup.marketplaceserver.model.Role;
@@ -141,16 +142,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 	
 	@Override
+	@Transactional
 	public User setNewPassword(String link, String newPassword) {
 		User user = validateAuthLink(link);
 		validatePasswordPattern(newPassword);
 		if(user == null){
 			throw new LinkNotValidException("Link is invalid or expired");
 		}
-		if(user.getPassword() != null && user.getPassword().equals(newPassword)) {
+		if(user.getPassword() != null && passwordEncoder.matches(newPassword, user.getPassword())) {
+			log.info("Same password");
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
 		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
+		userRepository.updateAuthLink(user.getEmail(), null);
 		return user;
 	}
 	
@@ -288,9 +292,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return user;
 	}
 
+	@Override
 	public String encodePassword(String password) {
 		return passwordEncoder.encode(password);
 	}
+	
 
 	
 	public boolean validatePasswordPattern(String password) {
