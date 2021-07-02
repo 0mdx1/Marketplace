@@ -60,10 +60,8 @@ export class ForgotPasswordComponent {
           this.sent = true;
         },
         error: (error) => {
-          let apiError = error.error as ApiError;
-          console.log(error);
-          if (apiError) {
-            this.alertService.addAlert(apiError.message, AlertType.Danger);
+          if (error) {
+            this.alertService.addAlert(error.message, AlertType.Danger);
           }
           if (error.status && error.status === 401) {
             this.getForm.email.setErrors({ EmailDoesNotExist: true });
