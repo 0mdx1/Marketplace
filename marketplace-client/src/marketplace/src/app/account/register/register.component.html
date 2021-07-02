@@ -5,32 +5,36 @@
       <div class="form-row">
         <div class="form-group col-6">
           <label>First Name*</label>
-          <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
+          <input type="text" placeholder="Name" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
           <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
             <div *ngIf="getForm.name.errors.required">First Name is required</div>
+            <div *ngIf="getForm.name.errors.maxlength">First Name length exceeds 50 character limit</div>
           </div>
         </div>
         <div class="form-group col-6">
           <label>Last Name*</label>
-          <input type="text" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
+          <input type="text" placeholder="Surname" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
           <div *ngIf="submitted && getForm.surname.errors" class="invalid-feedback">
             <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
+            <div *ngIf="getForm.surname.errors.maxlength">Last Name length exceeds 50 character limit</div>
           </div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-12">
           <label>Email*</label>
-          <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
+          <input type="text" formControlName="email" placeholder="example@example.com" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
           <div *ngIf="submitted && getForm.email.errors" class="invalid-feedback">
             <div *ngIf="getForm.email.errors.required">Email is required</div>
             <div *ngIf="getForm.email.errors.email">Email must be a valid email address</div>
             <div *ngIf="getForm.email.hasError('EmailAlreadyExists')">This email is already registered</div>
+            <div *ngIf="getForm.email.errors.maxlength">Email length exceeds 50 character limit</div>
+
           </div>
         </div>
         <div class="form-group col-6">
           <label>Phone</label>
-          <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
+          <input type="text" formControlName="phone" placeholder="+380XXXXXXXXX" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
           <div *ngIf="submitted && getForm.phone.errors" class="invalid-feedback">
             <div *ngIf="getForm.phone.errors">Phone must be in format +380</div>
           </div>
@@ -67,10 +71,11 @@
             <div *ngIf="submitted && getForm.password.errors" class="invalid-feedback">
               <div *ngIf="getForm.password.errors.required">Password is required</div>
               <div *ngIf="getForm.password.errors.minlength">Password must be at least 6 characters</div>
-              <div *ngIf="getForm.password.errors.maxlength">Password must be less than 32 characters</div>
               <div *ngIf="getForm.password.hasError('NoDigit')">Passwords must have a digit</div>
               <div *ngIf="getForm.password.hasError('NoUppercase')">Passwords must have an uppercase letter</div>
               <div *ngIf="getForm.password.hasError('NoLowercase')">Passwords must have a lowercase letter</div>
+              <div *ngIf="getForm.password.errors.maxlength">Password length exceeds 100 character limit</div>
+
             </div>
           </div>
         </div>
