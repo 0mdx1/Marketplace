@@ -13,7 +13,7 @@ export class AlertService {
   public addAlert(message: String, type: AlertType): void{
     const alert = new Alert(message,type);
     this.alerts.push(alert);
-    setTimeout(() => this.removeAlert(alert),1500);
+    setTimeout(() => this.removeAlert(alert),4000);
   }
 
   public removeAlert(alert: Alert): void{

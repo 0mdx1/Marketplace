@@ -28,7 +28,7 @@ public class UserDto {
     private String name;
 	@NotBlank(message = "Surname is mandatory")
     private String surname;
-	@Pattern(regexp = "^\\+380\\d{9}$")
+	@Pattern(regexp = "^\\+380\\d{9}$", message = "Phone must be in format +380")
 	@NotBlank(message = "Phone is mandatory")
     private String phone;
 	@Birthday(message = "Birthday not valid")

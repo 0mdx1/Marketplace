@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { StaffMember } from 'src/app/_models/staff-member';
 import { SystemAccountService } from 'src/app/_services/system-account.service';
+import { Role } from 'src/app/_models/role';
 
 @Component({
   selector: 'app-account-list',
@@ -28,10 +29,10 @@ export class AccountListComponent {
     this.service.navigateToRegisterStaff();
   }
   changeInfo(id:number, role:string){
-    if(role.localeCompare("ROLE_PRODUCT_MANAGER" )) {
+    if(role.localeCompare(Role.ProductManager)) {
       this.service.navigateToUpdatedStaff(id, 1);
     }
-    else if (role.localeCompare("ROLE_COURIER")){
+    else if (role.localeCompare(Role.Courier)){
       this.service.navigateToUpdatedStaff(id, 2);
     }
   }
