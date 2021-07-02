@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.repository;
 
 
 import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface UserRepository {
 
 	void updatePassword(String email, String password);
 
-	void updateUserByEmail(User user, String email);
+	void updateUserByEmail(UserDto user, String email);
 
 	List<User> allCouriersManagers();
 }

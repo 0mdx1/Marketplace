@@ -45,6 +45,6 @@ public interface UserService {
 
     User getCurrentUser();
 
-    User updateRoleUser(User user, String token);
+    UserDto updateRoleUser(UserDto user, String token);
 
 }

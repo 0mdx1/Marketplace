@@ -137,9 +137,9 @@ public class UserController  {
     }
 
     @PatchMapping("/updateUserRole")
-    public ResponseEntity<User> updateRoleUser(
+    public ResponseEntity<UserDto> updateRoleUser(
             @RequestHeader(value = "Authorization", required = false) String token,
-            @RequestBody User user
+            @Valid @RequestBody UserDto user
     ) {
         return new ResponseEntity<>(userService.updateRoleUser(user, token), OK);
     }
