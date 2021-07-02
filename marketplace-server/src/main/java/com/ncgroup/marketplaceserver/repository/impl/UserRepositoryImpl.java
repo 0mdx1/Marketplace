@@ -1,7 +1,9 @@
 package com.ncgroup.marketplaceserver.repository.impl;
 
 import java.util.List;
+import java.util.Objects;
 
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.model.mapper.CourierManagerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @PropertySource("classpath:database/queries.properties")
 public class UserRepositoryImpl implements UserRepository {
 
-	private JdbcTemplate jdbcTemplate;
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	@Value("${user.find-all}")
 	private String findAllQuery;
@@ -114,14 +116,14 @@ public class UserRepositoryImpl implements UserRepository {
 		
 		KeyHolder userHolder = new GeneratedKeyHolder();
 		SqlParameterSource userParameters = new MapSqlParameterSource()
-				.addValue("credentials_id", credentialsHolder.getKey().longValue())
+				.addValue("credentials_id", Objects.requireNonNull(credentialsHolder.getKey()).longValue())
 				.addValue("name", user.getName())
 				.addValue("surname", user.getSurname())
 				.addValue("phone", user.getPhone())
 				.addValue("birthday", user.getBirthday());
 
 		namedParameterJdbcTemplate.update(insertUserQuery, userParameters, userHolder);
-		user.setId(userHolder.getKey().longValue());
+		user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
 		return user;
 	}
 	
@@ -133,7 +135,7 @@ public class UserRepositoryImpl implements UserRepository {
 				.addValue("surname", user.getSurname())
 				.addValue("phone", user.getPhone());
 		namedParameterJdbcTemplate.update(insertUserWithoutCredentialsQuery, userParameters, userHolder);
-		user.setId(userHolder.getKey().longValue());
+		user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
 		return user;
 	}
 	
@@ -150,7 +152,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public void updateUserByEmail(User user, String email) {
+	public void updateUserByEmail(UserDto user, String email) {
 		SqlParameterSource params = new MapSqlParameterSource()
 				.addValue("name", user.getName())
 				.addValue("surname", user.getSurname())
@@ -196,20 +198,20 @@ public class UserRepositoryImpl implements UserRepository {
 	public void deleteById(long id) {
 		User user = findById(id);
 		if(user != null) {
-			jdbcTemplate.update(deleteCredByEmailQuery, new Object[] {user.getEmail()});
-			jdbcTemplate.update(deleteByIdQuery, new Object[] {id});
+			jdbcTemplate.update(deleteCredByEmailQuery, user.getEmail());
+			jdbcTemplate.update(deleteByIdQuery, id);
 		}
 		
 	}
 	
-	private int getRoleId(Role role) { 
-		return jdbcTemplate.queryForObject(findRoleQuery, Integer.class, new Object[] {role.name()});
+	private Integer getRoleId(Role role) {
+		return jdbcTemplate.queryForObject(findRoleQuery, Integer.class, role.name());
 	}
 
 	@Override
 	public void enableUser(String link) {
-		jdbcTemplate.update(enableUserQuery, new Object[] {link});
-		jdbcTemplate.update(deleteAuthLinkQuery, new Object[] {link});
+		jdbcTemplate.update(enableUserQuery, link);
+		jdbcTemplate.update(deleteAuthLinkQuery, link);
 	}
 
 	
