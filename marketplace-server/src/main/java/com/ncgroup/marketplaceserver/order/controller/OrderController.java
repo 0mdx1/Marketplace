@@ -25,6 +25,7 @@ import com.ncgroup.marketplaceserver.model.dto.UserDisplayInfoDto;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.order.exception.NoCouriersException;
 import com.ncgroup.marketplaceserver.order.model.OrderStatus;
+import com.ncgroup.marketplaceserver.order.model.dto.OrderPageDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 import com.ncgroup.marketplaceserver.order.service.OrderService;
@@ -45,7 +46,7 @@ public class OrderController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<Map<String, Object>> getOrdersForCourier(
+	public ResponseEntity<OrderPageDto> getOrdersForCourier(
 			@RequestHeader("Authorization") String token,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
 		

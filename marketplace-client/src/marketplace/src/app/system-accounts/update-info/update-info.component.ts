@@ -38,8 +38,6 @@ export class UpdateInfoComponent implements OnInit {
 
   response: any;
 
-  //test: string = "asa";
-
   ngOnInit() {
     //.subscribe((response) => {
     if (this.route.snapshot.params.role.localeCompare(1)) {
@@ -84,12 +82,12 @@ export class UpdateInfoComponent implements OnInit {
     return this.form.controls;
   }
 
-  courierRoleSelected(): boolean {
-    return this.form.value.role == Role.Courier;
+  isProductManager(): boolean {
+    return this.response.role === Role.ProductManager;
   }
 
-  pmRoleSelected(): boolean {
-    return this.form.value.role == Role.ProductManager;
+  isCourier(): boolean {
+    return this.response.role === Role.Courier;
   }
 
   private mapToStaffMember(o: any): StaffMember {
@@ -127,7 +125,6 @@ export class UpdateInfoComponent implements OnInit {
       this.form.enable();
       return;
     }
-
 
     observable.pipe(first()).subscribe({
       next: () => {

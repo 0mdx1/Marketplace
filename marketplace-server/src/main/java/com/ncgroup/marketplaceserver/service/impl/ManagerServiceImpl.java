@@ -97,8 +97,10 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public User updateManager(long id, User manager) {
+        boolean isEnabled = manager.getStatus().equals(StatusConstants.ACTIVE);
         User currentManager = this.getById(id);
         manager.toDto(currentManager);
+        currentManager.setEnabled(isEnabled);
         return managerRepository.update(currentManager, id);
     }
 

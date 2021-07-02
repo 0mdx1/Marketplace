@@ -5,6 +5,7 @@ import { OrderHistoryRoutingModule } from './order-history-routing.module';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { OrderLayoutComponent } from './order-layout/order-layout.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,6 @@ import { OrderLayoutComponent } from './order-layout/order-layout.component';
     OrderDetailsComponent,
     OrderLayoutComponent,
   ],
-  imports: [CommonModule, OrderHistoryRoutingModule],
+  imports: [CommonModule, OrderHistoryRoutingModule, SharedModule],
 })
 export class OrderHistoryModule {}
