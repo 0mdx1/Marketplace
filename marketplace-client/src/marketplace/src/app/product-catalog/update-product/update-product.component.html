@@ -4,8 +4,7 @@
       <div class="card">
         <div class="product-card card-body m-3">
           <div class="row d-flex h-100">
-            <app-image-uploading [imageUrl]="this.response.image" (imageFilenameEvent)="setImage($event)"
-              class="col-12 col-lg-4"></app-image-uploading>
+            <app-image-uploading [imageUrl]="this.response?.image||''" (imageFilenameEvent)="setImage($event)" class="col-12 col-lg-4"></app-image-uploading>
             <div class="col d-row-flex align-self-center">
               <h1 class="card-title mb-0 mt-5 mt-md-0 border-bottom pb-2 mb-4">{{goodName}}</h1>
               <form *ngIf="response" [formGroup]="form" (ngSubmit)="onSubmit()">
