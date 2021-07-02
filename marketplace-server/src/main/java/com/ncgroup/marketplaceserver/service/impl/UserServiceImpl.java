@@ -150,7 +150,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throw new LinkNotValidException("Link is invalid or expired");
 		}
 		if(user.getPassword() != null && passwordEncoder.matches(newPassword, user.getPassword())) {
-			log.info("Same password");
 			throw new PasswordNotValidException(ExceptionMessage.SAME_PASSWORD);
 		}
 		userRepository.updatePassword(user.getEmail(), encodePassword(newPassword));
