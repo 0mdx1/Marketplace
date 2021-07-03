@@ -21,8 +21,6 @@ CREATE TABLE IF NOT EXISTS role
     role VARCHAR(50)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
-    ON role (role);
 
 CREATE TABLE IF NOT EXISTS credentials
 (
@@ -178,3 +176,8 @@ CREATE TABLE IF NOT EXISTS order_goods
         PRIMARY KEY (goods_id, order_id)
 );
 
+
+CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
+    ON role (role);
+
+CREATE INDEX IF NOT EXISTS credentials_email_hash_index ON credentials USING hash(email);

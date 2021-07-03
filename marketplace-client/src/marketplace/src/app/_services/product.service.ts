@@ -33,6 +33,7 @@ export class ProductService {
     this.pageTotalSource.next();
     this.addQueryParams(filter, search, page);
     //get method to backend api
+
     return this.http
       .get<ProductDto>(`${baseUrl}/products`, {
         params: this.buildQueryParams(filter, search, page),
