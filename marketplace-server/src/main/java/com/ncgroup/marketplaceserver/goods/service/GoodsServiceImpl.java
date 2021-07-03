@@ -41,7 +41,6 @@ public class GoodsServiceImpl implements GoodsService {
         String newImage = goodDto.getImage();
 
         if (newImage != null && !newImage.isEmpty()) {
-
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
         return new Good(goodDto, repository.getGoodId(goodDto), mediaService);
