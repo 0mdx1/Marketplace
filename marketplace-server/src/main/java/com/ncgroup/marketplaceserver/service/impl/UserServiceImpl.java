@@ -3,6 +3,7 @@ package com.ncgroup.marketplaceserver.service.impl;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				.email(email)
 				.birthday(birthday)
 				.password(encodePassword(password))
-				.lastFailedAuth(LocalDateTime.now())
+				.lastFailedAuth(OffsetDateTime.now())
 				.role(Role.ROLE_USER)
 				.build();
 
@@ -282,7 +283,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if(user == null) {
 			return null;
 		}
-		if(user.getAuthLinkDate().isBefore(LocalDateTime.now().minusHours(LINK_VALID_TIME_HOUR))) {
+		log.info(user.toString());;
+		if(user.getAuthLinkDate() != null && user.getAuthLinkDate().isBefore(OffsetDateTime.now().minusHours(LINK_VALID_TIME_HOUR))) {
 			return null;
 		}
 		return user;

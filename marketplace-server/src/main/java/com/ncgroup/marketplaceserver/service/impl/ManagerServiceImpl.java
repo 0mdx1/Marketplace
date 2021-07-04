@@ -16,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class ManagerServiceImpl implements ManagerService {
                 .email(email)
                 .birthday(birthday)
                 .isEnabled(true)
-                .lastFailedAuth(LocalDateTime.now())
+                .lastFailedAuth(OffsetDateTime.now())
                 .role(Role.ROLE_PRODUCT_MANAGER)
                 .isEnabled(isEnabled)
                 .build();

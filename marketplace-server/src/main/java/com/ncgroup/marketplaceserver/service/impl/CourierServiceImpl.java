@@ -2,6 +2,7 @@ package com.ncgroup.marketplaceserver.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class CourierServiceImpl implements CourierService {
                         .phone(phone)
                         .email(email)
                         .birthday(birthday)
-                        .lastFailedAuth(LocalDateTime.now())
+                        .lastFailedAuth(OffsetDateTime.now())
                         .role(Role.ROLE_COURIER)
                         .isEnabled(isEnabled)
                         .build()

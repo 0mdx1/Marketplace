@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -26,17 +27,25 @@ public class UserRowMapper implements RowMapper<User>{
 				.birthday(rs.getObject("birthday", LocalDate.class))
 				.isEnabled(rs.getBoolean("is_enabled"))
 				.failedAuth(rs.getInt("failed_auth"))
-				.lastFailedAuth(rs.getObject("last_failed_auth", LocalDateTime.class))
 				.password(rs.getString("password"))
 				.role(Role.valueOf(rs.getString("role")))
 				.authLink(rs.getString("auth_link"))
-				.authLinkDate(rs.getObject("auth_link_date", LocalDateTime.class))
 				.build();
 		if(rs.getBoolean("is_enabled")) {
 			user.setStatus("active");
 		}else {
 			user.setStatus("terminated");
 		}
+		if(rs.getObject("last_failed_auth", OffsetDateTime.class) != null) {
+			user.setLastFailedAuth(rs.getObject("last_failed_auth", OffsetDateTime.class)
+						.withOffsetSameInstant(OffsetDateTime.now().getOffset()));
+		}
+		log.info("AUTH LINK "  + rs.getObject("auth_link_date", OffsetDateTime.class));
+		if(rs.getObject("auth_link_date", OffsetDateTime.class) != null) {
+			user.setAuthLinkDate(rs.getObject("auth_link_date", OffsetDateTime.class)
+						.withOffsetSameInstant(OffsetDateTime.now().getOffset()));
+		}
+						
 
 		log.info(""+user.isEnabled());
 		return user;

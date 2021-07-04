@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -34,13 +35,13 @@ public class User {
     @JsonIgnore
     private int failedAuth;
     @JsonIgnore
-    private LocalDateTime lastFailedAuth;
+    private OffsetDateTime lastFailedAuth;
     private Role role;
     private String status;
     @JsonIgnore
     private String authLink;
     @JsonIgnore
-    private LocalDateTime authLinkDate;
+    private OffsetDateTime authLinkDate;
     //private List<String> authorities;
 
     public void toDto(User user) {

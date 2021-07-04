@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.security.service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class LoginAttemptService {
 			return;
 		}
 		if(user.getLastFailedAuth() != null &&
-				user.getLastFailedAuth().isBefore(LocalDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
+				user.getLastFailedAuth().isBefore(OffsetDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
 			// The amount of time after which user can login again has passed
 			userRepository.updateLastFailedAuth(username, 1);
 		} else {
@@ -45,7 +46,7 @@ public class LoginAttemptService {
 	public boolean hasExceededMaxAttempts(long userId) {
 		User user = userRepository.findById(userId);
 		if(user.getLastFailedAuth() != null &&
-				user.getLastFailedAuth().isBefore(LocalDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
+				user.getLastFailedAuth().isBefore(OffsetDateTime.now().minusMinutes(LOGIN_FAILURE_TIME_MIN))) {
 			return false;
 		}
 		return user.getFailedAuth() >= MAX_ATTEMPTS_NUMBER;

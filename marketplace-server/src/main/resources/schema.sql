@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS category;
 DROP TYPE IF EXISTS delivery_status;
 DROP TYPE IF EXISTS unit_type;
 
-DROP EXTENSION pg_trgm; 
+DROP EXTENSION IF EXISTS pg_trgm; 
 
 CREATE TABLE IF NOT EXISTS role
 (
@@ -36,14 +36,11 @@ CREATE TABLE IF NOT EXISTS credentials
     password         VARCHAR(100),
     is_enabled       BOOLEAN,
     failed_auth      INTEGER DEFAULT 0,
-    last_failed_auth TIMESTAMP,
+    last_failed_auth TIMESTAMP WITH TIME ZONE,
     auth_link        VARCHAR(100),
-    auth_link_date   TIMESTAMP
+    auth_link_date   TIMESTAMP WITH TIME ZONE
 );
 
-
-CREATE UNIQUE INDEX IF NOT EXISTS ux_credentials_email
-    ON credentials (email);
 
 CREATE TABLE IF NOT EXISTS person
 (
@@ -180,7 +177,6 @@ CREATE TABLE IF NOT EXISTS order_goods
 
 
 CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role  ON role (role);
-
 CREATE INDEX credentials_email_hash_index ON credentials USING hash(email);
 
 CREATE EXTENSION pg_trgm;
