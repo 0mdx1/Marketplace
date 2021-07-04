@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Product } from '../../_models/products/product';
 import { CartService } from '../../_services/cart/cart.service';
 import { ProductComparisonService } from '../../_services/product-comparison/product-comparison';

@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CourierOrder } from 'src/app/_models/order-info/courier-order';
 import { User } from 'src/app/_models/user';
-import { Checkout } from 'src/app/_services/checkout/checkout.service';
 import { OrderService } from 'src/app/_services/order.service';
 
 @Component({

@@ -1,4 +1,3 @@
-import { CartItem } from '../cart-item.model';
 import { UserDisplayInfo } from './userDisplayInfo';
 import { Status } from '../status';
 import { OrderProductInfo } from './orderProductInfo';

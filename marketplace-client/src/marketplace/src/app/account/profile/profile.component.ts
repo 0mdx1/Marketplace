@@ -1,13 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { SystemAccountService } from 'src/app/_services/system-account.service';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../_services/account.service';
-import { StaffMember } from '../../_models/staff-member';
-import { ActivatedRoute } from '@angular/router';
-import { first, switchMap } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { User } from 'src/app/_models/user';
 import { Subscription } from 'rxjs';
-import { ApiError } from '../../_models/ApiError';
 import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
 
@@ -29,7 +24,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private route: ActivatedRoute,
     private alertService: AlertService
   ) {}
 

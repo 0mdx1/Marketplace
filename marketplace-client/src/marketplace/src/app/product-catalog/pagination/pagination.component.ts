@@ -1,15 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Product } from 'src/app/_models/products/product';
 import { ProductDto } from 'src/app/_models/products/productDto';
 import { ProductService } from 'src/app/_services/product.service';
-import { of, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pagination',

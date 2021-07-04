@@ -8,7 +8,6 @@ import {
 import { first } from 'rxjs/operators';
 
 import { AccountService } from '../../_services/account.service';
-import { ApiError } from '../../_models/ApiError';
 import { AlertType } from '../../_models/alert';
 import { AlertService } from '../../_services/alert.service';
 
@@ -55,7 +54,6 @@ export class ForgotPasswordComponent {
       .pipe(first())
       .subscribe({
         next: () => {
-          // this.router.navigate(['../registration-greeting', {relativeTo: this.route}]);
           this.loading = false;
           this.sent = true;
         },

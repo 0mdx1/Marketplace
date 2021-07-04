@@ -8,7 +8,6 @@ import {
 import { ProductService } from '../../_services/product.service';
 import { first } from 'rxjs/operators';
 import { Product } from '../../_models/products/product';
-import { AccountService } from '../../_services/account.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../_services/alert.service';
@@ -46,7 +45,6 @@ export class AddProductComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
     private productService: ProductService,
     private router: Router,
     private alertService: AlertService

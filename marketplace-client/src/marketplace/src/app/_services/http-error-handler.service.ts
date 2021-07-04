@@ -1,29 +1,28 @@
-import {Inject, Injectable} from '@angular/core';
-import {AlertService} from "./alert.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Alert, AlertType} from "../_models/alert";
-import {ErrorObserver, throwError} from "rxjs";
-import {ApiError} from "../_models/ApiError";
-import {BrowserCart} from "./cart/browser/browser-cart";
-import {toTitleCase} from "codelyzer/util/utils";
+import { Injectable } from '@angular/core';
+import { AlertService } from './alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertType } from '../_models/alert';
+import { throwError } from 'rxjs';
+import { ApiError } from '../_models/ApiError';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpErrorHandlerService {
+  private test: String = 'test';
 
-  private test: String = "test";
+  constructor(private alertService: AlertService) {}
 
-  constructor(private alertService: AlertService) {
-  }
-
-  public displayValidationError(error: HttpErrorResponse){
+  public displayValidationError(error: HttpErrorResponse) {
     let apiError: ApiError = <ApiError>error.error;
-    this.alertService.addAlert(this.capitalizeFirstLetter(apiError.message) ,AlertType.Danger);
+    this.alertService.addAlert(
+      this.capitalizeFirstLetter(apiError.message),
+      AlertType.Danger
+    );
     return throwError(error);
   }
 
-  private capitalizeFirstLetter(string : String) {
+  private capitalizeFirstLetter(string: String) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }

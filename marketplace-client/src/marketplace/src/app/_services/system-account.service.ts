@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserDto } from '../_models/UserDto';
-import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
 import { StaffMember } from '../_models/staff-member';
 
 const baseUrl = `${environment.apiUrl}`;

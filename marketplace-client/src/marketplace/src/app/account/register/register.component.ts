@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { AccountService } from '../../_services/account.service';
 import { first } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   validateBirthday,
   validateConfirmPassword,

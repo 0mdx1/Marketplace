@@ -12,8 +12,6 @@ import { User } from '../../_models/user';
 import { CartService } from '../../_services/cart/cart.service';
 import { Checkout } from '../../_services/checkout/checkout.service';
 
-import { catchError } from 'rxjs/operators';
-import { HttpErrorHandlerService } from '../../_services/http-error-handler.service';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from '../../_services/alert.service';
@@ -43,7 +41,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private checkoutService: Checkout,
-    private errorHandler: HttpErrorHandlerService,
     private router: Router,
     private modalService: NgbModal,
     private alertService: AlertService
