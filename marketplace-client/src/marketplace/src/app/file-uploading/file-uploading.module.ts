@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ImageUploadingComponent} from "./_components/image-uploading/image-uploading.component";
-
 
 
 @NgModule({
@@ -15,4 +14,5 @@ import {ImageUploadingComponent} from "./_components/image-uploading/image-uploa
     ImageUploadingComponent
   ]
 })
-export class FileUploadingModule { }
+export class FileUploadingModule {
+}

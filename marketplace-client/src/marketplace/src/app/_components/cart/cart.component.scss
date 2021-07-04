@@ -1,58 +1,58 @@
 .increase_quantity, .decrease_quantity {
-    cursor: pointer;
-  }
+  cursor: pointer;
+}
 
-  form {
-    margin: 0 auto;
-    min-width: 150px;
-    text-align: center;
-  }
+form {
+  margin: 0 auto;
+  min-width: 150px;
+  text-align: center;
+}
 
-  .value-button {
-    display: inline-block;
-    border: 1px solid #ddd;
-    margin: 0px;
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-    padding: 10px 0 12px;
-    text-align: center;
-    background: #eee;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+.value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  padding: 10px 0 12px;
+  text-align: center;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
-  .value-button:hover {
-    cursor: pointer;
-  }
+.value-button:hover {
+  cursor: pointer;
+}
 
-  form #decrease {
-    margin-right: 4px;
-    color: #007dc3;
-    background-color: #fff;
-    border: none;
-  }
+form #decrease {
+  margin-right: 4px;
+  color: #007dc3;
+  background-color: #fff;
+  border: none;
+}
 
-  form #increase {
-    margin-left: 4px;
-    color: #007dc3;
-    background-color: #fff;
-    border: none;
-  }
+form #increase {
+  margin-left: 4px;
+  color: #007dc3;
+  background-color: #fff;
+  border: none;
+}
 
-  input#number {
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 0px;
-    width: 40px;
-    height: 40px;
-    outline: none;
-  }
+input#number {
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0px;
+  width: 40px;
+  height: 40px;
+  outline: none;
+}
 
 input#number:focus {
   box-shadow: 0 0 2pt 2pt #7fc5ee;
@@ -64,73 +64,74 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-  tbody {
-    tr {
-        td {
-          border-right: 1px solid #dee2e6;
-          border-bottom: 1px solid #dee2e6;
-          &:first-of-type {
-            border-left: 1px solid #dee2e6;
-          }
-        }
+tbody {
+  tr {
+    td {
+      border-right: 1px solid #dee2e6;
+      border-bottom: 1px solid #dee2e6;
+
+      &:first-of-type {
+        border-left: 1px solid #dee2e6;
+      }
     }
   }
+}
 
-  .cart-table{
-    background-color: #007dc3;
+.cart-table {
+  background-color: #007dc3;
+  color: #fff;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #7B7B7B;
+}
+
+.good-name {
+  text-transform: capitalize;
+  color: #000;
+}
+
+.total {
+  background-color: #cfe6f3;
+  border: 1px solid #007dc3;
+  border-radius: 4px;
+  padding: 25px 25px;
+  font-size: 25px;
+  font-weight: 600;
+
+  a {
     color: #fff;
-  }
-
-  .delete-icon {
-    cursor: pointer;
-    color: #7B7B7B;
-  }
-
-  .good-name {
-    text-transform: capitalize;
-    color: #000;
-  }
-
-  .total {
-    background-color: #cfe6f3;
-    border: 1px solid #007dc3;
-    border-radius: 4px;
-    padding: 25px 25px;
-    font-size: 25px;
+    background-color: #007dc3;
+    padding: 10px 20px;
+    margin-left: 20px;
     font-weight: 600;
-
-    a {
-      color: #fff;
-      background-color: #007dc3;
-      padding: 10px 20px;
-      margin-left: 20px;
-      font-weight: 600;
-      font-size: 18px;
-    }
-  }
-
-  .back-btn {
-    display: inline-block;
-    border: 1px solid #007dc3;
-    color: #007dc3;
     font-size: 18px;
-    height: 50px;
-    padding: 10px 10px;
   }
+}
 
-  .min-value-btn {
-    background-color: #fff;
-    outline: none;
-    border: none;
-    cursor: default !important;
-    margin-right: 4px;
-    color: #c1c1c1;
-  }
+.back-btn {
+  display: inline-block;
+  border: 1px solid #007dc3;
+  color: #007dc3;
+  font-size: 18px;
+  height: 50px;
+  padding: 10px 10px;
+}
 
-  .store-btn {
-    background-color: #007dc3;
-    color: #fff;
-  }
+.min-value-btn {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  cursor: default !important;
+  margin-right: 4px;
+  color: #c1c1c1;
+}
+
+.store-btn {
+  background-color: #007dc3;
+  color: #fff;
+}
 
 .img-container {
   position: relative;
@@ -138,6 +139,7 @@ input[type=number]::-webkit-outer-spin-button {
   min-width: 30px;
   width: 100%; /* The size you want */
 }
+
 .img-container:after {
   content: "";
   display: block;

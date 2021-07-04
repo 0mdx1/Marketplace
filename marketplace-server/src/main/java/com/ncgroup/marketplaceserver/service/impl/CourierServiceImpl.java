@@ -1,36 +1,37 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
-import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
-import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
-import com.ncgroup.marketplaceserver.repository.CourierRepository;
-import com.ncgroup.marketplaceserver.service.CourierService;
+import javax.mail.MessagingException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.UserDto;
-import com.ncgroup.marketplaceserver.repository.UserRepository;
-import com.ncgroup.marketplaceserver.service.EmailSenderService;
-import com.ncgroup.marketplaceserver.service.UserService;
-import com.ncgroup.marketplaceserver.constants.StatusConstants;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
+import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
+import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.Role;
+import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
+import com.ncgroup.marketplaceserver.repository.CourierRepository;
+import com.ncgroup.marketplaceserver.repository.UserRepository;
+import com.ncgroup.marketplaceserver.service.CourierService;
+import com.ncgroup.marketplaceserver.service.EmailSenderService;
+import com.ncgroup.marketplaceserver.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -83,7 +84,7 @@ public class CourierServiceImpl implements CourierService {
                         .phone(phone)
                         .email(email)
                         .birthday(birthday)
-                        .lastFailedAuth(LocalDateTime.now())
+                        .lastFailedAuth(OffsetDateTime.now())
                         .role(Role.ROLE_COURIER)
                         .isEnabled(isEnabled)
                         .build()
@@ -167,7 +168,7 @@ public class CourierServiceImpl implements CourierService {
             courierList = courierRepository
                     .getByNameSurname(search, false, false, (page - 1) * PAGE_SIZE);
             allPages = courierRepository.getNumberOfRows(search, false, false);
-        }else {
+        } else {
             courierList = courierRepository.getByNameSurnameAll(search, (page - 1) * PAGE_SIZE);
             allPages = courierRepository.getNumberOfRowsAll(search);
         }

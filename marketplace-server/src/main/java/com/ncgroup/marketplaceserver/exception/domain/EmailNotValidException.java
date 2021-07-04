@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @ApiErrorMetadata(type = ExceptionType.EMAIL_INVALID, status = HttpStatus.BAD_REQUEST)
 public class EmailNotValidException extends NotValidException {
-	public EmailNotValidException(String message) {
+    public EmailNotValidException(String message) {
         super(message);
     }
 }

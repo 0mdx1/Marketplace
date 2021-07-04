@@ -6,11 +6,11 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { debounceTime, map, switchAll } from 'rxjs/operators';
-import { StaffMember } from 'src/app/_models/staff-member';
-import { UserDto } from 'src/app/_models/UserDto';
-import { SystemAccountService } from 'src/app/_services/system-account.service';
+import {fromEvent, merge, Subscription} from 'rxjs';
+import {debounceTime, map, switchAll} from 'rxjs/operators';
+import {StaffMember} from 'src/app/_models/staff-member';
+import {UserDto} from 'src/app/_models/UserDto';
+import {SystemAccountService} from 'src/app/_services/system-account.service';
 
 @Component({
   selector: 'app-search',
@@ -24,7 +24,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   init: boolean = true;
   subscription!: Subscription;
 
-  constructor(private service: SystemAccountService, private el: ElementRef) {}
+  constructor(private service: SystemAccountService, private el: ElementRef) {
+  }
 
   ngOnInit(): void {
     this.search = this.service.getSearch();

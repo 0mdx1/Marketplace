@@ -1,3 +1,3 @@
-export interface SendRequestStrategy{
+export interface SendRequestStrategy {
   allowedToSendRequests(): boolean;
 }

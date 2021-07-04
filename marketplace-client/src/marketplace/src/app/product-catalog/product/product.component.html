@@ -4,35 +4,43 @@
       <div class="card">
         <div class="product-card card-body m-4">
           <div class="row d-flex h-100">
-            <a *ngIf="role=='ROLE_ADMIN' || role=='ROLE_PRODUCT_MANAGER'" routerLink="/products/update/{{product.id}}" class="btn btn-default btn-edit ml-auto px-4 mb-4 d-flex d-md-none">Edit</a>
+            <a *ngIf="role=='ROLE_ADMIN' || role=='ROLE_PRODUCT_MANAGER'" routerLink="/products/update/{{product.id}}"
+               class="btn btn-default btn-edit ml-auto px-4 mb-4 d-flex d-md-none">Edit</a>
             <img *ngIf="product.discount!=0 && (role=='ROLE_USER' || !role)" src="assets/sale.svg" class="sale-icon">
             <img *ngIf="product.image" class="card-img col-12 col-md-4 mr-5" src="{{product.image}}"
                  alt="Product">
             <img *ngIf="!product.image" src="assets/product.svg" class="col-12 col-md-4 mr-5">
             <div class="col d-row-flex">
               <div class="control row d-none d-md-flex">
-                <a *ngIf="role=='ROLE_ADMIN' || role=='ROLE_PRODUCT_MANAGER'" routerLink="/products/update/{{product.id}}" class="btn btn-default btn-edit ml-auto px-4 ">Edit</a>
+                <a *ngIf="role=='ROLE_ADMIN' || role=='ROLE_PRODUCT_MANAGER'"
+                   routerLink="/products/update/{{product.id}}" class="btn btn-default btn-edit ml-auto px-4 ">Edit</a>
               </div>
               <h1 class="card-title mb-0 mt-5 mt-md-0">{{product.goodName}}</h1>
               <h4 class="card-subtitle mb-3 pb-2 text-muted border-bottom">{{product.firmName}}</h4>
               <p class="card-text">{{product.description}}</p>
               <div class="price">
                 <div class="price-div">
-                <span *ngIf="product.discount!=0" class="mt-3 old-price"> {{product.price | currency: "USD"}}</span>
-                <h4 *ngIf="product.discount!=0" class="new-price"> {{(product.price*(100-product.discount)/100).toFixed(2)}}$</h4>
-                <h4 *ngIf="product.discount==0" class="mt-4">{{product.price | currency: "USD"}}</h4>
+                  <span *ngIf="product.discount!=0" class="mt-3 old-price"> {{product.price | currency: "USD"}}</span>
+                  <h4 *ngIf="product.discount!=0"
+                      class="new-price"> {{(product.price * (100 - product.discount) / 100).toFixed(2)}}$</h4>
+                  <h4 *ngIf="product.discount==0" class="mt-4">{{product.price | currency: "USD"}}</h4>
                 </div>
                 <span>/{{product.unit}}</span>
-                <h5 class="card-text mb-3 pb-2 text-muted">Shipping date: {{product.shippingDate | date:'MMM dd, YYYY, hh:mm'}}</h5>
+                <h5 class="card-text mb-3 pb-2 text-muted">Shipping
+                  date: {{product.shippingDate | date:'MMM dd, YYYY, hh:mm'}}</h5>
               </div>
-              <div class="buy justify-content-between float-sm-right float-center mt-auto flex-column flex-sm-row d-flex">
-                <button *ngIf="(role=='ROLE_USER' || !role) && product.inStock" type="button" (click)="addToCart()" class="btn py-2 mt-3 mt-sm-2 cart-btn"><i
+              <div
+                class="buy justify-content-between float-sm-right float-center mt-auto flex-column flex-sm-row d-flex">
+                <button *ngIf="(role=='ROLE_USER' || !role) && product.inStock" type="button" (click)="addToCart()"
+                        class="btn py-2 mt-3 mt-sm-2 cart-btn"><i
                   class="fas fa-shopping-cart"></i> Buy
                 </button>
-                <button *ngIf="comparison && (role=='ROLE_USER' || !role)" type="button" routerLink="../comparison" class="btn py-2 ml-sm-3 mt-3 mt-sm-2  compare-btn">
+                <button *ngIf="comparison && (role=='ROLE_USER' || !role)" type="button" routerLink="../comparison"
+                        class="btn py-2 ml-sm-3 mt-3 mt-sm-2  compare-btn">
                   <i class="fas fa-check"></i> In comparison
                 </button>
-                <button *ngIf="!comparison && (role=='ROLE_USER' || !role)" type="button" (click)="addToComparison()" class="btn py-2 ml-sm-3 mt-3 mt-sm-2  compare-btn"><i
+                <button *ngIf="!comparison && (role=='ROLE_USER' || !role)" type="button" (click)="addToComparison()"
+                        class="btn py-2 ml-sm-3 mt-3 mt-sm-2  compare-btn"><i
                   class="fas fa-balance-scale"></i> Compare
                 </button>
               </div>

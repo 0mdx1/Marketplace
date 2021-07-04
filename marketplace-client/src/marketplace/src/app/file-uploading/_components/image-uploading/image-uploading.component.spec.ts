@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ImageUploadingComponent } from './image-uploading.component';
+import {ImageUploadingComponent} from './image-uploading.component';
 
 describe('ImageUploadingComponent', () => {
   let component: ImageUploadingComponent;
@@ -8,9 +8,9 @@ describe('ImageUploadingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImageUploadingComponent ]
+      declarations: [ImageUploadingComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

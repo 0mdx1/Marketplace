@@ -12,7 +12,8 @@ import {Status} from "../../_models/status";
 
 export class OrderComponent implements OnInit {
 
-  constructor(private service: OrderService) {}
+  constructor(private service: OrderService) {
+  }
 
   order: CourierOrder = new CourierOrder(); // is it ok?
   subscription!: Subscription;

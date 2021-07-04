@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Getter
 public class JwtKeyProvider {
-	
-	@Value("${jwt.secret}")
+
+    @Value("${jwt.secret}")
     private String secret;
-	
+
 }

@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AccountService } from '../../_services/account.service';
-import { first } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import {AccountService} from '../../_services/account.service';
+import {first} from 'rxjs/operators';
 import {
   validateBirthday,
   validateConfirmPassword,
   validatePassword,
 } from '../../_helpers/validators.service';
-import { AlertService } from 'src/app/_services/alert.service';
-import { AlertType } from 'src/app/_models/alert';
+import {AlertService} from 'src/app/_services/alert.service';
+import {AlertType} from 'src/app/_models/alert';
 
 @Component({
   templateUrl: './register.component.html',
@@ -42,8 +41,11 @@ export class RegisterComponent {
       {
         name: ['', [Validators.required, Validators.maxLength(50)]],
         surname: ['', [Validators.required, Validators.maxLength(50)]],
-        email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-        phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
+        email: [
+          '',
+          [Validators.required, Validators.email, Validators.maxLength(50)],
+        ],
+        phone: ['', Validators.pattern(/^\+380[0-9]{9}$/)],
         birthday: ['', Validators.required],
         password: [
           '',

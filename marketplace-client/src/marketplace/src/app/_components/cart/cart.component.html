@@ -8,53 +8,57 @@
       <div class="col my-4">
         <table class="table table-responsive-sm">
           <thead class="cart-table">
-            <tr class="text-center">
-              <th></th>
-              <th>Title</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Subtotal</th>
-              <th></th>
-            </tr>
+          <tr class="text-center">
+            <th></th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cartItem of this.items">
-              <td class="align-items-center text-center">
-                <div class="img-container">
-                  <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
-                  <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" class="card-img-top" alt="{{cartItem.goods.goodName}}}">
+          <tr *ngFor="let cartItem of this.items">
+            <td class="align-items-center text-center">
+              <div class="img-container">
+                <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" class="card-img-top"
+                     alt="{{cartItem.goods.goodName}}}">
+                <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" class="card-img-top"
+                     alt="{{cartItem.goods.goodName}}}">
+              </div>
+            </td>
+            <td class="text-center">
+              <a routerLink="../products/{{cartItem.goods.id}}" class="good-name">{{cartItem.goods.goodName}}</a>
+            </td>
+            <td class="text-center">
+              <p>{{getPrice(cartItem) | currency:'USD'}}</p>
+            </td>
+            <td>
+              <form>
+                <div *ngIf="cartItem.quantity>1" class="value-button" id="decrease"
+                     (click)="decreaseQuantityByOne(cartItem)">
+                  <i class="fa fa-minus"></i>
                 </div>
-              </td>
-              <td class="text-center">
-                <a routerLink="../products/{{cartItem.goods.id}}" class="good-name">{{cartItem.goods.goodName}}</a>
-              </td>
-              <td class="text-center">
-                <p>{{getPrice(cartItem) | currency:'USD'}}</p>
-              </td>
-              <td>
-                <form>
-                  <div *ngIf="cartItem.quantity>1" class="value-button" id="decrease" (click)="decreaseQuantityByOne(cartItem)">
-                    <i class="fa fa-minus"></i>
-                  </div>
-                  <div *ngIf="cartItem.quantity<2" class="min-value-btn value-button">
-                    <i class="fa fa-minus"></i>
-                  </div>
-                  <input type="number" id="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="cartItem.quantity"
-                    (ngModelChange)="setQuantity(cartItem,$event)"
-                    (focusout)="cartItem.quantity == 0 || cartItem.quantity == undefined? cartItem.quantity = 1: '';" [value]="cartItem.quantity"
-                    [min]="0" [max]="cartItem.goods.quantity" />
-                  <div class="value-button" id="increase" (click)="increaseQuantityByOne(cartItem)">
-                    <i class="fa fa-plus"></i>
-                  </div>
-                </form>
-              </td>
-              <td class="text-center">
-                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
-              </td>
-              <td class="text-center">
-                <span class="delete-icon"><i class="fa fa-trash" (click)="delete(cartItem)"></i></span>
-              </td>
-            </tr>
+                <div *ngIf="cartItem.quantity<2" class="min-value-btn value-button">
+                  <i class="fa fa-minus"></i>
+                </div>
+                <input type="number" id="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="cartItem.quantity"
+                       (ngModelChange)="setQuantity(cartItem,$event)"
+                       (focusout)="cartItem.quantity == 0 || cartItem.quantity == undefined? cartItem.quantity = 1: '';"
+                       [value]="cartItem.quantity"
+                       [min]="0" [max]="cartItem.goods.quantity"/>
+                <div class="value-button" id="increase" (click)="increaseQuantityByOne(cartItem)">
+                  <i class="fa fa-plus"></i>
+                </div>
+              </form>
+            </td>
+            <td class="text-center">
+              <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+            </td>
+            <td class="text-center">
+              <span class="delete-icon"><i class="fa fa-trash" (click)="delete(cartItem)"></i></span>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>

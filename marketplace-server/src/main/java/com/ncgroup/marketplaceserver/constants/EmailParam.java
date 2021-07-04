@@ -1,18 +1,14 @@
 package com.ncgroup.marketplaceserver.constants;
 
 
-
-import org.springframework.beans.factory.annotation.Value;
-
 import java.util.UUID;
 
 public class EmailParam {
 
-    private String mess ;
+    private String mess;
     private String token = generateToken();
-    private String link ;
-    private String name ;
-
+    private String link;
+    private String name;
 
 
     public void setLink(String link) {
@@ -23,9 +19,13 @@ public class EmailParam {
         this.mess = mess;
     }
 
-    public void setToken(String token) { this.token = token; }
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getLink() {
         return link;

@@ -12,7 +12,7 @@
 }
 
 .compare-btn {
-  border: 1px solid #636363 ;
+  border: 1px solid #636363;
   color: #636363;
 }
 
@@ -71,6 +71,7 @@
   position: relative;
   width: 100%; /* The size you want */
 }
+
 .img-container:after {
   content: "";
   display: block;

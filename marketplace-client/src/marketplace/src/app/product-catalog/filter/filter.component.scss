@@ -4,11 +4,11 @@
   border-bottom: 1px dashed #d9d9d9;
 }
 
-li.list-group-item{
+li.list-group-item {
   text-transform: capitalize;
 }
 
-li.list-group-item.active{
+li.list-group-item.active {
   background-color: #007dc3;
 }
 
@@ -19,6 +19,7 @@ li.list-group-item.active{
 .prod-cat li ul li a {
   border-bottom: none;
 }
+
 .prod-cat li ul li a:hover,
 .prod-cat li ul li a:focus,
 .prod-cat li ul li.active a,
@@ -29,13 +30,13 @@ li.list-group-item.active{
   color: #ff7261;
 }
 
-.dropdown{
+.dropdown {
   margin-bottom: 20px;
   padding-bottom: 25px;
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
 
-.dropdown .btn{
+.dropdown .btn {
   text-transform: capitalize;
   border: 1px solid #007dc3;
   width: 200px;
@@ -49,7 +50,7 @@ p.dash {
   padding-left: 0;
 }
 
-.price-filter input{
+.price-filter input {
   outline-color: #007dc3;
   border: 1px solid #007dc3;
   font-size: 15px;
@@ -93,47 +94,49 @@ h2 {
 }
 
 ::ng-deep {
-.custom-slider .ngx-slider .ngx-slider-bar {
-  background: #C2C2C2;
-  height: 5px;
-}
-.custom-slider .ngx-slider .ngx-slider-selection {
-  background: #007dc3;
-}
-  .custom-slider .ngx-slider .ngx-slider-active{
+  .custom-slider .ngx-slider .ngx-slider-bar {
+    background: #C2C2C2;
+    height: 5px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: #007dc3;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-active {
     border: none;
     outline: none;
   }
 
-.custom-slider .ngx-slider .ngx-slider-pointer {
-  width: 20px;
-  height: 20px;
-  top: auto;
-  bottom: -7px;
-  background-color: #fff;
-  border: 2px solid #007dc3;
-}
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 20px;
+    height: 20px;
+    top: auto;
+    bottom: -7px;
+    background-color: #fff;
+    border: 2px solid #007dc3;
+  }
 
-.custom-slider .ngx-slider .ngx-slider-pointer:after {
-  display: none;
-}
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    display: none;
+  }
 
-.custom-slider .ngx-slider .ngx-slider-bubble {
-  bottom: 14px;
-}
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
 
-.custom-slider .ngx-slider .ngx-slider-limit {
-  font-weight: bold;
-}
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+  }
 
-.custom-slider .ngx-slider .ngx-slider-tick {
-  width: 1px;
-  height: 15px;
-  margin-left: 4px;
-  border-radius: 0;
-  background: black;
-  top: -1px;
-}
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 1px;
+    height: 15px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: black;
+    top: -1px;
+  }
 }
 
 input::-webkit-outer-spin-button,

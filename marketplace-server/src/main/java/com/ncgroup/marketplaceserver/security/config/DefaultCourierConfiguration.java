@@ -14,7 +14,7 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 
 @Configuration
 public class DefaultCourierConfiguration extends UserConfiguration {
-	@Value("${default-courier.name}")
+    @Value("${default-courier.name}")
     private String name;
 
     @Value("${default-courier.surname}")
@@ -30,8 +30,8 @@ public class DefaultCourierConfiguration extends UserConfiguration {
     private String password;
 
     @Autowired
-    public DefaultCourierConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, 
-    		CourierRepository courierRepository) {
+    public DefaultCourierConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
+                                       CourierRepository courierRepository) {
         super(passwordEncoder, userRepository, courierRepository);
     }
 

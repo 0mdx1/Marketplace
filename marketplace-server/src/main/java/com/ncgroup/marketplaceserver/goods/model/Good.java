@@ -1,18 +1,12 @@
 package com.ncgroup.marketplaceserver.goods.model;
 
+import java.time.OffsetDateTime;
+
 import com.ncgroup.marketplaceserver.file.service.MediaService;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -22,7 +16,7 @@ public class Good {
     private long id;
     private String goodName;
     private String firmName;
-    private int quantity;
+    private double quantity;
     private double price;
 
     private Unit unit;
@@ -36,6 +30,7 @@ public class Good {
     private String categoryName;
     private String image;
     private boolean status;
+
 
     public Good(GoodDto goodDto, Long id, MediaService mediaService) {
         this.setStatus(true);

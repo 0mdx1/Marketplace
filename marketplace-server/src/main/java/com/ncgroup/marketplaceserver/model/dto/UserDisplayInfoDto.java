@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDisplayInfoDto {
-	
-	private long id;
-	private String name;
-	private String surname;
-	private String phone;
+
+    private long id;
+    private String name;
+    private String surname;
+    private String phone;
 
 }

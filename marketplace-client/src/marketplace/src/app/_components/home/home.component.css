@@ -2,7 +2,7 @@
   padding-top: 30px;
 }
 
-.home-image{
+.home-image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +12,7 @@
 .store-btn {
   background-color: #007dc3;
   border-radius: 25px;
-  color:#fff;
+  color: #fff;
   text-decoration: none;
   border: none;
   margin-top: 20px;
@@ -30,29 +30,29 @@
   display: inline-block;
 }
 
-.home-text h2{
+.home-text h2 {
   font-size: 3vw;
 }
 
-.home-text p{
+.home-text p {
   font-size: 1vw;
 }
 
 @media screen and (max-width: 1000px) {
   .store-btn {
     border-radius: 25px;
-    color:#fff;
+    color: #fff;
     border: none;
     margin-top: 10px;
     padding: 5px 15px;
     font-size: 10px;
   }
 
-  .home-text h2{
+  .home-text h2 {
     font-size: 3vw;
   }
 
-  .home-text p{
+  .home-text p {
     font-size: 3vw;
   }
 

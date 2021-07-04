@@ -29,191 +29,189 @@ import lombok.extern.slf4j.Slf4j;
 @PropertySource("classpath:database/queries.properties")
 public class UserRepositoryImpl implements UserRepository {
 
-	private final JdbcTemplate jdbcTemplate;
-	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
-	@Value("${user.find-all}")
-	private String findAllQuery;
-	
-	@Value("${user.find-by-email}")
-	private String findByEmailQuery;
-	
-	@Value("${user.find-by-id}")
-	private String findByIdQuery;
-	
-	@Value("${role.find}")
-	private String findRoleQuery;
-	
-	@Value("${user.insert-credentials}")
-	private String insertCredentialsQuery;
-	
-	@Value("${user.insert}")
-	private String insertUserQuery;
-	
-	@Value("${user.insert-without-credentials}")
-	private String insertUserWithoutCredentialsQuery;
-	
-	@Value("${user.update-last-failed-auth}")
-	private String updateLastFailedAuthQuery;
-	
-	@Value("${user.enable}")
-	private String enableUserQuery;
-	
-	@Value("${user.find-by-auth-link}")
-	private String findByAuthLinkQuery;
-	
-	@Value("${user.update-auth-link}")
-	private String updateAuthLinkQuery;
-	
-	@Value("${user.update-password}")
-	private String updatePasswordQuery;
-	
-	@Value("${user.delete-auth-link}")
-	private String deleteAuthLinkQuery;
-	
-	@Value("${user.delete-by-id}")
-	private String deleteByIdQuery;
-	
-	@Value("${user.delete-credentials-by-email}")
-	private String deleteCredByEmailQuery;
+    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	@Value("${couriers-managers.all}")
-	private String couriersManagersQuery;
+    @Value("${user.find-all}")
+    private String findAllQuery;
 
-	@Value("${user.update-by-email}")
-	private String updateRoleUser;
-	
-	
-	
-	@Autowired
-	public UserRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-	}
-	
-	/*Returns User if exists or else null*/
-	@Override
-	public User findByEmail(String email) {
-		Object[] params = {email};
-		List<User> users = jdbcTemplate.query(findByEmailQuery, new UserRowMapper(), params);
-		return users.isEmpty() ? null : users.get(0);
-	}
+    @Value("${user.find-by-email}")
+    private String findByEmailQuery;
 
-	@Override
-	@Transactional
-	public User save(User user) {
-		KeyHolder credentialsHolder = new GeneratedKeyHolder();
-		System.out.println("Role id" + getRoleId(user.getRole()));
-		SqlParameterSource credentialsParameters = new MapSqlParameterSource()
-				.addValue("role_id", getRoleId(user.getRole()))
-				.addValue("email", user.getEmail())
-				.addValue("password", user.getPassword())
-				.addValue("is_enabled", user.isEnabled())
-				.addValue("failed_auth", credentialsHolder)
-				.addValue("last_failed_auth", user.getLastFailedAuth())
-				.addValue("auth_link", user.getAuthLink());
-		namedParameterJdbcTemplate.update(insertCredentialsQuery, credentialsParameters, credentialsHolder);
-		
-		KeyHolder userHolder = new GeneratedKeyHolder();
-		SqlParameterSource userParameters = new MapSqlParameterSource()
-				.addValue("credentials_id", Objects.requireNonNull(credentialsHolder.getKey()).longValue())
-				.addValue("name", user.getName())
-				.addValue("surname", user.getSurname())
-				.addValue("phone", user.getPhone())
-				.addValue("birthday", user.getBirthday());
+    @Value("${user.find-by-id}")
+    private String findByIdQuery;
 
-		namedParameterJdbcTemplate.update(insertUserQuery, userParameters, userHolder);
-		user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
-		return user;
-	}
-	
-	@Override
-	public User saveWithoutCredentials(User user) {
-		KeyHolder userHolder = new GeneratedKeyHolder();
-		SqlParameterSource userParameters = new MapSqlParameterSource()
-				.addValue("name", user.getName())
-				.addValue("surname", user.getSurname())
-				.addValue("phone", user.getPhone());
-		namedParameterJdbcTemplate.update(insertUserWithoutCredentialsQuery, userParameters, userHolder);
-		user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
-		return user;
-	}
-	
-	@Override
-	public void updateAuthLink(String email, String link) {
-		Object[] params = {link, email};
-		jdbcTemplate.update(updateAuthLinkQuery, params);
-	}
-	
-	@Override
-	public void updatePassword(String email, String password) {
-		Object[] params = {password, email};
-		jdbcTemplate.update(updatePasswordQuery, params);
-	}
+    @Value("${role.find}")
+    private String findRoleQuery;
 
-	@Override
-	public void updateUserByEmail(UserDto user, String email) {
-		SqlParameterSource params = new MapSqlParameterSource()
-				.addValue("name", user.getName())
-				.addValue("surname", user.getSurname())
-				.addValue("phone", user.getPhone())
-				.addValue("birthday", user.getBirthday())
-				.addValue("email", email);
-		namedParameterJdbcTemplate.update(updateRoleUser, params);
-	}
+    @Value("${user.insert-credentials}")
+    private String insertCredentialsQuery;
 
-	@Override
-	public List<User> allCouriersManagers() {
-		return jdbcTemplate.query(couriersManagersQuery, new CourierManagerRowMapper());
-	}
+    @Value("${user.insert}")
+    private String insertUserQuery;
 
-	@Override
-	public List<User> findAll() {
-		return jdbcTemplate.query(findAllQuery, new UserRowMapper());
-	}
+    @Value("${user.insert-without-credentials}")
+    private String insertUserWithoutCredentialsQuery;
 
-	@Override
-	public User findById(long id) {
-		Object[] params = {id};
-		List<User> users = jdbcTemplate.query(findByIdQuery, new UserRowMapper(), params);
-		log.info("FIND USER BY ID");
-		return users.isEmpty() ? null : users.get(0);
-	}
-	
-	@Override
-	public User findByAuthLink(String link) {
-		Object[] params = {link};
-		List<User> users = jdbcTemplate.query(findByAuthLinkQuery, new UserRowMapper(), params);
-		log.info("FIND USER BY LINK");
-		return users.isEmpty() ? null : users.get(0);
-	}
-	
-	@Override
-	public void updateLastFailedAuth(String email, int lastFailedAuth) {
-		Object[] params = {lastFailedAuth, email};
-		jdbcTemplate.update(updateLastFailedAuthQuery, params);
-	}
+    @Value("${user.update-last-failed-auth}")
+    private String updateLastFailedAuthQuery;
 
-	@Override
-	public void deleteById(long id) {
-		User user = findById(id);
-		if(user != null) {
-			jdbcTemplate.update(deleteCredByEmailQuery, user.getEmail());
-			jdbcTemplate.update(deleteByIdQuery, id);
-		}
-		
-	}
-	
-	private Integer getRoleId(Role role) {
-		return jdbcTemplate.queryForObject(findRoleQuery, Integer.class, role.name());
-	}
+    @Value("${user.enable}")
+    private String enableUserQuery;
 
-	@Override
-	public void enableUser(String link) {
-		jdbcTemplate.update(enableUserQuery, link);
-		jdbcTemplate.update(deleteAuthLinkQuery, link);
-	}
+    @Value("${user.find-by-auth-link}")
+    private String findByAuthLinkQuery;
 
-	
+    @Value("${user.update-auth-link}")
+    private String updateAuthLinkQuery;
+
+    @Value("${user.update-password}")
+    private String updatePasswordQuery;
+
+    @Value("${user.delete-auth-link}")
+    private String deleteAuthLinkQuery;
+
+    @Value("${user.delete-by-id}")
+    private String deleteByIdQuery;
+
+    @Value("${user.delete-credentials-by-email}")
+    private String deleteCredByEmailQuery;
+
+    @Value("${couriers-managers.all}")
+    private String couriersManagersQuery;
+
+    @Value("${user.update-by-email}")
+    private String updateRoleUser;
+
+
+    @Autowired
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    /*Returns User if exists or else null*/
+    @Override
+    public User findByEmail(String email) {
+        Object[] params = {email};
+        List<User> users = jdbcTemplate.query(findByEmailQuery, new UserRowMapper(), params);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
+    @Transactional
+    public User save(User user) {
+        KeyHolder credentialsHolder = new GeneratedKeyHolder();
+        System.out.println("Role id" + getRoleId(user.getRole()));
+        SqlParameterSource credentialsParameters = new MapSqlParameterSource()
+                .addValue("role_id", getRoleId(user.getRole()))
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("is_enabled", user.isEnabled())
+                .addValue("failed_auth", credentialsHolder)
+                .addValue("last_failed_auth", user.getLastFailedAuth())
+                .addValue("auth_link", user.getAuthLink());
+        namedParameterJdbcTemplate.update(insertCredentialsQuery, credentialsParameters, credentialsHolder);
+
+        KeyHolder userHolder = new GeneratedKeyHolder();
+        SqlParameterSource userParameters = new MapSqlParameterSource()
+                .addValue("credentials_id", Objects.requireNonNull(credentialsHolder.getKey()).longValue())
+                .addValue("name", user.getName())
+                .addValue("surname", user.getSurname())
+                .addValue("phone", user.getPhone())
+                .addValue("birthday", user.getBirthday());
+
+        namedParameterJdbcTemplate.update(insertUserQuery, userParameters, userHolder);
+        user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
+        return user;
+    }
+
+    @Override
+    public User saveWithoutCredentials(User user) {
+        KeyHolder userHolder = new GeneratedKeyHolder();
+        SqlParameterSource userParameters = new MapSqlParameterSource()
+                .addValue("name", user.getName())
+                .addValue("surname", user.getSurname())
+                .addValue("phone", user.getPhone());
+        namedParameterJdbcTemplate.update(insertUserWithoutCredentialsQuery, userParameters, userHolder);
+        user.setId(Objects.requireNonNull(userHolder.getKey()).longValue());
+        return user;
+    }
+
+    @Override
+    public void updateAuthLink(String email, String link) {
+        Object[] params = {link, email};
+        jdbcTemplate.update(updateAuthLinkQuery, params);
+    }
+
+    @Override
+    public void updatePassword(String email, String password) {
+        Object[] params = {password, email};
+        jdbcTemplate.update(updatePasswordQuery, params);
+    }
+
+    @Override
+    public void updateUserByEmail(UserDto user, String email) {
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("name", user.getName())
+                .addValue("surname", user.getSurname())
+                .addValue("phone", user.getPhone())
+                .addValue("birthday", user.getBirthday())
+                .addValue("email", email);
+        namedParameterJdbcTemplate.update(updateRoleUser, params);
+    }
+
+    @Override
+    public List<User> allCouriersManagers() {
+        return jdbcTemplate.query(couriersManagersQuery, new CourierManagerRowMapper());
+    }
+
+    @Override
+    public List<User> findAll() {
+        return jdbcTemplate.query(findAllQuery, new UserRowMapper());
+    }
+
+    @Override
+    public User findById(long id) {
+        Object[] params = {id};
+        List<User> users = jdbcTemplate.query(findByIdQuery, new UserRowMapper(), params);
+        log.info("FIND USER BY ID");
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
+    public User findByAuthLink(String link) {
+        Object[] params = {link};
+        List<User> users = jdbcTemplate.query(findByAuthLinkQuery, new UserRowMapper(), params);
+        log.info("FIND USER BY LINK");
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    @Override
+    public void updateLastFailedAuth(String email, int lastFailedAuth) {
+        Object[] params = {lastFailedAuth, email};
+        jdbcTemplate.update(updateLastFailedAuthQuery, params);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        User user = findById(id);
+        if (user != null) {
+            jdbcTemplate.update(deleteCredByEmailQuery, user.getEmail());
+            jdbcTemplate.update(deleteByIdQuery, id);
+        }
+
+    }
+
+    private Integer getRoleId(Role role) {
+        return jdbcTemplate.queryForObject(findRoleQuery, Integer.class, role.name());
+    }
+
+    @Override
+    public void enableUser(String link) {
+        jdbcTemplate.update(enableUserQuery, link);
+        jdbcTemplate.update(deleteAuthLinkQuery, link);
+    }
+
 
 }

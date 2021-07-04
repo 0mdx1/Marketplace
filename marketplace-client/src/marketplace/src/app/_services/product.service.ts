@@ -1,12 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { empty, Observable, of, pipe, Subject } from 'rxjs';
-import { Filter } from '../_models/products/filter';
-import { Product } from '../_models/products/product';
-import { ProductDto } from '../_models/products/productDto';
-import { catchError, switchMap } from 'rxjs/operators';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from '../../environments/environment';
+import {Observable, of, Subject} from 'rxjs';
+import {Filter} from '../_models/products/filter';
+import {Product} from '../_models/products/product';
+import {ProductDto} from '../_models/products/productDto';
+import {catchError} from 'rxjs/operators';
 
 const baseUrl = `${environment.apiUrl}`;
 const MAX_PRICE = 400;
@@ -23,7 +23,8 @@ export class ProductService {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   private getProducts(
     filter: Filter,
@@ -33,6 +34,7 @@ export class ProductService {
     this.pageTotalSource.next();
     this.addQueryParams(filter, search, page);
     //get method to backend api
+
     return this.http
       .get<ProductDto>(`${baseUrl}/products`, {
         params: this.buildQueryParams(filter, search, page),

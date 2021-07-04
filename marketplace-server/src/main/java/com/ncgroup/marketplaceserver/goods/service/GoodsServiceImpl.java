@@ -5,6 +5,7 @@ import com.ncgroup.marketplaceserver.file.service.MediaService;
 import com.ncgroup.marketplaceserver.goods.exceptions.GoodAlreadyExistsException;
 import com.ncgroup.marketplaceserver.goods.model.Good;
 import com.ncgroup.marketplaceserver.goods.model.GoodDto;
+import com.ncgroup.marketplaceserver.goods.model.ModelView;
 import com.ncgroup.marketplaceserver.goods.model.RequestParams;
 import com.ncgroup.marketplaceserver.goods.repository.GoodsRepository;
 
@@ -39,8 +40,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Good create(GoodDto goodDto) throws GoodAlreadyExistsException {
         String newImage = goodDto.getImage();
 
-        if (newImage!=null&&!newImage.isEmpty()){
-
+        if (newImage != null && !newImage.isEmpty()) {
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
         return new Good(goodDto, repository.getGoodId(goodDto), mediaService);
@@ -48,12 +48,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good edit(GoodDto goodDto, long id) throws NotFoundException {
-        Good good = this.findById(id); // pull the good object if exists
+        Good good = this.findById(id);
 
         String newImage = goodDto.getImage();
 
-        if (newImage!=null&&!newImage.isEmpty()) {
-
+        if (newImage != null && !newImage.isEmpty()) {
             String oldImage = good.getImage();
             if (!oldImage.isEmpty() && !oldImage.equals(newImage)) {
                 goodDto.setImage(this.mediaService.confirmUpload(newImage));
@@ -61,7 +60,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
 
-        repository.editGood(goodDto, id); // push the changed good object
+        repository.editGood(goodDto, id);
         good.setProperties(goodDto, id, mediaService);
         return good;
     }
@@ -69,111 +68,104 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Good find(long id) throws NotFoundException {
         Good good = findById(id);
-        // fixme ???
-        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
+        good.setImage(good.getImage(), mediaService);
         return good;
     }
 
     private Good findById(long id) throws NotFoundException {
         Optional<Good> goodOptional = repository.findById(id);
         return goodOptional.orElseThrow(() ->
-                        new NotFoundException("Product with " + id + " not found."));
+                new NotFoundException("Product with " + id + " not found."));
     }
 
     @Override
-    public Map<String, Object> display
-            (RequestParams params) throws NotFoundException {
+    public ModelView display(RequestParams params) throws NotFoundException {
 
-        int counter = 0;
-        List<String> concatenator = new ArrayList<>();
+        List<String> conditions = new ArrayList<>();
 
+        StringJoiner fromQuery = new StringJoiner(" ");
+        fromQuery.add(
+                "FROM goods INNER JOIN product ON goods.prod_id = product.id " +
+                        "INNER JOIN firm ON goods.firm_id = firm.id " +
+                        "INNER JOIN category ON category.id = product.category_id");
 
-        StringBuilder fromQuery = new StringBuilder("FROM goods INNER JOIN " +
-                "product ON goods.prod_id = product.id " +
-                "INNER JOIN firm ON goods.firm_id = firm.id " +
-                "INNER JOIN category ON category.id = product.category_id");
+        log.info(fromQuery.toString());
 
         if (params.getName() != null) {
-            concatenator.add
-                    (" UPPER(product.name) LIKE UPPER(:name)");
-            counter++;
+            conditions.add("UPPER(product.name) LIKE UPPER(:name)");
         }
 
         if (params.getCategory() != null && !params.getCategory().equals("all")) {
-            concatenator.add(" category.name = ':category'");
-            counter++;
+            conditions.add("category.name = :category");
         }
 
         if (params.getMinPrice() != null) {
-            concatenator.add(" price - price*discount/100 >= :minPrice");
-            counter++;
+            conditions.add("price - price*discount/100 >= :minPrice");
         }
 
         if (params.getMaxPrice() != null) {
-            concatenator.add(" price - price*discount/100 <= :maxPrice");
-            counter++;
+            conditions.add("price - price*discount/100 <= :maxPrice");
         }
 
-        if (counter > 0) {
-            fromQuery.append(" WHERE").append(concatenator.get(0));
-            for (int i = 1; i < counter; i++) {
-                fromQuery.append(" AND").append(concatenator.get(i));
+        StringJoiner whereStatement = new StringJoiner(" AND ");
+
+        if (!conditions.isEmpty()) {
+            fromQuery.add("WHERE");
+            for (String condition : conditions) {
+                whereStatement.add(condition);
             }
         }
 
-        fromQuery.append(" AND status = true");
+        log.info(whereStatement.toString());
+        fromQuery.merge(whereStatement);
+        fromQuery.add("AND status = true");
 
         int numOfGoods = repository
                 .countGoods("SELECT COUNT(*) " + fromQuery, params);
 
         if (params.getSort() != null) {
             switch (params.getSort()) {
-                case "price":
-                    fromQuery.append(" ORDER BY goods.price");
+                case PRICE:
+                    fromQuery.add("ORDER BY goods.price");
                     break;
-                case "date":
-                    fromQuery.append(" ORDER BY shipping_date");
+                case DATE:
+                    fromQuery.add("ORDER BY shipping_date");
                     break;
-                case "name":
-                    fromQuery.append(" ORDER BY product.name");
+                default:
+                    fromQuery.add("ORDER BY product.name");
             }
         } else {
-            fromQuery.append(" ORDER BY product.name");
+            fromQuery.add("ORDER BY product.name");
         }
-
 
         if (params.getDirection() != null && params.getDirection().equals("ASC")) {
-            fromQuery.append(" ASC");
+            fromQuery.add("ASC");
         } else {
-            fromQuery.append(" DESC");
+            fromQuery.add("DESC");
         }
 
-        StringBuilder flexibleQuery = new StringBuilder
-                ("SELECT goods.id, product.name AS product_name, status, shipping_date, " +
+        StringJoiner flexibleQuery = new StringJoiner(" ");
+        flexibleQuery.add(
+                "SELECT goods.id, product.name AS product_name, status, shipping_date, " +
                         "firm.name AS firm_name, category.name AS category_name, unit, " +
-                        " goods.quantity, goods.price, goods.discount, goods.in_stock," +
-                        " goods.description, goods.image ");
-
-
-        flexibleQuery.append(fromQuery);
-
+                        "goods.quantity, goods.price, goods.discount, goods.in_stock, " +
+                        "goods.description, goods.image");
+        flexibleQuery.merge(fromQuery);
 
         int numOfPages = numOfGoods % PAGE_CAPACITY == 0 ?
                 numOfGoods / PAGE_CAPACITY : (numOfGoods / PAGE_CAPACITY) + 1;
 
         if (params.getPage() != null) {
-            flexibleQuery.append(" LIMIT ").append(":PAGE_CAPACITY").append(" OFFSET ")
-                    .append("(:page - 1) * :PAGE_CAPACITY");
+            flexibleQuery.add("LIMIT :PAGE_CAPACITY OFFSET (:page - 1) * :PAGE_CAPACITY");
         } else {
-            flexibleQuery.append(" LIMIT ").append(PAGE_CAPACITY);
+            flexibleQuery.add("LIMIT :PAGE_CAPACITY");
             params.setPage(1);
         }
 
         List<Good> res = repository.display(flexibleQuery.toString(), params);
 
         if (res.isEmpty()) {
-            throw new NotFoundException
-                    ("Sorry, but there are no products corresponding to your criteria.");
+            throw new NotFoundException("Sorry, but there are no products corresponding to your criteria.");
         }
 
         for (Good good : res) {
@@ -181,12 +173,8 @@ public class GoodsServiceImpl implements GoodsService {
             good.setImage(good.getImage(), mediaService);
         }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("current", params.getPage());
-        response.put("total", numOfPages);
-        response.put("result_set", res);
+        return new ModelView(params.getPage(), numOfPages, res);
 
-        return response;
     }
 
     @Override
@@ -213,7 +201,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void updateQuantity(long id, int quantity) {
-        repository.editQuantity(id, quantity);
+    public void updateQuantity(long id, double quantity) {
+        // check
+        repository.editQuantity(id, quantity, Double.compare(quantity, 0) != 0);
     }
 }

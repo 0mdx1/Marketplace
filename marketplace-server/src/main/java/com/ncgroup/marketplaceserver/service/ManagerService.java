@@ -4,7 +4,6 @@ import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 public interface ManagerService {

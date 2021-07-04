@@ -5,7 +5,8 @@
       <div class="form-row">
         <div class="form-group col-6">
           <label>First Name*</label>
-          <input type="text" placeholder="Name" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
+          <input type="text" placeholder="Name" formControlName="name" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }"/>
           <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
             <div *ngIf="getForm.name.errors.required">First Name is required</div>
             <div *ngIf="getForm.name.errors.maxlength">First Name length exceeds 50 character limit</div>
@@ -13,7 +14,8 @@
         </div>
         <div class="form-group col-6">
           <label>Last Name*</label>
-          <input type="text" placeholder="Surname" formControlName="surname" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
+          <input type="text" placeholder="Surname" formControlName="surname" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }"/>
           <div *ngIf="submitted && getForm.surname.errors" class="invalid-feedback">
             <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
             <div *ngIf="getForm.surname.errors.maxlength">Last Name length exceeds 50 character limit</div>
@@ -23,7 +25,8 @@
       <div class="form-row">
         <div class="form-group col-12">
           <label>Email*</label>
-          <input type="text" formControlName="email" placeholder="example@example.com" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
+          <input type="text" formControlName="email" placeholder="example@example.com" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }"/>
           <div *ngIf="submitted && getForm.email.errors" class="invalid-feedback">
             <div *ngIf="getForm.email.errors.required">Email is required</div>
             <div *ngIf="getForm.email.errors.email">Email must be a valid email address</div>
@@ -34,14 +37,16 @@
         </div>
         <div class="form-group col-6">
           <label>Phone</label>
-          <input type="text" formControlName="phone" placeholder="+380XXXXXXXXX" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
+          <input type="text" formControlName="phone" placeholder="+380XXXXXXXXX" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }"/>
           <div *ngIf="submitted && getForm.phone.errors" class="invalid-feedback">
             <div *ngIf="getForm.phone.errors">Phone must be in format +380</div>
           </div>
         </div>
         <div class="form-group col-6">
           <label>Date of birth*</label>
-          <input type="date" formControlName="birthday" class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }">
+          <input type="date" formControlName="birthday" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }">
           <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
             <div *ngIf="getForm.birthday.hasError('InvalidDate')">Must be at least 18 y.o.</div>
           </div>
@@ -55,7 +60,7 @@
           <label>Password*</label>
           <div class="input-group">
             <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }" />
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.password.errors }"/>
             <div class="input-group-append">
                 <span class="input-group-text">
                   <i
@@ -83,7 +88,7 @@
           <label>Confirm Password*</label>
           <div class="input-group">
             <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.confirmPassword.errors }" />
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && getForm.confirmPassword.errors }"/>
             <div class="input-group-append">
                 <span class="input-group-text">
                   <i
@@ -104,7 +109,8 @@
         </div>
       </div>
       <div class="form-group form-check">
-        <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input" [ngClass]="{ 'is-invalid': submitted && getForm.acceptTerms.errors }" />
+        <input type="checkbox" formControlName="acceptTerms" id="acceptTerms" class="form-check-input"
+               [ngClass]="{ 'is-invalid': submitted && getForm.acceptTerms.errors }"/>
         <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
         <div *ngIf="submitted && getForm.acceptTerms.errors" class="invalid-feedback">Accept Ts & Cs is required</div>
       </div>

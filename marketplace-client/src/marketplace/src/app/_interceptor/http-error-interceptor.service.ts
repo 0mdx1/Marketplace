@@ -9,30 +9,31 @@ import {AlertService} from "../_services/alert.service";
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  constructor(private alertService: AlertService) {}
+  constructor(private alertService: AlertService) {
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return next.handle(req).pipe(
       catchError((error: any) => {
         let apiError = error.error as ApiError;
-        if(apiError){
-          if(this.canBeAlerted(apiError.type)){
-            this.alertService.addAlert(apiError.message,AlertType.Danger);
+        if (apiError) {
+          if (this.canBeAlerted(apiError.type)) {
+            this.alertService.addAlert(apiError.message, AlertType.Danger);
           }
           return throwError(apiError);
         }
-        if(error.error.hasOwnProperty("message")){
-          this.alertService.addAlert(error.error.message,AlertType.Danger);
-          return throwError(new ApiError("general-0","",error.error.message));
+        if (error.error.hasOwnProperty("message")) {
+          this.alertService.addAlert(error.error.message, AlertType.Danger);
+          return throwError(new ApiError("general-0", "", error.error.message));
         }
-        this.alertService.addAlert("Unexpected error",AlertType.Danger);
-        return throwError(new ApiError("general-0","","Unexpected error"));
+        this.alertService.addAlert("Unexpected error", AlertType.Danger);
+        return throwError(new ApiError("general-0", "", "Unexpected error"));
       })
     )
   }
 
-  canBeAlerted(type: string){
-    return (type.match(/^general-\S+/gm)||[]).length>0
+  canBeAlerted(type: string) {
+    return (type.match(/^general-\S+/gm) || []).length > 0
   }
 }

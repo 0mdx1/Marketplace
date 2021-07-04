@@ -15,7 +15,7 @@ import static org.apache.http.entity.ContentType.*;
 import static org.springframework.util.StringUtils.getFilename;
 
 @Service
-public class MediaServiceImpl implements MediaService{
+public class MediaServiceImpl implements MediaService {
 
     private CloudStorage cloudStorage;
     private static final List<ContentType> allowedTypes = Arrays.asList(IMAGE_PNG, IMAGE_GIF, IMAGE_JPEG);
@@ -35,18 +35,18 @@ public class MediaServiceImpl implements MediaService{
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
         }
-        if(file.getContentType()==null){
+        if (file.getContentType() == null) {
             throw new IllegalStateException("Cannot upload file with no Content-Type");
         }
         if (!allowedTypesAsString.contains(file.getContentType())) {
-            throw new UnsupportedContentTypeException("File uploaded is not an image",allowedTypes,create(file.getContentType()));
+            throw new UnsupportedContentTypeException("File uploaded is not an image", allowedTypes, create(file.getContentType()));
         }
-        String filepath = String.format("tmp/%s_%s",UUID.randomUUID(),file.getOriginalFilename());
+        String filepath = String.format("tmp/%s_%s", UUID.randomUUID(), file.getOriginalFilename());
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
         metadata.put("Content-Length", String.valueOf(file.getSize()));
         try {
-            cloudStorage.upload(filepath, file.getInputStream(),metadata);
+            cloudStorage.upload(filepath, file.getInputStream(), metadata);
         } catch (IOException e) {
             throw new IllegalStateException("Failed to get input stream", e);
         }
@@ -54,17 +54,16 @@ public class MediaServiceImpl implements MediaService{
     }
 
     @Override
-
     public void delete(String filepath) {
         this.cloudStorage.delete(filepath);
     }
 
     @Override
     public String confirmUpload(String filepath) {
-        if(!getPath(filepath).equals("media")){
+        if (!getPath(filepath).equals("media")) {
             String filename = getFilename(filepath);
-            String newFilepath = String.format("media/%s",filename);
-            this.cloudStorage.copy(filepath,newFilepath);
+            String newFilepath = String.format("media/%s", filename);
+            this.cloudStorage.copy(filepath, newFilepath);
             this.cloudStorage.delete(filepath);
             return newFilepath;
         }

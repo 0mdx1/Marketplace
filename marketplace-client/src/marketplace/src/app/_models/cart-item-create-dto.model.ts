@@ -12,6 +12,6 @@ export class CartItemCreateDto {
   }
 
   public static mapToDto(item: CartItem): CartItemCreateDto {
-    return new CartItemCreateDto(item.goods.id,item.addingTime,item.quantity);
+    return new CartItemCreateDto(item.goods.id, item.addingTime, item.quantity);
   }
 }

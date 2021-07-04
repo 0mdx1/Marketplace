@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   AbstractControl,
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -21,7 +20,6 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./update-info.component.css'],
 })
 export class UpdateInfoComponent implements OnInit {
-  //form: FormGroup;
   form = new FormGroup({
     name: new FormControl(''),
   });
@@ -68,7 +66,7 @@ export class UpdateInfoComponent implements OnInit {
       {
         name: [this.response.name, Validators.required],
         surname: [this.response.surname, Validators.required],
-        phone: [this.response.phone, Validators.pattern(/\+380[0-9]{9}/)],
+        phone: [this.response.phone, Validators.pattern(/^\+380[0-9]{9}$/)],
         birthday: [this.response.dateOfBirth, Validators.required],
         status: [this.response.status, Validators.required],
       },

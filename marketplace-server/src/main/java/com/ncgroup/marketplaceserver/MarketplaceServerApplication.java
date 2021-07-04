@@ -1,6 +1,5 @@
 package com.ncgroup.marketplaceserver;
 
-import java.time.ZoneId;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
@@ -14,10 +13,10 @@ public class MarketplaceServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(MarketplaceServerApplication.class, args);
     }
-    
+
     @PostConstruct
-    public void init(){
-        TimeZone.setDefault(TimeZone.getTimeZone("EET")); 
+    public void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("EET"));
     }
 
 }

@@ -16,9 +16,9 @@ public class ShoppingCartItemReadDto {
     private int quantity;
     private long addingTime;
 
-    public ShoppingCartItemReadDto(ShoppingCartItem item){
-        this.goods=item.getGoods();
-        this.quantity=item.getQuantity();
-        this.addingTime=item.getAddingTime();
+    public ShoppingCartItemReadDto(ShoppingCartItem item) {
+        this.goods = item.getGoods();
+        this.quantity = item.getQuantity();
+        this.addingTime = item.getAddingTime();
     }
 }

@@ -1,4 +1,3 @@
-
 <h2 class="card-title">Order details</h2>
 <p class="card-text text-left">Courier: {{courier.name}}  {{courier.surname}}</p>
 <p class="card-text text-left">Courier phone: {{courier.phone}}</p>
@@ -10,22 +9,22 @@
         <div class="table-responsive  mt-3">
           <table class="table table-bordered">
             <thead style="background-color: #70ADFE;">
-              <tr>
+            <tr>
 
-                <th class="max-width">Product Name</th>
-                <th class="max-width">Firm</th>
-                <th class="max-width">Category</th>
-                <th class="max-width">Quantity</th>
+              <th class="max-width">Product Name</th>
+              <th class="max-width">Firm</th>
+              <th class="max-width">Category</th>
+              <th class="max-width">Quantity</th>
 
-              </tr>
+            </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let good of order.goods">
-                <td class="text-nowrap align-middle">{{good.name}}</td>
-                <td class="text-nowrap align-middle">{{good.firm}}</td>
-                <td class="text-nowrap align-middle">{{good.category}}</td>
-                <td class="text-nowrap align-middle">{{good.quantity}} {{good.unit | unit: good.quantity}}</td>
-              </tr>
+            <tr *ngFor="let good of order.goods">
+              <td class="text-nowrap align-middle">{{good.name}}</td>
+              <td class="text-nowrap align-middle">{{good.firm}}</td>
+              <td class="text-nowrap align-middle">{{good.category}}</td>
+              <td class="text-nowrap align-middle">{{good.quantity}} {{good.unit | unit: good.quantity}}</td>
+            </tr>
             </tbody>
           </table>
         </div>

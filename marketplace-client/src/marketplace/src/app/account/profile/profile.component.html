@@ -54,9 +54,12 @@
               <h4 class="info-text">{{user.email}}</h4>
             </div>
             <div class="row justify-content-between d-flex flex-sm-row pl-3">
-              <button [disabled]="loading" *ngIf="!changedPassword" (click)="changePassword()" class="btn btn-primary ml-0 password-btn">Change password
+              <button [disabled]="loading" *ngIf="!changedPassword" (click)="changePassword()"
+                      class="btn btn-primary ml-0 password-btn">Change password
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span></button>
-              <button *ngIf="changedPassword" class="btn btn-primary ml-0 changed-btn" disabled>Check your e-mail to confirm reset</button>
+              <button *ngIf="changedPassword" class="btn btn-primary ml-0 changed-btn" disabled>Check your e-mail to
+                confirm reset
+              </button>
               <button class="btn btn-default logout-btn ml-0" (click)="logout()">Logout</button>
             </div>
           </div>

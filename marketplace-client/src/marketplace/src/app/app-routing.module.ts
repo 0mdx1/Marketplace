@@ -2,14 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './_components/home/home.component';
-import { AuthGuardService } from './_auth/auth.guard.service';
 import { Role } from './_models/role';
 import { RoleGuardService } from './_auth/auth.guard.role.service';
 import { CartComponent } from './_components/cart/cart.component';
-import { ImageUploadingComponent } from './file-uploading/_components/image-uploading/image-uploading.component';
-import { ProductComparisonComponent } from './product-catalog/product-comparison/product-comparison.component';
 import { CheckoutComponent } from './_components/checkout/checkout.component';
-import { OrderHistoryModule } from './order-history/order-history.module';
 
 const accountModule = () =>
   import('./account/account.module').then((x) => x.AccountModule);
@@ -77,6 +73,7 @@ const routes: Routes = [
     redirectTo: 'home',
   },
 ];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

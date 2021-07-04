@@ -14,7 +14,7 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 
 @Configuration
 public class DefaultManagerConfiguration extends UserConfiguration {
-	@Value("${default-manager.name}")
+    @Value("${default-manager.name}")
     private String name;
 
     @Value("${default-manager.surname}")
@@ -30,8 +30,8 @@ public class DefaultManagerConfiguration extends UserConfiguration {
     private String password;
 
     @Autowired
-    public DefaultManagerConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, 
-    		CourierRepository courierRepository) {
+    public DefaultManagerConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
+                                       CourierRepository courierRepository) {
         super(passwordEncoder, userRepository, courierRepository);
     }
 

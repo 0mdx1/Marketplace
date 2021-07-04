@@ -1,4 +1,4 @@
-import { StaffMember } from './staff-member';
+import {StaffMember} from './staff-member';
 
 export class UserDto {
   users: StaffMember[] = [];

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @ApiErrorMetadata(type = ExceptionType.PASSWORD_INVALID, status = HttpStatus.BAD_REQUEST)
 public class PasswordNotValidException extends NotValidException {
-	public PasswordNotValidException(String message) {
+    public PasswordNotValidException(String message) {
         super(message);
     }
 }

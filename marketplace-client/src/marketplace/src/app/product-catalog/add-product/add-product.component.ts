@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductService } from '../../_services/product.service';
-import { first } from 'rxjs/operators';
-import { Product } from '../../_models/products/product';
-import { AccountService } from '../../_services/account.service';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { AlertService } from '../../_services/alert.service';
-import { AlertType } from '../../_models/alert';
+import {ProductService} from '../../_services/product.service';
+import {first} from 'rxjs/operators';
+import {Product} from '../../_models/products/product';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {AlertService} from '../../_services/alert.service';
+import {AlertType} from '../../_models/alert';
 import {
   validateQuantity,
   validateShippingDate,
@@ -46,7 +45,6 @@ export class AddProductComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
     private productService: ProductService,
     private router: Router,
     private alertService: AlertService
@@ -74,6 +72,7 @@ export class AddProductComponent implements OnInit {
     this.firm();
     this.category();
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

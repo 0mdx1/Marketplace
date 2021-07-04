@@ -12,6 +12,7 @@ export class OrderModel {
   totalSum: number;
   discountSum: number;
   items: OrderItemModel[];
+
   constructor(items: OrderItemModel[],
               totalSum: number,
               discountSum: number,

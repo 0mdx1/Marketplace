@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { User } from 'src/app/_models/user';
-import { AccountService } from 'src/app/_services/account.service';
-import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
-import { AlertType } from '../../_models/alert';
-import { AlertService } from '../../_services/alert.service';
-import { ApiError } from '../../_models/ApiError';
-import { validateBirthday } from 'src/app/_helpers/validators.service';
-import { AuthService } from 'src/app/_auth/auth.service';
+import {User} from 'src/app/_models/user';
+import {AccountService} from 'src/app/_services/account.service';
+import {Router} from '@angular/router';
+import {first} from 'rxjs/operators';
+import {AlertType} from '../../_models/alert';
+import {AlertService} from '../../_services/alert.service';
+import {ApiError} from '../../_models/ApiError';
+import {validateBirthday} from 'src/app/_helpers/validators.service';
+import {AuthService} from 'src/app/_auth/auth.service';
 
 @Component({
   templateUrl: './update.account.html',
@@ -40,7 +40,10 @@ export class UpdateAccount implements OnInit {
       {
         name: ['', [Validators.required, Validators.maxLength(50)]],
         surname: ['', [Validators.required, Validators.maxLength(50)]],
-        phone: ['', [Validators.pattern(/\+380[0-9]{9}/), Validators.required]],
+        phone: [
+          '',
+          [Validators.pattern(/^\+380[0-9]{9}$/), Validators.required],
+        ],
         birthday: ['', Validators.required],
       },
       {
@@ -74,7 +77,7 @@ export class UpdateAccount implements OnInit {
       surname: this.updateForm.value.surname,
       phone: this.updateForm.value.phone,
       birthday: this.updateForm.value.birthday,
-      email: this.authService.getMail()
+      email: this.authService.getMail(),
     };
 
     this.accountService.updateUser(body).subscribe({

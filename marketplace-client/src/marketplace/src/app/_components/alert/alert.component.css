@@ -1,12 +1,13 @@
-.alert-container{
+.alert-container {
   padding: 15px;
-  position:fixed;
+  position: fixed;
   top: 90px;
   right: 0px;
   width: 30%;
-  z-index:9999;
-  border-radius:0px
+  z-index: 9999;
+  border-radius: 0px
 }
-.alert  {
+
+.alert {
   box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.5);
 }

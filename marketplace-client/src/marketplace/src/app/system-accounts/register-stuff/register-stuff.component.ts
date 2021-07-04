@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -62,7 +62,7 @@ export class RegisterStuffComponent {
         name: ['', Validators.required],
         surname: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        phone: ['', Validators.pattern(/\+380[0-9]{9}/)],
+        phone: ['', Validators.pattern(/^\+380[0-9]{9}$/)],
         birthday: ['', Validators.required],
         role: ['', Validators.required],
         status: ['', Validators.required],
