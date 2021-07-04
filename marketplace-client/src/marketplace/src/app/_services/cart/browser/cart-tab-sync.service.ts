@@ -6,18 +6,18 @@ import {CartItem} from "../../../_models/cart-item.model";
 @Injectable({
   providedIn: 'root'
 })
-export class CartTabSyncService implements OnDestroy{
+export class CartTabSyncService implements OnDestroy {
 
-  constructor(@Inject(PageCart)private cart: Cart) {
+  constructor(@Inject(PageCart) private cart: Cart) {
     this.cart.setItems(this.loadCartItems());
-    window.addEventListener('storage',this.storageUpdateListener.bind(this));
+    window.addEventListener('storage', this.storageUpdateListener.bind(this));
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('storage',this.storageUpdateListener.bind(this));
+    window.removeEventListener('storage', this.storageUpdateListener.bind(this));
   }
 
-  private storageUpdateListener(): void{
+  private storageUpdateListener(): void {
     this.cart.setItems(this.loadCartItems());
   }
 

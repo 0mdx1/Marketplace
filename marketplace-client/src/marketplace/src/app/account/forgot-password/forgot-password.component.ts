@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import {first} from 'rxjs/operators';
 
-import { AccountService } from '../../_services/account.service';
-import { AlertType } from '../../_models/alert';
-import { AlertService } from '../../_services/alert.service';
+import {AccountService} from '../../_services/account.service';
+import {AlertType} from '../../_models/alert';
+import {AlertService} from '../../_services/alert.service';
 
 @Component({
   templateUrl: 'forgot-password.component.html',
@@ -62,7 +62,7 @@ export class ForgotPasswordComponent {
             this.alertService.addAlert(error.message, AlertType.Danger);
           }
           if (error.status && error.status === 401) {
-            this.getForm.email.setErrors({ EmailDoesNotExist: true });
+            this.getForm.email.setErrors({EmailDoesNotExist: true});
           }
           this.loading = false;
           this.form.enable();

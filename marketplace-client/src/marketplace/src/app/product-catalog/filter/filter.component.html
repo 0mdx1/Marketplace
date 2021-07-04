@@ -1,6 +1,7 @@
 <div class="dropdown">
   <h2>Category:</h2>
-  <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
     {{filters.category}}
   </button>
   <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu">
@@ -15,14 +16,14 @@
 <div class="price-filter">
   <h2>Price:</h2>
   <div class="row price-input">
-  <input class="col-4" type="number" [(ngModel)]="minPrice">
-  <p class="dash text-center col-1">-</p>
-  <input class="col-4" type="number" [(ngModel)]="maxPrice">
+    <input class="col-4" type="number" [(ngModel)]="minPrice">
+    <p class="dash text-center col-1">-</p>
+    <input class="col-4" type="number" [(ngModel)]="maxPrice">
     <div class="btn-div col-3">
-    <button class="submit-btn" (click)="setPrice()">OK</button>
+      <button class="submit-btn" (click)="setPrice()">OK</button>
     </div>
   </div>
-  <div class="custom-slider" >
+  <div class="custom-slider">
     <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options"></ngx-slider>
   </div>
 </div>

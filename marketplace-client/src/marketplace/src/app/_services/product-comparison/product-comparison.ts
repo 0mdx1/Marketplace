@@ -1,4 +1,4 @@
-import { Product } from '../../_models/products/product';
+import {Product} from '../../_models/products/product';
 
 export interface ProductComparisonService {
   addProduct(product: Product): void;

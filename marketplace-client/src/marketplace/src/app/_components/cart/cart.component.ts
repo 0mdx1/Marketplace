@@ -1,11 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CartService} from "../../_services/cart/cart.service";
-import {CartItem} from "../../_models/cart-item.model";
-import {CartValidatorService} from "../../_services/cart/cart-validator.service";
-import {catchError} from "rxjs/operators";
-import {HttpErrorHandlerService} from "../../_services/http-error-handler.service";
-import {Router} from "@angular/router";
-import {PageEvent, PageMediatorService} from "../../_services/page-mediator.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CartService } from '../../_services/cart/cart.service';
+import { CartItem } from '../../_models/cart-item.model';
+import { CartValidatorService } from '../../_services/cart/cart-validator.service';
+import { Router } from '@angular/router';
+import {
+  PageEvent,
+  PageMediatorService,
+} from '../../_services/page-mediator.service';
 
 @Component({
   selector: 'mg-cart',
@@ -14,21 +15,21 @@ import {PageEvent, PageMediatorService} from "../../_services/page-mediator.serv
 })
 export class CartComponent implements OnInit, OnDestroy {
   items: CartItem[] = [];
+
   constructor(
     private cartService: CartService,
     private cartValidatorService: CartValidatorService,
-    private errorHandler: HttpErrorHandlerService,
     private mediator: PageMediatorService,
     private router: Router
-  ){}
+  ) {}
 
   ngOnInit() {
-    this.mediator.notify(this,PageEvent.PageArrive);
+    this.mediator.notify(this, PageEvent.PageArrive);
     this.items = this.cartService.getCart().getItems();
   }
 
   ngOnDestroy() {
-    this.mediator.notify(this,PageEvent.PageLeave);
+    this.mediator.notify(this, PageEvent.PageLeave);
   }
 
   increaseQuantityByOne(cartItem: CartItem): void {
@@ -48,28 +49,30 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   getSubtotalPrice(cartItem: CartItem): number {
-    if (cartItem.quantity < 0) cartItem.quantity = - cartItem.quantity;
-    return cartItem.quantity*this.getPrice(cartItem);
+    if (cartItem.quantity < 0) cartItem.quantity = -cartItem.quantity;
+    return cartItem.quantity * this.getPrice(cartItem);
   }
 
   getTotalPrice(cartItems: CartItem[]): number {
     let totalPrice: number = 0;
-    cartItems.forEach( cartItem => {
-      totalPrice+=this.getSubtotalPrice(cartItem);
-    })
+    cartItems.forEach((cartItem) => {
+      totalPrice += this.getSubtotalPrice(cartItem);
+    });
     return totalPrice;
   }
 
-  getPrice(cartItem: CartItem): number{
-    return cartItem.goods.price-cartItem.goods.price*(cartItem.goods.discount/100);
+  getPrice(cartItem: CartItem): number {
+    return (
+      cartItem.goods.price -
+      cartItem.goods.price * (cartItem.goods.discount / 100)
+    );
   }
 
   checkout() {
-      this.cartValidatorService.validate(this.items)
-        .subscribe({
-          next: ()=>{
-            this.router.navigateByUrl('/checkout')
-          }
-        })
+    this.cartValidatorService.validate(this.items).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/checkout');
+      },
+    });
   }
 }

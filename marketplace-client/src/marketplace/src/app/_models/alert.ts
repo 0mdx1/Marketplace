@@ -1,4 +1,4 @@
-export class Alert{
+export class Alert {
   message: String;
   type: AlertType;
 
@@ -8,7 +8,7 @@ export class Alert{
   }
 }
 
-export enum AlertType{
+export enum AlertType {
   Primary = "primary",
   Secondary = "secondary",
   Success = "success",

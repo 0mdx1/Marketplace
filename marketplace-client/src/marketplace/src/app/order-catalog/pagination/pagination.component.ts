@@ -15,7 +15,8 @@ export class PaginationComponent implements OnInit {
 
   @Output() notification: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private service: OrderService) {}
+  constructor(private service: OrderService) {
+  }
 
   private getOrders() {
     this.subscription =

@@ -1,14 +1,13 @@
-import { Inject, Injectable, OnDestroy } from '@angular/core';
-import { ProductComparisonService } from './product-comparison';
-import { PageProductComparisonService } from './page-product-comparison.service';
-import { Product } from '../../_models/products/product';
+import {Inject, Injectable, OnDestroy} from '@angular/core';
+import {ProductComparisonService} from './product-comparison';
+import {PageProductComparisonService} from './page-product-comparison.service';
+import {Product} from '../../_models/products/product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BrowserProductComparisonService
-  implements ProductComparisonService, OnDestroy
-{
+  implements ProductComparisonService, OnDestroy {
   constructor(
     @Inject(PageProductComparisonService)
     private comparisonService: ProductComparisonService

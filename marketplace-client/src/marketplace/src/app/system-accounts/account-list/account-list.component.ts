@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { StaffMember } from 'src/app/_models/staff-member';
-import { SystemAccountService } from 'src/app/_services/system-account.service';
-import { Role } from 'src/app/_models/role';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
+import {StaffMember} from 'src/app/_models/staff-member';
+import {SystemAccountService} from 'src/app/_services/system-account.service';
+import {Role} from 'src/app/_models/role';
 
 @Component({
   selector: 'app-account-list',
@@ -10,11 +10,13 @@ import { Role } from 'src/app/_models/role';
 })
 export class AccountListComponent {
   @Input() users: StaffMember[] = [];
+
   constructor(
     private cdr: ChangeDetectorRef,
     private service: SystemAccountService
     // private helper: AuthService
-  ) {}
+  ) {
+  }
 
   ngAfterViewInit() {
     this.cdr.detectChanges();
@@ -28,11 +30,11 @@ export class AccountListComponent {
   createUser() {
     this.service.navigateToRegisterStaff();
   }
-  changeInfo(id:number, role:string){
-    if(role.localeCompare(Role.ProductManager)) {
+
+  changeInfo(id: number, role: string) {
+    if (role.localeCompare(Role.ProductManager)) {
       this.service.navigateToUpdatedStaff(id, 1);
-    }
-    else if (role.localeCompare(Role.Courier)){
+    } else if (role.localeCompare(Role.Courier)) {
       this.service.navigateToUpdatedStaff(id, 2);
     }
   }

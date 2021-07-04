@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 407.02 407.02" style="enable-background:new 0 0 407.02 407.02;" xml:space="preserve">
+     viewBox="0 0 407.02 407.02" style="enable-background:new 0 0 407.02 407.02;" xml:space="preserve">
 <style type="text/css">
-	.st0{enable-background:new    ;}
-	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#007DC3;}
-	.st2{fill:#1F1F1F;}
-	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st0 {
+    enable-background: new;
+  }
+
+  .st1 {
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    fill: #007DC3;
+  }
+
+  .st2 {
+    fill: #1F1F1F;
+  }
+
+  .st3 {
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    fill: #FFFFFF;
+  }
 </style>
-<g id="Ellipse_2_1_" class="st0">
+  <g id="Ellipse_2_1_" class="st0">
 	<g id="Ellipse_2">
 		<g>
-			
-				<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -84.2968 203.5105)" class="st1" cx="203.51" cy="203.51" rx="203.51" ry="203.51"/>
+
+				<ellipse transform="matrix(0.7071 -0.7071 0.7071 0.7071 -84.2968 203.5105)" class="st1" cx="203.51" cy="203.51"
+                 rx="203.51" ry="203.51"/>
 		</g>
-		<g>
+    <g>
 			<path class="st2" d="M203.51,0.01c13.81,0,27.61,1.39,41.01,4.13c13.07,2.67,25.92,6.66,38.2,11.86
 				c12.06,5.1,23.69,11.41,34.57,18.76c10.78,7.28,20.91,15.64,30.12,24.85c9.21,9.21,17.57,19.34,24.85,30.12
 				c7.35,10.88,13.66,22.51,18.76,34.57c5.19,12.28,9.18,25.13,11.86,38.2c2.74,13.41,4.13,27.21,4.13,41.01s-1.39,27.61-4.13,41.01
@@ -29,7 +45,7 @@
 		</g>
 	</g>
 </g>
-<g id="CRACKER_1_" class="st0">
+  <g id="CRACKER_1_" class="st0">
 	<g id="CRACKER">
 		<g>
 			<path class="st3" d="M78.95,233.75l-3.01,22.1h14.92l3.3-23.39c0.19-0.76,0.29-1.53,0.29-2.3v-2.15c0-5.17-1.39-8.99-4.16-11.48
@@ -65,7 +81,7 @@
 		</g>
 	</g>
 </g>
-<g id="Color_Fill_2_1_" class="st0">
+  <g id="Color_Fill_2_1_" class="st0">
 	<g id="Color_Fill_2">
 		<g>
 			<path class="st3" d="M318.92,125.36c-4.14-6.21-30.86-4.25-41.99-4c0.02-7.73-0.52-13.97-2.5-20.01
@@ -81,7 +97,7 @@
 		</g>
 	</g>
 </g>
-<g id="Color_Fill_3_1_" class="st0">
+  <g id="Color_Fill_3_1_" class="st0">
 	<g id="Color_Fill_3">
 		<g>
 			<path class="st3" d="M44,329.52c1.83,3.5,4.95,5.73,7,9h305.02c2.33-2.83,4.67-5.67,7-8.5v-0.5H44z"/>

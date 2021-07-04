@@ -1,10 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { Product } from '../../_models/products/product';
-import { CartService } from '../../_services/cart/cart.service';
-import { ProductComparisonService } from '../../_services/product-comparison/product-comparison';
-import { LimitedProductComparisonService } from '../../_services/product-comparison/limited-product-comparison.service';
-import { AlertType } from 'src/app/_models/alert';
-import { AlertService } from 'src/app/_services/alert.service';
+import {Component, Inject} from '@angular/core';
+import {Product} from '../../_models/products/product';
+import {CartService} from '../../_services/cart/cart.service';
+import {ProductComparisonService} from '../../_services/product-comparison/product-comparison';
+import {LimitedProductComparisonService} from '../../_services/product-comparison/limited-product-comparison.service';
+import {AlertType} from 'src/app/_models/alert';
+import {AlertService} from 'src/app/_services/alert.service';
 
 @Component({
   selector: 'app-product-comparison',

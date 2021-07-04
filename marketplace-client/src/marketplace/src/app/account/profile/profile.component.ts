@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../_services/account.service';
-import { first } from 'rxjs/operators';
-import { User } from 'src/app/_models/user';
-import { Subscription } from 'rxjs';
-import { AlertType } from '../../_models/alert';
-import { AlertService } from '../../_services/alert.service';
+import {Component, OnInit} from '@angular/core';
+import {AccountService} from '../../_services/account.service';
+import {first} from 'rxjs/operators';
+import {User} from 'src/app/_models/user';
+import {Subscription} from 'rxjs';
+import {AlertType} from '../../_models/alert';
+import {AlertService} from '../../_services/alert.service';
 
 @Component({
   selector: 'app-courier',
@@ -25,7 +25,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private alertService: AlertService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.subscription = this.accountService

@@ -1,6 +1,6 @@
-import { UserDisplayInfo } from './userDisplayInfo';
-import { Status } from '../status';
-import { OrderProductInfo } from './orderProductInfo';
+import {UserDisplayInfo} from './userDisplayInfo';
+import {Status} from '../status';
+import {OrderProductInfo} from './orderProductInfo';
 
 export class CourierOrder {
   id: number = 0;

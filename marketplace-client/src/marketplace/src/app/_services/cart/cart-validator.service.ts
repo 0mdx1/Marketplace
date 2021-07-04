@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CartItem} from "../../_models/cart-item.model";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
@@ -12,13 +12,14 @@ const baseUrl = `${environment.apiUrl}`;
 })
 export class CartValidatorService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
-  public validate(cart: CartItem[]):Observable<any> {
+  public validate(cart: CartItem[]): Observable<any> {
     let itemDtos: CartItemCreateDto[] = [];
-    cart.forEach((item)=>{
+    cart.forEach((item) => {
       itemDtos.push(CartItemCreateDto.mapToDto(item));
     })
-    return this.http.post<any>(`${baseUrl}/shopping-cart/validate/`,itemDtos);
+    return this.http.post<any>(`${baseUrl}/shopping-cart/validate/`, itemDtos);
   }
 }

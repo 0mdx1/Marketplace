@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { ProductComparisonService } from './product-comparison';
-import { Product } from '../../_models/products/product';
-import { AlertService } from '../alert.service';
-import { AlertType } from '../../_models/alert';
-import { BrowserProductComparisonService } from './browser-product-comparison.service';
+import {Inject, Injectable} from '@angular/core';
+import {ProductComparisonService} from './product-comparison';
+import {Product} from '../../_models/products/product';
+import {AlertService} from '../alert.service';
+import {AlertType} from '../../_models/alert';
+import {BrowserProductComparisonService} from './browser-product-comparison.service';
 
 const maxProducts = 4;
 
@@ -11,13 +11,13 @@ const maxProducts = 4;
   providedIn: 'root',
 })
 export class LimitedProductComparisonService
-  implements ProductComparisonService
-{
+  implements ProductComparisonService {
   constructor(
     @Inject(BrowserProductComparisonService)
     private comparisonService: ProductComparisonService,
     private alertService: AlertService
-  ) {}
+  ) {
+  }
 
   addProduct(product: Product): void {
     if (this.comparisonService.getProducts().length < maxProducts) {

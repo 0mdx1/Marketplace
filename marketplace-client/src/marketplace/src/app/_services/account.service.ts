@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {shareReplay, tap} from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
-import { User } from '../_models/user';
-import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
-import { StaffMember } from '../_models/staff-member';
-import { AuthService } from '../_auth/auth.service';
+import {environment} from '../../environments/environment';
+import {User} from '../_models/user';
+import {ResetPasswordDTO} from '../_models/resetPasswordDTO';
+import {StaffMember} from '../_models/staff-member';
+import {AuthService} from '../_auth/auth.service';
 
 const baseUrl = `${environment.apiUrl}`;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AccountService {
   public account: Observable<User> = new Observable<User>();
 
@@ -35,7 +35,7 @@ export class AccountService {
     return this.http
       .post<User>(
         `${baseUrl}/login`,
-        { email, password },
+        {email, password},
         {
           headers: httpHeaders,
           observe: 'response',

@@ -9,8 +9,6 @@ import { ApiError } from '../_models/ApiError';
   providedIn: 'root',
 })
 export class HttpErrorHandlerService {
-  private test: String = 'test';
-
   constructor(private alertService: AlertService) {}
 
   public displayValidationError(error: HttpErrorResponse) {

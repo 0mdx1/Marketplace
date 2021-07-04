@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Product } from 'src/app/_models/products/product';
-import { ProductDto } from 'src/app/_models/products/productDto';
-import { ProductService } from 'src/app/_services/product.service';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Product} from 'src/app/_models/products/product';
+import {ProductDto} from 'src/app/_models/products/productDto';
+import {ProductService} from 'src/app/_services/product.service';
 
 @Component({
   selector: 'app-pagination',
@@ -15,7 +15,8 @@ export class PaginationComponent implements OnInit {
 
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private service: ProductService) {}
+  constructor(private service: ProductService) {
+  }
 
   ngOnInit(): void {
     this.service.pageTotalSource.subscribe((pageNum) => {

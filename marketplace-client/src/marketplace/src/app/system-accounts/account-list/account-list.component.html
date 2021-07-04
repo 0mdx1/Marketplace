@@ -5,7 +5,7 @@
         <div class="col-12 col-lg-3 mb-3">
           <div class="card">
             <div class="card-body">
-              <app-search (results)="users = search.getUsers()" #search> </app-search>
+              <app-search (results)="users = search.getUsers()" #search></app-search>
               <app-filter (results)="users = filter.getUsers()" [statusList]="getStatusList()" #filter>
               </app-filter>
             </div>
@@ -18,28 +18,28 @@
               <div class="table-responsive table-lg mt-3">
                 <table class="table table-bordered table-hover">
                   <thead>
-                    <tr>
-                        <th class="max-width">Name</th>
-                        <th class="max-width">Surname</th>
-                        <th class="max-width">Phone</th>
-                        <th class="max-width">Email</th>
-                    </tr>
+                  <tr>
+                    <th class="max-width">Name</th>
+                    <th class="max-width">Surname</th>
+                    <th class="max-width">Phone</th>
+                    <th class="max-width">Email</th>
+                  </tr>
                   </thead>
                   <tbody>
-                      <tr *ngFor="let courier of users" (click)="changeInfo(courier.id, courier.role)" class="pointer">
-                        <td class="text-nowrap align-middle">{{courier.name}}</td>
-                        <td class="text-nowrap align-middle">{{courier.surname}}</td>
-                        <td class="text-nowrap align-middle">{{courier.phone}}</td>
-                        <td class="text-nowrap align-middle">{{courier.email}}</td>
-                      </tr>
+                  <tr *ngFor="let courier of users" (click)="changeInfo(courier.id, courier.role)" class="pointer">
+                    <td class="text-nowrap align-middle">{{courier.name}}</td>
+                    <td class="text-nowrap align-middle">{{courier.surname}}</td>
+                    <td class="text-nowrap align-middle">{{courier.phone}}</td>
+                    <td class="text-nowrap align-middle">{{courier.email}}</td>
+                  </tr>
                   </tbody>
                 </table>
               </div>
 
             </div>
           </div>
-          <div *ngIf="users?.length === 0"  class="alert alert-primary text-center mt-2" role="alert">
-              Nothing was found
+          <div *ngIf="users?.length === 0" class="alert alert-primary text-center mt-2" role="alert">
+            Nothing was found
           </div>
           <app-pagination (results)="users = page.getUsers()" #page></app-pagination>
         </div>

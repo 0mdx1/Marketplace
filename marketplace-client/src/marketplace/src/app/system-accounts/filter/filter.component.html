@@ -2,29 +2,30 @@
   <div class="dropdown">
     <label>Status:</label>
     <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown"
-    aria-haspopup="true"
-      aria-expanded="false">
+            aria-haspopup="true"
+            aria-expanded="false">
       {{activeRadioButton}}
     </button>
     <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu">
       <ul class="list-group list-group-flush">
         <li *ngFor="let status of statusList" class="list-group-item" value="status"
-        [ngClass]="{'active': status === activeRadioButton}"
-          (click)="onChange(status)">{{status}}</li>
+            [ngClass]="{'active': status === activeRadioButton}"
+            (click)="onChange(status)">{{status}}</li>
       </ul>
     </div>
   </div>
 
   <div class="dropdown">
     <label>Type:</label>
-    <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true"
-      aria-expanded="false">
+    <button class="btn dropdown-toggle w-100" type="button" id="dropdownMenu" data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
       {{type}}
     </button>
     <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu">
       <ul class="list-group list-group-flush">
         <li *ngFor="let tp of typeList" class="list-group-item" value="type" [ngClass]="{'active': tp === type}"
-          (click)="setType(tp)">{{tp}}</li>
+            (click)="setType(tp)">{{tp}}</li>
       </ul>
     </div>
   </div>

@@ -13,7 +13,6 @@ import {
   validatePassword,
 } from '../../_helpers/validators.service';
 import { AlertService } from '../../_services/alert.service';
-import { ApiError } from '../../_models/ApiError';
 import { AlertType } from '../../_models/alert';
 
 @Component({
@@ -37,12 +36,22 @@ export class PasswordFormComponent {
     private route: ActivatedRoute,
     private alertService: AlertService
   ) {
-    this.form = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
-      confirmPassword: ['', Validators.required],
-    }, {
-      validator: [validateConfirmPassword, validatePassword]
-    });
+    this.form = this.formBuilder.group(
+      {
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(100),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validator: [validateConfirmPassword, validatePassword],
+      }
+    );
   }
 
   get getForm(): { [p: string]: AbstractControl } {

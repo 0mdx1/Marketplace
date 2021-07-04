@@ -11,43 +11,43 @@ import {SendRequestStrategy} from "./send-request-strategy";
 @Injectable({
   providedIn: 'root'
 })
-export class CartInitService implements OnDestroy{
+export class CartInitService implements OnDestroy {
 
   private subs: Subscription[] = [];
 
-  private prevState: AuthState|null = null;
+  private prevState: AuthState | null = null;
 
   constructor(
-    @Inject(BrowserCart)private cart: Cart,
+    @Inject(BrowserCart) private cart: Cart,
     private httpService: CartHttpService,
     private authService: AuthService,
-    @Inject(SendRequestStrategyService)private sendRequestStrategy: SendRequestStrategy
+    @Inject(SendRequestStrategyService) private sendRequestStrategy: SendRequestStrategy
   ) {
   }
 
   ngOnDestroy(): void {
-    this.subs.forEach((sub)=>{
+    this.subs.forEach((sub) => {
       sub.unsubscribe();
     })
   }
 
-  public start(): void{
+  public start(): void {
     this.subs.push(
       this.authService.getAuthStateObs()
-        .subscribe((state: AuthState)=>{
-          if(state==AuthState.Authorized){
+        .subscribe((state: AuthState) => {
+          if (state == AuthState.Authorized) {
             this.init();
           }
-          if(state==AuthState.Unauthorized&&this.prevState==AuthState.Authorized){
+          if (state == AuthState.Unauthorized && this.prevState == AuthState.Authorized) {
             this.cart.empty();
           }
           this.prevState = state;
         }))
   }
 
-  private init(): void{
-    if(this.sendRequestStrategy.allowedToSendRequests()){
-      if(this.cart.getItems().length>0){
+  private init(): void {
+    if (this.sendRequestStrategy.allowedToSendRequests()) {
+      if (this.cart.getItems().length > 0) {
         this.subs.push(
           this.httpService
             .putShoppingCart(this.cart.getItems())
@@ -56,11 +56,11 @@ export class CartInitService implements OnDestroy{
       }
       this.subs.push(
         this.httpService.getShoppingCart()
-        .pipe(switchMap(items => {
-          this.cart.setItems(items);
-          return of({});
-        }))
-        .subscribe()
+          .pipe(switchMap(items => {
+            this.cart.setItems(items);
+            return of({});
+          }))
+          .subscribe()
       );
       return;
     }

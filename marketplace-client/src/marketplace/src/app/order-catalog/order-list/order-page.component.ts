@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { OrderPage } from '../../_models/order-info/order-page';
+import {Component, Input} from '@angular/core';
+import {OrderPage} from '../../_models/order-info/order-page';
 
 @Component({
   selector: 'app-order-list',

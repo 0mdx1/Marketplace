@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AccountService } from '../../_services/account.service';
-import { first } from 'rxjs/operators';
+import {AccountService} from '../../_services/account.service';
+import {first} from 'rxjs/operators';
 import {
   validateBirthday,
   validateConfirmPassword,
   validatePassword,
 } from '../../_helpers/validators.service';
-import { AlertService } from 'src/app/_services/alert.service';
-import { AlertType } from 'src/app/_models/alert';
+import {AlertService} from 'src/app/_services/alert.service';
+import {AlertType} from 'src/app/_models/alert';
 
 @Component({
   templateUrl: './register.component.html',

@@ -11,11 +11,12 @@ export class PageCart implements Cart {
 
   private cart: CartItem[] = [];
 
-  constructor() {}
+  constructor() {
+  }
 
   addItem(item: CartItem): void {
     let index = this.getArrayIndex(item.goods.id);
-    if(index!==-1){
+    if (index !== -1) {
       throw new Error("Illegal state: cart cannot contain items with same product id");
     }
     this.cart.push(item);
@@ -30,7 +31,7 @@ export class PageCart implements Cart {
 
   getItem(productId: number): CartItem | null {
     let index = this.getArrayIndex(productId)
-    if(index==-1){
+    if (index == -1) {
       return null;
     }
     return this.cart[index];
@@ -42,14 +43,14 @@ export class PageCart implements Cart {
 
   removeItem(item: CartItem): void {
     let index = this.getArrayIndex(item.goods.id);
-    if(index==-1) return;
-    this.cart.splice(index,1);
+    if (index == -1) return;
+    this.cart.splice(index, 1);
   }
 
-  updateItem(item:CartItem): void {
+  updateItem(item: CartItem): void {
     let index = this.getArrayIndex(item.goods.id);
-    if(index==-1) return;
-    this.cart[index]=item;
+    if (index == -1) return;
+    this.cart[index] = item;
   }
 
   empty(): void {

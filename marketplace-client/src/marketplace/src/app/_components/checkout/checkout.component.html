@@ -14,14 +14,16 @@
         class="btn btn-outline-dark"
         (click)="modal.close('Login click')"
         routerLink="/accounts/login"
-      >Login</button>
+      >Login
+      </button>
 
-        <button
-          type="button"
-          class="btn btn-outline-dark"
-          (click)="modal.close('Register click')"
-          routerLink="/accounts/register"
-        >Register</button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="modal.close('Register click')"
+        routerLink="/accounts/register"
+      >Register
+      </button>
     </div>
   </ng-template>
 
@@ -37,9 +39,9 @@
     </div>
 
     <form *ngIf="!showOrderDetails && freeCouriers" [formGroup]="orderDetailsForm" (ngSubmit)="onSubmit()">
-      <hr />
+      <hr/>
       <h1>Checkout form</h1>
-      <hr />
+      <hr/>
 
       <div *ngIf="!isAuth()" class="row d-flex p-2 justify-content-center">
         <div class="col-md-3">
@@ -47,7 +49,7 @@
             <label>Name</label>
 
             <input type="text" formControlName="name" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
+                   [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }"/>
 
             <div *ngIf="getForm.name.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.name.errors.required">Name is required</div>
@@ -61,7 +63,7 @@
             <label>Surname</label>
 
             <input type="text" formControlName="surname" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
+                   [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }"/>
 
             <div *ngIf="getForm.surname.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.surname.errors.required">Surname is required</div>
@@ -74,7 +76,7 @@
             <label>Phone</label>
 
             <input type="text" formControlName="phone" class="form-control"
-              [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
+                   [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }"/>
 
             <div *ngIf="getForm.phone.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.phone.errors.required">Phone is required</div>
@@ -89,8 +91,8 @@
           <div class="form-group">
             <label>Delivery Day</label>
             <select class="form-control" formControlName="deliveryDay"
-              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }"
-              (click)="calculateDeliveryTimes()"
+                    [ngClass]="{ 'is-invalid': submitted && getForm.deliveryDay.errors }"
+                    (click)="calculateDeliveryTimes()"
             >
 
               <option></option>
@@ -109,7 +111,7 @@
             <label>Delivery Time</label>
 
             <select class="form-control" formControlName="deliveryTime"
-              [ngClass]="{ 'is-invalid': submitted && getForm.deliveryTime.errors }"
+                    [ngClass]="{ 'is-invalid': submitted && getForm.deliveryTime.errors }"
             >
 
               <option></option>
@@ -129,7 +131,7 @@
             <label>Address</label>
 
             <input type="text" class="form-control" formControlName="address"
-              [ngClass]="{ 'is-invalid': submitted && getForm.address.errors }" />
+                   [ngClass]="{ 'is-invalid': submitted && getForm.address.errors }"/>
 
             <div *ngIf="getForm.address.errors && submitted" class="invalid-feedback">
               <div *ngIf="getForm.address.errors.required">Address is required</div>
@@ -150,7 +152,7 @@
       <div class="row d-flex p-2 justify-content-center">
         <div class="col-md-2">
           <div class="form-group">
-            <input type="checkbox" class="form-check-input" formControlName="disturb" />
+            <input type="checkbox" class="form-check-input" formControlName="disturb"/>
             <label>Don't disturb?</label>
           </div>
         </div>
@@ -170,45 +172,45 @@
 
       <table class="table table-bordered">
         <tbody>
-          <tr>
-            <th scope="row">Name</th>
-            <td class="text-center">{{ this.orderDetailsForm.controls['name'].value }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Name</th>
+          <td class="text-center">{{ this.orderDetailsForm.controls['name'].value }}</td>
+        </tr>
 
-          <tr>
-            <th scope="row">Surname</th>
-            <td class="text-center">{{ this.orderDetailsForm.controls['surname'].value }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Surname</th>
+          <td class="text-center">{{ this.orderDetailsForm.controls['surname'].value }}</td>
+        </tr>
 
-          <tr>
-            <th scope="row">Phone</th>
-            <td class="text-center">{{ this.orderDetailsForm.controls['phone'].value }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Phone</th>
+          <td class="text-center">{{ this.orderDetailsForm.controls['phone'].value }}</td>
+        </tr>
 
-          <tr>
-            <th scope="row">Address</th>
-            <td class="text-center">{{ this.orderDetailsForm.controls['address'].value }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Address</th>
+          <td class="text-center">{{ this.orderDetailsForm.controls['address'].value }}</td>
+        </tr>
 
-          <tr>
-            <th scope="row">Delivery Time</th>
-            <td class="text-center">{{ this.formDeliveryDate() | date:'medium' }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Delivery Time</th>
+          <td class="text-center">{{ this.formDeliveryDate() | date:'medium' }}</td>
+        </tr>
 
-          <tr>
-            <th scope="row">Disturb</th>
-            <td class="text-center" *ngIf="this.orderDetailsForm.controls['disturb'].value">
-              Yes
-            </td>
-            <td class="text-center" *ngIf="!this.orderDetailsForm.controls['disturb'].value">
-              No
-            </td>
-          </tr>
+        <tr>
+          <th scope="row">Disturb</th>
+          <td class="text-center" *ngIf="this.orderDetailsForm.controls['disturb'].value">
+            Yes
+          </td>
+          <td class="text-center" *ngIf="!this.orderDetailsForm.controls['disturb'].value">
+            No
+          </td>
+        </tr>
 
-          <tr>
-            <th scope="row">Comment</th>
-            <td class="text-center">{{ this.orderDetailsForm.controls['comment'].value }}</td>
-          </tr>
+        <tr>
+          <th scope="row">Comment</th>
+          <td class="text-center">{{ this.orderDetailsForm.controls['comment'].value }}</td>
+        </tr>
         </tbody>
 
       </table>
@@ -227,48 +229,48 @@
     </div>
 
     <div *ngIf="items.length">
-      <hr />
+      <hr/>
       <h1 class="font-weight-bold">Products: {{getTotalPrice(items) | currency:'USD'}}</h1>
-      <hr />
+      <hr/>
 
       <div class="row">
         <div class="col my-4">
           <table class="table">
             <thead class="table">
-              <tr class="text-center">
-                <th>Image</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-              </tr>
+            <tr class="text-center">
+              <th>Image</th>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+            </tr>
             </thead>
             <tbody>
 
-              <tr *ngFor="let cartItem of this.items" class="text-center">
-                <td class="d-flex align-items-center justify-content-around">
-                  <div class="img-container">
-                    <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" height="60" class="order-1">
-                    <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" height="60" class="order-1">
-                  </div>
-                </td>
+            <tr *ngFor="let cartItem of this.items" class="text-center">
+              <td class="d-flex align-items-center justify-content-around">
+                <div class="img-container">
+                  <img *ngIf="!cartItem.goods.image" src="../../../assets/product.svg" height="60" class="order-1">
+                  <img *ngIf="cartItem.goods.image" src="{{cartItem.goods.image}}" height="60" class="order-1">
+                </div>
+              </td>
 
-                <td>
-                  <p>{{cartItem.goods.goodName}}</p>
-                </td>
+              <td>
+                <p>{{cartItem.goods.goodName}}</p>
+              </td>
 
-                <td>
-                  <p>{{getPrice(cartItem) | currency:'USD'}}</p>
-                </td>
+              <td>
+                <p>{{getPrice(cartItem) | currency:'USD'}}</p>
+              </td>
 
-                <td>
-                  <p>{{ getSubtotalPrice(cartItem) / getPrice(cartItem) }}</p>
-                </td>
+              <td>
+                <p>{{ getSubtotalPrice(cartItem) / getPrice(cartItem) }}</p>
+              </td>
 
-                <td>
-                  <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
-                </td>
-              </tr>
+              <td>
+                <p>{{getSubtotalPrice(cartItem) | currency:'USD'}}</p>
+              </td>
+            </tr>
 
             </tbody>
           </table>

@@ -4,7 +4,8 @@
       <div class="card">
         <div class="product-card card-body m-3">
           <div class="row d-flex h-100">
-            <app-image-uploading [imageUrl]="this.response?.image||''" (imageFilenameEvent)="setImage($event)" class="col-12 col-lg-4"></app-image-uploading>
+            <app-image-uploading [imageUrl]="this.response?.image||''" (imageFilenameEvent)="setImage($event)"
+                                 class="col-12 col-lg-4"></app-image-uploading>
             <div class="col d-row-flex align-self-center">
               <h1 class="card-title mb-0 mt-5 mt-md-0 border-bottom pb-2 mb-4">{{goodName}}</h1>
               <form *ngIf="response" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -12,7 +13,7 @@
                   <div class="form-group col-6">
                     <label>Product Name*</label>
                     <input type="text" formControlName="goodName" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.goodName.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.goodName.errors }"/>
                     <div *ngIf="submitted && getForm.goodName.errors" class="invalid-feedback">
                       <div *ngIf="getForm.goodName.errors.required">Good name is required</div>
                     </div>
@@ -20,7 +21,7 @@
                   <div class="form-group col-6">
                     <label>Producer Name<span>*</span></label>
                     <input type="text" list="firms" class="form-control" formControlName="firmName"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.firmName.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.firmName.errors }"/>
                     <datalist id="firms">
                       <ng-container>
                         <option *ngFor="let firm of firmName" [ngValue]="firm">
@@ -40,12 +41,13 @@
                   <div class="form-group col-6">
                     <label>Quantity<span>*</span></label>
                     <input type="number" formControlName="quantity" class="form-control" min="0"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.quantity.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.quantity.errors }"/>
                     <div *ngIf="submitted && getForm.quantity.errors" class="invalid-feedback">
                       <div *ngIf="getForm.quantity.errors.required">Quantity is required</div>
                       <div *ngIf="getForm.quantity.errors.min">Quantity should be greater than zero</div>
                       <div *ngIf="getForm.quantity.hasError('InvalidQuantity')">Quantity for unit ITEM should be an
-                        integer value</div>
+                        integer value
+                      </div>
                     </div>
                   </div>
 
@@ -63,7 +65,7 @@
                   <div class="form-group col-6">
                     <label>Price<span>*</span></label>
                     <input type="number" formControlName="price" class="form-control" min="0"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.price.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.price.errors }"/>
                     <div *ngIf="submitted && getForm.price.errors" class="invalid-feedback">
                       <div *ngIf="getForm.price.errors.required">Price is required</div>
                     </div>
@@ -72,9 +74,9 @@
                   <div class="form-group col-6">
                     <label>Discount</label>
                     <input type="number" formControlName="discount" class="form-control" min="0"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.discount.errors }"/>
                     <div *ngIf="submitted && getForm.discount.errors" class="invalid-feedback">
-                      <div *ngIf="getForm.discount.errors.min">Discount should be > 0 </div>
+                      <div *ngIf="getForm.discount.errors.min">Discount should be > 0</div>
                     </div>
                   </div>
 
@@ -91,7 +93,7 @@
                   <div class="form-group col-6">
                     <label>Category<span>*</span></label>
                     <input type="text" list="cars" class="form-control" formControlName="categoryName"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.categoryName.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && getForm.categoryName.errors }"/>
                     <datalist id="cars">
                       <ng-container>
                         <option *ngFor="let status of categoryName" [ngValue]="status">
@@ -117,7 +119,7 @@
                   <div class="form-group col-12">
                     <label>Description<span>*</span></label>
                     <textarea rows="3" type="text" formControlName="description" class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && getForm.description.errors }">
+                              [ngClass]="{ 'is-invalid': submitted && getForm.description.errors }">
                 </textarea>
                     <div *ngIf="submitted && getForm.description.errors" class="invalid-feedback">
                       <div *ngIf="getForm.description.errors.required">Description is required</div>
@@ -125,9 +127,9 @@
                   </div>
                   <div class="form-group d-flex w-100 flex-column flex-sm-row mt-4 mb-0">
                     <a routerLink="/products/{{id}}" href=""
-                      class="mb-3 btn btn-sm order-1 order-sm-0 back-btn mr-sm-3 px-3 ml-sm-auto mt-2">Cancel</a>
+                       class="mb-3 btn btn-sm order-1 order-sm-0 back-btn mr-sm-3 px-3 ml-sm-auto mt-2">Cancel</a>
                     <button [disabled]="loading" type="submit"
-                      class="btn btn-sm mb-3 order-0 order-sm-1 save-btn px-3 mt-2">
+                            class="btn btn-sm mb-3 order-0 order-sm-1 save-btn px-3 mt-2">
                       Save
                     </button>
                   </div>

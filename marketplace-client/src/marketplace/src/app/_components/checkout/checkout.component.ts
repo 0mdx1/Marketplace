@@ -206,7 +206,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this.items = [];
         this.alertService.addAlert('Order sent!', AlertType.Success);
       },
-      (msg) => {
+      () => {
         this.router.navigateByUrl('/cart');
       }
     );
