@@ -1,6 +1,22 @@
 package com.ncgroup.marketplaceserver.service.impl;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+
 import com.ncgroup.marketplaceserver.constants.StatusConstants;
+import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
+import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
 import com.ncgroup.marketplaceserver.model.Role;
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
@@ -9,26 +25,8 @@ import com.ncgroup.marketplaceserver.repository.UserRepository;
 import com.ncgroup.marketplaceserver.service.EmailSenderService;
 import com.ncgroup.marketplaceserver.service.ManagerService;
 import com.ncgroup.marketplaceserver.service.UserService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
-
-import com.ncgroup.marketplaceserver.exception.constants.ExceptionMessage;
-import com.ncgroup.marketplaceserver.exception.domain.InvalidStatusException;
-
-import java.time.LocalDate;
-import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
-
-import javax.mail.MessagingException;
 
 @Slf4j
 @Service

@@ -24,8 +24,8 @@ import com.ncgroup.marketplaceserver.security.filter.AuthorizationFilter;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-	private AuthorizationFilter authorizationFilter;
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private AuthorizationFilter authorizationFilter;
     private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private FilterChainExceptionHandler filterChainExceptionHandler;
@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Autowired
     public SecurityConfiguration(
             AuthorizationFilter authorizationFilter,
-            @Qualifier("userDetailsService")UserDetailsService userDetailsService,
+            @Qualifier("userDetailsService") UserDetailsService userDetailsService,
             BCryptPasswordEncoder bCryptPasswordEncoder,
             FilterChainExceptionHandler filterChainExceptionHandler
     ) {
@@ -52,52 +52,52 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(filterChainExceptionHandler, CorsFilter.class)
-            .csrf().disable().cors().and()
+                .csrf().disable().cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-                .antMatchers("/api/media/").hasAnyRole("ADMIN","PRODUCT_MANAGER")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/media/").hasAnyRole("ADMIN", "PRODUCT_MANAGER")
                 .antMatchers("/api/shopping-cart/**")
-                    .hasRole("USER")
+                .hasRole("USER")
                 .antMatchers(HttpMethod.PATCH, "/api/courier/**", "api/manager/**")
-                    .hasRole("ADMIN")
+                .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/manager")
-                    .hasRole("ADMIN")
+                .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/courier")
-                    .hasRole("ADMIN")
+                .hasRole("ADMIN")
                 .antMatchers("/api/orders/incoming", "/api/orders/history", "/api/orders/{id:[\\d+]}/courierinfo")
-                	.hasRole("USER")
+                .hasRole("USER")
                 .antMatchers("/api/orders/{id:[\\d+]}")
-                	.hasAnyRole("USER", "COURIER")
+                .hasAnyRole("USER", "COURIER")
                 .antMatchers(HttpMethod.GET, "/api/media/**")
-                    .hasRole("ADMIN")
+                .hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/orders/**")
-                	.hasRole("COURIER")
+                .hasRole("COURIER")
                 .antMatchers("/api/userinfo")
-                	.hasAnyRole("USER", "ADMIN", "COURIER", "PRODUCT_MANAGER")
+                .hasAnyRole("USER", "ADMIN", "COURIER", "PRODUCT_MANAGER")
                 .and()
                 //.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
                 //.authenticationEntryPoint(authenticationFilter)
                 //.and()
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
-    
+
     @Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring()
-			.antMatchers("/swagger/swagger-ui/**", "/v3/api-docs/**")
-			.antMatchers("/api/register", "/api/login","/api/confirm-account","/api/reset-password")
-			.antMatchers("/api/confirm-passreset/**", "/api/confirm-passcreate/**", "/api/setnewpassword/**")
-			.antMatchers("/api/shopping-cart/validate/")
-			.antMatchers("/api/orders/freeslots", "/api/orders/userinfo");
-	}
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/swagger/swagger-ui/**", "/v3/api-docs/**")
+                .antMatchers("/api/register", "/api/login", "/api/confirm-account", "/api/reset-password")
+                .antMatchers("/api/confirm-passreset/**", "/api/confirm-passcreate/**", "/api/setnewpassword/**")
+                .antMatchers("/api/shopping-cart/validate/")
+                .antMatchers("/api/orders/freeslots", "/api/orders/userinfo");
+    }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-    
+
     @Bean
     public RegistrationBean jwtAuthFilterRegister(AuthorizationFilter filter) {
         FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>(filter);

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,7 +26,7 @@ public class User {
     @JsonAlias("dateOfBirth")
     private LocalDate birthday;
     private String email;
-    
+
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     @JsonIgnore

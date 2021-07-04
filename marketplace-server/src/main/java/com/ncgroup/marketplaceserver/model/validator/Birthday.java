@@ -13,10 +13,12 @@ import javax.validation.constraints.NotNull;
 @NotNull
 @Documented
 @Constraint(validatedBy = BirthdayValidator.class)
-@Target({ ElementType.FIELD })
+@Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Birthday {
-	String message() default "User must be at least 18 y.o.";
+    String message() default "User must be at least 18 y.o.";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

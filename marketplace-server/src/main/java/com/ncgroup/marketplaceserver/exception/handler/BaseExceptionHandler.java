@@ -37,12 +37,12 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request
     ) {
-        if(body==null){
-        	ex.printStackTrace();
-            ApiError apiError = new ApiError(ExceptionType.UNEXPECTED_ERROR,"Unexpected error occurred");
-            return new ResponseEntity<>(apiError,headers,status);
+        if (body == null) {
+            ex.printStackTrace();
+            ApiError apiError = new ApiError(ExceptionType.UNEXPECTED_ERROR, "Unexpected error occurred");
+            return new ResponseEntity<>(apiError, headers, status);
         }
-        return new ResponseEntity<>(body,headers,status);
+        return new ResponseEntity<>(body, headers, status);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         builder.append(" media type is not supported. Supported media types are ");
         ex.getSupportedMediaTypes().forEach(t -> builder.append(t).append(", "));
         String message = builder.substring(0, builder.length() - 2);
-        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA,message);
-        return this.handleExceptionInternal(ex,apiError,headers,status,request);
+        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA, message);
+        return this.handleExceptionInternal(ex, apiError, headers, status, request);
     }
 
     @Override
@@ -69,11 +69,11 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request
     ) {
         String message = this.generateMessageForFieldError(ex.getBindingResult().getFieldErrors().get(0));
-        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED,message);
-        return this.handleExceptionInternal(ex,apiError,headers,status,request);
+        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED, message);
+        return this.handleExceptionInternal(ex, apiError, headers, status, request);
     }
 
-    private String generateMessageForFieldError(FieldError fieldError){
+    private String generateMessageForFieldError(FieldError fieldError) {
         return String.format("Validation failed for %s=%s. %s",
                 fieldError.getField(),
                 fieldError.getRejectedValue(),
@@ -87,8 +87,8 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleSizeLimitExceededException(MaxUploadSizeExceededException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         String message = String.format("Maximum upload size of %s exceeded", maxFileSize);
-        ApiError apiError = new ApiError(ExceptionType.FILE_SIZE_EXCEEDED,message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+        ApiError apiError = new ApiError(ExceptionType.FILE_SIZE_EXCEEDED, message);
+        return this.handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(ConversionFailedException.class)
@@ -96,15 +96,15 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         String message = "Invalid sort parameter";
         ApiError apiError = new ApiError(ExceptionType.BAD_SORT_PARAMETER, message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+        return this.handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         String message = ex.getConstraintViolations().iterator().next().getMessage();
-        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED,message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.BAD_REQUEST,request);
+        ApiError apiError = new ApiError(ExceptionType.VALIDATION_FAILED, message);
+        return this.handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(UnsupportedContentTypeException.class)
@@ -115,27 +115,27 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
         builder.append(" content type is not supported. Supported content types for a file are ");
         ex.getSupportedContentTypes().forEach(t -> builder.append(t).append(", "));
         String message = builder.substring(0, builder.length() - 2);
-        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA,message);
-        return this.handleExceptionInternal(ex,apiError,headers,HttpStatus.UNSUPPORTED_MEDIA_TYPE,request);
+        ApiError apiError = new ApiError(ExceptionType.UNSUPPORTED_MEDIA, message);
+        return this.handleExceptionInternal(ex, apiError, headers, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request){
+    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
-        ApiError apiError = new ApiError(ExceptionType.BAD_CREDENTIALS,ex.getMessage());
-        return this.handleExceptionInternal(ex, apiError, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
+        ApiError apiError = new ApiError(ExceptionType.BAD_CREDENTIALS, ex.getMessage());
+        return this.handleExceptionInternal(ex, apiError, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
+    protected ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
         Class<?> clazz = ex.getClass();
         if (clazz.isAnnotationPresent(ApiErrorMetadata.class)) {
             String type = clazz.getAnnotation(ApiErrorMetadata.class).type();
             HttpStatus status = clazz.getAnnotation(ApiErrorMetadata.class).status();
-            ApiError apiError = new ApiError(type,ex.getMessage());
-            return this.handleExceptionInternal(ex,apiError,headers,status,request);
+            ApiError apiError = new ApiError(type, ex.getMessage());
+            return this.handleExceptionInternal(ex, apiError, headers, status, request);
         }
-        return this.handleExceptionInternal(ex, null, headers,HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return this.handleExceptionInternal(ex, null, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 }

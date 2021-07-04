@@ -16,7 +16,7 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
     private HandlerExceptionResolver resolver;
 
     @Autowired
-    public FilterChainExceptionHandler(@Qualifier("handlerExceptionResolver")HandlerExceptionResolver resolver) {
+    public FilterChainExceptionHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
 
@@ -25,7 +25,7 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    ){
+    ) {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {

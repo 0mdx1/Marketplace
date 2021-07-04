@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ApiErrorMetadata {
-    public String type() default "general-1";
-    public HttpStatus status() default HttpStatus.INTERNAL_SERVER_ERROR;
+    String type() default "general-1";
+
+    HttpStatus status() default HttpStatus.INTERNAL_SERVER_ERROR;
 }

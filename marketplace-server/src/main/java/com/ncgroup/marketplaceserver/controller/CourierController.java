@@ -2,56 +2,42 @@ package com.ncgroup.marketplaceserver.controller;
 
 import static org.springframework.http.HttpStatus.OK;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 import javax.validation.Valid;
 
-import com.ncgroup.marketplaceserver.constants.StatusConstants;
-import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ncgroup.marketplaceserver.model.dto.CourierDto;
 import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
+import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.service.CourierService;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.*;
-import com.ncgroup.marketplaceserver.model.dto.UserDto;
-import com.ncgroup.marketplaceserver.security.util.JwtProvider;
-
 @RequestMapping("/api/courier")
 @RestController
 @Slf4j
-public class CourierController  {
-    private AuthenticationManager authenticationManager;
+public class CourierController {
     private CourierService courierService;
-    private JwtProvider jwtProvider;
-
-    @Value("${url.confirm-account.redirect}")
-    private String redirectConfirmAccountUrl;
-
-    @Value("${url.reset-password.redirect}")
-    private String redirectResetPasswordUrl;
-
 
     @Autowired
-    public CourierController(AuthenticationManager authenticationManager,
-                             CourierService courierService, JwtProvider jwtProvider) {
-        this.authenticationManager = authenticationManager;
+    public CourierController(CourierService courierService) {
         this.courierService = courierService;
-        this.jwtProvider = jwtProvider;
     }
 
     @PostMapping()
-    public ResponseEntity<UserDto> create (@Valid @RequestBody CourierDto courier){
-    	log.info(courier.toString());
+    public ResponseEntity<UserDto> create(@Valid @RequestBody CourierDto courier) {
+        log.info(courier.toString());
         UserDto newCourier = courierService.save(
                 courier.getName(), courier.getSurname(), courier.getEmail(),
                 courier.getPhone(), courier.getBirthday(), courier.getStatus());

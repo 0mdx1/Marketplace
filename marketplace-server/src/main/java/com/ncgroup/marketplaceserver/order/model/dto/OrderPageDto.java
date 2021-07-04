@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderPageDto {
-	private List<OrderReadDto> orders;
-	private int page;
-	private int totalPages;
+    private List<OrderReadDto> orders;
+    private int page;
+    private int totalPages;
 }

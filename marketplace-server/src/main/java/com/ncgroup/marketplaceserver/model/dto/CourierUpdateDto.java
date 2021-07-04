@@ -2,7 +2,6 @@ package com.ncgroup.marketplaceserver.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ncgroup.marketplaceserver.model.Courier;
 import com.ncgroup.marketplaceserver.model.User;
 import lombok.Data;
 

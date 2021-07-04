@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.domain;
 
 import lombok.Data;
+
 import java.time.Instant;
 
 @Data

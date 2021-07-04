@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface ShoppingCartItemService {
 
-    public void put(ShoppingCartItemCreateDto shoppingCartItemDto);
+    void put(ShoppingCartItemCreateDto shoppingCartItemDto);
 
-    public void update(long id,ShoppingCartItemUpdateDto shoppingCartItemDto) throws NotFoundException;
+    void update(long id, ShoppingCartItemUpdateDto shoppingCartItemDto) throws NotFoundException;
 
-    public void delete(long id) throws NotFoundException;
+    void delete(long id) throws NotFoundException;
 
-    public void deleteAll();
+    void deleteAll();
 
-    public ShoppingCartItemReadDto get(long id) throws NotFoundException;
+    ShoppingCartItemReadDto get(long id) throws NotFoundException;
 
-    public List<ShoppingCartItemReadDto> getAll();
+    List<ShoppingCartItemReadDto> getAll();
 
-    public void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos);
+    void setAll(List<ShoppingCartItemCreateDto> shoppingCartItemCreateDtos);
 
 }

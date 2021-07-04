@@ -1,14 +1,14 @@
 package com.ncgroup.marketplaceserver.file;
 
 import org.apache.http.entity.ContentType;
-import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 
 public class UnsupportedContentTypeException extends Exception {
-    private final List<ContentType> supportedContentTypes;
+	private static final long serialVersionUID = 1L;
+	private final List<ContentType> supportedContentTypes;
     @Nullable
     private final ContentType contentType;
 
@@ -18,7 +18,7 @@ public class UnsupportedContentTypeException extends Exception {
         this.contentType = null;
     }
 
-    public UnsupportedContentTypeException(String message, List<ContentType> supportedContentTypes,ContentType contentType) {
+    public UnsupportedContentTypeException(String message, List<ContentType> supportedContentTypes, ContentType contentType) {
         super(message);
         this.supportedContentTypes = Collections.unmodifiableList(supportedContentTypes);
         this.contentType = contentType;

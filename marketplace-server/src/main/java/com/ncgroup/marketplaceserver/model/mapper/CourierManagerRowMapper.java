@@ -24,7 +24,7 @@ public class CourierManagerRowMapper implements RowMapper<User> {
                 .isEnabled(rs.getBoolean("is_enabled"))
                 .role(Role.valueOf(rs.getString("role")))
                 .build();
-        log.info(""+user.isEnabled());
+        log.info("" + user.isEnabled());
         return user;
     }
 }

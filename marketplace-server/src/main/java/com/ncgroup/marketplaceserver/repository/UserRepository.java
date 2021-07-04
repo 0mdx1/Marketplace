@@ -1,37 +1,36 @@
 package com.ncgroup.marketplaceserver.repository;
 
 
-
 import com.ncgroup.marketplaceserver.model.User;
 import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 import java.util.List;
 
 public interface UserRepository {
-	User findById(long id);
+    User findById(long id);
 
-	User findByEmail(String email);
+    User findByEmail(String email);
 
-	User findByAuthLink(String link);
+    User findByAuthLink(String link);
 
-	User save(User user);
-	
-	User saveWithoutCredentials(User user);
+    User save(User user);
 
-	List<User> findAll();
+    User saveWithoutCredentials(User user);
 
-	//void updateLastFailedAuth(long id, int lastFailedAuth);
-	void updateLastFailedAuth(String email, int lastFailedAuth);
+    List<User> findAll();
 
-	void deleteById(long id);
+    //void updateLastFailedAuth(long id, int lastFailedAuth);
+    void updateLastFailedAuth(String email, int lastFailedAuth);
 
-	void enableUser(String link);
+    void deleteById(long id);
 
-	void updateAuthLink(String email, String link);
+    void enableUser(String link);
 
-	void updatePassword(String email, String password);
+    void updateAuthLink(String email, String link);
 
-	void updateUserByEmail(UserDto user, String email);
+    void updatePassword(String email, String password);
 
-	List<User> allCouriersManagers();
+    void updateUserByEmail(UserDto user, String email);
+
+    List<User> allCouriersManagers();
 }

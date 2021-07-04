@@ -1,19 +1,19 @@
 package com.ncgroup.marketplaceserver.security.config;
 
-import com.ncgroup.marketplaceserver.model.Role;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.repository.CourierRepository;
-import com.ncgroup.marketplaceserver.repository.UserRepository;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import com.ncgroup.marketplaceserver.model.Role;
+import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.repository.CourierRepository;
+import com.ncgroup.marketplaceserver.repository.UserRepository;
 
 @Configuration
-public class DefaultAdminConfiguration extends UserConfiguration{
+public class DefaultAdminConfiguration extends UserConfiguration {
 
     @Value("${default-admin.name}")
     private String name;
@@ -32,7 +32,7 @@ public class DefaultAdminConfiguration extends UserConfiguration{
 
     @Autowired
     public DefaultAdminConfiguration(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
-    		CourierRepository courierRepository) {
+                                     CourierRepository courierRepository) {
         super(passwordEncoder, userRepository, courierRepository);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class Decorator implements GoodsService {
     GoodsService goodsService;
 
-     public Decorator(GoodsService goodsService) {
+    public Decorator(GoodsService goodsService) {
         this.goodsService = goodsService;
     }
 

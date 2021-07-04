@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
     public ShoppingCartItem findByGoodsIdAndUserId(long goodsId, long userId) {
         SqlParameterSource shoppingCartItemParams = new MapSqlParameterSource()
                 .addValue("goodsId", goodsId)
-                .addValue("userId",userId);
+                .addValue("userId", userId);
         ShoppingCartItem res;
         try {
             res = namedParameterJdbcTemplate.queryForObject(
@@ -73,7 +74,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
                 .addValue("goodsId", shoppingCartItem.getGoods().getId())
                 .addValue("quantity", shoppingCartItem.getQuantity())
                 .addValue("addingTime", shoppingCartItem.getAddingTime());
-        namedParameterJdbcTemplate.update(insertQuery,shoppingCartItemParams);
+        namedParameterJdbcTemplate.update(insertQuery, shoppingCartItemParams);
     }
 
     @Value("${shopping-cat-item.update-by-ids-query}")
@@ -86,7 +87,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
                 .addValue("goodsId", shoppingCartItem.getGoods().getId())
                 .addValue("quantity", shoppingCartItem.getQuantity())
                 .addValue("addingTime", shoppingCartItem.getAddingTime());
-        namedParameterJdbcTemplate.update(updateByIdsQuery,shoppingCartItemParams);
+        namedParameterJdbcTemplate.update(updateByIdsQuery, shoppingCartItemParams);
     }
 
     @Value("${shopping-cat-item.delete-by-ids-query}")
@@ -136,7 +137,7 @@ public class ShoppingCartItemRepositoryImpl implements ShoppingCartItemRepositor
         return ShoppingCartItem
                 .builder()
                 .userId(rs.getLong("user_id"))
-                .goods(mapRowToGoods(rs,rowNum))
+                .goods(mapRowToGoods(rs, rowNum))
                 .quantity(rs.getInt("quantity"))
                 .addingTime(rs.getLong("adding_time"))
                 .build();

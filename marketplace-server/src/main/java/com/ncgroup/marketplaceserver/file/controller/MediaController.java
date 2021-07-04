@@ -25,8 +25,8 @@ public class MediaController {
     }
 
     @PostMapping(
-        path = "/",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+            path = "/",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public ResponseEntity<FileMetadataReadDto> upload(@RequestParam("file") MultipartFile file) throws UnsupportedContentTypeException {
         String filename = mediaService.upload(file);
