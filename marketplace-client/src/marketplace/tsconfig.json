@@ -4,11 +4,21 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@app/*": ["app/*"],
-      "@env/*": ["enviroments/*"],
-      "@auth/*": ["_auth/*"],
-      "@models/*": ["_models/*"],
-      "@services/*" : ["_services"]
+      "@app/*": [
+        "app/*"
+      ],
+      "@env/*": [
+        "enviroments/*"
+      ],
+      "@auth/*": [
+        "_auth/*"
+      ],
+      "@models/*": [
+        "_models/*"
+      ],
+      "@services/*": [
+        "_services"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

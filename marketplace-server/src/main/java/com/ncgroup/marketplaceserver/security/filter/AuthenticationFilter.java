@@ -1,7 +1,9 @@
 package com.ncgroup.marketplaceserver.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+
 import com.ncgroup.marketplaceserver.domain.ApiError;
 import com.ncgroup.marketplaceserver.exception.constants.ExceptionType;
 import org.springframework.security.core.AuthenticationException;
@@ -23,8 +25,8 @@ public class AuthenticationFilter extends Http403ForbiddenEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
-    		throws IOException {
-        ApiError apiError = new ApiError(ExceptionType.UNAUTHENTICATED,"You need to login to access this page");
+            throws IOException {
+        ApiError apiError = new ApiError(ExceptionType.UNAUTHENTICATED, "You need to login to access this page");
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setStatus(FORBIDDEN.value());
         OutputStream outputStream = response.getOutputStream();

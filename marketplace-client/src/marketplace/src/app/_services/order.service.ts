@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CourierOrder } from '../_models/order-info/courier-order';
 import { environment } from '../../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { OrderPage } from '../_models/order-info/order-page';
 import { Status } from '../_models/status';
 import { User } from '../_models/user';
@@ -15,11 +15,7 @@ const baseUrl = `${environment.apiUrl}`; // Is it ok?
   providedIn: 'root',
 })
 export class OrderService {
-  constructor(
-    private http: HttpClient,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   public getPagedOrders(page: number): Observable<OrderPage> {
     let currentUrl = this.router.url.split('?')[0];

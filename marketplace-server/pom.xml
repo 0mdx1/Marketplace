@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>marketplace-parent</artifactId>
@@ -114,11 +114,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency> 
+		</dependency>
 	</dependencies>
 
 
@@ -133,7 +133,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!--<fork>false</fork>-->
+					<!--<fork>false</fork> -->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -156,13 +156,44 @@
 							<outputDirectory>${project.build.directory}/classes/static/</outputDirectory>
 							<resources>
 								<resource>
-									<directory>${project.parent.basedir}/marketplace-client/src/marketplace/dist/marketplace</directory>
+									<directory>
+										${project.parent.basedir}/marketplace-client/src/marketplace/dist/marketplace
+									</directory>
 								</resource>
 							</resources>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.14.0</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<linkXRef>true</linkXRef>
+							<failOnViolation>false</failOnViolation>
+							<analysisCache>true</analysisCache>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.14.0</version>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

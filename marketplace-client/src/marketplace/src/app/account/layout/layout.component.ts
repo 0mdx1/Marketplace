@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
     templateUrl: 'layout.component.html',
-    styleUrls: ['layout.component.css']}
-    )
-export class LayoutComponent {}
+    styleUrls: ['layout.component.css']
+  }
+)
+export class LayoutComponent {
+}

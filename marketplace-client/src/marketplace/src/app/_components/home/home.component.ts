@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AccountService} from '../../_services/account.service';
 
 @Component({
@@ -7,7 +7,8 @@ import {AccountService} from '../../_services/account.service';
 })
 export class HomeComponent {
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService) {
+  }
 
   logout(): void {
     this.accountService.logout();

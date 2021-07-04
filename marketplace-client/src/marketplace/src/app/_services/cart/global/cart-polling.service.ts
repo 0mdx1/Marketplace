@@ -9,22 +9,23 @@ import {SendRequestStrategy} from "./send-request-strategy";
 @Injectable({
   providedIn: 'root'
 })
-export class CartPollingService implements OnDestroy{
+export class CartPollingService implements OnDestroy {
 
   private subscription: Subscription | null = null;
 
   constructor(
-    @Inject(BrowserCart)private cart: Cart,
+    @Inject(BrowserCart) private cart: Cart,
     private httpService: CartHttpService,
-    @Inject(SendRequestStrategyService)private sendRequestStrategy: SendRequestStrategy
-  ) { }
+    @Inject(SendRequestStrategyService) private sendRequestStrategy: SendRequestStrategy
+  ) {
+  }
 
   ngOnDestroy(): void {
     this.stopPolling();
   }
 
   public startPolling(): void {
-    if(this.sendRequestStrategy.allowedToSendRequests()) {
+    if (this.sendRequestStrategy.allowedToSendRequests()) {
       this.updateItems();
     }
     this.subscription = interval(10000)
@@ -48,8 +49,8 @@ export class CartPollingService implements OnDestroy{
     }
   }
 
-  public stopPolling(): void{
-    if(this.subscription!==null) {
+  public stopPolling(): void {
+    if (this.subscription !== null) {
       this.subscription.unsubscribe();
     }
   }

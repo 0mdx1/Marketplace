@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -7,12 +6,12 @@ import {
   Output,
   SimpleChange,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Filter } from 'src/app/_models/products/filter';
-import { Product } from 'src/app/_models/products/product';
-import { ProductDto } from 'src/app/_models/products/productDto';
-import { ProductService } from 'src/app/_services/product.service';
-import { Options } from '@angular-slider/ngx-slider';
+import {Subscription} from 'rxjs';
+import {Filter} from 'src/app/_models/products/filter';
+import {Product} from 'src/app/_models/products/product';
+import {ProductDto} from 'src/app/_models/products/productDto';
+import {ProductService} from 'src/app/_services/product.service';
+import {Options} from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-filter',
@@ -41,7 +40,8 @@ export class FilterComponent implements OnInit {
   @Output() directionChange = new EventEmitter<string>();
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private service: ProductService) {}
+  constructor(private service: ProductService) {
+  }
 
   ngOnInit(): void {
     this.init = true;

@@ -19,5 +19,7 @@ public final class ExceptionType {
     public static final String UNAUTHENTICATED = "auth-1";
     public static final String ACCESS_DENIED = "auth-2";
     public static final String BAD_CREDENTIALS = "auth-3";
-    private ExceptionType(){}
+
+    private ExceptionType() {
+    }
 }

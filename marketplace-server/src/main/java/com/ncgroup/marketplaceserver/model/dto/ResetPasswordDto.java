@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResetPasswordDto {
-	private String link;
-	private String password;
+    private String link;
+    private String password;
 }

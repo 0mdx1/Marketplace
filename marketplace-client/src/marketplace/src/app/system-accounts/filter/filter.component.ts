@@ -6,10 +6,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { StaffMember } from 'src/app/_models/staff-member';
-import { UserDto } from 'src/app/_models/UserDto';
-import { SystemAccountService } from 'src/app/_services/system-account.service';
+import {Subscription} from 'rxjs';
+import {StaffMember} from 'src/app/_models/staff-member';
+import {UserDto} from 'src/app/_models/UserDto';
+import {SystemAccountService} from 'src/app/_services/system-account.service';
 
 @Component({
   selector: 'app-filter',
@@ -25,7 +25,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() statusList: string[] = [];
   @Output() results: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private service: SystemAccountService) {}
+  constructor(private service: SystemAccountService) {
+  }
 
   ngOnInit(): void {
     this.activeRadioButton = this.getFilter();

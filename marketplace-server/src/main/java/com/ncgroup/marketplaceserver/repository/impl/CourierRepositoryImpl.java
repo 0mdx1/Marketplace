@@ -1,35 +1,23 @@
 package com.ncgroup.marketplaceserver.repository.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import com.ncgroup.marketplaceserver.constants.StatusConstants;
-import com.ncgroup.marketplaceserver.model.Courier;
-import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.CourierDto;
-import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
-import com.ncgroup.marketplaceserver.model.mapper.CourierRowMapper;
-import com.ncgroup.marketplaceserver.repository.CourierRepository;
-import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ncgroup.marketplaceserver.model.Courier;
+import com.ncgroup.marketplaceserver.model.dto.CourierUpdateDto;
+import com.ncgroup.marketplaceserver.model.mapper.CourierRowMapper;
+import com.ncgroup.marketplaceserver.repository.CourierRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Repository
 @PropertySources({
         @PropertySource("classpath:database/queries.properties"),

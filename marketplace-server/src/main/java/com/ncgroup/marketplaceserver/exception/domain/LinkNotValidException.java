@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 @ApiErrorMetadata(type = ExceptionType.LINK_NOT_VALID, status = HttpStatus.BAD_REQUEST)
 public class LinkNotValidException extends NotValidException {
-	public LinkNotValidException(String message) {
+    public LinkNotValidException(String message) {
         super(message);
     }
 }

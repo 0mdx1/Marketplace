@@ -10,7 +10,7 @@ public class ShoppingCartItemUpdateDto {
     @Min(value = 1, message = "quantity cannot be below 1")
     private int quantity;
 
-    public void mapTo(ShoppingCartItem shoppingCartItem){
+    public void mapTo(ShoppingCartItem shoppingCartItem) {
         shoppingCartItem.setQuantity(quantity);
     }
 }

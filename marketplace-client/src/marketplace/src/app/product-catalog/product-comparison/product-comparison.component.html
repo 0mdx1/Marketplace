@@ -19,7 +19,8 @@
           <li class="list-group-item unit"><strong>Unit: </strong>{{product.unit}}</li>
           <li class="list-group-item"><strong>Price: </strong>{{product.price | currency: 'USD'}}</li>
         </ul>
-          <button *ngIf="product.inStock" class="card-link btn buy-btn" (click)="addProductToCart(product)">Add to cart</button>
+        <button *ngIf="product.inStock" class="card-link btn buy-btn" (click)="addProductToCart(product)">Add to cart
+        </button>
       </div>
     </div>
   </div>

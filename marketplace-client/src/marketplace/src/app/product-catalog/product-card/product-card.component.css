@@ -77,6 +77,7 @@
   position: relative;
   width: 100%; /* The size you want */
 }
+
 .img-container:after {
   content: "";
   display: block;

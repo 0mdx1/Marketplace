@@ -29,10 +29,10 @@ public class ShoppingCartController {
         this.service = service;
     }
 
-    @PutMapping ("/item/")
+    @PutMapping("/item/")
     public ResponseEntity<?> putCartItem(
-        @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
-    ){
+            @Valid @RequestBody ShoppingCartItemCreateDto shoppingCartItemCreateDto
+    ) {
         service.put(shoppingCartItemCreateDto);
         return ResponseEntity.status(HttpStatus.OK).build();
 
@@ -40,50 +40,50 @@ public class ShoppingCartController {
 
     @GetMapping("/item/{id}/")
     public ResponseEntity<ShoppingCartItemReadDto> getCartItem(
-        @PathVariable("id") long id
+            @PathVariable("id") long id
     ) throws NotFoundException {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
 
     @PatchMapping("/item/{id}/")
     public ResponseEntity<?> updateCartItem(
-        @Valid @RequestBody ShoppingCartItemUpdateDto shoppingCartItemUpdateDto,
-        @PathVariable("id") long id
+            @Valid @RequestBody ShoppingCartItemUpdateDto shoppingCartItemUpdateDto,
+            @PathVariable("id") long id
     ) throws NotFoundException {
-        service.update(id,shoppingCartItemUpdateDto);
+        service.update(id, shoppingCartItemUpdateDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/item/{id}/")
     public ResponseEntity<?> deleteCartItem(
-        @PathVariable("id") long id
+            @PathVariable("id") long id
     ) throws NotFoundException {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<ShoppingCartItemReadDto>> getShoppingCart(){
+    public ResponseEntity<List<ShoppingCartItemReadDto>> getShoppingCart() {
         return new ResponseEntity<>(
-            service.getAll(),
-            HttpStatus.OK
+                service.getAll(),
+                HttpStatus.OK
         );
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> putShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items){
+    public ResponseEntity<?> putShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items) {
         this.service.setAll(items);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<?> emptyShoppingCart(){
+    public ResponseEntity<?> emptyShoppingCart() {
         service.deleteAll();
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/validate/")
-    public ResponseEntity<?> validateShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items){
+    public ResponseEntity<?> validateShoppingCart(@RequestBody @Valid List<ShoppingCartItemCreateDto> items) {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

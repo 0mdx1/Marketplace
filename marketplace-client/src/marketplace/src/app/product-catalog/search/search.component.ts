@@ -6,11 +6,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { debounceTime, map, switchAll } from 'rxjs/operators';
-import { Product } from 'src/app/_models/products/product';
-import { ProductDto } from 'src/app/_models/products/productDto';
-import { ProductService } from 'src/app/_services/product.service';
+import {fromEvent, merge, Subscription} from 'rxjs';
+import {debounceTime, map, switchAll} from 'rxjs/operators';
+import {Product} from 'src/app/_models/products/product';
+import {ProductDto} from 'src/app/_models/products/productDto';
+import {ProductService} from 'src/app/_services/product.service';
 
 @Component({
   selector: 'app-search',
@@ -24,7 +24,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   init: boolean = true;
   subscription!: Subscription;
 
-  constructor(private service: ProductService, private el: ElementRef) {}
+  constructor(private service: ProductService, private el: ElementRef) {
+  }
 
   ngOnInit(): void {
     this.search = this.service.getSearch();

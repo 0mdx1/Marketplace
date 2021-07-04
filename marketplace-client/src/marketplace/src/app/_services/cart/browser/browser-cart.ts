@@ -1,17 +1,16 @@
-import {Inject, Injectable, OnDestroy, OnInit} from "@angular/core";
+import { Inject, Injectable } from '@angular/core';
 
-import {CartItem} from "../../../_models/cart-item.model";
-import {Cart} from "../cart";
-import {PageCart} from "../page-cart";
-import {CartTabSyncService} from "./cart-tab-sync.service";
+import { CartItem } from '../../../_models/cart-item.model';
+import { Cart } from '../cart';
+import { PageCart } from '../page-cart';
+import { CartTabSyncService } from './cart-tab-sync.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class BrowserCart implements Cart{
-
+export class BrowserCart implements Cart {
   constructor(
-    @Inject(PageCart)private cart: Cart,
+    @Inject(PageCart) private cart: Cart,
     private syncService: CartTabSyncService
   ) {}
 

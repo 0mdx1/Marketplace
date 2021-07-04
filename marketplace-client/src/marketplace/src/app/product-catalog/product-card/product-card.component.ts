@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { AlertType } from 'src/app/_models/alert';
-import { Product } from 'src/app/_models/products/product';
-import { AlertService } from 'src/app/_services/alert.service';
-import { CartService } from '../../_services/cart/cart.service';
+import {Component, Input} from '@angular/core';
+import {AlertType} from 'src/app/_models/alert';
+import {Product} from 'src/app/_models/products/product';
+import {AlertService} from 'src/app/_services/alert.service';
+import {CartService} from '../../_services/cart/cart.service';
 
 @Component({
   selector: 'app-product-card',
@@ -30,7 +30,8 @@ export class ProductCardComponent {
   constructor(
     private cartService: CartService,
     private alertService: AlertService
-  ) {}
+  ) {
+  }
 
   addToCart() {
     if (this.product) {

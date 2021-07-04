@@ -1,7 +1,6 @@
 package com.ncgroup.marketplaceserver.service;
 
 import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.UserDto;
 
 import java.util.List;
 

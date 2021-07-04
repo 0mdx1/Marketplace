@@ -11,13 +11,21 @@ import com.ncgroup.marketplaceserver.order.model.dto.OrderPostDto;
 import com.ncgroup.marketplaceserver.order.model.dto.OrderReadDto;
 
 public interface OrderService {
-	OrderPageDto getCourierOrders(String token, int page);
-	List<OffsetDateTime> getFreeSlots();
-	OrderReadDto getOrder(long id);
-	OrderReadDto addOrder(OrderPostDto order, String token);
-	OrderStatus modifyStatus(long id);
-	UserDisplayInfoDto getUserInfoForOrder(String token);
-	List<OrderReadDto> getUserOrders(String token);
-	List<OrderReadDto> getUserHistory(String token);
-	UserDisplayInfoDto getCourierInfoForOrder(long id);
+    OrderPageDto getCourierOrders(String token, int page);
+
+    List<OffsetDateTime> getFreeSlots();
+
+    OrderReadDto getOrder(long id);
+
+    OrderReadDto addOrder(OrderPostDto order, String token);
+
+    OrderStatus modifyStatus(long id);
+
+    UserDisplayInfoDto getUserInfoForOrder(String token);
+
+    List<OrderReadDto> getUserOrders(String token);
+
+    List<OrderReadDto> getUserHistory(String token);
+
+    UserDisplayInfoDto getCourierInfoForOrder(long id);
 }

@@ -25,22 +25,22 @@
                 <div class="table-responsive table-lg mt-2">
                   <table class="table table-bordered">
                     <thead>
-                      <tr>
+                    <tr>
 
-                        <th class="max-width">Product Name</th>
-                        <th class="max-width">Firm</th>
-                        <th class="max-width">Category</th>
-                        <th class="max-width">Quantity</th>
+                      <th class="max-width">Product Name</th>
+                      <th class="max-width">Firm</th>
+                      <th class="max-width">Category</th>
+                      <th class="max-width">Quantity</th>
 
-                      </tr>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let good of order.goods" class="pointer">
-                        <td class="text-nowrap align-middle">{{good.name}}</td>
-                        <td class="text-nowrap align-middle">{{good.firm}}</td>
-                        <td class="text-nowrap align-middle">{{good.category}}</td>
-                        <td class="text-nowrap align-middle">{{good.quantity}} {{good.unit | unit : good.quantity}}</td>
-                      </tr>
+                    <tr *ngFor="let good of order.goods" class="pointer">
+                      <td class="text-nowrap align-middle">{{good.name}}</td>
+                      <td class="text-nowrap align-middle">{{good.firm}}</td>
+                      <td class="text-nowrap align-middle">{{good.category}}</td>
+                      <td class="text-nowrap align-middle">{{good.quantity}} {{good.unit | unit : good.quantity}}</td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>

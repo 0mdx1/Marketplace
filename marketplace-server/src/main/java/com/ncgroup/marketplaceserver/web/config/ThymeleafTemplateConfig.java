@@ -1,6 +1,7 @@
 package com.ncgroup.marketplaceserver.web.config;
 
 import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -18,7 +19,7 @@ public class ThymeleafTemplateConfig {
     }
 
     @Bean
-    public ClassLoaderTemplateResolver htmlTemplateResolver(){
+    public ClassLoaderTemplateResolver htmlTemplateResolver() {
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix("/templates/");
         emailTemplateResolver.setSuffix(".html");

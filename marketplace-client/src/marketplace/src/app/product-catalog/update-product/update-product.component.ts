@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AbstractControl,
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -59,6 +58,7 @@ export class UpdateProductComponent implements OnInit {
         })
     );
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

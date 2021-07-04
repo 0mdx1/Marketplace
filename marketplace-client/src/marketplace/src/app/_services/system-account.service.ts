@@ -1,11 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, of, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { UserDto } from '../_models/UserDto';
-import { ResetPasswordDTO } from '../_models/resetPasswordDTO';
-import { StaffMember } from '../_models/staff-member';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable, Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {UserDto} from '../_models/UserDto';
+import {StaffMember} from '../_models/staff-member';
 
 const baseUrl = `${environment.apiUrl}`;
 
@@ -25,7 +24,8 @@ export class SystemAccountService {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   private getUsers(
     filter: string,
@@ -77,7 +77,7 @@ export class SystemAccountService {
       });
     } else {
       this.router.navigate([currentUrl], {
-        queryParams: { filter: filter, page: page },
+        queryParams: {filter: filter, page: page},
       });
     }
     return currentUrl;

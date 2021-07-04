@@ -8,7 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class RecaptchaService implements CaptchaService{
+public class RecaptchaService implements CaptchaService {
 
     private static final String GOOGLE_RECAPTCHA_ENDPOINT = "https://www.google.com/recaptcha/api/siteverify";
 

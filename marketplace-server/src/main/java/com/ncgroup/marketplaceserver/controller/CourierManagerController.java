@@ -1,10 +1,11 @@
 package com.ncgroup.marketplaceserver.controller;
 
 import com.ncgroup.marketplaceserver.model.User;
-import com.ncgroup.marketplaceserver.model.dto.UserDto;
 import com.ncgroup.marketplaceserver.service.CourierManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import static org.springframework.http.HttpStatus.OK;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

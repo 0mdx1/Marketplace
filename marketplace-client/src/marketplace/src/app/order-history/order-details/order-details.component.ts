@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { CourierOrder } from 'src/app/_models/order-info/courier-order';
-import { User } from 'src/app/_models/user';
-import { Checkout } from 'src/app/_services/checkout/checkout.service';
-import { OrderService } from 'src/app/_services/order.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {CourierOrder} from 'src/app/_models/order-info/courier-order';
+import {User} from 'src/app/_models/user';
+import {OrderService} from 'src/app/_services/order.service';
 
 @Component({
   selector: 'app-order-details',
@@ -11,7 +10,9 @@ import { OrderService } from 'src/app/_services/order.service';
   styleUrls: ['./order-details.component.css'],
 })
 export class OrderDetailsComponent implements OnInit, OnDestroy {
-  constructor(private service: OrderService) {}
+  constructor(private service: OrderService) {
+  }
+
   courier: User = {};
   order: CourierOrder = new CourierOrder();
   orderSubscription!: Subscription;

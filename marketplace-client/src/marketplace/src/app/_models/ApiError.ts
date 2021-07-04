@@ -1,4 +1,4 @@
-export class ApiError{
+export class ApiError {
   type: string;
   timestamp: string;
   message: string;

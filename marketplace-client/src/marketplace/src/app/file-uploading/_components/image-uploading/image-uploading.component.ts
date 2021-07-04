@@ -1,20 +1,23 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Observable} from "rxjs";
-import {FileService} from "../../../_services/file.service";
-import {ApiError} from "../../../_models/ApiError";
-import {AlertType} from "../../../_models/alert";
-import {AlertService} from "../../../_services/alert.service";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FileService } from '../../../_services/file.service';
 
 @Component({
   selector: 'app-image-uploading',
   templateUrl: './image-uploading.component.html',
-  styleUrls: ['./image-uploading.component.css']
+  styleUrls: ['./image-uploading.component.css'],
 })
-export class ImageUploadingComponent implements OnChanges{
-
+export class ImageUploadingComponent implements OnChanges {
   @Input() imageUrl: string = '';
 
-  @Output() imageFilenameEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() imageFilenameEvent: EventEmitter<string> =
+    new EventEmitter<string>();
 
   public isLoading: boolean = false;
 
@@ -22,11 +25,11 @@ export class ImageUploadingComponent implements OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
     let filename = this.getFilename(changes.imageUrl.currentValue);
-    this.imageFilenameEvent.emit(filename)
+    this.imageFilenameEvent.emit(filename);
   }
 
-  private getFilename(url:string): string {
-    return (url.match(/\S+\/(\S+\/\S+)$/)||[]).pop()||"";
+  private getFilename(url: string): string {
+    return (url.match(/\S+\/(\S+\/\S+)$/) || []).pop() || '';
   }
 
   // @ts-ignore
@@ -36,16 +39,15 @@ export class ImageUploadingComponent implements OnChanges{
     if (fileToUpload) {
       this.isLoading = true;
       this.fileService.upload(fileToUpload).subscribe({
-        next: fileMetadata => {
-          this.isLoading=false;
+        next: (fileMetadata) => {
+          this.isLoading = false;
           this.imageUrl = fileMetadata.resourceUrl;
-          this.imageFilenameEvent.emit(fileMetadata.filename)
+          this.imageFilenameEvent.emit(fileMetadata.filename);
         },
-        error: e=>{
-          this.isLoading=false;
-        }
+        error: (e) => {
+          this.isLoading = false;
+        },
       });
     }
   }
-
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {FileMetadata} from "../_models/FileMetadata";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -11,7 +11,8 @@ const baseUrl = `${environment.apiUrl}`;
 })
 export class FileService {
 
-  constructor(private http: HttpClient){ }
+  constructor(private http: HttpClient) {
+  }
 
   upload(file: File): Observable<FileMetadata> {
     const formData: FormData = new FormData();
@@ -19,6 +20,6 @@ export class FileService {
     const httpOptions = {
       headers: new HttpHeaders()
     };
-    return this.http.post<FileMetadata>(`${baseUrl}/media/`,formData,httpOptions);
+    return this.http.post<FileMetadata>(`${baseUrl}/media/`, formData, httpOptions);
   }
 }

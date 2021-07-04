@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Product } from 'src/app/_models/products/product';
-import { AuthService } from '../../_auth/auth.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {Product} from 'src/app/_models/products/product';
+import {AuthService} from '../../_auth/auth.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,7 +13,9 @@ export class ProductListComponent implements OnInit {
   sort: string = 'name';
   role: string | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+  }
+
   ngOnInit() {
     this.role = this.authService.getRole();
   }

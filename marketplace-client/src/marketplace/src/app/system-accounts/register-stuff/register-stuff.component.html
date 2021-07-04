@@ -9,7 +9,7 @@
               <div class="form-group col-6">
                 <label>First Name*</label>
                 <input type="text" formControlName="name" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }" />
+                       [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }"/>
                 <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
                   <div *ngIf="getForm.name.errors.required">First Name is required</div>
                 </div>
@@ -17,7 +17,7 @@
               <div class="form-group col-6">
                 <label>Last Name*</label>
                 <input type="text" formControlName="surname" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }" />
+                       [ngClass]="{ 'is-invalid': submitted && getForm.surname.errors }"/>
                 <div *ngIf="submitted && getForm.surname.errors" class="invalid-feedback">
                   <div *ngIf="getForm.surname.errors.required">Last Name is required</div>
                 </div>
@@ -27,7 +27,7 @@
               <div class="form-group col-12">
                 <label>Email*</label>
                 <input type="text" formControlName="email" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }" />
+                       [ngClass]="{ 'is-invalid': submitted && getForm.email.errors }"/>
                 <div *ngIf="submitted && getForm.email.errors" class="invalid-feedback">
                   <div *ngIf="getForm.email.errors.required">Email is required</div>
                   <div *ngIf="getForm.email.errors.email">Email must be a valid email address</div>
@@ -37,7 +37,7 @@
               <div class="form-group col-6">
                 <label>Phone</label>
                 <input type="text" formControlName="phone" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }" />
+                       [ngClass]="{ 'is-invalid': submitted && getForm.phone.errors }"/>
                 <div *ngIf="submitted && getForm.phone.errors" class="invalid-feedback">
                   <div *ngIf="getForm.phone.errors">Phone must be in format +380</div>
                 </div>
@@ -45,7 +45,7 @@
               <div class="form-group col-6">
                 <label>Date of birth*</label>
                 <input type="date" formControlName="birthday" class="form-control"
-                  [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }" />
+                       [ngClass]="{ 'is-invalid': submitted && getForm.birthday.errors }"/>
                 <div *ngIf="submitted && getForm.birthday.errors" class="invalid-feedback">
                   <div *ngIf="getForm.birthday.hasError('InvalidDate')">Must be at least 18 y.o.</div>
                 </div>
@@ -93,9 +93,9 @@
             Account was created successfully
           </h3>
           <div class="form-group col ">
-            <a (click) = "createAnotherUser()"
-            routerLink="/sysaccounts/register-stuff"
-            class="btn btn-link text-right">Create another account</a>
+            <a (click)="createAnotherUser()"
+               routerLink="/sysaccounts/register-stuff"
+               class="btn btn-link text-right">Create another account</a>
             <a routerLink="/sysaccounts" class="btn btn-link text-left">Back to staff table</a>
           </div>
         </div>

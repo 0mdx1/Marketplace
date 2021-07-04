@@ -1,23 +1,22 @@
 package com.ncgroup.marketplaceserver.shopping.cart.repository;
 
-import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
-import com.ncgroup.marketplaceserver.model.User;
-
 import java.util.List;
-import java.util.Optional;
+
+import com.ncgroup.marketplaceserver.model.User;
+import com.ncgroup.marketplaceserver.shopping.cart.model.ShoppingCartItem;
 
 public interface ShoppingCartItemRepository {
 
-    public ShoppingCartItem findByGoodsIdAndUserId(long goodsId, long userId);
+    ShoppingCartItem findByGoodsIdAndUserId(long goodsId, long userId);
 
-    public List<ShoppingCartItem> findAllByUser(User user);
+    List<ShoppingCartItem> findAllByUser(User user);
 
-    public void save(ShoppingCartItem shoppingCartItem);
+    void save(ShoppingCartItem shoppingCartItem);
 
-    public void update(ShoppingCartItem shoppingCartItem);
+    void update(ShoppingCartItem shoppingCartItem);
 
-    public void remove(ShoppingCartItem shoppingCartItem);
+    void remove(ShoppingCartItem shoppingCartItem);
 
-    public void removeAllByUser(User user);
+    void removeAllByUser(User user);
 
 }

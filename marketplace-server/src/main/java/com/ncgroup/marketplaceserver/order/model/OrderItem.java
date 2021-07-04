@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItem {
-	private Good good;
-	private int quantity;
-	private float price;
-	
+    private Good good;
+    private int quantity;
+    private float price;
+
 }
