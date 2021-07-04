@@ -41,7 +41,6 @@ public class GoodsServiceImpl implements GoodsService {
         String newImage = goodDto.getImage();
 
         if (newImage != null && !newImage.isEmpty()) {
-
             goodDto.setImage(this.mediaService.confirmUpload(newImage));
         }
         return new Good(goodDto, repository.getGoodId(goodDto), mediaService);
@@ -49,7 +48,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Good edit(GoodDto goodDto, long id) throws NotFoundException {
-        Good good = this.findById(id); // pull the good object if exists
+        Good good = this.findById(id);
 
         String newImage = goodDto.getImage();
 
@@ -61,7 +60,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
 
-        repository.editGood(goodDto, id); // push the changed good object
+        repository.editGood(goodDto, id);
         good.setProperties(goodDto, id, mediaService);
         return good;
     }
@@ -69,8 +68,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Good find(long id) throws NotFoundException {
         Good good = findById(id);
-        // fixme ???
-        good.setImage(mediaService.getCloudStorage().getResourceUrl(good.getImage()));
+        good.setImage(good.getImage(), mediaService);
         return good;
     }
 
