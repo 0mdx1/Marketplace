@@ -13,6 +13,8 @@ DROP TABLE IF EXISTS category;
 DROP TYPE IF EXISTS delivery_status;
 DROP TYPE IF EXISTS unit_type;
 
+DROP EXTENSION pg_trgm; 
+
 CREATE TABLE IF NOT EXISTS role
 (
     id   SERIAL NOT NULL
@@ -177,7 +179,11 @@ CREATE TABLE IF NOT EXISTS order_goods
 );
 
 
-CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role
-    ON role (role);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_role_role  ON role (role);
 
-CREATE INDEX IF NOT EXISTS credentials_email_hash_index ON credentials USING hash(email);
+CREATE INDEX credentials_email_hash_index ON credentials USING hash(email);
+
+CREATE EXTENSION pg_trgm;
+CREATE INDEX person_full_name_index ON person using gin ((name || ' ' || surname) gin_trgm_ops);
+CREATE INDEX products_name_index ON product USING gin (name gin_trgm_ops);
+CREATE INDEX orderdetails_deliverytime_btree_index ON order_details USING btree(delivery_time); 
