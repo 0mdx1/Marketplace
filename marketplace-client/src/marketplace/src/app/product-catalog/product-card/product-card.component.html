@@ -14,6 +14,7 @@
         <p *ngIf="!product.discount" class="no-price">blank</p>
         <p *ngIf="!product.discount"
            class="new-price">{{product.price | currency: 'USD'}}</p>
+        <p>{{product.inStock | stock}}</p>
       </div>
       <button *ngIf="role=='ROLE_USER' || !role && product.inStock"
               type="button" (click)="addToCart()"
